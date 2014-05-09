@@ -4587,11 +4587,13 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 
 .navbar-brand {
 	float: left;
-	padding: 15px 15px 15px 65px;
+	padding: 13px 15px 13px 65px;
+	margin-top: 2px;
+	margin-bottom: 2px;
 	font-size: 18px;
 	line-height: 20px;
 	height: 50px;
-	background-image: url("/img/iwbLogo.png");
+	background-image: url("/img/iwbLogo_inv.png");
 	background-size: contain;
 	background-repeat: no-repeat;
 }
@@ -4931,12 +4933,12 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 	}
 
 .navbar-inverse {
-	background-color: #222222;
+	background-color: #001A4A;
 	border-color: #080808;
 }
 
 	.navbar-inverse .navbar-brand {
-		color: #b7bcd6;
+		color: #DDD;
 	}
 
 		.navbar-inverse .navbar-brand:hover,
@@ -4946,11 +4948,11 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 		}
 
 	.navbar-inverse .navbar-text {
-		color: #b7bcd6;
+		color: #DDD;
 	}
 
 	.navbar-inverse .navbar-nav > li > a {
-		color: #b7bcd6;
+		color: #DDD;
 	}
 
 		.navbar-inverse .navbar-nav > li > a:hover,
@@ -5008,7 +5010,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 	}
 
 	.navbar-inverse .navbar-nav .open .dropdown-menu > li > a {
-		color: #b7bcd6;
+		color: #DDD;
 	}
 
 		.navbar-inverse .navbar-nav .open .dropdown-menu > li > a:hover,
@@ -5033,7 +5035,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 }
 
 .navbar-inverse .navbar-link {
-	color: #b7bcd6;
+	color: #DDD;
 }
 
 	.navbar-inverse .navbar-link:hover {
