@@ -16,6 +16,11 @@ namespace ILK_Protokoll
 			FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
 			RouteConfig.RegisterRoutes(RouteTable.Routes);
 			BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+#if DEBUG
+			foreach (var bundle in BundleTable.Bundles)
+				bundle.Transforms.Clear();
+#endif
 		}
 	}
 }
