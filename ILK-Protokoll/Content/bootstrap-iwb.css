@@ -4591,6 +4591,9 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 	font-size: 18px;
 	line-height: 20px;
 	height: 50px;
+	background-image: url("/img/iwbLogo.png");
+	background-size: contain;
+	background-repeat: no-repeat;
 }
 
 	.navbar-brand:hover,
