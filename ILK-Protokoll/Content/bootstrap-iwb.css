@@ -2880,8 +2880,8 @@ input[type="button"].btn-block {
 
 @font-face {
 	font-family: 'Glyphicons Halflings';
-	src: url('../app/fonts/glyphicons-halflings-regular.eot');
-	src: url('../app/fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('../app/fonts/glyphicons-halflings-regular.woff') format('woff'), url('../app/fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('../app/fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
+	src: url('../fonts/glyphicons-halflings-regular.eot');
+	src: url('../fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('../fonts/glyphicons-halflings-regular.woff') format('woff'), url('../fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('../fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
 }
 
 .glyphicon {
@@ -4815,8 +4815,24 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 
 .navbar-text {
 	margin-top: 15px;
-	margin-bottom: 15px;
+	margin-bottom: 10px;
 }
+
+.navbar span.usertile {
+	display: block;
+	font-size: 18px;
+	vertical-align: middle;
+	height: 36px;
+	max-width: 50px;
+	padding: 5px 12px;
+	margin: auto 5px;
+	background-color: #FFF;
+	color: #001A4A;
+	font-weight: bold;
+	border: 2px solid #D48625;
+	border-radius: 4px;
+}
+
 
 @media (min-width: 768px) {
 	.navbar-text {
