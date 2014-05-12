@@ -5,8 +5,6 @@ VisualStudioVersion = 12.0.30324.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ILK_Protokoll", "ILK-Protokoll\ILK_Protokoll.csproj", "{47303BBB-F108-46C4-8003-D51AEAA312C7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ILK_Protokoll.Tests", "ILK_Protokoll.Tests\ILK_Protokoll.Tests.csproj", "{21F2320D-2593-415A-9DC1-7D3A43889005}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,10 +15,6 @@ Global
 		{47303BBB-F108-46C4-8003-D51AEAA312C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{47303BBB-F108-46C4-8003-D51AEAA312C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{47303BBB-F108-46C4-8003-D51AEAA312C7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{21F2320D-2593-415A-9DC1-7D3A43889005}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{21F2320D-2593-415A-9DC1-7D3A43889005}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{21F2320D-2593-415A-9DC1-7D3A43889005}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{21F2320D-2593-415A-9DC1-7D3A43889005}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
