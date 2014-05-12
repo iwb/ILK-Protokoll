@@ -4777,8 +4777,8 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 		border: 0;
 		margin-left: 0;
 		margin-right: 0;
-		padding-top: 0;
-		padding-bottom: 0;
+		padding-top: 5px;
+		padding-bottom: auto;
 		-webkit-box-shadow: none;
 		box-shadow: none;
 	}
@@ -4815,15 +4815,15 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 	}
 
 .navbar-text {
-	margin-top: 15px;
-	margin-bottom: 10px;
+	margin-top: 10px;
+	margin-bottom: 5px;
 }
 
 .navbar span.usertile {
 	display: block;
-	font-size: 18px;
+	font-size: 20px;
 	vertical-align: middle;
-	height: 36px;
+	height: 40px;
 	max-width: 50px;
 	padding: 5px 12px;
 	margin: auto 5px;
