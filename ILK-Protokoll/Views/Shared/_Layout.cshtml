@@ -1,57 +1,62 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - Meine ASP.NET-Anwendung</title>
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>@ViewBag.Title - Meine ASP.NET-Anwendung</title>
+	@Styles.Render("~/Content/css")
+	@Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-	        <div class="navbar-header">
-		        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-			        <span class="icon-bar"></span>
-			        <span class="icon-bar"></span>
-			        <span class="icon-bar"></span>
-		        </button>
-		        @Html.ActionLink("ILK-Protokoll", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-	        </div>
-	        <div class="navbar-collapse collapse">
-		        <ul class="nav navbar-nav">
-			        <li>@Html.ActionLink("Diskussionspunkte", "Index", "Home")</li>
-			        <li>@Html.ActionLink("Beschlüsse", "About", "Home")</li>
-			        <li>@Html.ActionLink("Sitzungen", "Contact", "Home")</li>
-			        <li>@Html.ActionLink("Aufgaben", "Index", "Home")</li>
-			        <li>@Html.ActionLink("Verwaltung", "Index", "Home")</li>
-		        </ul>
-		        <ul class="nav navbar-nav">
-			        <li class=".hidden-xs"><span style="margin-left: 50px"></span></li>
-			        <li>
-				        <div class="navbar-form navbar-right" role="search">
-					        <div class="form-group">
-						        <input type="text" id="searchbox" class="form-control" placeholder="Suche" />
-						        <button type="submit" id="searchbtn" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-search"></span></button>
-					        </div>
-				        </div>
-			        </li>
-			        <li><p class="navbar-right navbar-text"><span class="visible-xs">Eingeloggt als:&nbsp;</span><span class="usertile">@User.Identity.Name.Split('\\')[1]</span></p></li>
-		        </ul>
-	        </div>
-        </div>
-    </div>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - Meine ASP.NET-Anwendung</p>
-        </footer>
-    </div>
+	<div class="navbar navbar-inverse navbar-fixed-top">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				@Html.ActionLink("ILK-Protokoll", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+			</div>
+			<div class="navbar-collapse collapse">
+				<ul class="nav navbar-nav">
+					<li>@Html.ActionLink("Diskussionspunkte", "Index", "Home")</li>
+					<li>@Html.ActionLink("Beschlüsse", "About", "Home")</li>
+					<li>@Html.ActionLink("Sitzungen", "Contact", "Home")</li>
+					<li>@Html.ActionLink("Aufgaben", "Index", "Home")</li>
+					<li>@Html.ActionLink("Verwaltung", "Index", "Home")</li>
+				</ul>
+				<ul class="nav navbar-nav">
+					<li class="hidden-xs"><span style="margin-left: 50px"></span></li>
+					<li>
+						<div class="navbar-form navbar-right" role="search">
+							<div class="form-group">
+								<input type="text" id="searchbox" class="form-control" placeholder="Suche" />
+								<button type="submit" id="searchbtn" class="btn btn-default navbar-btn"><span class="glyphicon glyphicon-search"></span></button>
+							</div>
+						</div>
+					</li>
+					<li>
+						<p class="navbar-right navbar-text">
+							<span class="visible-xs">Eingeloggt als <b>@User.Identity.Name</b></span>
+							<span class="hidden-xs usertile">@User.Identity.Name.Split('\\')[1]</span>
+						</p>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="container body-content">
+		@RenderBody()
+		<hr />
+		<footer>
+			<p>&copy; @DateTime.Now.Year - Meine ASP.NET-Anwendung</p>
+		</footer>
+	</div>
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
+	@Scripts.Render("~/bundles/jquery")
+	@Scripts.Render("~/bundles/bootstrap")
+	@RenderSection("scripts", required: false)
 </body>
 </html>
