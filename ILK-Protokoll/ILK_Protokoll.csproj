@@ -125,8 +125,14 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Attachment.cs" />
+    <Compile Include="Models\Comment.cs" />
+    <Compile Include="Models\Decision.cs" />
+    <Compile Include="Models\Duty.cs" />
+    <Compile Include="Models\Priority.cs" />
     <Compile Include="Models\Session.cs" />
     <Compile Include="Models\SessionType.cs" />
+    <Compile Include="Models\ToDo.cs" />
     <Compile Include="Models\Topic.cs" />
     <Compile Include="Models\Vote.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
