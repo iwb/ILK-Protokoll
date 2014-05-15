@@ -11,5 +11,6 @@ namespace ILK_Protokoll.Models
 /// </summary>
 	public class Duty
 	{
+		public int ID { get; set; }
 	}
 }

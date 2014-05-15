@@ -7,5 +7,6 @@ namespace ILK_Protokoll.Models
 {
 	public class Decision
 	{
+		public int ID { get; set; }
 	}
 }

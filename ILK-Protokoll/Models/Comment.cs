@@ -7,6 +7,7 @@ namespace ILK_Protokoll.Models
 {
 	public class Comment
 	{
+		public int ID { get; set; }
 
 	}
 }

@@ -8,26 +8,25 @@ namespace ILK_Protokoll.Models
 
 	public class Topic
 	{
+		[Display(Name = "DiPuN")]
 		public int ID { get; set; }
 
 		[Display(Name = "Besitzer")]
 		[Required]
-		public string Owner { get; set; }
+		public User Owner { get; set; }
 
 		[Display(Name = "Prüfer")]
 		[Required]
-		public List<string> AuditorList { get; set; }
+		public ICollection<User> AuditorList { get; set; }
 
+		public virtual SessionType SessionType { get; set; }
 		[Display(Name = "Zugeordneter Sitzungstyp")]
 		[Required]
-		public virtual SessionType SessionType { get; set; }
+		public int SessionTypeID { get; set; }
 
-		[Display(Name = "Zukünftiger Sitzungstyp")] // Falls der DP gerade verschoben wird
 		public virtual SessionType TargetSessionType { get; set; }
-
-		[Display(Name = "Sitzungstyp")]
-		[ForeignKey("SessionType")]
-		public virtual int SessionTypeID { get; set; }
+		[Display(Name = "Zukünftiger Sitzungstyp")] // Falls der DP gerade verschoben wird
+		public int? TargetSessionTypeID { get; set; }
 
 		[Display(Name = "Titel")]
 		[Required]
@@ -42,13 +41,16 @@ namespace ILK_Protokoll.Models
 		public string Proposal { get; set; }
 
 		[Display(Name = "Kommentare")]
-		public virtual List<Comment> Comments { get; set; }
+		public virtual ICollection<Comment> Comments { get; set; }
 
-		[Display(Name = "ToDos")]
-		public virtual List<ToDo> ToDos { get; set; }
+		[Display(Name = "Stimmen")]
+		public virtual ICollection<Vote> Votes  { get; set; }
+		
+		[Display(Name = "ToDo")]
+		public virtual ICollection<ToDo> ToDo { get; set; }
 
 		[Display(Name = "Umsetzungsaufgaben")]
-		public virtual List<Duty> Duties { get; set; }
+		public virtual ICollection<Duty> Duties { get; set; }
 
 		[Display(Name = "Beschluss")]
 		public virtual Decision Decision { get; set; }
@@ -58,14 +60,36 @@ namespace ILK_Protokoll.Models
 		public Priority Priority { get; set; }
 
 		[Display(Name = "Dateianhänge")]
-		public virtual List<Attachment> Attachments { get; set; }
+		public virtual ICollection<Attachment> Attachments { get; set; }
+
+		[Display(Name = "PDF-Report")]
+		public virtual Attachment Report { get; set; }
 
 		[Display(Name = "Erstellt")]
 		[Required]
 		public DateTime Created { get; set; }
 
+		/// <summary>
+		/// Jeder Diskussionspunkt kann mehrere Einträge in der Datenbank haben.
+		/// Es ist nur derjenige gültig, der hier das spätestes Datum besitzt.
+		/// Der Rest sind archivierte Versionen desselben Diskussionspunkts.
+		/// </summary>
 		[Display(Name = "Geändert")]
 		[Required]
-		public DateTime LastChanged { get; set; }
+		public DateTime ValidFrom { get; set; }
+
+		public Topic()
+		{
+			AuditorList = new List<User>();
+// ReSharper disable DoNotCallOverridableMethodsInConstructor
+			Comments = new List<Comment>();
+			Votes = new List<Vote>();
+			ToDo = new List<ToDo>();
+			Duties = new List<Duty>();
+			Attachments = new List<Attachment>();
+			Created = DateTime.Now;
+			ValidFrom = DateTime.Now;
+// ReSharper restore DoNotCallOverridableMethodsInConstructor
+		}
 	}
 }

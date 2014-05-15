@@ -5,7 +5,14 @@ using System.Web;
 
 namespace ILK_Protokoll.Models
 {
-	public enum Vote
+	public class Vote
+	{
+		public int ID { get; set; }
+		public User Voter { get; set; }
+		public VoteKind Kind { get; set; }
+	}
+
+	public enum VoteKind
 	{
 		None,
 		Rejected,
