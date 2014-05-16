@@ -169,12 +169,6 @@
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config" />
-    <Content Include="Web.Debug.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </Content>
-    <Content Include="Web.Release.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </Content>
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
@@ -188,6 +182,8 @@
     <Content Include="Views\Topics\Details.cshtml" />
     <Content Include="Views\Topics\Edit.cshtml" />
     <Content Include="Views\Topics\Index.cshtml" />
+    <None Include="Web.Integration.config" />
+    <None Include="Web.Testing.config" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
