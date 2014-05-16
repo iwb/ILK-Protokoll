@@ -1,0 +1,103 @@
+﻿@using ILK_Protokoll.Models
+@using Microsoft.Ajax.Utilities
+@model ILK_Protokoll.Models.Topic
+
+<div class="">
+	<div class="panel panel-primary">
+		<div class="panel-heading">
+			<div class="panel-title-right">
+				<p>
+					<span class="prioicon" title="Priorität: Hoch"> <i class="glyphicon glyphicon-plus"></i></span>
+					<a href="#">@Model.Owner</a>
+					@*@Html.ActionLink(Model.Owner.Name, "Detail", "Users", new { id = Model.Owner.ID }, new { @class = "userlink" })*@
+				</p>
+				<p title="@Model.Created.ToString("F")">Erstellt am @Model.Created.ToString("ddd, d.M.")</p>
+			</div>
+			<h3 class="panel-title">@Model.Title</h3>
+			<p class="panel-title">@Model.SessionType.Name</p>
+		</div>
+		<div class="panel-body">
+			<div class="col-md-7">@Model.Description</div>
+			<div class="col-md-5">@Model.Proposal</div>
+		</div>
+		<div class="panel-separator">
+			<ul class="auditorlist">
+				@foreach (var vote in Model.DisplayVotes)
+				{
+					<li>
+						@switch (vote.Value)
+						{
+							case VoteKind.None:
+								@:<span class="glyphicon glyphicon-record"></span>
+								break;
+
+							case VoteKind.Approved:
+							<span class="glyphicon glyphicon-ok-sign"></span>
+								break;
+
+							case VoteKind.Reservation:
+							<span class="glyphicon glyphicon-question-sign"></span>
+								break;
+
+							case VoteKind.Rejected:
+							<span class="glyphicon glyphicon-remove-sign"></span>
+								break;
+						}
+
+						@vote.Key
+					</li>
+				}
+			</ul>
+		</div>
+
+		@{
+			string classA = "collapsed";
+			string classDiv = "panel-collapse collapse";
+
+			if (Model.Comments.Count < 2) // Sektion ausklappen
+			{
+				classA = "";
+				classDiv = "panel-collapse collapse in";
+			}
+		}
+		<div class="panel panel-primary">
+			<div class="panel-heading panel-collapse-heading">
+				<h4 class="panel-title">
+					<a data-toggle="collapse" data-target="#comments_@Model.ID"
+						href="#comments_@Model.ID" class="@classA">
+						@if (@Model.Comments.Count == 0)
+						{
+							@:Keine Kommentare
+						}
+						else if (@Model.Comments.Count == 1)
+						{
+							@:Ein Kommentar
+						}
+						else
+						{
+							@Model.Comments.Count @:Kommentare
+						}
+					</a>
+				</h4>
+			</div>
+			<div id="comments_@Model.ID" class="@classDiv">
+				<div class="panel-body">
+					@foreach (var comment in Model.Comments)
+					{
+						@Html.Partial("~/Views/Shared/_Comment.cshtml", comment)
+					}
+					
+					<div class="input-group">
+						<span class="input-group-addon">@User.Identity.Name.Split('\\').Last()</span>
+						<input type="text" class="form-control" placeholder="Kommentar hinzufügen">
+					</div>
+					
+				</div>
+			</div>
+
+
+
+		</div>
+		<div class="panel-footer">Es sind keine Dateien angehängt.</div>
+	</div>
+</div>

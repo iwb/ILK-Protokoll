@@ -7,11 +7,18 @@ namespace ILK_Protokoll.Models
 {
 	public class User
 	{
-		public User(string name = "")
+		public User() : this("") { }
+
+		public User(string name)
 		{
 			Name = name;
 		}
 		public int ID { get; set; }
 		public string Name { get; set; }
+
+		public override string ToString()
+		{
+			return Name;
+		}
 	}
 }

@@ -17,10 +17,13 @@ namespace ILK_Protokoll.DataLayer
 		public DbSet<SessionType> SessionTypes { get; set; }
 		public DbSet<Session> Sessions { get; set; }
 		public DbSet<Topic> Topics { get; set; }
+		public DbSet<User> Users { get; set; }
 
 		protected override void OnModelCreating(DbModelBuilder modelBuilder)
 		{
 			modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
 		}
+
+		public System.Data.Entity.DbSet<ILK_Protokoll.Models.Comment> Comments { get; set; }
 	}
 }

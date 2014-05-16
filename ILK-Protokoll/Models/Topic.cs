@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
 namespace ILK_Protokoll.Models
 {
@@ -90,6 +91,31 @@ namespace ILK_Protokoll.Models
 			Created = DateTime.Now;
 			ValidFrom = DateTime.Now;
 // ReSharper restore DoNotCallOverridableMethodsInConstructor
+		}
+
+		[NotMapped]
+		Dictionary<User, VoteKind> _displayvotes;
+
+		public IDictionary<User, VoteKind> DisplayVotes
+		{
+			get
+			{
+				if (_displayvotes == null)
+				{
+					_displayvotes = new Dictionary<User, VoteKind>();
+
+					foreach (var person in AuditorList)
+						_displayvotes.Add(person, lookupVote(person));
+				}
+				
+				return _displayvotes;
+			}
+		}
+
+		private VoteKind lookupVote(User u)
+		{
+			var voter = Votes.SingleOrDefault(x => x.Voter == u);
+			return voter != null ? voter.Kind : VoteKind.None;
 		}
 	}
 }
