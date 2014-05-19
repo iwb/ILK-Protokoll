@@ -1,137 +1,158 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using ILK_Protokoll.DataLayer;
 using ILK_Protokoll.Models;
+using ILK_Protokoll.ViewModels;
 
 namespace ILK_Protokoll.Controllers
 {
-    public class TopicsController : Controller
-    {
-        private DataContext db = new DataContext();
+	public class TopicsController : Controller
+	{
+		private readonly DataContext _db = new DataContext();
 
-        // GET: Topics
-        public ActionResult Index()
-        {
-            var topics = db.Topics.Include(t => t.SessionType).Include(t => t.TargetSessionType);
-            return View(topics.ToList());
-        }
+		private User GetCurrentUser()
+		{
+			string username = User.Identity.Name.Split('\\').Last();
+			return _db.Users.Single(x => x.Name.Equals(username, StringComparison.CurrentCultureIgnoreCase));
+		}
 
-        // GET: Topics/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Topic topic = db.Topics.Find(id);
-            if (topic == null)
-            {
-                return HttpNotFound();
-            }
-            return View(topic);
-        }
+		// GET: Topics
+		public ActionResult Index()
+		{
+			var topics = _db.Topics.Include(t => t.SessionType).Include(t => t.TargetSessionType);
+			return View(topics.ToList());
+		}
 
-        // GET: Topics/Create
-        public ActionResult Create()
-        {
-            ViewBag.SessionTypeID = new SelectList(db.SessionTypes, "ID", "Name");
-            ViewBag.TargetSessionTypeID = new SelectList(db.SessionTypes, "ID", "Name");
-            return View();
-        }
+		// GET: Topics/Details/5
+		public ActionResult Details(int? id)
+		{
+			if (id == null)
+			{
+				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+			}
+			Topic topic = _db.Topics.Find(id);
+			if (topic == null)
+			{
+				return HttpNotFound();
+			}
+			return View(topic);
+		}
 
-        // POST: Topics/Create
-        // Aktivieren Sie zum Schutz vor übermäßigem Senden von Angriffen die spezifischen Eigenschaften, mit denen eine Bindung erfolgen soll. Weitere Informationen 
-        // finden Sie unter http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,SessionTypeID,TargetSessionTypeID,Title,Description,Proposal,Priority,Created,ValidFrom")] Topic topic)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Topics.Add(topic);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
+		// GET: Topics/Create
+		public ActionResult Create()
+		{
+			var viewmodel = new TopicEdit
+			{
+				SessionTypeList = new SelectList(_db.SessionTypes, "ID", "Name"),
+				TargetSessionTypeList = new SelectList(_db.SessionTypes, "ID", "Name"),
+				UserList = new SelectList(_db.Users, "ID", "Name")
+			};
+			return View(viewmodel);
+		}
 
-            ViewBag.SessionTypeID = new SelectList(db.SessionTypes, "ID", "Name", topic.SessionTypeID);
-            ViewBag.TargetSessionTypeID = new SelectList(db.SessionTypes, "ID", "Name", topic.TargetSessionTypeID);
-            return View(topic);
-        }
+		// POST: Topics/Create
+		// Aktivieren Sie zum Schutz vor übermäßigem Senden von Angriffen die spezifischen Eigenschaften, mit denen eine Bindung erfolgen soll. Weitere Informationen 
+		// finden Sie unter http://go.microsoft.com/fwlink/?LinkId=317598.
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public ActionResult Create(
+			[Bind(Include = "ID,Attachments,AuditorList,Description,Duties,OwnerID,Priority,Proposal,SessionTypeID,Title,ToDo")]
+			TopicEdit input)
+		{
+			if (ModelState.IsValid)
+			{
+				var t = new Topic();
+				t.IncorporateUpdates(input);
+				_db.Topics.Add(t);
+				_db.SaveChanges();
+				return RedirectToAction("Index");
+			}
 
-        // GET: Topics/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Topic topic = db.Topics.Find(id);
-            if (topic == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.SessionTypeID = new SelectList(db.SessionTypes, "ID", "Name", topic.SessionTypeID);
-            ViewBag.TargetSessionTypeID = new SelectList(db.SessionTypes, "ID", "Name", topic.TargetSessionTypeID);
-            return View(topic);
-        }
+			input.SessionTypeList = new SelectList(_db.SessionTypes, "ID", "Name", input.SessionTypeID);
+			input.TargetSessionTypeList = new SelectList(_db.SessionTypes, "ID", "Name", input.TargetSessionTypeID);
+			input.UserList = new SelectList(_db.Users, "ID", "Name");
+			return View(input);
+		}
 
-        // POST: Topics/Edit/5
-        // Aktivieren Sie zum Schutz vor übermäßigem Senden von Angriffen die spezifischen Eigenschaften, mit denen eine Bindung erfolgen soll. Weitere Informationen 
-        // finden Sie unter http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,SessionTypeID,TargetSessionTypeID,Title,Description,Proposal,Priority,Created,ValidFrom")] Topic topic)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(topic).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            ViewBag.SessionTypeID = new SelectList(db.SessionTypes, "ID", "Name", topic.SessionTypeID);
-            ViewBag.TargetSessionTypeID = new SelectList(db.SessionTypes, "ID", "Name", topic.TargetSessionTypeID);
-            return View(topic);
-        }
+		// GET: Topics/Edit/5
+		public ActionResult Edit(int? id)
+		{
+			if (id == null)
+			{
+				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+			}
+			Topic topic = _db.Topics.Find(id);
+			if (topic == null)
+			{
+				return HttpNotFound();
+			}
 
-        // GET: Topics/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Topic topic = db.Topics.Find(id);
-            if (topic == null)
-            {
-                return HttpNotFound();
-            }
-            return View(topic);
-        }
+			var viewmodel = TopicEdit.FromTopic(topic);
+			viewmodel.SessionTypeList = new SelectList(_db.SessionTypes, "ID", "Name");
+			viewmodel.TargetSessionTypeList = new SelectList(_db.SessionTypes, "ID", "Name");
+			viewmodel.UserList = new SelectList(_db.Users, "ID", "Name");
 
-        // POST: Topics/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            Topic topic = db.Topics.Find(id);
-            db.Topics.Remove(topic);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
+			return View(viewmodel);
+		}
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
-    }
+		// POST: Topics/Edit/5
+		// Aktivieren Sie zum Schutz vor übermäßigem Senden von Angriffen die spezifischen Eigenschaften, mit denen eine Bindung erfolgen soll. Weitere Informationen 
+		// finden Sie unter http://go.microsoft.com/fwlink/?LinkId=317598.
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public ActionResult Edit(
+			[Bind(Include = "ID,Attachments,AuditorList,Description,Duties,OwnerID,Priority,Proposal,SessionTypeID,Title,ToDo")] TopicEdit input)
+		{
+			if (ModelState.IsValid)
+			{
+				var topic = _db.GetCurrentTopic(input.ID);
+				topic.IncorporateUpdates(input);
+				_db.Topics.Add(topic);
+				_db.SaveChanges();
+				return RedirectToAction("Index");
+			}
+			input.SessionTypeList = new SelectList(_db.SessionTypes, "ID", "Name", input.SessionTypeID);
+			input.TargetSessionTypeList = new SelectList(_db.SessionTypes, "ID", "Name", input.TargetSessionTypeID);
+			input.UserList = new SelectList(_db.Users, "ID", "Name");
+			return View(input);
+		}
+
+		// GET: Topics/Delete/5
+		public ActionResult Delete(int? id)
+		{
+			if (id == null)
+			{
+				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+			}
+			Topic topic = _db.Topics.Find(id);
+			if (topic == null)
+			{
+				return HttpNotFound();
+			}
+			return View(topic);
+		}
+
+		// POST: Topics/Delete/5
+		[HttpPost, ActionName("Delete")]
+		[ValidateAntiForgeryToken]
+		public ActionResult DeleteConfirmed(int id)
+		{
+			Topic topic = _db.Topics.Find(id);
+			_db.Topics.Remove(topic);
+			_db.SaveChanges();
+			return RedirectToAction("Index");
+		}
+
+		protected override void Dispose(bool disposing)
+		{
+			if (disposing)
+			{
+				_db.Dispose();
+			}
+			base.Dispose(disposing);
+		}
+	}
 }

@@ -13,6 +13,13 @@ namespace ILK_Protokoll.Controllers
 	public class HomeController : Controller
 	{
 		private readonly DataContext _db = new DataContext();
+
+		private User GetCurrentUser()
+		{
+			string username = User.Identity.Name.Split('\\').Last();
+			return _db.Users.Single(x => x.Name.Equals(username, StringComparison.CurrentCultureIgnoreCase));
+		}
+
 		public ActionResult Index()
 		{
 			Topic to = _db.Topics
@@ -22,7 +29,8 @@ namespace ILK_Protokoll.Controllers
 				.Include(t => t.AuditorList)
 				.Include(t => t.Votes)
 				.First();
-			ViewBag.topic = to;
+			ViewBag.Topic = to;
+			ViewBag.CurrentUser = GetCurrentUser();
 			return View();
 		}
 

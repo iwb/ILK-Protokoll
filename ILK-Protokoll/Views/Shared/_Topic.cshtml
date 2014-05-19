@@ -23,12 +23,12 @@
 		</div>
 		<div class="panel-separator">
 			<ul class="auditorlist">
-				@foreach (var vote in Model.DisplayVotes)
+				@foreach (Vote vote in Model.GetDisplayVotes(ViewBag.CurrentUser as User))
 				{
 					<li>
 						@{
 						string iconname = "";
-						switch (vote.Value)
+						switch (vote.Kind)
 						{
 							case VoteKind.None:
 								iconname = "glyphicon-record";
@@ -47,8 +47,8 @@
 									break;
 						}
 						}
-						<span class="glyphicon @iconname" title="@vote.Value.GetDescription()"></span>
-						@vote.Key
+						<span class="glyphicon @iconname" title="@vote.Kind.GetDescription()"></span>
+						@vote.Voter
 					</li>
 				}
 			</ul>

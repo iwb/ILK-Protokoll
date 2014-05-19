@@ -1,35 +1,42 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
-  <Class Name="ILK_Protokoll.Models.Session" Collapsed="true">
-    <Position X="0.5" Y="1.5" Width="1.5" />
+  <Class Name="ILK_Protokoll.Models.Session">
+    <Position X="0.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Models\Session.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="ILK_Protokoll.Models.SessionType" Collapsed="true">
-    <Position X="2.25" Y="1.5" Width="1.5" />
+  <Class Name="ILK_Protokoll.Models.SessionType">
+    <Position X="2" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAgAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Models\SessionType.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ILK_Protokoll.Models.Topic">
     <Position X="0.5" Y="2.5" Width="3" />
     <TypeIdentifier>
-      <HashCode>ACAAAQChAQAggEEEAAAAAAAAAAAAAQQAACAQAAABpAA=</HashCode>
+      <HashCode>ACAAAQChAQAggEEEAQAAAAAAAAAAAQQAACAQAAADpIA=</HashCode>
       <FileName>Models\Topic.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="ILK_Protokoll.Models.Vote" Collapsed="true">
-    <Position X="4.5" Y="1.75" Width="1.5" />
+  <Class Name="ILK_Protokoll.Models.Vote">
+    <Position X="6.25" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAABAgAAAAAAEAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Models\Vote.cs</FileName>
     </TypeIdentifier>
   </Class>
+  <Class Name="ILK_Protokoll.ViewModels.TopicEdit">
+    <Position X="3.5" Y="2.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAIAASChAQAggEEEAAAAAAAAAAAAAAAAAAARAAARgAA=</HashCode>
+      <FileName>ViewModels\TopicEdit.cs</FileName>
+    </TypeIdentifier>
+  </Class>
   <Enum Name="ILK_Protokoll.Models.VoteKind" Collapsed="true">
-    <Position X="5.25" Y="2.5" Width="1.5" />
+    <Position X="7" Y="1.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAACAAQAAAAAEAAAAAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
       <FileName>Models\Vote.cs</FileName>
