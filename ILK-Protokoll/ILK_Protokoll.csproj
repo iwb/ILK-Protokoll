@@ -130,6 +130,7 @@
     <Compile Include="Models\Comment.cs" />
     <Compile Include="Models\Decision.cs" />
     <Compile Include="Models\Duty.cs" />
+    <Compile Include="util\HelperMethods.cs" />
     <Compile Include="Models\Priority.cs" />
     <Compile Include="Models\Session.cs" />
     <Compile Include="Models\SessionType.cs" />

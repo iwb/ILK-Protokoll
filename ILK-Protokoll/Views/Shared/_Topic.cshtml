@@ -1,9 +1,10 @@
 ﻿@using ILK_Protokoll.Models
+@using ILK_Protokoll.util
 @using Microsoft.Ajax.Utilities
 @model ILK_Protokoll.Models.Topic
 
 <div class="">
-	<div class="panel panel-primary">
+	<div class="panel panel-primary topic-panel">
 		<div class="panel-heading">
 			<div class="panel-title-right">
 				<p>
@@ -17,37 +18,41 @@
 			<p class="panel-title">@Model.SessionType.Name</p>
 		</div>
 		<div class="panel-body">
-			<div class="col-md-7">@Model.Description</div>
-			<div class="col-md-5">@Model.Proposal</div>
+			<div class="col-md-7"><h6>Beschreibung:</h6>@Model.Description</div>
+			<div class="col-md-5"><h6>Beschlussvorschlag:</h6>@Model.Proposal</div>
 		</div>
 		<div class="panel-separator">
 			<ul class="auditorlist">
 				@foreach (var vote in Model.DisplayVotes)
 				{
 					<li>
-						@switch (vote.Value)
+						@{
+						string iconname = "";
+						switch (vote.Value)
 						{
 							case VoteKind.None:
-								@:<span class="glyphicon glyphicon-record"></span>
-								break;
+								iconname = "glyphicon-record";
+									break;
 
 							case VoteKind.Approved:
-							<span class="glyphicon glyphicon-ok-sign"></span>
-								break;
+								iconname = "glyphicon-ok-sign";
+									break;
 
 							case VoteKind.Reservation:
-							<span class="glyphicon glyphicon-question-sign"></span>
-								break;
+								iconname = "glyphicon-question-sign";
+									break;
 
 							case VoteKind.Rejected:
-							<span class="glyphicon glyphicon-remove-sign"></span>
-								break;
+								iconname = "glyphicon-remove-sign";
+									break;
 						}
-
+						}
+						<span class="glyphicon @iconname" title="@vote.Value.GetDescription()"></span>
 						@vote.Key
 					</li>
 				}
 			</ul>
+
 		</div>
 
 		@{
@@ -86,12 +91,12 @@
 					{
 						@Html.Partial("~/Views/Shared/_Comment.cshtml", comment)
 					}
-					
+
 					<div class="input-group">
 						<span class="input-group-addon">@User.Identity.Name.Split('\\').Last()</span>
 						<input type="text" class="form-control" placeholder="Kommentar hinzufügen">
 					</div>
-					
+
 				</div>
 			</div>
 

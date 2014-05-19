@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Web;
 
@@ -25,9 +25,13 @@ namespace ILK_Protokoll.Models
 
 	public enum VoteKind
 	{
+		[Description("Keine Stimme abgegeben")]
 		None,
+		[Description("Abgelehnt")]
 		Rejected,
+		[Description("Gespächsbedarf")]
 		Reservation,
+		[Description("Angenommen")]
 		Approved
 	}
 }

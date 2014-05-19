@@ -27,7 +27,7 @@ namespace ILK_Protokoll.DataLayer
 			};
 
 			var topic = new Topic() {
-				Owner = users[3],
+				Owner = users[4],
 				Title = "Mehr Kekse",
 				Proposal = " Zukünftige Dissertationsthemen werden nur zugelassen, falls ein Zusammenhang mit Keksen deutlich erkennbar ist.",
 				Description = "Das iwb sollte mehr Kekse backen.",
@@ -45,9 +45,12 @@ namespace ILK_Protokoll.DataLayer
 			topic.Votes.Add(new Vote(users[7], VoteKind.Reservation));
 			topic.Votes.Add(new Vote(users[9], VoteKind.Approved));
 
-			topic.Comments.Add(new Comment() { Author = users[0], Content = "Klingt lecker! und gut mit dem ''Zukünftige Dissertationsthemen werden nur zugelassen, falls ein Zusammenhang mit Keksen deutlich erkennbar ist''" });
+			topic.Comments.Add(new Comment() { Author = users[0], Content = "Klingt lecker! und ich finde den Beschlussvorschlag auch total sinnvoll und angemessen. Eine Dissertation, deren Ergebnisse man nicht essen oder trinken kann, ist im Grunde wertlos. Insbesondere am Institut für Weißwurscht und Brezenwissenschaften." });
 
-			var sessiont = new SessionType() {ID = 1, Name = "Brotzeit"};
+			topic.Comments.Add(new Comment() { Author = users[4], Content = "Brauchen wir nicht drüber reden. Ist gegessen." });
+			topic.Comments.Add(new Comment() { Author = users[8], Content = "Möglicherweise sollten auch Themen im Komplex \"Backplanung und -steuerung\" erlaubt werden." });
+
+			var sessiont = new SessionType() {ID = 1, Name = "ILK-AK Garching"};
 			topic.SessionType = sessiont;
 
 			context.Users.AddRange(users);
