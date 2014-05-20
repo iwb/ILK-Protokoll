@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Linq;
 using ILK_Protokoll.Models;
+using ILK_Protokoll.util;
 
 namespace ILK_Protokoll.DataLayer
 {
@@ -23,6 +26,18 @@ namespace ILK_Protokoll.DataLayer
 		protected override void OnModelCreating(DbModelBuilder modelBuilder)
 		{
 			modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
+		}
+
+		/// <summary>
+		/// Gibt alle Benutzer zurück, mit dem aktuellen Benutzer als erstes Element und den restlichen benutzern in alphabetischer Reihenfolge.
+		/// </summary>
+		/// <param name="currentUser"></param>
+		/// <returns></returns>
+		public IEnumerable<User> GetUserOrdered(User currentUser)
+		{
+			return
+				currentUser.ToEnumerable()
+					.Concat(Users.Where(u => u.ID != currentUser.ID).ToList().OrderBy(u => u.Name, StringComparer.CurrentCultureIgnoreCase));
 		}
 		
 		public Topic GetTopicAt(int id, DateTime time)

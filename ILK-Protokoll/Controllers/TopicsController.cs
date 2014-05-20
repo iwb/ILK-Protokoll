@@ -49,7 +49,7 @@ namespace ILK_Protokoll.Controllers
 			{
 				SessionTypeList = new SelectList(_db.SessionTypes, "ID", "Name"),
 				TargetSessionTypeList = new SelectList(_db.SessionTypes, "ID", "Name"),
-				UserList = new SelectList(_db.Users, "ID", "Name")
+				UserList = new SelectList(_db.GetUserOrdered(GetCurrentUser()), "ID", "Name")
 			};
 			return View(viewmodel);
 		}
@@ -75,7 +75,7 @@ namespace ILK_Protokoll.Controllers
 
 			input.SessionTypeList = new SelectList(_db.SessionTypes, "ID", "Name", input.SessionTypeID);
 			input.TargetSessionTypeList = new SelectList(_db.SessionTypes, "ID", "Name", input.TargetSessionTypeID);
-			input.UserList = new SelectList(_db.Users, "ID", "Name");
+			input.UserList = new SelectList(_db.GetUserOrdered(GetCurrentUser()), "ID", "Name");
 			return View(input);
 		}
 
@@ -95,7 +95,7 @@ namespace ILK_Protokoll.Controllers
 			var viewmodel = TopicEdit.FromTopic(topic);
 			viewmodel.SessionTypeList = new SelectList(_db.SessionTypes, "ID", "Name");
 			viewmodel.TargetSessionTypeList = new SelectList(_db.SessionTypes, "ID", "Name");
-			viewmodel.UserList = new SelectList(_db.Users, "ID", "Name", viewmodel.OwnerID);
+			viewmodel.UserList = new SelectList(_db.GetUserOrdered(GetCurrentUser()), "ID", "Name", viewmodel.OwnerID);
 
 			return View(viewmodel);
 		}
@@ -123,7 +123,7 @@ namespace ILK_Protokoll.Controllers
 			input.SessionType = t.SessionType;
 			input.SessionTypeList = new SelectList(_db.SessionTypes, "ID", "Name", input.SessionTypeID);
 			input.TargetSessionTypeList = new SelectList(_db.SessionTypes, "ID", "Name", input.TargetSessionTypeID);
-			input.UserList = new SelectList(_db.Users, "ID", "Name");
+			input.UserList = new SelectList(_db.GetUserOrdered(GetCurrentUser()), "ID", "Name");
 			return View(input);
 		}
 

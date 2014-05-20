@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
@@ -27,6 +28,10 @@ namespace ILK_Protokoll.util
 				return string.Empty;
 			else
 				return (descriptionAttributes.Length > 0) ? descriptionAttributes[0].Name : value.ToString();
+		}
+		public static IEnumerable<T> ToEnumerable<T>(this T item)
+		{
+			yield return item;
 		}
 	}
 }
