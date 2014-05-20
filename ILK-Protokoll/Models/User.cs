@@ -1,24 +1,59 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace ILK_Protokoll.Models
 {
-	public class User
+	public class User : IEquatable<User>
 	{
-		public User() : this("") { }
+		public User() : this("")
+		{
+		}
 
 		public User(string name)
 		{
 			Name = name;
 		}
+
 		public int ID { get; set; }
 		public string Name { get; set; }
+
+		public bool Equals(User other)
+		{
+			if (other == null)
+				return false;
+			else
+			{
+				return Name == other.Name;
+			}
+		}
 
 		public override string ToString()
 		{
 			return Name;
+		}
+
+		public override bool Equals(object obj)
+		{
+			return Equals(obj as User);
+		}
+
+		public override int GetHashCode()
+		{
+			return Name.GetHashCode();
+		}
+
+		public static bool operator ==(User a, User b)
+		{
+			if (ReferenceEquals(a, b))
+				return true;
+			else if ((object) a == null || (object) b == null)
+				return false;
+			else
+				return a.Name == b.Name;
+		}
+
+		public static bool operator !=(User a, User b)
+		{
+			return !(a == b);
 		}
 	}
 }

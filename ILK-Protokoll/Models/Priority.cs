@@ -8,13 +8,11 @@ namespace ILK_Protokoll.Models
 {
 	public enum Priority
 	{
-		[Display(Name = "(Keine)")]
-		None = 0,
 		[Display(Name= "Niedrig")]
-		Low = -1,
+		Low,
 		[Display(Name = "Mittel")]
-		Medium = 1,
+		Medium,
 		[Display(Name = "Hoch")]
-		High = 2
+		High
 	}
 }

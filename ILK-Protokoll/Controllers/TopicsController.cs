@@ -3,6 +3,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using System.Web.UI.WebControls;
 using ILK_Protokoll.DataLayer;
 using ILK_Protokoll.Models;
 using ILK_Protokoll.ViewModels;
@@ -59,13 +60,14 @@ namespace ILK_Protokoll.Controllers
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		public ActionResult Create(
-			[Bind(Include = "ID,Attachments,AuditorList,Description,Duties,OwnerID,Priority,Proposal,SessionTypeID,Title,ToDo")]
+			[Bind(Include = "ID,Attachments,Description,Duties,OwnerID,Owner,Priority,Proposal,SessionTypeID,Title,ToDo")]
 			TopicEdit input)
 		{
 			if (ModelState.IsValid)
 			{
 				var t = new Topic();
 				t.IncorporateUpdates(input);
+				t.SessionTypeID = input.SessionTypeID;
 				_db.Topics.Add(t);
 				_db.SaveChanges();
 				return RedirectToAction("Index");
@@ -93,7 +95,7 @@ namespace ILK_Protokoll.Controllers
 			var viewmodel = TopicEdit.FromTopic(topic);
 			viewmodel.SessionTypeList = new SelectList(_db.SessionTypes, "ID", "Name");
 			viewmodel.TargetSessionTypeList = new SelectList(_db.SessionTypes, "ID", "Name");
-			viewmodel.UserList = new SelectList(_db.Users, "ID", "Name");
+			viewmodel.UserList = new SelectList(_db.Users, "ID", "Name", viewmodel.OwnerID);
 
 			return View(viewmodel);
 		}
@@ -104,16 +106,21 @@ namespace ILK_Protokoll.Controllers
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		public ActionResult Edit(
-			[Bind(Include = "ID,Attachments,AuditorList,Description,Duties,OwnerID,Priority,Proposal,SessionTypeID,Title,ToDo")] TopicEdit input)
+			[Bind(Include = "ID,Attachments,Description,Duties,OwnerID,Priority,Proposal,TargetSessionTypeID,Title,ToDo")] TopicEdit input)
 		{
 			if (ModelState.IsValid)
 			{
-				var topic = _db.GetCurrentTopic(input.ID);
+				var topic = _db.Topics.Find(input.ID);
+				_db.TopicHistory.Add(TopicHistory.FromTopic(topic));
+
 				topic.IncorporateUpdates(input);
-				_db.Topics.Add(topic);
+				topic.TargetSessionTypeID = input.TargetSessionTypeID;
+				_db.Entry(topic).State = EntityState.Modified;
 				_db.SaveChanges();
 				return RedirectToAction("Index");
 			}
+			var t = _db.Topics.Find(input.ID);
+			input.SessionType = t.SessionType;
 			input.SessionTypeList = new SelectList(_db.SessionTypes, "ID", "Name", input.SessionTypeID);
 			input.TargetSessionTypeList = new SelectList(_db.SessionTypes, "ID", "Name", input.TargetSessionTypeID);
 			input.UserList = new SelectList(_db.Users, "ID", "Name");

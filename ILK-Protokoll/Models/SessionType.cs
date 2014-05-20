@@ -6,7 +6,7 @@ using System.Web;
 
 namespace ILK_Protokoll.Models
 {
-	[DisplayColumn("Name")] 
+	[DisplayColumn("Name")]
 	public class SessionType
 	{
 		public int ID { get; set; }

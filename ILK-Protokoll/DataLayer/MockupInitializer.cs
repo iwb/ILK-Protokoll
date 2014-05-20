@@ -34,16 +34,18 @@ namespace ILK_Protokoll.DataLayer
 				Priority = Priority.High
 			};
 
-			foreach (var user in users)
-				topic.AuditorList.Add(user);
 
 			topic.Votes.Add(new Vote(users[0], VoteKind.Approved));
 			topic.Votes.Add(new Vote(users[1], VoteKind.Approved));
+			topic.Votes.Add(new Vote(users[2], VoteKind.None));
 			topic.Votes.Add(new Vote(users[3], VoteKind.Rejected));
 			topic.Votes.Add(new Vote(users[4], VoteKind.Reservation));
+			topic.Votes.Add(new Vote(users[5], VoteKind.None));
 			topic.Votes.Add(new Vote(users[6], VoteKind.Rejected));
 			topic.Votes.Add(new Vote(users[7], VoteKind.Reservation));
+			topic.Votes.Add(new Vote(users[8], VoteKind.None));
 			topic.Votes.Add(new Vote(users[9], VoteKind.Approved));
+			topic.Votes.Add(new Vote(users[10], VoteKind.None));
 
 			topic.Comments.Add(new Comment() { Author = users[0], Content = "Klingt lecker! und ich finde den Beschlussvorschlag auch total sinnvoll und angemessen. Eine Dissertation, deren Ergebnisse man nicht essen oder trinken kann, ist im Grunde wertlos. Insbesondere am Institut für Weißwurscht und Brezenwissenschaften." });
 
@@ -52,6 +54,8 @@ namespace ILK_Protokoll.DataLayer
 
 			var sessiont = new SessionType() {ID = 1, Name = "ILK-AK Garching"};
 			topic.SessionType = sessiont;
+
+
 
 			context.Users.AddRange(users);
 			context.SaveChanges();

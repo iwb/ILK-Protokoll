@@ -7,7 +7,10 @@
 	<h1>Dashboard</h1>
 </div>
 
-@Html.Partial("~/Views/Shared/_Topic.cshtml", ViewBag.Topic as Topic)
+@foreach (Topic t in ViewBag.Topics)
+{
+	@Html.Partial("~/Views/Shared/_Topic.cshtml", t)
+}
 
 <div class="row">
 	<p>

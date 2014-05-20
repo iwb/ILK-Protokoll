@@ -8,13 +8,32 @@
 		<div class="panel-heading">
 			<div class="panel-title-right">
 				<p>
-					<span class="prioicon" title="Priorität: Hoch"> <i class="glyphicon glyphicon-plus"></i></span>
+					@{
+						string iconname = "";
+						switch (Model.Priority)
+						{
+							case Priority.Low:
+								iconname = "glyphicon glyphicon-minus";
+								break;
+
+							case Priority.Medium:
+								iconname = "glyphicon glyphicon-asterisk";
+								break;
+
+							case Priority.High:
+								iconname = "glyphicon glyphicon-plus";
+								break;
+							default:
+								break;
+						}
+					}
+					<span class="prioicon" title="Priorität: @Model.Priority.DisplayName()"> <i class="@iconname"></i></span>
 					<a href="#">@Model.Owner</a>
 					@*@Html.ActionLink(Model.Owner.Name, "Detail", "Users", new { id = Model.Owner.ID }, new { @class = "userlink" })*@
 				</p>
 				<p title="@Model.Created.ToString("F")">Erstellt am @Model.Created.ToString("ddd, d.M.")</p>
 			</div>
-			<h3 class="panel-title">@Model.Title</h3>
+			<h3 class="panel-title">@Html.ActionLink(Model.Title, "Details", "Topics", new { id = "1" }, null)  </h3>
 			<p class="panel-title">@Model.SessionType.Name</p>
 		</div>
 		<div class="panel-body">
@@ -27,7 +46,7 @@
 				{
 					<li>
 						@{
-						string iconname = "";
+						iconname = "";
 						switch (vote.Kind)
 						{
 							case VoteKind.None:
@@ -69,7 +88,7 @@
 			<div class="panel-heading panel-collapse-heading">
 				<h4 class="panel-title">
 					<a data-toggle="collapse" data-target="#comments_@Model.ID"
-						href="#comments_@Model.ID" class="@classA">
+						href="#" class="@classA">
 						@if (@Model.Comments.Count == 0)
 						{
 							@:Keine Kommentare

@@ -1,10 +1,10 @@
 ﻿@model ILK_Protokoll.ViewModels.TopicEdit
 
 @{
-	ViewBag.Title = "Create";
+	ViewBag.Title = "Erstellen";
 }
 
-<h2>Create</h2>
+<h2>@ViewBag.Title</h2>
 
 
 @using (Html.BeginForm())
@@ -14,11 +14,10 @@
 	<div class="form-horizontal">
 		<h4>Topic</h4>
 		<hr />
-		@Html.ValidationSummary(true, "", new { @class = "text-danger" })
 		<div class="form-group">
 			@Html.LabelFor(model => model.SessionTypeID, htmlAttributes: new { @class = "control-label col-md-2" })
 			<div class="col-md-10">
-				@Html.DropDownList("SessionTypeList", null, htmlAttributes: new { @class = "form-control" })
+				@Html.DropDownListFor(m => m.SessionTypeID, Model.SessionTypeList, htmlAttributes: new { @class = "form-control" })
 				@Html.ValidationMessageFor(model => model.SessionTypeID, "", new { @class = "text-danger" })
 			</div>
 		</div>
@@ -34,7 +33,7 @@
 		<div class="form-group">
 			@Html.LabelFor(model => model.OwnerID, htmlAttributes: new { @class = "control-label col-md-2" })
 			<div class="col-md-10">
-				@Html.DropDownList("UserList", null, htmlAttributes: new { @class = "form-control" })
+				@Html.DropDownListFor(m => m.OwnerID, Model.UserList, new { @class = "form-control" })
 				@Html.ValidationMessageFor(model => model.OwnerID, "", new { @class = "text-danger" })
 			</div>
 		</div>
@@ -63,13 +62,13 @@
 			</div>
 		</div>
 
-		@Html.ValidationSummary()
-
 		<div class="form-group">
 			<div class="col-md-offset-2 col-md-10">
 				<input type="submit" value="Create" class="btn btn-default" />
 			</div>
 		</div>
+
+		@Html.ValidationSummary(true, "", new { @class = "text-danger" })
 	</div>
 }
 

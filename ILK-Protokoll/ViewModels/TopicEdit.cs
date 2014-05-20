@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Web.Mvc;
 using ILK_Protokoll.Models;
 
@@ -9,7 +10,6 @@ namespace ILK_Protokoll.ViewModels
 	{
 		public TopicEdit()
 		{
-			AuditorList = new List<User>();
 			// ReSharper disable DoNotCallOverridableMethodsInConstructor
 			ToDo = new List<ToDo>();
 			Duties = new List<Duty>();
@@ -20,15 +20,12 @@ namespace ILK_Protokoll.ViewModels
 		[Display(Name = "DiPuN")]
 		public int ID { get; set; }
 
-		public User Owner { get; set; }
-
 		[Display(Name = "Besitzer")]
 		[Required]
 		public int OwnerID { get; set; }
 
-		[Display(Name = "Prüfer")]
-		[Required]
-		public ICollection<User> AuditorList { get; set; }
+		[ForeignKey("OwnerID")]
+		public virtual User Owner { get; set; }
 
 		public virtual SessionType SessionType { get; set; }
 
@@ -78,11 +75,11 @@ namespace ILK_Protokoll.ViewModels
 			return new TopicEdit
 			{
 				Attachments = t.Attachments,
-				AuditorList = t.AuditorList,
 				Description = t.Description,
 				Duties = t.Duties,
 				ID = t.ID,
 				Owner = t.Owner,
+				OwnerID = t.OwnerID,
 				Priority = t.Priority,
 				Proposal = t.Proposal,
 				SessionType = t.SessionType,

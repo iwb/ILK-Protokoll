@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 
 namespace ILK_Protokoll.util
@@ -10,12 +11,22 @@ namespace ILK_Protokoll.util
 		{
 			FieldInfo field = value.GetType().GetField(value.ToString());
 
-			DescriptionAttribute attribute
-				= Attribute.GetCustomAttribute(field, typeof(DescriptionAttribute))
-					as DescriptionAttribute;
+			var attribute = Attribute.GetCustomAttribute(field, typeof (DescriptionAttribute)) as DescriptionAttribute;
 
 			return attribute == null ? value.ToString() : attribute.Description;
 		}
 
+		public static string DisplayName(this Enum value)
+		{
+			var fieldInfo = value.GetType().GetField(value.ToString());
+
+			var descriptionAttributes = fieldInfo.GetCustomAttributes(
+				 typeof(DisplayAttribute), false) as DisplayAttribute[];
+
+			if (descriptionAttributes == null)
+				return string.Empty;
+			else
+				return (descriptionAttributes.Length > 0) ? descriptionAttributes[0].Name : value.ToString();
+		}
 	}
 }

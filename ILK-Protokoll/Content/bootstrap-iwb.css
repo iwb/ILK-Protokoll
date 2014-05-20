@@ -7,6 +7,7 @@ html {
 
 body {
 	margin: 0;
+	overflow-y: scroll;
 }
 
 article,
@@ -736,7 +737,7 @@ dd {
 @media (min-width: 768px) {
 	.dl-horizontal dt {
 		float: left;
-		width: 160px;
+		width: 200px;
 		clear: left;
 		text-align: right;
 		overflow: hidden;
@@ -747,7 +748,7 @@ dd {
 	}
 
 	.dl-horizontal dd {
-		margin-left: 180px;
+		margin-left: 215px;
 	}
 }
 
@@ -2437,6 +2438,7 @@ select[multiple].input-lg {
 }
 
 .form-horizontal .control-label,
+.form-horizontal .static-text,
 .form-horizontal .radio,
 .form-horizontal .checkbox,
 .form-horizontal .radio-inline,
@@ -5424,8 +5426,8 @@ a.list-group-item.active > .badge,
 
 @media screen and (min-width: 768px) {
 	.jumbotron {
-		padding-top: 48px;
-		padding-bottom: 48px;
+		padding-top: 32px;
+		padding-bottom: 32px;
 	}
 
 	.container .jumbotron {
@@ -5435,7 +5437,7 @@ a.list-group-item.active > .badge,
 
 	.jumbotron h1,
 	.jumbotron .h1 {
-		font-size: 63px;
+		font-size: 48px;
 	}
 }
 

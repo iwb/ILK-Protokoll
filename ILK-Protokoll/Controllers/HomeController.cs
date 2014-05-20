@@ -22,14 +22,14 @@ namespace ILK_Protokoll.Controllers
 
 		public ActionResult Index()
 		{
-			Topic to = _db.Topics
+			IEnumerable<Topic> to = _db.Topics
 				.Include(t => t.SessionType)
 				.Include(t => t.TargetSessionType)
 				.Include(t => t.Owner)
-				.Include(t => t.AuditorList)
 				.Include(t => t.Votes)
-				.First();
-			ViewBag.Topic = to;
+				.Include(t => t.Votes.Select(v => v.Voter))
+				.Include(t => t.Comments);
+			ViewBag.Topics = to;
 			ViewBag.CurrentUser = GetCurrentUser();
 			return View();
 		}

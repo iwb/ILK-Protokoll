@@ -14,7 +14,6 @@ namespace ILK_Protokoll.Models
 		public Topic()
 		{
 // ReSharper disable DoNotCallOverridableMethodsInConstructor
-			AuditorList = new List<User>();
 			Comments = new List<Comment>();
 			Votes = new List<Vote>();
 			ToDo = new List<ToDo>();
@@ -29,36 +28,40 @@ namespace ILK_Protokoll.Models
 		{
 			// ReSharper disable DoNotCallOverridableMethodsInConstructor
 			Attachments = updates.Attachments;
-			AuditorList = new List<User>(updates.AuditorList);
 			Comments = new List<Comment>();
 			Description = updates.Description;
 			Duties = updates.Duties;
 			Owner = updates.Owner;
+			OwnerID = updates.OwnerID;
 			Priority = updates.Priority;
 			Proposal = updates.Proposal;
-			SessionType = updates.SessionType;
-			SessionTypeID = updates.SessionTypeID;
-			TargetSessionType = updates.TargetSessionType;
-			TargetSessionTypeID = updates.TargetSessionTypeID;
 			Title = updates.Title;
 			ToDo = updates.ToDo;
 			ValidFrom = DateTime.Now;
 			// ReSharper restore DoNotCallOverridableMethodsInConstructor
 		}
 
+		public void IncorporateHistory(TopicHistory history)
+		{
+			// ReSharper disable DoNotCallOverridableMethodsInConstructor
+			Description = history.Description;
+			OwnerID = history.OwnerID;
+			Proposal = history.Proposal;
+			SessionTypeID = history.SessionTypeID;
+			Title = history.Title;
+			ValidFrom = history.ValidFrom;
+			// ReSharper restore DoNotCallOverridableMethodsInConstructor
+		}
+
 		[Display(Name = "DiPuN")]
 		public int ID { get; set; }
 
-		public User Owner { get; set; }
-
 		[Display(Name = "Besitzer")]
-		[ForeignKey("Owner")]
 		[Required]
 		public int OwnerID { get; set; }
 
-		[Display(Name = "Prüfer")]
-		[Required]
-		public ICollection<User> AuditorList { get; set; }
+		[ForeignKey("OwnerID")]
+		public virtual User Owner { get; set; }
 
 		public virtual SessionType SessionType { get; set; }
 
@@ -127,22 +130,11 @@ namespace ILK_Protokoll.Models
 		{
 			if (_displayvotes == null)
 			{
-				_displayvotes = new List<Vote>();
-				_displayvotes.Add(LookupVote(currentUser));
-
-				foreach (
-					User person in
-						AuditorList.Except(new[] {currentUser}).OrderBy(x => x.Name, StringComparer.CurrentCultureIgnoreCase))
-					_displayvotes.Add(LookupVote(person));
+				_displayvotes = new List<Vote>(Votes.Where(v => v.Voter != currentUser).OrderBy(v => v.Voter.Name, StringComparer.CurrentCultureIgnoreCase));
+				_displayvotes.Insert(0, Votes.Single(v => v.Voter == currentUser));
 			}
 
 			return _displayvotes;
-		}
-
-		private Vote LookupVote(User u)
-		{
-			Vote voter = Votes.SingleOrDefault(x => x.Voter == u);
-			return new Vote(u, voter != null ? voter.Kind : VoteKind.None);
 		}
 	}
 }
