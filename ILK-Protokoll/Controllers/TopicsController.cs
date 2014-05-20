@@ -68,6 +68,8 @@ namespace ILK_Protokoll.Controllers
 				var t = new Topic();
 				t.IncorporateUpdates(input);
 				t.SessionTypeID = input.SessionTypeID;
+				foreach (var user in _db.SessionTypes.Find(input.SessionTypeID).Attendees)
+					t.Votes.Add(new Vote(user, VoteKind.None));
 				_db.Topics.Add(t);
 				_db.SaveChanges();
 				return RedirectToAction("Index");

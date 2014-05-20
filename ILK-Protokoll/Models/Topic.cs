@@ -131,7 +131,9 @@ namespace ILK_Protokoll.Models
 			if (_displayvotes == null)
 			{
 				_displayvotes = new List<Vote>(Votes.Where(v => v.Voter != currentUser).OrderBy(v => v.Voter.Name, StringComparer.CurrentCultureIgnoreCase));
-				_displayvotes.Insert(0, Votes.Single(v => v.Voter == currentUser));
+				var ownvote = Votes.SingleOrDefault(v => v.Voter == currentUser);
+				if (ownvote != null)
+					_displayvotes.Insert(0, ownvote);
 			}
 
 			return _displayvotes;

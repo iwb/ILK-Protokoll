@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Entity;
-using System.Linq;
-using System.Web;
 using ILK_Protokoll.Models;
 
 namespace ILK_Protokoll.DataLayer
@@ -11,7 +8,7 @@ namespace ILK_Protokoll.DataLayer
 	{
 		protected override void Seed(DataContext context)
 		{
-			var users = new List<User>()
+			var users = new List<User>
 			{
 				new User("hz"),
 				new User("sw"),
@@ -26,10 +23,12 @@ namespace ILK_Protokoll.DataLayer
 				new User("zh"),
 			};
 
-			var topic = new Topic() {
+			var topic = new Topic
+			{
 				Owner = users[4],
 				Title = "Mehr Kekse",
-				Proposal = " Zukünftige Dissertationsthemen werden nur zugelassen, falls ein Zusammenhang mit Keksen deutlich erkennbar ist.",
+				Proposal =
+					" Zukünftige Dissertationsthemen werden nur zugelassen, falls ein Zusammenhang mit Keksen deutlich erkennbar ist.",
 				Description = "Das iwb sollte mehr Kekse backen.",
 				Priority = Priority.High
 			};
@@ -47,15 +46,26 @@ namespace ILK_Protokoll.DataLayer
 			topic.Votes.Add(new Vote(users[9], VoteKind.Approved));
 			topic.Votes.Add(new Vote(users[10], VoteKind.None));
 
-			topic.Comments.Add(new Comment() { Author = users[0], Content = "Klingt lecker! und ich finde den Beschlussvorschlag auch total sinnvoll und angemessen. Eine Dissertation, deren Ergebnisse man nicht essen oder trinken kann, ist im Grunde wertlos. Insbesondere am Institut für Weißwurscht und Brezenwissenschaften." });
+			topic.Comments.Add(new Comment
+			{
+				Author = users[0],
+				Content =
+					"Klingt lecker! und ich finde den Beschlussvorschlag auch total sinnvoll und angemessen. Eine Dissertation, deren Ergebnisse man nicht essen oder trinken kann, ist im Grunde wertlos. Insbesondere am Institut für Weißwurscht und Brezenwissenschaften."
+			});
 
-			topic.Comments.Add(new Comment() { Author = users[4], Content = "Brauchen wir nicht drüber reden. Ist gegessen." });
-			topic.Comments.Add(new Comment() { Author = users[8], Content = "Möglicherweise sollten auch Themen im Komplex \"Backplanung und -steuerung\" erlaubt werden." });
+			topic.Comments.Add(new Comment {Author = users[4], Content = "Brauchen wir nicht drüber reden. Ist gegessen."});
+			topic.Comments.Add(new Comment
+			{
+				Author = users[8],
+				Content = "Möglicherweise sollten auch Themen im Komplex \"Backplanung und -steuerung\" erlaubt werden."
+			});
 
-			var sessiont = new SessionType() {ID = 1, Name = "ILK-AK Garching"};
+			var sessiont = new SessionType { ID = 1, Name = "ILK-AK Garching" };
+			sessiont.Attendees.Add(users[9]);
+			sessiont.Attendees.Add(users[1]);
+			sessiont.Attendees.Add(users[4]);
+			sessiont.Attendees.Add(users[5]);
 			topic.SessionType = sessiont;
-
-
 
 			context.Users.AddRange(users);
 			context.SaveChanges();
