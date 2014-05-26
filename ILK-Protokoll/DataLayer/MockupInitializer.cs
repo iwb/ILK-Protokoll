@@ -4,7 +4,7 @@ using ILK_Protokoll.Models;
 
 namespace ILK_Protokoll.DataLayer
 {
-	public class MockupInitializer : DropCreateDatabaseAlways<DataContext>
+	public class MockupInitializer : DropCreateDatabaseIfModelChanges<DataContext>
 	{
 		protected override void Seed(DataContext context)
 		{

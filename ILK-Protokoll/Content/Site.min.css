@@ -1,1 +1,1 @@
-﻿body{padding-top:50px;padding-bottom:20px}.body-content{padding-left:15px;padding-right:15px;margin-top:10px}input,select,textarea{max-width:480px}
+﻿body{padding-top:50px;padding-bottom:20px}.body-content{padding-left:15px;padding-right:15px;margin-top:10px}@media(min-width:767px) and (max-width:1199px){.body-content{margin-top:60px}}input,select,textarea{max-width:480px}@media screen and (-ms-high-contrast:active),(-ms-high-contrast:none){.navbar-brand{background-image:url("../img/iwbLogo_inv_small.png")!important}}

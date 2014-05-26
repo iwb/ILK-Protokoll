@@ -159,6 +159,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Content\bootstrap.css.map" />
+    <Content Include="img\iwbLogo_inv_small.png" />
     <Content Include="Models.cd" />
     <None Include="Scripts\jquery-2.1.0.intellisense.js" />
     <Content Include="img\iwbLogo.png" />

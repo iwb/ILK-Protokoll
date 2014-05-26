@@ -1,18 +1,32 @@
 ﻿body {
-    padding-top: 50px;
-    padding-bottom: 20px;
+	padding-top: 50px;
+	padding-bottom: 20px;
 }
 
 /* Set padding to keep content from hitting the edges */
 .body-content {
-    padding-left: 15px;
-    padding-right: 15px;
+	padding-left: 15px;
+	padding-right: 15px;
 	margin-top: 10px;
 }
+
+@media (min-width: 767px) and (max-width: 1199px) {
+	.body-content {
+		margin-top: 60px;
+	}
+}
+
 
 /* Set width on the form input elements since they're 100% wide by default */
 input,
 select,
 textarea {
-    max-width: 480px;
+	max-width: 480px;
+}
+
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+	/* IE10+ specific styles */
+	.navbar-brand {
+		background-image: url("../img/iwbLogo_inv_small.png") !important;
+	}
 }
