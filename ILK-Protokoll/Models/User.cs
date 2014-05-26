@@ -1,20 +1,29 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ILK_Protokoll.Models
 {
 	public class User : IEquatable<User>
 	{
-		public User() : this("")
+		public User()
 		{
+			SessionTypes = new List<SessionType>();
 		}
 
 		public User(string name)
+			: this()
 		{
 			Name = name;
 		}
 
 		public int ID { get; set; }
 		public string Name { get; set; }
+
+
+		[InverseProperty("Attendees")]
+		public virtual ICollection<SessionType> SessionTypes { get; private set; }
+
 
 		public bool Equals(User other)
 		{
@@ -45,7 +54,7 @@ namespace ILK_Protokoll.Models
 		{
 			if (ReferenceEquals(a, b))
 				return true;
-			else if ((object) a == null || (object) b == null)
+			else if ((object)a == null || (object)b == null)
 				return false;
 			else
 				return a.Name == b.Name;

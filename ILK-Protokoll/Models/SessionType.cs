@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ILK_Protokoll.Models
 {
@@ -12,7 +13,10 @@ namespace ILK_Protokoll.Models
 		}
 
 		public int ID { get; set; }
+
 		public string Name { get; set; }
+
+		[InverseProperty("SessionTypes")]
 		public ICollection<User> Attendees { get; set; }
 	}
 }
