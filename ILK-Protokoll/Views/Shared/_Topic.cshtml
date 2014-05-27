@@ -37,8 +37,8 @@
 			<p class="panel-title">@Model.SessionType.Name</p>
 		</div>
 		<div class="panel-body">
-			<div class="col-md-7"><h6>Beschreibung:</h6>@Model.Description</div>
-			<div class="col-md-5"><h6>Beschlussvorschlag:</h6>@Model.Proposal</div>
+			<div class="col-md-7"><h6>@Html.DisplayNameFor(model => model.Description):</h6>@Model.Description</div>
+			<div class="col-md-5"><h6>@Html.DisplayNameFor(model => model.Proposal):</h6>@Model.Proposal</div>
 		</div>
 		<div class="panel-separator">
 			<ul class="auditorlist">
