@@ -1,5 +1,13 @@
 ﻿@model ILK_Protokoll.Models.Comment
 
 <div class="comment-panel-group">
-	<p class="comment-author" title="@Model.Created.ToString("F")">@Model.Author</p><p class="panel comment-content">@Model.Content</p>
+	<p class="comment-author" title="@Model.Created.ToString("F")">@Model.Author</p>
+	<p class="panel comment-content">@Model.Content</p>
+	@if (Model.ID == ViewBag.AllowDeletion)
+	{
+		<p class="comment-delete">
+			@Ajax.ActionLink(" ", "_Delete", new { id = Model.ID }, new AjaxOptions() { UpdateTargetId = "comments_" + Model.TopicID, Confirm = "Kommentar wirklich löschen?" },
+			htmlAttributes: new { @class = "glyphicon glyphicon-remove" })
+		</p>
+	}
 </div>

@@ -1,7 +1,6 @@
 ﻿@model ILK_Protokoll.Models.Comment
 
-
-@using (Ajax.BeginForm("_Submit", "Comments", new AjaxOptions() { UpdateTargetId = "asdf"}))
+@using (Ajax.BeginForm("_Submit", "Comments", new AjaxOptions() { UpdateTargetId = "comments_" + Model.TopicID }))
 {
 	@Html.AntiForgeryToken()
 	@Html.HiddenFor(model => model.TopicID)
@@ -10,5 +9,4 @@
 		<span class="input-group-addon">@User.Identity.Name.Split('\\').Last()</span>				
 		<input type="text" name="Content" class="form-control" placeholder="Kommentar hinzufügen">
 	</div>
-	<button type="submit">Go</button>
 }

@@ -23,8 +23,12 @@ namespace ILK_Protokoll.Controllers
 
 		public PartialViewResult _List(Topic t)
 		{
+			var comments = t.Comments.OrderBy(c => c.Created).ToList();
 			ViewBag.TopicID = t.ID;
-			return PartialView("_Listing", t.Comments);
+
+			var lastcomment = comments.Last();
+			ViewBag.AllowDeletion = lastcomment.Author == GetCurrentUser() ? lastcomment.ID : -1;
+			return PartialView("_Listing", comments);
 		}
 
 		public PartialViewResult _CreateForm(int TopicID)
@@ -38,7 +42,7 @@ namespace ILK_Protokoll.Controllers
 		[ValidateAntiForgeryToken]
 		public ActionResult _Submit([Bind(Include = "TopicID,Content")] Comment comment)
 		{
-			if (ModelState.IsValid)
+			if (ModelState.IsValid && !string.IsNullOrWhiteSpace(comment.Content))
 			{
 				comment.Created = DateTime.Now;
 				comment.Author = GetCurrentUser();
@@ -46,8 +50,7 @@ namespace ILK_Protokoll.Controllers
 				_db.SaveChanges();
 
 				Topic t = _db.Topics.Find(comment.TopicID);
-				ViewBag.TopicID = t.ID;
-				return PartialView("_Listing", t.Comments);
+				return _List(t);
 			}
 			this.ControllerContext.HttpContext.Response.StatusCode = 400;
 			return new EmptyResult();
@@ -55,29 +58,28 @@ namespace ILK_Protokoll.Controllers
 
 
 		// GET: Comments/Delete/5
-		public ActionResult Delete(int? id)
+		public ActionResult _Delete(int id)
 		{
-			if (id == null)
-			{
-				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-			}
 			Comment comment = _db.Comments.Find(id);
+			Topic t = _db.Topics.Find(comment.TopicID);
+			var lastcomment = t.Comments.OrderBy(c => c.Created).Last();
+
 			if (comment == null)
 			{
 				return HttpNotFound();
 			}
-			return View(comment);
-		}
+			else if (id != lastcomment.ID || lastcomment.Author != GetCurrentUser())
+			{
+				this.ControllerContext.HttpContext.Response.StatusCode = 400;
+				return new EmptyResult();
+			}
+			else
+			{
+				_db.Comments.Remove(comment);
+				_db.SaveChanges();
 
-		// POST: Comments/Delete/5
-		[HttpPost, ActionName("Delete")]
-		[ValidateAntiForgeryToken]
-		public ActionResult DeleteConfirmed(int id)
-		{
-			Comment comment = _db.Comments.Find(id);
-			_db.Comments.Remove(comment);
-			_db.SaveChanges();
-			return RedirectToAction("Index");
+				return _List(t);
+			}
 		}
 
 		protected override void Dispose(bool disposing)

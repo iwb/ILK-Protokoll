@@ -51,22 +51,21 @@
 						{
 							case VoteKind.None:
 								iconname = "glyphicon-record";
-									break;
+								break;
 
 							case VoteKind.Approved:
 								iconname = "glyphicon-ok-sign";
-									break;
+								break;
 
 							case VoteKind.Reservation:
 								iconname = "glyphicon-question-sign";
-									break;
+								break;
 
 							case VoteKind.Rejected:
 								iconname = "glyphicon-remove-sign";
-									break;
+								break;
 						}
-						}
-						<span class="glyphicon @iconname" title="@vote.Kind.GetDescription()"></span>
+						} <span class="glyphicon @iconname" title="@vote.Kind.GetDescription()"></span>
 						@vote.Voter
 					</li>
 				}
@@ -87,7 +86,6 @@
 		<div class="panel panel-primary">
 			<div class="panel-heading panel-collapse-heading">
 				<h4 class="panel-title">
-
 					<a data-toggle="collapse" data-target="#comments_@Model.ID" class="@classA">
 						@if (@Model.Comments.Count == 0)
 						{
@@ -104,7 +102,7 @@
 					</a>
 				</h4>
 			</div>
-			<div id="comments_@Model.ID" class="@classDiv">
+			<div id="comments_@Model.ID" class= class="@classDiv">
 				@Html.Action("_List", "Comments", Model)
 			</div>
 		</div>
