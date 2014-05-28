@@ -15,6 +15,6 @@ namespace ILK_Protokoll.Models
 
 		[Required]
 		[InverseProperty("Decision")]
-		public Topic OriginTopic { get; set; }
+		public virtual Topic OriginTopic { get; set; }
 	}
 }

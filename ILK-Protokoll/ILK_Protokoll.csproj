@@ -120,6 +120,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\CommentsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\SessionTypesController.cs" />
     <Compile Include="Controllers\TopicsController.cs" />
@@ -161,13 +162,13 @@
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="img\iwbLogo_inv_small.png" />
     <Content Include="Models.cd" />
-    <None Include="Scripts\jquery-2.1.0.intellisense.js" />
     <Content Include="img\iwbLogo.png" />
     <Content Include="img\iwbLogo_inv.png" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="Scripts\jquery-2.1.0.js" />
-    <Content Include="Scripts\jquery-2.1.0.min.js" />
+    <None Include="Scripts\jquery-2.1.1.intellisense.js" />
+    <Content Include="Scripts\jquery-2.1.1.js" />
+    <Content Include="Scripts\jquery-2.1.1.min.js" />
     <Content Include="Scripts\modernizr-2.7.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.js" />
@@ -182,7 +183,6 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Scripts\jquery-2.1.0.min.map" />
     <Content Include="Views\Topics\Create.cshtml" />
     <Content Include="Views\Topics\Delete.cshtml" />
     <Content Include="Views\Topics\Details.cshtml" />
@@ -195,6 +195,9 @@
     <Content Include="Views\SessionTypes\Details.cshtml" />
     <Content Include="Views\SessionTypes\Edit.cshtml" />
     <Content Include="Views\SessionTypes\Index.cshtml" />
+    <Content Include="Views\Comments\_CreateForm.cshtml" />
+    <Content Include="Scripts\jquery-2.1.1.min.map" />
+    <Content Include="Views\Comments\_Listing.cshtml" />
     <None Include="Web.Integration.config" />
     <None Include="Web.Testing.config" />
   </ItemGroup>

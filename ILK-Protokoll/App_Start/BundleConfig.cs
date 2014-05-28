@@ -26,7 +26,12 @@ namespace ILK_Protokoll
 
 			// Festlegen von EnableOptimizations auf false für Debugzwecke. Weitere Informationen
 			// finden Sie unter http://go.microsoft.com/fwlink/?LinkId=301862
+
+#if DEBUG
+			BundleTable.EnableOptimizations = false;
+#else
 			BundleTable.EnableOptimizations = true;
+#endif
 		}
 	}
 }

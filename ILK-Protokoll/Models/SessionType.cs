@@ -17,6 +17,6 @@ namespace ILK_Protokoll.Models
 		public string Name { get; set; }
 
 		[InverseProperty("SessionTypes")]
-		public ICollection<User> Attendees { get; set; }
+		public virtual ICollection<User> Attendees { get; set; }
 	}
 }

@@ -24,6 +24,7 @@ namespace ILK_Protokoll.Models
 		[InverseProperty("Attendees")]
 		public virtual ICollection<SessionType> SessionTypes { get; private set; }
 
+		#region Equals() etc.
 
 		public bool Equals(User other)
 		{
@@ -64,5 +65,6 @@ namespace ILK_Protokoll.Models
 		{
 			return !(a == b);
 		}
+		#endregion
 	}
 }

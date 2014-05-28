@@ -5917,6 +5917,7 @@ a.list-group-item-danger {
 
 .panel-collapse-heading a:hover {
 	text-decoration: none;
+	cursor: pointer;
 }
 
 .panel ul.auditorlist {

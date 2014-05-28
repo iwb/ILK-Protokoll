@@ -105,22 +105,8 @@
 				</h4>
 			</div>
 			<div id="comments_@Model.ID" class="@classDiv">
-				<div class="panel-body">
-					@foreach (var comment in Model.Comments)
-					{
-						@Html.Partial("~/Views/Shared/_Comment.cshtml", comment)
-					}
-
-					<div class="input-group">
-						<span class="input-group-addon">@User.Identity.Name.Split('\\').Last()</span>
-						<input type="text" class="form-control" placeholder="Kommentar hinzufügen">
-					</div>
-
-				</div>
+				@Html.Action("_List", "Comments", Model)
 			</div>
-
-
-
 		</div>
 		<div class="panel-footer">Es sind keine Dateien angehängt.</div>
 	</div>

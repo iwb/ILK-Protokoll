@@ -13,7 +13,9 @@ namespace ILK_Protokoll.Models
 		}
 		public int ID { get; set; }
 
-		public User Author { get; set; }
+		public int TopicID { get; set; }
+
+		public virtual User Author { get; set; }
 
 		public DateTime Created { get; set; }
 

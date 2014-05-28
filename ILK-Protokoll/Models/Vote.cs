@@ -9,7 +9,7 @@ namespace ILK_Protokoll.Models
 	{
 		public Vote()
 		{
-			
+
 		}
 
 		public Vote(User voter, VoteKind vote)
@@ -19,7 +19,7 @@ namespace ILK_Protokoll.Models
 		}
 
 		public int ID { get; set; }
-		public User Voter { get; set; }
+		public virtual User Voter { get; set; }
 		public VoteKind Kind { get; set; }
 	}
 
