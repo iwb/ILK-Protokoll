@@ -3,9 +3,36 @@
 	ViewBag.Title = "Home Page";
 }
 
-<div class="jumbotron">
-	<h1>Dashboard</h1>
+
+<h1>Dashboard</h1>
+
+
+<div class="row">
+	<div class="col-md-6">
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<h3 class="panel-title">Meine ToDo's</h3>
+			</div>
+			<div class="panel-body">
+				Panel content
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<h3 class="panel-title">Meine Aufgaben</h3>
+			</div>
+			<div class="panel-body">
+				Panel content
+			</div>
+		</div>
+	</div>
 </div>
+<hr />
+<h2>Diskussionspunkte</h2>
+
 
 @foreach (Topic t in ViewBag.Topics)
 {
@@ -13,12 +40,12 @@
 }
 
 @*<div class="row">
-	<p>
-		<button type="button" class="btn btn-default">Default</button>
-		<button type="button" class="btn btn-primary">Primary</button>
-		<button type="button" class="btn btn-success">Success</button>
-		<button type="button" class="btn btn-info">Info</button>
-		<button type="button" class="btn btn-warning">Warning</button>
-		<button type="button" class="btn btn-danger">Danger</button>
-	</p>
-</div>*@
+		<p>
+			<button type="button" class="btn btn-default">Default</button>
+			<button type="button" class="btn btn-primary">Primary</button>
+			<button type="button" class="btn btn-success">Success</button>
+			<button type="button" class="btn btn-info">Info</button>
+			<button type="button" class="btn btn-warning">Warning</button>
+			<button type="button" class="btn btn-danger">Danger</button>
+		</p>
+	</div>*@

@@ -11,16 +11,8 @@ using System.Collections.Generic;
 
 namespace ILK_Protokoll.Controllers
 {
-	public class CommentsController : Controller
+	public class CommentsController : BaseController
 	{
-		private DataContext _db = new DataContext();
-
-		private User GetCurrentUser()
-		{
-			string username = User.Identity.Name.Split('\\').Last();
-			return _db.Users.Single(x => x.Name.Equals(username, StringComparison.CurrentCultureIgnoreCase));
-		}
-
 		public PartialViewResult _List(Topic t)
 		{
 			var comments = t.Comments.OrderBy(c => c.Created).ToList();
@@ -46,10 +38,10 @@ namespace ILK_Protokoll.Controllers
 			{
 				comment.Created = DateTime.Now;
 				comment.Author = GetCurrentUser();
-				_db.Comments.Add(comment);
-				_db.SaveChanges();
+				db.Comments.Add(comment);
+				db.SaveChanges();
 
-				Topic t = _db.Topics.Find(comment.TopicID);
+				Topic t = db.Topics.Find(comment.TopicID);
 				return _List(t);
 			}
 			this.ControllerContext.HttpContext.Response.StatusCode = 400;
@@ -60,8 +52,8 @@ namespace ILK_Protokoll.Controllers
 		// GET: Comments/Delete/5
 		public ActionResult _Delete(int id)
 		{
-			Comment comment = _db.Comments.Find(id);
-			Topic t = _db.Topics.Find(comment.TopicID);
+			Comment comment = db.Comments.Find(id);
+			Topic t = db.Topics.Find(comment.TopicID);
 			var lastcomment = t.Comments.OrderBy(c => c.Created).Last();
 
 			if (comment == null)
@@ -75,8 +67,8 @@ namespace ILK_Protokoll.Controllers
 			}
 			else
 			{
-				_db.Comments.Remove(comment);
-				_db.SaveChanges();
+				db.Comments.Remove(comment);
+				db.SaveChanges();
 
 				return _List(t);
 			}
@@ -86,7 +78,7 @@ namespace ILK_Protokoll.Controllers
 		{
 			if (disposing)
 			{
-				_db.Dispose();
+				db.Dispose();
 			}
 			base.Dispose(disposing);
 		}

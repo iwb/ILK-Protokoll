@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<ILK_Protokoll.Models.Comment>
 
-<div class="panel-body" id="asdf">
+<div class="panel-body">
 	@foreach (var comment in Model)
 	{
 		Html.RenderPartial("~/Views/Shared/_Comment.cshtml", comment);

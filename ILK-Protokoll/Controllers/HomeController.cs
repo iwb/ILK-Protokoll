@@ -10,19 +10,11 @@ using ILK_Protokoll.Models;
 
 namespace ILK_Protokoll.Controllers
 {
-	public class HomeController : Controller
+	public class HomeController : BaseController
 	{
-		private readonly DataContext _db = new DataContext();
-
-		private User GetCurrentUser()
-		{
-			string username = User.Identity.Name.Split('\\').Last();
-			return _db.Users.Single(x => x.Name.Equals(username, StringComparison.CurrentCultureIgnoreCase));
-		}
-
 		public ActionResult Index()
 		{
-			IEnumerable<Topic> to = _db.Topics
+			IEnumerable<Topic> to = db.Topics
 				.Include(t => t.SessionType)
 				.Include(t => t.TargetSessionType)
 				.Include(t => t.Owner)

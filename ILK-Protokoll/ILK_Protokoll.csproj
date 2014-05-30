@@ -115,15 +115,18 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\Shared\DisplayTemplates\" />
+    <Folder Include="Views\Votes\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\CommentsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\SessionTypesController.cs" />
     <Compile Include="Controllers\TopicsController.cs" />
+    <Compile Include="Controllers\VotesController.cs" />
     <Compile Include="DataLayer\DataContext.cs" />
     <Compile Include="DataLayer\MockupInitializer.cs" />
     <Compile Include="Global.asax.cs">

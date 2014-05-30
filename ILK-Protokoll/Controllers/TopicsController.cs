@@ -10,20 +10,13 @@ using ILK_Protokoll.ViewModels;
 
 namespace ILK_Protokoll.Controllers
 {
-	public class TopicsController : Controller
+	public class TopicsController : BaseController
 	{
-		private readonly DataContext _db = new DataContext();
-
-		private User GetCurrentUser()
-		{
-			string username = User.Identity.Name.Split('\\').Last();
-			return _db.Users.Single(x => x.Name.Equals(username, StringComparison.CurrentCultureIgnoreCase));
-		}
 
 		// GET: Topics
 		public ActionResult Index()
 		{
-			var topics = _db.Topics.Include(t => t.SessionType).Include(t => t.TargetSessionType);
+			var topics = db.Topics.Include(t => t.SessionType).Include(t => t.TargetSessionType);
 			return View(topics.ToList());
 		}
 
@@ -34,7 +27,7 @@ namespace ILK_Protokoll.Controllers
 			{
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 			}
-			Topic topic = _db.Topics.Find(id);
+			Topic topic = db.Topics.Find(id);
 			if (topic == null)
 			{
 				return HttpNotFound();
@@ -47,9 +40,9 @@ namespace ILK_Protokoll.Controllers
 		{
 			var viewmodel = new TopicEdit
 			{
-				SessionTypeList = new SelectList(_db.SessionTypes, "ID", "Name"),
-				TargetSessionTypeList = new SelectList(_db.SessionTypes, "ID", "Name"),
-				UserList = new SelectList(_db.GetUserOrdered(GetCurrentUser()), "ID", "Name")
+				SessionTypeList = new SelectList(db.SessionTypes, "ID", "Name"),
+				TargetSessionTypeList = new SelectList(db.SessionTypes, "ID", "Name"),
+				UserList = new SelectList(db.GetUserOrdered(GetCurrentUser()), "ID", "Name")
 			};
 			return View(viewmodel);
 		}
@@ -68,17 +61,17 @@ namespace ILK_Protokoll.Controllers
 				var t = new Topic();
 				t.IncorporateUpdates(input);
 				t.SessionTypeID = input.SessionTypeID;
-				foreach (var user in _db.SessionTypes.Include(st => st.Attendees).First(st => st.ID == input.SessionTypeID).Attendees)
+				foreach (var user in db.SessionTypes.Include(st => st.Attendees).First(st => st.ID == input.SessionTypeID).Attendees)
 					t.Votes.Add(new Vote(user, VoteKind.None));
 
-				_db.Topics.Add(t);
-				_db.SaveChanges();
+				db.Topics.Add(t);
+				db.SaveChanges();
 				return RedirectToAction("Index");
 			}
 
-			input.SessionTypeList = new SelectList(_db.SessionTypes, "ID", "Name", input.SessionTypeID);
-			input.TargetSessionTypeList = new SelectList(_db.SessionTypes, "ID", "Name", input.TargetSessionTypeID);
-			input.UserList = new SelectList(_db.GetUserOrdered(GetCurrentUser()), "ID", "Name");
+			input.SessionTypeList = new SelectList(db.SessionTypes, "ID", "Name", input.SessionTypeID);
+			input.TargetSessionTypeList = new SelectList(db.SessionTypes, "ID", "Name", input.TargetSessionTypeID);
+			input.UserList = new SelectList(db.GetUserOrdered(GetCurrentUser()), "ID", "Name");
 			return View(input);
 		}
 
@@ -89,16 +82,16 @@ namespace ILK_Protokoll.Controllers
 			{
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 			}
-			Topic topic = _db.Topics.Find(id);
+			Topic topic = db.Topics.Find(id);
 			if (topic == null)
 			{
 				return HttpNotFound();
 			}
 
 			var viewmodel = TopicEdit.FromTopic(topic);
-			viewmodel.SessionTypeList = new SelectList(_db.SessionTypes, "ID", "Name");
-			viewmodel.TargetSessionTypeList = new SelectList(_db.SessionTypes, "ID", "Name");
-			viewmodel.UserList = new SelectList(_db.GetUserOrdered(GetCurrentUser()), "ID", "Name", viewmodel.OwnerID);
+			viewmodel.SessionTypeList = new SelectList(db.SessionTypes, "ID", "Name");
+			viewmodel.TargetSessionTypeList = new SelectList(db.SessionTypes, "ID", "Name");
+			viewmodel.UserList = new SelectList(db.GetUserOrdered(GetCurrentUser()), "ID", "Name", viewmodel.OwnerID);
 
 			return View(viewmodel);
 		}
@@ -113,20 +106,20 @@ namespace ILK_Protokoll.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				var topic = _db.Topics.Find(input.ID);
-				_db.TopicHistory.Add(TopicHistory.FromTopic(topic));
+				var topic = db.Topics.Find(input.ID);
+				db.TopicHistory.Add(TopicHistory.FromTopic(topic));
 
 				topic.IncorporateUpdates(input);
 				topic.TargetSessionTypeID = input.TargetSessionTypeID;
-				_db.Entry(topic).State = EntityState.Modified;
-				_db.SaveChanges();
+				db.Entry(topic).State = EntityState.Modified;
+				db.SaveChanges();
 				return RedirectToAction("Index");
 			}
-			var t = _db.Topics.Find(input.ID);
+			var t = db.Topics.Find(input.ID);
 			input.SessionType = t.SessionType;
-			input.SessionTypeList = new SelectList(_db.SessionTypes, "ID", "Name", input.SessionTypeID);
-			input.TargetSessionTypeList = new SelectList(_db.SessionTypes, "ID", "Name", input.TargetSessionTypeID);
-			input.UserList = new SelectList(_db.GetUserOrdered(GetCurrentUser()), "ID", "Name");
+			input.SessionTypeList = new SelectList(db.SessionTypes, "ID", "Name", input.SessionTypeID);
+			input.TargetSessionTypeList = new SelectList(db.SessionTypes, "ID", "Name", input.TargetSessionTypeID);
+			input.UserList = new SelectList(db.GetUserOrdered(GetCurrentUser()), "ID", "Name");
 			return View(input);
 		}
 
@@ -137,7 +130,7 @@ namespace ILK_Protokoll.Controllers
 			{
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 			}
-			Topic topic = _db.Topics.Find(id);
+			Topic topic = db.Topics.Find(id);
 			if (topic == null)
 			{
 				return HttpNotFound();
@@ -150,9 +143,9 @@ namespace ILK_Protokoll.Controllers
 		[ValidateAntiForgeryToken]
 		public ActionResult DeleteConfirmed(int id)
 		{
-			Topic topic = _db.Topics.Find(id);
-			_db.Topics.Remove(topic);
-			_db.SaveChanges();
+			Topic topic = db.Topics.Find(id);
+			db.Topics.Remove(topic);
+			db.SaveChanges();
 			return RedirectToAction("Index");
 		}
 
@@ -160,7 +153,7 @@ namespace ILK_Protokoll.Controllers
 		{
 			if (disposing)
 			{
-				_db.Dispose();
+				db.Dispose();
 			}
 			base.Dispose(disposing);
 		}
