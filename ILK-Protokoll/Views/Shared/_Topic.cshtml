@@ -40,37 +40,8 @@
 			<div class="col-md-7"><h6>@Html.DisplayNameFor(model => model.Description):</h6>@Model.Description</div>
 			<div class="col-md-5"><h6>@Html.DisplayNameFor(model => model.Proposal):</h6>@Model.Proposal</div>
 		</div>
-		<div class="panel-separator">
-			<ul class="auditorlist">
-				@foreach (Vote vote in Model.GetDisplayVotes(ViewBag.CurrentUser as User))
-				{
-					<li>
-						@{
-						iconname = "";
-						switch (vote.Kind)
-						{
-							case VoteKind.None:
-								iconname = "glyphicon-record";
-								break;
-
-							case VoteKind.Approved:
-								iconname = "glyphicon-ok-sign";
-								break;
-
-							case VoteKind.Reservation:
-								iconname = "glyphicon-question-sign";
-								break;
-
-							case VoteKind.Rejected:
-								iconname = "glyphicon-remove-sign";
-								break;
-						}
-						} <span class="glyphicon @iconname" title="@vote.Kind.GetDescription()"></span>
-						@vote.Voter
-					</li>
-				}
-			</ul>
-
+		<div class="panel-separator" id="auditorlist_@Model.ID">
+			@Html.Action("_List", "Votes", Model)
 		</div>
 
 		@{

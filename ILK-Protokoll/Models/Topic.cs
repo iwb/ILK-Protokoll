@@ -9,11 +9,9 @@ namespace ILK_Protokoll.Models
 {
 	public class Topic
 	{
-		[NotMapped] private List<Vote> _displayvotes;
-
 		public Topic()
 		{
-// ReSharper disable DoNotCallOverridableMethodsInConstructor
+			// ReSharper disable DoNotCallOverridableMethodsInConstructor
 			Comments = new List<Comment>();
 			Votes = new List<Vote>();
 			ToDo = new List<ToDo>();
@@ -21,7 +19,7 @@ namespace ILK_Protokoll.Models
 			Attachments = new List<Attachment>();
 			Created = DateTime.Now;
 			ValidFrom = DateTime.Now;
-// ReSharper restore DoNotCallOverridableMethodsInConstructor
+			// ReSharper restore DoNotCallOverridableMethodsInConstructor
 		}
 
 		public void IncorporateUpdates(TopicEdit updates)
@@ -125,18 +123,5 @@ namespace ILK_Protokoll.Models
 		[Display(Name = "Geändert")]
 		[Required]
 		public DateTime ValidFrom { get; set; }
-
-		public ICollection<Vote> GetDisplayVotes(User currentUser)
-		{
-			if (_displayvotes == null)
-			{
-				_displayvotes = new List<Vote>(Votes.Where(v => v.Voter != currentUser).OrderBy(v => v.Voter.Name, StringComparer.CurrentCultureIgnoreCase));
-				var ownvote = Votes.SingleOrDefault(v => v.Voter == currentUser);
-				if (ownvote != null)
-					_displayvotes.Insert(0, ownvote);
-			}
-
-			return _displayvotes;
-		}
 	}
 }

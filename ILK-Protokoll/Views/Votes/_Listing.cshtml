@@ -1,0 +1,62 @@
+﻿@model IEnumerable<ILK_Protokoll.Models.Vote>
+@using ILK_Protokoll.util
+@using ILK_Protokoll.Models
+
+@helper GetVoteIcon(VoteKind vk)
+{
+	string iconname = "";
+	switch (vk)
+	{
+		case VoteKind.None:
+			iconname = "glyphicon-record";
+			break;
+
+		case VoteKind.Approved:
+			iconname = "glyphicon-ok-sign";
+			break;
+
+		case VoteKind.Reservation:
+			iconname = "glyphicon-question-sign";
+			break;
+
+		case VoteKind.Rejected:
+			iconname = "glyphicon-remove-sign";
+			break;
+	}
+	<span class="glyphicon @iconname" title="@vk.GetDescription()"></span>
+}
+
+@helper GetVoteForm()
+{
+	<a data-ajax="true" data-ajax-mode="replace" data-ajax-update="#auditorlist_1" href="/Votes/_Register/@ViewBag.TopicID">@GetVoteIcon(VoteKind.None)</a>
+	<a data-ajax="true" data-ajax-mode="replace" data-ajax-update="#auditorlist_1" href="/Votes/_Register/@ViewBag.TopicID">@GetVoteIcon(VoteKind.Approved)</a>
+	<a data-ajax="true" data-ajax-mode="replace" data-ajax-update="#auditorlist_1" href="/Votes/_Register/@ViewBag.TopicID">@GetVoteIcon(VoteKind.Reservation)</a>
+	<a data-ajax="true" data-ajax-mode="replace" data-ajax-update="#auditorlist_1" href="/Votes/_Register/@ViewBag.TopicID">@GetVoteIcon(VoteKind.Rejected)</a>
+}
+
+@Ajax.ActionLink("test", "_Register", "Votes", new AjaxOptions() { UpdateTargetId = "auditorlist_" + ViewBag.TopicID })
+
+@GetVoteForm()
+
+<ul class="auditorlist">
+	@{
+		Vote ownvote = ViewBag.ownvote as Vote;
+		if (ownvote != null)
+		{
+			<li>
+				<a href="#" rel="popover" data-container="body" data-toggle="popover" data-placement="bottom" data-content="Mr. T" id="asdf">
+					@GetVoteIcon(ownvote.Kind)@ViewBag.CurrentUser.Name
+				</a>
+				@*@Ajax.ActionLink(GetVoteIcon(ownvote.Kind) + " " + ViewBag.CurrentUser.Name, "_Register", "Votes", new AjaxOptions() { UpdateTargetId = "auditorlist_" + ViewBag.TopicID })*@
+			</li>
+		}
+	}
+
+	@foreach (Vote vote in Model)
+	{
+		<li>
+			@GetVoteIcon(vote.Kind)
+			@vote.Voter
+		</li>
+	}
+</ul>

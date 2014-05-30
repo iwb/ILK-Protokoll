@@ -5932,19 +5932,19 @@ a.list-group-item-danger {
 	font-size: 18px;
 }
 
-.panel ul.auditorlist > li > .glyphicon-ok-sign {
+.panel ul.auditorlist > li .glyphicon-ok-sign {
 	color: #98C556;
 }
 
-.panel ul.auditorlist > li > .glyphicon-question-sign {
+.panel ul.auditorlist > li .glyphicon-question-sign {
 	color: #D48625;
 }
 
-.panel ul.auditorlist > li > .glyphicon-remove-sign {
+.panel ul.auditorlist > li .glyphicon-remove-sign {
 	color: #AF0331;
 }
 
-.panel ul.auditorlist > li > .glyphicon-record {
+.panel ul.auditorlist > li .glyphicon-record {
 	color: #001A4A;
 }
 

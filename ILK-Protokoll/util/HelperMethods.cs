@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ILK_Protokoll.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -12,7 +13,7 @@ namespace ILK_Protokoll.util
 		{
 			FieldInfo field = value.GetType().GetField(value.ToString());
 
-			var attribute = Attribute.GetCustomAttribute(field, typeof (DescriptionAttribute)) as DescriptionAttribute;
+			var attribute = Attribute.GetCustomAttribute(field, typeof(DescriptionAttribute)) as DescriptionAttribute;
 
 			return attribute == null ? value.ToString() : attribute.Description;
 		}
