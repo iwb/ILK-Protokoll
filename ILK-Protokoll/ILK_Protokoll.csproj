@@ -149,8 +149,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-iwb.css" />
-    <Content Include="Content\bootstrap.css" />
-    <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\bootstrap-iwb.min.css">
+      <DependentUpon>bootstrap-iwb.css</DependentUpon>
+    </Content>
     <Content Include="Content\Site.min.css">
       <DependentUpon>Site.css</DependentUpon>
     </Content>
@@ -161,13 +162,15 @@
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="Content\bootstrap.css.map" />
     <Content Include="img\iwbLogo_inv_small.png" />
     <Content Include="Models.cd" />
     <Content Include="img\iwbLogo.png" />
     <Content Include="img\iwbLogo_inv.png" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\bootstrap.min.js.map">
+      <DependentUpon>bootstrap.min.js</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.1.js" />
     <Content Include="Scripts\jquery-2.1.1.min.js" />
@@ -203,6 +206,18 @@
     <Content Include="Scripts\jquery-2.1.1.min.map" />
     <Content Include="Views\Comments\_Listing.cshtml" />
     <Content Include="Views\Votes\_Listing.cshtml" />
+    <Content Include="Scripts\respond.min.js.map">
+      <DependentUpon>respond.min.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js.map">
+      <DependentUpon>jquery.unobtrusive-ajax.min.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\respond.matchmedia.addListener.min.js.map">
+      <DependentUpon>respond.matchmedia.addListener.min.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\jquery-2.1.1.min.js.map">
+      <DependentUpon>jquery-2.1.1.min.js</DependentUpon>
+    </Content>
     <None Include="Web.Integration.config" />
     <None Include="Web.Testing.config" />
   </ItemGroup>
