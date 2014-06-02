@@ -18,8 +18,9 @@ namespace ILK_Protokoll.Controllers
 			var comments = t.Comments.OrderBy(c => c.Created).ToList();
 			ViewBag.TopicID = t.ID;
 
-			var lastcomment = comments.Last();
-			ViewBag.AllowDeletion = lastcomment.Author == GetCurrentUser() ? lastcomment.ID : -1;
+			var lastcomment = comments.LastOrDefault();
+			ViewBag.AllowDeletion = (lastcomment != null) && (lastcomment.Author == GetCurrentUser()) ? lastcomment.ID : -1;
+
 			return PartialView("_Listing", comments);
 		}
 
