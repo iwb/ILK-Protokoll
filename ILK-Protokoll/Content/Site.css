@@ -1,6 +1,7 @@
 ﻿body {
 	padding-top: 50px;
 	padding-bottom: 20px;
+	overflow-y: scroll;
 }
 
 /* Set padding to keep content from hitting the edges */
@@ -10,12 +11,31 @@
 	margin-top: 10px;
 }
 
+@media (min-width: 768px) {
+	.dl-horizontal dt {
+		width: 200px;
+	}
+
+	.dl-horizontal dd {
+		margin-left: 215px;
+	}
+
+	.navbar-nav > li > a {
+		padding-top: 20px;
+		padding-bottom: 10px;
+	}
+
+	.navbar-form {
+		width: 250px;
+		padding-top: 5px;
+	}
+}
+
 @media (min-width: 767px) and (max-width: 1199px) {
 	.body-content {
 		margin-top: 60px;
 	}
 }
-
 
 /* Set width on the form input elements since they're 100% wide by default */
 input,
@@ -24,6 +44,271 @@ textarea {
 	max-width: 480px;
 }
 
+textarea.form-control {
+	min-height: 120px;
+}
+
+.form-horizontal .static-text {
+	margin-top: 0;
+	margin-bottom: 0;
+	padding-top: 7px;
+}
+
+.input-group .form-control {
+	max-width: none;
+}
+
+.navbar-inverse {
+	background-color: #001A4A;
+}
+
+.navbar-collapse {
+	max-height: none;
+}
+
+	.navbar-collapse.in {
+		overflow-x: visible;
+	}
+
+.navbar-brand {
+	padding: 17px 15px 8px 65px;
+	margin-top: 3px;
+	margin-bottom: 2px;
+	background-image: url("../img/iwbLogo_inv.png");
+	background-size: contain;
+	background-repeat: no-repeat;
+}
+
+.navbar-inverse .navbar-brand {
+	color: #DDD;
+}
+
+.navbar-inverse .navbar-text {
+	color: #DDD;
+}
+
+.navbar-inverse .navbar-nav > li > a {
+	color: #DDD;
+}
+
+@media (max-width: 767px) {
+	.navbar-inverse .navbar-nav .open .dropdown-menu > li > a {
+		color: #DDD;
+	}
+}
+
+.navbar-inverse .navbar-link {
+	color: #DDD;
+}
+
+.navbar-text {
+	margin-top: 10px;
+	margin-bottom: 5px;
+}
+
+.navbar span.usertile {
+	display: block;
+	font-size: 20px;
+	vertical-align: middle;
+	height: 40px;
+	padding: 5px 12px;
+	margin: auto 5px;
+	background-color: #FFF;
+	color: #001A4A;
+	font-weight: bold;
+	border: 2px solid #D48625;
+	border-radius: 4px;
+}
+
+/* Content */
+.topic-panel h6 {
+	margin: 0;
+	font-weight: bold;
+}
+
+.panel > .panel {
+	margin-bottom: 0;
+	border: none;
+	border-radius: 0;
+	background-color: #B7BCD6;
+}
+
+	.panel > .panel > .panel-heading {
+		border-radius: 0;
+	}
+
+.panel-body {
+	padding: 10px;
+}
+
+.panel-separator {
+	padding: 10px;
+	background-color: #DDD;
+	border-top: 1px solid #605E5C;
+	vertical-align: middle;
+}
+
+.panel > .panel-heading ~ .panel-body {
+	border-top: 1px solid #605E5C;
+}
+
+.panel-collapse-heading a:after {
+	font-family: 'Glyphicons Halflings';
+	content: "\e114";
+	padding-left: 10px;
+}
+
+.panel-collapse-heading a.collapsed:after {
+	content: "\e080";
+}
+
+.panel-collapse-heading a:hover {
+	text-decoration: none;
+	cursor: pointer;
+}
+
+.panel ul.auditorlist {
+	list-style: none;
+	margin-bottom: 0;
+	padding: 0;
+}
+
+	.panel ul.auditorlist > li {
+		display: inline-block;
+		margin-left: 20px;
+		font-size: 18px;
+	}
+
+		.panel ul.auditorlist > li .glyphicon-ok-sign, .votelink > .glyphicon-ok-sign {
+			color: #98C556;
+		}
+
+		.panel ul.auditorlist > li .glyphicon-question-sign, .votelink > .glyphicon-question-sign {
+			color: #D48625;
+		}
+
+		.panel ul.auditorlist > li .glyphicon-remove-sign, .votelink > .glyphicon-remove-sign {
+			color: #AF0331;
+		}
+
+		.panel ul.auditorlist > li .glyphicon-record, .votelink > .glyphicon-record {
+			color: #001A4A;
+		}
+
+.votelink {
+	display: inline-block;
+	margin: 3px 4px 0;
+	font-size: 18px;
+}
+
+.comment-panel-group {
+	white-space: nowrap;
+	margin-bottom: 6px;
+}
+
+	.comment-panel-group > p {
+		border-radius: 0;
+	}
+
+	.comment-panel-group p:first-child {
+		border-top-left-radius: 4px;
+		border-bottom-left-radius: 4px;
+	}
+
+	.comment-panel-group p:last-child {
+		border-top-right-radius: 4px;
+		border-bottom-right-radius: 4px;
+	}
+
+	.comment-panel-group .comment-author {
+		background-color: #001A4A;
+		display: table-cell;
+		height: 100%;
+		color: #FFF;
+		font-weight: bold;
+		padding: 4px 6px;
+		margin: 0;
+		min-width: 34px;
+	}
+
+	.comment-panel-group .comment-content {
+		padding: 3px;
+		display: table-cell;
+		white-space: normal;
+		width: 100%;
+	}
+
+	.comment-panel-group .comment-delete {
+		background-color: #DDD;
+		display: table-cell;
+		height: 100%;
+		font-weight: bold;
+		padding: 6px 6px 0px;
+		margin: 0;
+		width: 15px;
+	}
+
+.comment-delete a:hover {
+	color: #af0331 !important;
+}
+
+.comment-panel-group + .input-group {
+	margin-top: 15px;
+}
+
+	.comment-panel-group + .input-group .input-group-addon {
+		font-weight: bold;
+	}
+
+h3.panel-title {
+	font-size: 18px;
+}
+
+p.panel-title {
+	margin-top: 0;
+	margin-bottom: 0;
+	font-size: 12px;
+	color: inherit;
+}
+
+.panel-title-right {
+	margin-top: 0;
+	margin-bottom: 0;
+	font-size: 14px;
+	color: inherit;
+	float: right;
+	width: 10%;
+	min-width: 150px;
+}
+
+.prioicon {
+	float: left;
+}
+
+.panel-title-right p {
+	margin-top: 0;
+	margin-bottom: 2px;
+	text-align: right;
+}
+
+.panel-title-right a {
+	padding: 3px;
+	border-radius: 3px;
+	background-color: #FFF;
+	font-weight: bold;
+}
+
+.panel-title-right a:hover {
+	text-decoration: none;
+}
+
+.panel-footer {
+	background-color: #DDD;
+	border-top: 1px solid #605E5C;
+}
+
+
+/*IE-Hack*/
 @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
 	/* IE10+ specific styles */
 	.navbar-brand {
