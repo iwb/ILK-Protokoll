@@ -23,31 +23,32 @@
 			iconname = "glyphicon-remove-sign";
 			break;
 	}
-	<span class="glyphicon @iconname" title="@vk.GetDescription()"></span>
-}
+	<span class="glyphicon @iconname" title="@vk.GetDescription()"></span> } @*Kein Zeilenumbruch*@
+
+@helper GetVoteLink(VoteKind vk)
+{
+<a data-ajax="true" data-ajax-method="POST" data-ajax-mode="replace" data-ajax-update="#auditorlist_@ViewBag.TopicID" class="votelink" href="/Votes/_Register?TopicID=@ViewBag.TopicID&amp;vote=@vk.DisplayName()">@GetVoteIcon(vk)</a> } @*Kein Zeilenumbruch*@
 
 @helper GetVoteForm()
 {
-	<a data-ajax="true" data-ajax-mode="replace" data-ajax-update="#auditorlist_1" href="/Votes/_Register/@ViewBag.TopicID">@GetVoteIcon(VoteKind.None)</a>
-	<a data-ajax="true" data-ajax-mode="replace" data-ajax-update="#auditorlist_1" href="/Votes/_Register/@ViewBag.TopicID">@GetVoteIcon(VoteKind.Approved)</a>
-	<a data-ajax="true" data-ajax-mode="replace" data-ajax-update="#auditorlist_1" href="/Votes/_Register/@ViewBag.TopicID">@GetVoteIcon(VoteKind.Reservation)</a>
-	<a data-ajax="true" data-ajax-mode="replace" data-ajax-update="#auditorlist_1" href="/Votes/_Register/@ViewBag.TopicID">@GetVoteIcon(VoteKind.Rejected)</a>
+	@GetVoteLink(VoteKind.None) @GetVoteLink(VoteKind.Approved) @GetVoteLink(VoteKind.Reservation) @GetVoteLink(VoteKind.Rejected)
 }
-
-@Ajax.ActionLink("test", "_Register", "Votes", new AjaxOptions() { UpdateTargetId = "auditorlist_" + ViewBag.TopicID })
-
-@GetVoteForm()
 
 <ul class="auditorlist">
 	@{
 		Vote ownvote = ViewBag.ownvote as Vote;
 		if (ownvote != null)
 		{
-			<li>
-				<a href="#" rel="popover" data-container="body" data-toggle="popover" data-placement="bottom" data-content="Mr. T" id="asdf">
-					@GetVoteIcon(ownvote.Kind)@ViewBag.CurrentUser.Name
-				</a>
-				@*@Ajax.ActionLink(GetVoteIcon(ownvote.Kind) + " " + ViewBag.CurrentUser.Name, "_Register", "Votes", new AjaxOptions() { UpdateTargetId = "auditorlist_" + ViewBag.TopicID })*@
+			<li class="ownvote">
+
+				<div class="popover-markup">
+					<a href="#" class="trigger" id="ownvote_@ViewBag.TopicID">
+						@GetVoteIcon(ownvote.Kind)@ViewBag.CurrentUser.Name
+					</a>
+					<div class="content hide votelinks">
+						@GetVoteForm()
+					</div>
+				</div>				
 			</li>
 		}
 	}
@@ -60,3 +61,18 @@
 		</li>
 	}
 </ul>
+
+<script type="text/javascript">
+	if ($) {
+		$('.popover-markup > .trigger').popover({
+			html: true,
+			content: function () {
+				return $(this).parent().find('.content').html();
+			},
+			container: 'body',
+			placement: 'bottom'
+		}).click(function (e) {
+			e.stopPropagation();
+		});
+	}
+</script>

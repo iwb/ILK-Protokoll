@@ -28,7 +28,7 @@ namespace ILK_Protokoll.Models
 
 		public bool Equals(User other)
 		{
-			if (other == null)
+			if ((object)other == null)
 				return false;
 			else
 			{

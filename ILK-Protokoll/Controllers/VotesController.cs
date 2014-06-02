@@ -20,10 +20,12 @@ namespace ILK_Protokoll.Controllers
 
 			return PartialView("_Listing", displayvotes);
 		}
-		public ActionResult _RegisterVote(int TopicID, VoteKind vote)
+		public ActionResult _Register(int TopicID, VoteKind vote)
 		{
-
-			return View();
+			var cuid = GetCurrentUser().ID;
+			db.Votes.First(v => v.Voter.ID == cuid && v.Topic.ID == TopicID).Kind = vote;
+			db.SaveChanges();
+			return _List(db.Topics.Find(TopicID));
 		}
 	}
 }

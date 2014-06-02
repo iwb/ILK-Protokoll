@@ -20,12 +20,13 @@ namespace ILK_Protokoll.Models
 
 		public int ID { get; set; }
 		public virtual User Voter { get; set; }
+		public virtual Topic Topic { get; set; }
 		public VoteKind Kind { get; set; }
 	}
 
 	public enum VoteKind
 	{
-		[Description("Keine Stimme abgegeben")]
+		[Description("Keine Stimme")]
 		None,
 		[Description("Abgelehnt")]
 		Rejected,

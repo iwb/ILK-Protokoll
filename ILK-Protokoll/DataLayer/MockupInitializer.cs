@@ -21,6 +21,7 @@ namespace ILK_Protokoll.DataLayer
 				new User("re"),
 				new User("ro"),
 				new User("zh"),
+				new User("hm"),
 			};
 
 			var topic = new Topic
@@ -28,7 +29,7 @@ namespace ILK_Protokoll.DataLayer
 				Owner = users[4],
 				Title = "Mehr Kekse",
 				Proposal =
-					" Zukünftige Dissertationsthemen werden nur zugelassen, falls ein Zusammenhang mit Keksen deutlich erkennbar ist.",
+					"Zukünftige Dissertationsthemen werden nur zugelassen, falls ein Zusammenhang mit Keksen deutlich erkennbar ist.",
 				Description = "Das iwb sollte mehr Kekse backen.",
 				Priority = Priority.High
 			};
@@ -45,6 +46,7 @@ namespace ILK_Protokoll.DataLayer
 			topic.Votes.Add(new Vote(users[8], VoteKind.None));
 			topic.Votes.Add(new Vote(users[9], VoteKind.Approved));
 			topic.Votes.Add(new Vote(users[10], VoteKind.None));
+			topic.Votes.Add(new Vote(users[11], VoteKind.Reservation));
 
 			topic.Comments.Add(new Comment
 			{
@@ -72,6 +74,21 @@ namespace ILK_Protokoll.DataLayer
 
 			context.Topics.Add(topic);
 			context.SessionTypes.Add(sessiont);
+
+			topic = new Topic()
+			{
+				Owner = users[2],
+				Title = "Gleichberechtigung Kuchen <=> Kekse",
+				Proposal = "Kuchen und Kekse sind in allen belangen gleichberechtigt. Eine Gewährung von Vorteilen oder Benachteiligung eines Gebäcks aufgrund seiner Beschaffenheit ist in jedem Fall zu unterlassen.",
+				Description = "Eine Rücksprache mit der Gleichstellungsbeauftragten ergab, dass eine Förderung von Keksen gegen den Gleichstellungsgrundsatz verstößt. Daher sollte explizit klargestellt werden, dass beide Gebäckarten gleichberechtigt sind.",
+				Priority = Priority.High,
+				SessionType = sessiont
+			};
+
+			foreach (var u in users)
+				topic.Votes.Add(new Vote(u, VoteKind.None));
+
+			context.Topics.Add(topic);
 			context.SaveChanges();
 		}
 	}

@@ -5932,20 +5932,26 @@ a.list-group-item-danger {
 	font-size: 18px;
 }
 
-.panel ul.auditorlist > li .glyphicon-ok-sign {
+.panel ul.auditorlist > li .glyphicon-ok-sign, .votelink > .glyphicon-ok-sign {
 	color: #98C556;
 }
 
-.panel ul.auditorlist > li .glyphicon-question-sign {
+.panel ul.auditorlist > li .glyphicon-question-sign, .votelink > .glyphicon-question-sign {
 	color: #D48625;
 }
 
-.panel ul.auditorlist > li .glyphicon-remove-sign {
+.panel ul.auditorlist > li .glyphicon-remove-sign, .votelink > .glyphicon-remove-sign {
 	color: #AF0331;
 }
 
-.panel ul.auditorlist > li .glyphicon-record {
+.panel ul.auditorlist > li .glyphicon-record, .votelink > .glyphicon-record {
 	color: #001A4A;
+}
+
+.votelink {
+	display: inline-block;
+	margin: 3px 4px 0;
+	font-size: 18px;
 }
 
 .comment-panel-group {
