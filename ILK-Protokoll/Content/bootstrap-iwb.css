@@ -4841,7 +4841,6 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 	font-size: 20px;
 	vertical-align: middle;
 	height: 40px;
-	max-width: 50px;
 	padding: 5px 12px;
 	margin: auto 5px;
 	background-color: #FFF;

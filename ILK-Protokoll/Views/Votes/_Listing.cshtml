@@ -23,15 +23,20 @@
 			iconname = "glyphicon-remove-sign";
 			break;
 	}
-	<span class="glyphicon @iconname" title="@vk.GetDescription()"></span> } @*Kein Zeilenumbruch*@
+	<span class="glyphicon @iconname" title="@vk.GetDescription()"></span>
+}
 
 @helper GetVoteLink(VoteKind vk)
 {
-<a data-ajax="true" data-ajax-method="POST" data-ajax-mode="replace" data-ajax-update="#auditorlist_@ViewBag.TopicID" class="votelink" href="/Votes/_Register?TopicID=@ViewBag.TopicID&amp;vote=@vk.DisplayName()">@GetVoteIcon(vk)</a> } @*Kein Zeilenumbruch*@
+	<a data-ajax="true" data-ajax-method="POST" data-ajax-mode="replace" data-ajax-update="#auditorlist_@ViewBag.TopicID" class="votelink" href="/Votes/_Register?TopicID=@ViewBag.TopicID&amp;vote=@vk.DisplayName()">@GetVoteIcon(vk)</a>
+}
 
 @helper GetVoteForm()
 {
-	@GetVoteLink(VoteKind.None) @GetVoteLink(VoteKind.Approved) @GetVoteLink(VoteKind.Reservation) @GetVoteLink(VoteKind.Rejected)
+	@GetVoteLink(VoteKind.None)
+	@GetVoteLink(VoteKind.Approved)
+	@GetVoteLink(VoteKind.Reservation)
+	@GetVoteLink(VoteKind.Rejected)
 }
 
 <ul class="auditorlist">
@@ -48,11 +53,10 @@
 					<div class="content hide votelinks">
 						@GetVoteForm()
 					</div>
-				</div>				
+				</div>
 			</li>
 		}
 	}
-
 	@foreach (Vote vote in Model)
 	{
 		<li>
@@ -63,7 +67,7 @@
 </ul>
 
 <script type="text/javascript">
-	if ($) {
+	if (window.jQuery) {
 		$('.popover-markup > .trigger').popover({
 			html: true,
 			content: function () {
