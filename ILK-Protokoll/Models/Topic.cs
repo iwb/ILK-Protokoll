@@ -24,6 +24,8 @@ namespace ILK_Protokoll.Models
 
 		public void IncorporateUpdates(TopicEdit updates)
 		{
+			if (!IsEditable)
+				throw new InvalidOperationException("Diese Diskussion ist beendet und kann daher nicht bearbeitet werden.");
 			// ReSharper disable DoNotCallOverridableMethodsInConstructor
 			Attachments = updates.Attachments;
 			Comments = new List<Comment>();
@@ -41,6 +43,8 @@ namespace ILK_Protokoll.Models
 
 		public void IncorporateHistory(TopicHistory history)
 		{
+			if (!IsEditable)
+				throw new InvalidOperationException("Diese Diskussion ist beendet und kann daher nicht bearbeitet werden.");
 			// ReSharper disable DoNotCallOverridableMethodsInConstructor
 			Description = history.Description;
 			OwnerID = history.OwnerID;
@@ -51,7 +55,7 @@ namespace ILK_Protokoll.Models
 			// ReSharper restore DoNotCallOverridableMethodsInConstructor
 		}
 
-		[Display(Name = "DiPuN")]
+		[Display(Name = "Topic-ID")]
 		public int ID { get; set; }
 
 		[Display(Name = "Besitzer")]
@@ -111,7 +115,7 @@ namespace ILK_Protokoll.Models
 		[Display(Name = "PDF-Report")]
 		public virtual Attachment Report { get; set; }
 
-		[Display(Name = "Erstellt")]
+		[Display(Name = "Erstelldatum")]
 		[Required]
 		public DateTime Created { get; set; }
 
@@ -120,8 +124,17 @@ namespace ILK_Protokoll.Models
 		///    Es ist nur derjenige gültig, der hier das spätestes Datum besitzt.
 		///    Der Rest sind archivierte Versionen desselben Diskussionspunkts.
 		/// </summary>
-		[Display(Name = "Geändert")]
+		[Display(Name = "Änderungsdatum")]
 		[Required]
 		public DateTime ValidFrom { get; set; }
+
+		[NotMapped]
+		public bool IsEditable
+		{
+			get
+			{
+				return Decision == null;
+			}
+		}
 	}
 }

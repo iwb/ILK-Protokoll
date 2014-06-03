@@ -6,12 +6,15 @@ using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Linq;
 using ILK_Protokoll.Models;
 using ILK_Protokoll.util;
+using System.Data.Entity.Infrastructure.Annotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ILK_Protokoll.DataLayer
 {
 	public class DataContext : DbContext
 	{
-		public DataContext() : base("DataContext")
+		public DataContext()
+			: base("DataContext")
 		{
 		}
 
@@ -26,6 +29,11 @@ namespace ILK_Protokoll.DataLayer
 		protected override void OnModelCreating(DbModelBuilder modelBuilder)
 		{
 			modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
+
+			modelBuilder
+			 .Entity<TopicHistory>()
+			 .Property(t => t.TopicID)
+			 .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute()));
 		}
 
 		/// <summary>
@@ -39,7 +47,7 @@ namespace ILK_Protokoll.DataLayer
 				currentUser.ToEnumerable()
 					.Concat(Users.Where(u => u.ID != currentUser.ID).ToList().OrderBy(u => u.Name, StringComparer.CurrentCultureIgnoreCase));
 		}
-		
+
 		public Topic GetTopicAt(int id, DateTime time)
 		{
 			var t = Topics.Find(id);

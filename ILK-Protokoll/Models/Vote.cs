@@ -26,7 +26,7 @@ namespace ILK_Protokoll.Models
 
 	public enum VoteKind
 	{
-		[Description("Keine Stimme")]
+		[Description("Neutral")]
 		None,
 		[Description("Abgelehnt")]
 		Rejected,

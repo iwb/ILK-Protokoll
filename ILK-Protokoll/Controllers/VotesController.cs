@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using ILK_Protokoll.util;
 
 namespace ILK_Protokoll.Controllers
 {
@@ -24,6 +25,18 @@ namespace ILK_Protokoll.Controllers
 		{
 			var cuid = GetCurrentUser().ID;
 			db.Votes.First(v => v.Voter.ID == cuid && v.Topic.ID == TopicID).Kind = vote;
+			db.SaveChanges();
+			return _List(db.Topics.Find(TopicID));
+		}
+		public ActionResult _Register2(int TopicID, int VoterID, VoteKind vote)
+		{
+			var voter = db.Users.Find(VoterID);
+			db.Votes.First(v => v.Voter.ID == voter.ID && v.Topic.ID == TopicID).Kind = vote;
+
+
+			var message = string.Format("In Vertretung für {0} abgestimmt mit \"{1}\".", voter.Name, vote.GetDescription());
+
+			db.Comments.Add(new Comment() { Author = db.Users.First(u => u.Name == "sys"), TopicID = TopicID, Content = message });
 			db.SaveChanges();
 			return _List(db.Topics.Find(TopicID));
 		}
