@@ -33,10 +33,9 @@ namespace ILK_Protokoll.Controllers
 			var voter = db.Users.Find(VoterID);
 			db.Votes.First(v => v.Voter.ID == voter.ID && v.Topic.ID == TopicID).Kind = vote;
 
-
 			var message = string.Format("In Vertretung für {0} abgestimmt mit \"{1}\".", voter.Name, vote.GetDescription());
 
-			db.Comments.Add(new Comment() { Author = db.Users.First(u => u.Name == "sys"), TopicID = TopicID, Content = message });
+			db.Comments.Add(new Comment() { Author = GetCurrentUser(), TopicID = TopicID, Content = message });
 			db.SaveChanges();
 			return _List(db.Topics.Find(TopicID));
 		}

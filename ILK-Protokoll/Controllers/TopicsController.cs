@@ -25,7 +25,7 @@ namespace ILK_Protokoll.Controllers
 		{
 			if (id == null)
 			{
-				return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Eine TopicID ist erforderlich.");
+				return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Für diesen Vorgang ist eine TopicID ist erforderlich.");
 			}
 			Topic topic = db.Topics.Find(id.Value);
 

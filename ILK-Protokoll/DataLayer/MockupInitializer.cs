@@ -10,7 +10,6 @@ namespace ILK_Protokoll.DataLayer
 		{
 			var users = new List<User>
 			{
-				new User("sys"),
 				new User("hz"),
 				new User("sw"),
 				new User("gf"),
