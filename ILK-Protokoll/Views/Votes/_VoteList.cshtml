@@ -25,18 +25,15 @@
 	}
 	<span class="glyphicon @iconname" title="@vk.GetDescription()"></span>
 }
-
+@* Für die eigene Stimme *@
 @helper GetVoteLink(VoteKind vk)
 {
 	<a data-ajax="true" data-ajax-method="POST" data-ajax-mode="replace" data-ajax-update="#auditorlist_@ViewBag.TopicID" class="votelink" href="/Votes/_Register?TopicID=@ViewBag.TopicID&amp;vote=@vk.DisplayName()">@GetVoteIcon(vk)</a>
 }
-
-@helper GetVoteForm()
+@* Für Abstimmen in Vertretung *@
+@helper GetVoteLink2(User voter, VoteKind vk)
 {
-	@GetVoteLink(VoteKind.None)
-	@GetVoteLink(VoteKind.Approved)
-	@GetVoteLink(VoteKind.Reservation)
-	@GetVoteLink(VoteKind.Rejected)
+	<a data-ajax="true" data-ajax-method="POST" data-ajax-mode="replace" data-ajax-update="#auditorlist_@ViewBag.TopicID" class="votelink" href="/Votes/_Register2?TopicID=@ViewBag.TopicID&amp;VoterID=@voter.ID&amp;vote=@vk.DisplayName()">@GetVoteIcon(vk)</a>
 }
 
 <ul class="auditorlist">
@@ -45,24 +42,48 @@
 		if (ownvote != null)
 		{
 			<li class="ownvote">
-
 				<div class="popover-markup">
 					<a class="trigger" id="ownvote_@ViewBag.TopicID">
-						@GetVoteIcon(ownvote.Kind)@ViewBag.CurrentUser.Name
+						@GetVoteIcon(ownvote.Kind) @ViewBag.CurrentUser.Name
 					</a>
 					<div class="content hide votelinks">
-						@GetVoteForm()
+						@GetVoteLink(VoteKind.None)
+						@GetVoteLink(VoteKind.Approved)
+						@GetVoteLink(VoteKind.Reservation)
+						@GetVoteLink(VoteKind.Rejected)
 					</div>
 				</div>
 			</li>
 		}
 	}
-	@foreach (Vote vote in Model)
+	@if (ViewBag.LinkAllAuditors != null && (bool)ViewBag.LinkAllAuditors)
 	{
-		<li>
-			@GetVoteIcon(vote.Kind)
-			@vote.Voter
-		</li>
+		foreach (Vote vote in Model)
+		{
+			<li>
+				<div class="popover-markup">
+					<a class="trigger">
+						@GetVoteIcon(vote.Kind) @vote.Voter
+					</a>
+					<div class="content hide votelinks">
+						@GetVoteLink2(vote.Voter, VoteKind.None)
+						@GetVoteLink2(vote.Voter, VoteKind.Approved)
+						@GetVoteLink2(vote.Voter, VoteKind.Reservation)
+						@GetVoteLink2(vote.Voter, VoteKind.Rejected)
+					</div>
+				</div>
+			</li>
+		}
+	}
+	else
+	{
+		foreach (Vote vote in Model)
+		{
+			<li>
+				@GetVoteIcon(vote.Kind)
+				@vote.Voter
+			</li>
+		}
 	}
 </ul>
 

@@ -10,11 +10,12 @@ namespace ILK_Protokoll.Controllers
 {
 	public class VotesController : BaseController
 	{
-		public ActionResult _List(Topic t)
+		public ActionResult _List(Topic t, bool linkAllAuditors = false)
 		{
 			ViewBag.ownvote = t.Votes.SingleOrDefault(v => v.Voter == GetCurrentUser());
 			ViewBag.TopicID = t.ID;
 			ViewBag.CurrentUser = GetCurrentUser();
+			ViewBag.LinkAllAuditors = linkAllAuditors;
 
 			var displayvotes = t.Votes.Where(v => v.Voter != GetCurrentUser())
 				.OrderBy(v => v.Voter.Name, StringComparer.CurrentCultureIgnoreCase);

@@ -77,30 +77,24 @@
 	</div>
 </div>
 
-<div class="row">
-	<div class="col-md-6">
-		<div class="panel panel-primary" style="background-color: #DDD">
-			<div class="panel-heading">
-				<h3 class="panel-title">@Html.DisplayNameFor(model => model.Votes)</h3>
-			</div>
-			<div class="panel-body" id="auditorlist_@Model.ID">
-				@Html.Action("_List", "Votes", Model)
-			</div>
-
-		</div>
+<div class="panel panel-primary" style="background-color: #DDD">
+	<div class="panel-heading">
+		<h3 class="panel-title">@Html.DisplayNameFor(model => model.Votes)</h3>
 	</div>
-
-	<div class="col-md-6">
-		<div class="panel panel-primary" style="background-color: #B7BCD6">
-			<div class="panel-heading">
-				<h3 class="panel-title">@Html.DisplayNameFor(model => model.Comments)</h3>
-			</div>
-			<div class="panel-body" id="comments_@Model.ID">
-				@Html.Action("_List", "Comments", Model)
-			</div>
-		</div>
+	<div class="panel-body" id="auditorlist_@Model.ID">
+		@Html.Action("_List", "Votes", new { t = Model, linkAllAuditors = true })
 	</div>
 </div>
+
+<div class="panel panel-primary" style="background-color: #B7BCD6">
+	<div class="panel-heading">
+		<h3 class="panel-title">@Html.DisplayNameFor(model => model.Comments)</h3>
+	</div>
+	<div class="panel-body" id="comments_@Model.ID">
+		@Html.Action("_List", "Comments", Model)
+	</div>
+</div>
+
 
 <div class="row">
 	<div class="col-md-12">
@@ -115,7 +109,7 @@
 			}
 			else
 			{
-				<table class="table">
+				<table class="table table-hover table-striped">
 					<thead>
 						<tr>
 							<th>&nbsp;</th>
@@ -129,7 +123,27 @@
 						@foreach (var file in Model.Attachments)
 						{
 							<tr>
-								<td>Icon</td>
+								<td><img src="~/img/fileicons/xlsx.png" /></td>
+								<td>@file.Name</td>
+								<td>@file.Uploader.Name</td>
+								<td>@file.Created.ToString("g")</td>
+								<td class="actions">
+									<a href=""><span class="glyphicon glyphicon-edit" title="Name bearbeiten"></span></a>
+									<a href=""><span class="glyphicon glyphicon-remove" title="Datei löschen"></span></a>
+								</td>
+							</tr>
+							<tr>
+								<td><img src="~/img/fileicons/xlsx.png" /></td>
+								<td>@file.Name</td>
+								<td>@file.Uploader.Name</td>
+								<td>@file.Created.ToString("g")</td>
+								<td class="actions">
+									<a href=""><span class="glyphicon glyphicon-edit" title="Name bearbeiten"></span></a>
+									<a href=""><span class="glyphicon glyphicon-remove" title="Datei löschen"></span></a>
+								</td>
+							</tr>
+							<tr>
+								<td><img src="~/img/fileicons/xlsx.png" /></td>
 								<td>@file.Name</td>
 								<td>@file.Uploader.Name</td>
 								<td>@file.Created.ToString("g")</td>

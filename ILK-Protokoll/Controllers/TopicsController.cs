@@ -24,16 +24,14 @@ namespace ILK_Protokoll.Controllers
 		public ActionResult Details(int? id)
 		{
 			if (id == null)
-			{
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Für diesen Vorgang ist eine TopicID ist erforderlich.");
-			}
+
 			Topic topic = db.Topics.Find(id.Value);
+			if (topic == null)
+				return HttpNotFound();
 
 			ViewBag.TopicHistory = db.TopicHistory.Where(t => t.TopicID == id.Value).ToList();
-			if (topic == null)
-			{
-				return HttpNotFound();
-			}
+
 			return View(topic);
 		}
 
