@@ -2,7 +2,7 @@
 
 <div class="comment-panel-group">
 	<p class="comment-author" title="@Model.Created.ToString("F")">@Model.Author</p>
-	<p class="panel comment-content">sw hat in Vertretung für kj abgestimmt mit "Angenommen".</p>
+	<p class="panel comment-content">@Model.Content</p>
 	@if (Model.ID == ViewBag.AllowDeletion)
 	{
 		<p class="comment-delete">

@@ -126,37 +126,21 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							<td>Icon</td>
-							<td>Kuchen_Bestellliste.xlsx</td>
-							<td>hz</td>
-							<td>20.05.2014 15:23</td>
-							<td class="actions">
-								<a href=""><span class="glyphicon glyphicon-edit" title="Name bearbeiten"></span></a>
-								<a href=""><span class="glyphicon glyphicon-remove" title="Datei löschen"></span></a>
-							</td>
-						</tr>
-						<tr>
-							<td>January</td>
-							<td>$100</td>
-							<td>January</td>
-							<td>$100</td>
-							<td>
-								<span class="glyphicon glyphicon-edit" title="Name bearbeiten"></span>
-								<span class="glyphicon glyphicon-remove" title="Datei löschen"></span>
-							</td>
-						</tr>
-						<tr>
-							<td>February</td>
-							<td>$80</td>
-							<td>February</td>
-							<td>$80</td>
-							<td>
-								<span class="glyphicon glyphicon-edit" title="Name bearbeiten"></span>
-								<span class="glyphicon glyphicon-remove" title="Datei löschen"></span>
-							</td>
-						</tr>
+						@foreach (var file in Model.Attachments)
+						{
+							<tr>
+								<td>Icon</td>
+								<td>@file.Name</td>
+								<td>@file.Uploader.Name</td>
+								<td>@file.Created.ToString("g")</td>
+								<td class="actions">
+									<a href=""><span class="glyphicon glyphicon-edit" title="Name bearbeiten"></span></a>
+									<a href=""><span class="glyphicon glyphicon-remove" title="Datei löschen"></span></a>
+								</td>
+							</tr>
+						}
 					</tbody>
+
 				</table>
 			}
 			<div class="panel-footer" id="">Formular</div>

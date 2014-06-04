@@ -162,7 +162,7 @@ textarea.form-control {
 	content: "\e080";
 }
 
-.panel-collapse-heading a:hover {
+a:hover {
 	text-decoration: none;
 	cursor: pointer;
 }
@@ -249,7 +249,8 @@ textarea.form-control {
 }
 
 .comment-delete a:hover {
-	color: #af0331 !important;
+	color: #AF0331 !important;
+	text-decoration: none;
 }
 
 .comment-panel-group + .input-group {
@@ -305,6 +306,16 @@ p.panel-title {
 .panel-footer {
 	background-color: #DDD;
 	border-top: 1px solid #605E5C;
+}
+
+.actions a:link {
+	color: #000;
+}
+.actions a:hover {
+	color: #388085;
+}
+.actions a:hover .glyphicon-remove {
+	color: #AF0331;
 }
 
 
