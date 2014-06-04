@@ -3,7 +3,7 @@
 <div class="panel-body">
 	@foreach (var comment in Model)
 	{
-		Html.RenderPartial("~/Views/Shared/_Comment.cshtml", comment);
+		Html.RenderPartial("~/Views/Comments/_Comment.cshtml", comment);
 	}
 
 	@Html.Action("_CreateForm", "Comments", new { TopicID = ViewBag.TopicID })

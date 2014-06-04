@@ -19,7 +19,7 @@ namespace ILK_Protokoll.Controllers
 			var displayvotes = t.Votes.Where(v => v.Voter != GetCurrentUser())
 				.OrderBy(v => v.Voter.Name, StringComparer.CurrentCultureIgnoreCase);
 
-			return PartialView("_Listing", displayvotes);
+			return PartialView("_VoteList", displayvotes);
 		}
 		public ActionResult _Register(int TopicID, VoteKind vote)
 		{

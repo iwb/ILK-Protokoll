@@ -21,7 +21,7 @@ namespace ILK_Protokoll.Controllers
 			var lastcomment = comments.LastOrDefault();
 			ViewBag.AllowDeletion = (lastcomment != null) && (lastcomment.Author == GetCurrentUser()) ? lastcomment.ID : -1;
 
-			return PartialView("_Listing", comments);
+			return PartialView("_CommentList", comments);
 		}
 
 		public PartialViewResult _CreateForm(int TopicID)

@@ -195,8 +195,8 @@
     <Content Include="Views\Topics\Details.cshtml" />
     <Content Include="Views\Topics\Edit.cshtml" />
     <Content Include="Views\Topics\Index.cshtml" />
-    <Content Include="Views\Shared\_Topic.cshtml" />
-    <Content Include="Views\Shared\_Comment.cshtml" />
+    <Content Include="Views\Topics\_Topic.cshtml" />
+    <Content Include="Views\Comments\_Comment.cshtml" />
     <Content Include="Views\SessionTypes\Create.cshtml" />
     <Content Include="Views\SessionTypes\Delete.cshtml" />
     <Content Include="Views\SessionTypes\Details.cshtml" />
@@ -204,8 +204,8 @@
     <Content Include="Views\SessionTypes\Index.cshtml" />
     <Content Include="Views\Comments\_CreateForm.cshtml" />
     <Content Include="Scripts\jquery-2.1.1.min.map" />
-    <Content Include="Views\Comments\_Listing.cshtml" />
-    <Content Include="Views\Votes\_Listing.cshtml" />
+    <Content Include="Views\Comments\_CommentList.cshtml" />
+    <Content Include="Views\Votes\_VoteList.cshtml" />
     <Content Include="Scripts\respond.min.js.map">
       <DependentUpon>respond.min.js</DependentUpon>
     </Content>
