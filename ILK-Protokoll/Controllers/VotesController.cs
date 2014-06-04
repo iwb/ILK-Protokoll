@@ -22,23 +22,23 @@ namespace ILK_Protokoll.Controllers
 
 			return PartialView("_VoteList", displayvotes);
 		}
-		public ActionResult _Register(int TopicID, VoteKind vote)
+		public ActionResult _Register(int topicID, VoteKind vote)
 		{
 			var cuid = GetCurrentUser().ID;
-			db.Votes.First(v => v.Voter.ID == cuid && v.Topic.ID == TopicID).Kind = vote;
+			db.Votes.First(v => v.Voter.ID == cuid && v.Topic.ID == topicID).Kind = vote;
 			db.SaveChanges();
-			return _List(db.Topics.Find(TopicID));
+			return _List(db.Topics.Find(topicID));
 		}
-		public ActionResult _Register2(int TopicID, int VoterID, VoteKind vote)
+		public ActionResult _Register2(int topicID, int voterID, VoteKind vote)
 		{
-			var voter = db.Users.Find(VoterID);
-			db.Votes.First(v => v.Voter.ID == voter.ID && v.Topic.ID == TopicID).Kind = vote;
+			var voter = db.Users.Find(voterID);
+			db.Votes.First(v => v.Voter.ID == voter.ID && v.Topic.ID == topicID).Kind = vote;
 
 			var message = string.Format("In Vertretung für {0} abgestimmt mit \"{1}\".", voter.Name, vote.GetDescription());
 
-			db.Comments.Add(new Comment() { Author = GetCurrentUser(), TopicID = TopicID, Content = message });
+			db.Comments.Add(new Comment() { Author = GetCurrentUser(), TopicID = topicID, Content = message });
 			db.SaveChanges();
-			return _List(db.Topics.Find(TopicID));
+			return _List(db.Topics.Find(topicID));
 		}
 	}
 }

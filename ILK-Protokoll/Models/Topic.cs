@@ -113,7 +113,7 @@ namespace ILK_Protokoll.Models
 		public virtual ICollection<Attachment> Attachments { get; set; }
 
 		[Display(Name = "PDF-Report")]
-		public virtual Attachment Report { get; set; }
+		public virtual Report Report { get; set; }
 
 		[Display(Name = "Erstelldatum")]
 		[Required]

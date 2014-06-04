@@ -136,6 +136,7 @@
     <Compile Include="Models\Comment.cs" />
     <Compile Include="Models\Decision.cs" />
     <Compile Include="Models\Duty.cs" />
+    <Compile Include="Models\Report.cs" />
     <Compile Include="Models\TopicHistory.cs" />
     <Compile Include="util\HelperMethods.cs" />
     <Compile Include="Models\Priority.cs" />
@@ -282,6 +283,8 @@
       <DependentUpon>jquery-2.1.1.min.js</DependentUpon>
     </Content>
     <Content Include="Views\Attachments\_AttachmentList.cshtml" />
+    <Content Include="Views\Attachments\_UploadForm.cshtml" />
+    <Content Include="Views\Attachments\_Attachment.cshtml" />
     <None Include="Web.Integration.config" />
     <None Include="Web.Testing.config" />
   </ItemGroup>

@@ -109,55 +109,9 @@
 			}
 			else
 			{
-				<table class="table table-hover table-striped">
-					<thead>
-						<tr>
-							<th>&nbsp;</th>
-							<th>Name</th>
-							<th>Besitzer</th>
-							<th>Hochgeladen am</th>
-							<th>Aktionen</th>
-						</tr>
-					</thead>
-					<tbody>
-						@foreach (var file in Model.Attachments)
-						{
-							<tr>
-								<td><img src="~/img/fileicons/xlsx.png" /></td>
-								<td>@file.Name</td>
-								<td>@file.Uploader.Name</td>
-								<td>@file.Created.ToString("g")</td>
-								<td class="actions">
-									<a href=""><span class="glyphicon glyphicon-edit" title="Name bearbeiten"></span></a>
-									<a href=""><span class="glyphicon glyphicon-remove" title="Datei löschen"></span></a>
-								</td>
-							</tr>
-							<tr>
-								<td><img src="~/img/fileicons/xlsx.png" /></td>
-								<td>@file.Name</td>
-								<td>@file.Uploader.Name</td>
-								<td>@file.Created.ToString("g")</td>
-								<td class="actions">
-									<a href=""><span class="glyphicon glyphicon-edit" title="Name bearbeiten"></span></a>
-									<a href=""><span class="glyphicon glyphicon-remove" title="Datei löschen"></span></a>
-								</td>
-							</tr>
-							<tr>
-								<td><img src="~/img/fileicons/xlsx.png" /></td>
-								<td>@file.Name</td>
-								<td>@file.Uploader.Name</td>
-								<td>@file.Created.ToString("g")</td>
-								<td class="actions">
-									<a href=""><span class="glyphicon glyphicon-edit" title="Name bearbeiten"></span></a>
-									<a href=""><span class="glyphicon glyphicon-remove" title="Datei löschen"></span></a>
-								</td>
-							</tr>
-						}
-					</tbody>
-
-				</table>
+				@Html.Action("_List", "Attachments", new { topicID = Model.ID})
 			}
-			<div class="panel-footer" id="">Formular</div>
+			@Html.Action("_UploadForm", "Attachments", new { topicID = Model.ID })
 		</div>
 	</div>
 </div>

@@ -1,89 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using ILK_Protokoll.Models;
 
 namespace ILK_Protokoll.Controllers
 {
 	public class AttachmentsController : BaseController
 	{
 		// GET: Attachments
-		public ActionResult Index()
+		public ActionResult _List(int? topicID)
 		{
-			return View();
+			var files = db.Attachments.Where(a => a.TopicID == topicID).Include(a => a.Uploader).ToList();
+			ViewBag.TopicID = topicID;
+			ViewBag.CurrentUser = GetCurrentUser();
+			return PartialView("_AttachmentList", files);
 		}
 
-		// GET: Attachments/Details/5
-		public ActionResult Details(int id)
+		public PartialViewResult _UploadForm(int topicID)
 		{
-			return View();
-		}
-
-		// GET: Attachments/Create
-		public ActionResult Create()
-		{
-			return View();
-		}
-
-		// POST: Attachments/Create
-		[HttpPost]
-		public ActionResult Create(FormCollection collection)
-		{
-			try
-			{
-				// TODO: Add insert logic here
-
-				return RedirectToAction("Index");
-			}
-			catch
-			{
-				return View();
-			}
-		}
-
-		// GET: Attachments/Edit/5
-		public ActionResult Edit(int id)
-		{
-			return View();
-		}
-
-		// POST: Attachments/Edit/5
-		[HttpPost]
-		public ActionResult Edit(int id, FormCollection collection)
-		{
-			try
-			{
-				// TODO: Add update logic here
-
-				return RedirectToAction("Index");
-			}
-			catch
-			{
-				return View();
-			}
-		}
-
-		// GET: Attachments/Delete/5
-		public ActionResult Delete(int id)
-		{
-			return View();
-		}
-
-		// POST: Attachments/Delete/5
-		[HttpPost]
-		public ActionResult Delete(int id, FormCollection collection)
-		{
-			try
-			{
-				// TODO: Add delete logic here
-
-				return RedirectToAction("Index");
-			}
-			catch
-			{
-				return View();
-			}
+			var a = new Attachment() { TopicID = topicID };
+			return PartialView("_UploadForm", a);
 		}
 	}
 }

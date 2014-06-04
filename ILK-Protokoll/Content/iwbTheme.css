@@ -6049,6 +6049,9 @@ p.panel-title {
 .actions a:hover .glyphicon-remove {
   color: #AF0331;
 }
+.file-table td {
+  vertical-align: middle !important;
+}
 /*IE-Hack*/
 @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
   /* IE10+ specific styles */

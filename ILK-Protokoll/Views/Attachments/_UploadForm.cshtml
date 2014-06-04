@@ -1,0 +1,11 @@
+﻿@model ILK_Protokoll.Models.Attachment
+
+<div class="panel-footer">
+	@using (Ajax.BeginForm("_Upload", "Attachments", new AjaxOptions() { UpdateTargetId = "attachments_" + Model.TopicID }))
+	{
+		@Html.AntiForgeryToken()
+		@Html.HiddenFor(model => model.TopicID)
+
+		<input type="file">
+	}
+</div>

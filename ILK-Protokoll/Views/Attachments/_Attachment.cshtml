@@ -1,0 +1,12 @@
+﻿@model ILK_Protokoll.Models.Attachment
+
+<tr>
+	<td><img src="~/img/fileicons/xlsx.png" /></td>
+	<td>@Model.Name</td>
+	<td>@Model.Uploader.Name</td>
+	<td>@Model.Created.ToString("g")</td>
+	<td class="actions">
+		<a href=""><span class="glyphicon glyphicon-edit" title="Name bearbeiten"></span></a>
+		<a href=""><span class="glyphicon glyphicon-remove" title="Datei löschen"></span></a>
+	</td>
+</tr>

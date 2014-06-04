@@ -7,28 +7,24 @@ using System.Web;
 
 namespace ILK_Protokoll.Models
 {
-	public class Attachment
+	public class Report
 	{
 		public int ID { get; set; }
 
 
 		[Display(Name = "Diskussion")]
-		[InverseProperty("Attachments")]
 		public int? TopicID { get; set; }
 
 		[Display(Name = "Dateiname")]
 		public string Name { get; set; }
 
-		[Display(Name = "Ersteller")]
-		public User Uploader { get; set; }
-
-		[Display(Name = "Uploaddatum")]
+		[Display(Name = "Erstelldatum")]
 		public DateTime Created { get; set; }
 
 		[NotMapped]
 		public string URL
 		{
-			get { return string.Format(@"\\02mucilk\Attachments\{0}_{1}", ID, Name); }
+			get { return string.Format(@"\\02mucilk\Reports\{0}_{1}", ID, Name); }
 		}
 	}
 }
