@@ -1,6 +1,6 @@
 /*
-* pikock http://www.pikock.com/ , autreplanete http://www.autreplanete.com/ 
-*  http://pikock.github.io/bootstrap-magic/app/index.html#!/editor
+* Tool zur Erstellung eines Farbschemas:
+* http://pikock.github.io/bootstrap-magic/app/index.html#!/editor
 **/
 
 
@@ -121,7 +121,7 @@
 @table-condensed-cell-padding: 5px;
 @table-bg: transparent;
 @table-bg-accent: #f9f9f9;
-@table-bg-hover: #f5f5f5;
+@table-bg-hover: @gray-light;
 @table-bg-active: @table-bg-hover;
 @table-border-color: #ddd;
 
@@ -133,7 +133,7 @@
 @navbar-default-bg: #f8f8f8;
 @navbar-default-border: darken(@navbar-default-bg, 6.5%);
 @navbar-border-radius: @border-radius-base;
-@navbar-padding-horizontal: floor(@grid-gutter-width / 2);
+@navbar-padding-horizontal: 0;
 @navbar-padding-vertical: ((@navbar-height - @line-height-computed) / 2);
 @navbar-default-link-color: #777;
 @navbar-default-link-hover-color: #333;
@@ -148,6 +148,7 @@
 @navbar-default-toggle-hover-bg: #ddd;
 @navbar-default-toggle-icon-bar-bg: #888;
 @navbar-default-toggle-border-color: #ddd;
+@navbar-inverse-bg: @brand-primary;
 
 
 // Navs Tabs
@@ -247,7 +248,7 @@
 
 
 // Sprites
-@icon-font-path: '../fonts/';
+@icon-font-path: 'fonts/';
 @icon-font-name: glyphicons-halflings-regular;
 
 

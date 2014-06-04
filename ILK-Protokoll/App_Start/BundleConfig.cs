@@ -22,8 +22,7 @@ namespace ILK_Protokoll
 					  "~/Scripts/respond.js"));
 
 			bundles.Add(new StyleBundle("~/Content/css").Include(
-					  "~/Content/bootstrap-iwb.css",
-					  "~/Content/site.css"));
+					  "~/Content/iwbTheme.css"));
 
 			// Festlegen von EnableOptimizations auf false für Debugzwecke. Weitere Informationen
 			// finden Sie unter http://go.microsoft.com/fwlink/?LinkId=301862
