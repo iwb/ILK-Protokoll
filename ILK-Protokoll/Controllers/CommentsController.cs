@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Data;
-using System.Data.Entity;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using ILK_Protokoll.DataLayer;
 using ILK_Protokoll.Models;
-using System.Collections.Generic;
 
 namespace ILK_Protokoll.Controllers
 {
@@ -15,10 +11,10 @@ namespace ILK_Protokoll.Controllers
 	{
 		public PartialViewResult _List(Topic t)
 		{
-			var comments = t.Comments.OrderBy(c => c.Created).ToList();
+			List<Comment> comments = t.Comments.OrderBy(c => c.Created).ToList();
 			ViewBag.TopicID = t.ID;
 
-			var lastcomment = comments.LastOrDefault();
+			Comment lastcomment = comments.LastOrDefault();
 			ViewBag.AllowDeletion = (lastcomment != null) && (lastcomment.Author == GetCurrentUser()) ? lastcomment.ID : -1;
 
 			return PartialView("_CommentList", comments);
@@ -26,7 +22,7 @@ namespace ILK_Protokoll.Controllers
 
 		public PartialViewResult _CreateForm(int TopicID)
 		{
-			var c = new Comment() { TopicID = TopicID };
+			var c = new Comment { TopicID = TopicID };
 			return PartialView("_CreateForm", c);
 		}
 
@@ -45,8 +41,10 @@ namespace ILK_Protokoll.Controllers
 				Topic t = db.Topics.Find(comment.TopicID);
 				return _List(t);
 			}
-			this.ControllerContext.HttpContext.Response.StatusCode = 400;
-			return new EmptyResult();
+			else
+			{
+				return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Dieser Kommentar kann nicht erstellt werden: Es fehlen Informationen.");
+			}
 		}
 
 
@@ -54,17 +52,19 @@ namespace ILK_Protokoll.Controllers
 		public ActionResult _Delete(int id)
 		{
 			Comment comment = db.Comments.Find(id);
-			Topic t = db.Topics.Find(comment.TopicID);
-			var lastcomment = t.Comments.OrderBy(c => c.Created).Last();
-
 			if (comment == null)
-			{
 				return HttpNotFound();
-			}
-			else if (id != lastcomment.ID || lastcomment.Author != GetCurrentUser())
+
+			Topic t = db.Topics.Find(comment.TopicID);
+			Comment lastcomment = t.Comments.OrderBy(c => c.Created).Last();
+
+			if (id != lastcomment.ID)
 			{
-				this.ControllerContext.HttpContext.Response.StatusCode = 400;
-				return new EmptyResult();
+				return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Dieser Kommentar kann nicht gelöscht werden: Er ist nicht der letzte Kommentar der Diskussion.");
+			}
+			else if (lastcomment.Author != GetCurrentUser())
+			{
+				return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Dieser Kommentar kann nicht gelöscht werden: Sie sind nicht der Autor des Kommentars.");
 			}
 			else
 			{
