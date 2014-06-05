@@ -113,8 +113,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
-    <Folder Include="Views\Shared\DisplayTemplates\" />
+    <Folder Include="App_Data\uploads\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -280,7 +279,8 @@
     </Content>
     <Content Include="Views\Attachments\_AttachmentList.cshtml" />
     <Content Include="Views\Attachments\_UploadForm.cshtml" />
-    <Content Include="Views\Attachments\_Attachment.cshtml" />
+    <Content Include="Views\Attachments\_AttachmentRow.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\DateTime.cshtml" />
     <None Include="Web.Integration.config" />
     <None Include="Web.Testing.config" />
   </ItemGroup>

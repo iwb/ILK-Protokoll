@@ -1,31 +1,21 @@
 ﻿@using ILK_Protokoll.Models
 @model IEnumerable<Attachment>
 
-@*<div class="panel-body">
-		@foreach (var comment in Model)
-		{
-			Html.RenderPartial("~/Views/Comments/_Comment.cshtml", comment);
-		}
-
-		@Html.Action("_CreateForm", "Comments", new { TopicID = ViewBag.TopicID })
-	</div>*@
-
-
-
 <table class="table table-striped file-table" id="attachments_@ViewBag.TopicID">
 	<thead>
 		<tr>
-			<th></th>
-			<th>Name</th>
-			<th>Besitzer</th>
-			<th>Hochgeladen am</th>
-			<th>Aktionen</th>
+			<th class="col-xs-1"></th>
+			<th>@Html.DisplayNameFor(model => model.Name)</th>
+			<th class="col-xs-1">@Html.DisplayNameFor(model => model.FileSize)</th>
+			<th class="col-xs-1">@Html.DisplayNameFor(model => model.Uploader)</th>
+			<th class="col-xs-2">@Html.DisplayNameFor(model => model.Created)</th>
+			<th class="col-xs-1">Aktionen</th>
 		</tr>
 	</thead>
 	<tbody>
 		@foreach (Attachment file in Model)
 		{
-			Html.RenderPartial("~/Views/Attachments/_Attachment.cshtml", file);
+			Html.RenderPartial("~/Views/Attachments/_AttachmentRow.cshtml", file);
 		}
 	</tbody>
 </table>

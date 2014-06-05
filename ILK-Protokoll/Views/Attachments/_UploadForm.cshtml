@@ -1,11 +1,14 @@
 ﻿@model ILK_Protokoll.Models.Attachment
 
 <div class="panel-footer">
-	@using (Ajax.BeginForm("_Upload", "Attachments", new AjaxOptions() { UpdateTargetId = "attachments_" + Model.TopicID }))
+	@using (Ajax.BeginForm("_Upload", "Attachments", null, new AjaxOptions { UpdateTargetId = "attachments_" + Model.TopicID }, new { @class = "" }))
 	{
-		@Html.AntiForgeryToken()
-		@Html.HiddenFor(model => model.TopicID)
-
-		<input type="file">
+		<div class="form-group">
+			@Html.AntiForgeryToken()
+			@Html.HiddenFor(model => model.TopicID)
+			<label for="file" class="control-label ">Datei auswählen:</label>
+			<input type="file" name="file" class="" />
+			<button type="submit" class="form-control ">Hochladen</button>
+		</div>
 	}
 </div>
