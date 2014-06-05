@@ -1,11 +1,20 @@
 ﻿@model ILK_Protokoll.Models.Attachment
 
-<tr>
-	<td><img src="~/img/fileicons/xlsx.png" /></td>
-	<td>@Model.Name</td>
+<tr id="attachment_@Model.ID">
+	<td>
+		@{
+			var iconname = Model.Extension ?? "default";
+			if (!((HashSet<string>)ViewBag.KnownExtensions).Contains(iconname))
+			{
+				iconname = "default";
+			}
+		}
+		<img src="~/img/fileicons/@(iconname).png" />
+	</td>
+	<td>@Model.DisplayName</td>
 	<td>@Model.FileSize</td>
 	<td>@Model.Uploader.Name</td>
-	<td>@Model.Created.ToString("g")</td>
+	<td>@Html.DisplayFor(model => model.Created)</td>
 	<td class="actions">
 		<a href=""><span class="glyphicon glyphicon-edit" title="Name bearbeiten"></span></a>
 		<a href=""><span class="glyphicon glyphicon-remove" title="Datei löschen"></span></a>

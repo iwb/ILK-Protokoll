@@ -1,2 +1,2 @@
 ﻿@model System.DateTime
-@Model.ToString("g")
+<time rel="timeago" datetime="@Model.ToString("O")">@Model.ToString("g")</time>

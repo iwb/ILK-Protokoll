@@ -63,8 +63,6 @@ namespace ILK_Protokoll.DataLayer
 				Content = "Möglicherweise sollten auch Themen im Komplex \"Backplanung und -steuerung\" erlaubt werden."
 			});
 
-			topic.Attachments.Add(new Attachment() { Created = DateTime.Now.AddDays(-1).AddHours(-2), Name = "Krümelmonsters_Liste.xlsx", Uploader = users[0] });
-
 			var sessiont = new SessionType { ID = 1, Name = "ILK-AK Garching" };
 			sessiont.Attendees.Add(users[9]);
 			sessiont.Attendees.Add(users[1]);
