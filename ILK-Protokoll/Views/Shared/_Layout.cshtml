@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using System.Reflection
+<!DOCTYPE html>
 <html>
 <head>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -60,7 +61,15 @@
 		<hr />
 		<footer>
 			<p>&copy; @DateTime.Now.Year - <i>iwb</i>, Technische Universität München</p>
+			@{
+				Assembly thisAssem = typeof(MvcApplication).Assembly;
+				Version ver = thisAssem.GetName().Version;
+			}
+			<p>
+				Version @ver.ToString()
+			</p>
 		</footer>
+
 	</div>
 
 	@Scripts.Render("~/bundles/jquery")

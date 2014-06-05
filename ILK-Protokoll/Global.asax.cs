@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 
 namespace ILK_Protokoll
 {
-	public class MvcApplication : System.Web.HttpApplication
+	public class MvcApplication : HttpApplication
 	{
 		protected void Application_Start()
 		{
@@ -18,7 +15,7 @@ namespace ILK_Protokoll
 			BundleConfig.RegisterBundles(BundleTable.Bundles);
 
 #if DEBUG
-			foreach (var bundle in BundleTable.Bundles)
+			foreach (Bundle bundle in BundleTable.Bundles)
 				bundle.Transforms.Clear();
 #endif
 		}
