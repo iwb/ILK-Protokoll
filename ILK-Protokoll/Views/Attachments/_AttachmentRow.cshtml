@@ -17,6 +17,10 @@
 	<td>@Html.DisplayFor(model => model.Created)</td>
 	<td class="actions">
 		<a href=""><span class="glyphicon glyphicon-edit" title="Name bearbeiten"></span></a>
-		<a href=""><span class="glyphicon glyphicon-remove" title="Datei löschen"></span></a>
+		
+		<a data-ajax="true" data-ajax-method="POST" data-ajax-mode="replace" data-ajax-update="#attachments_@Model.TopicID" href="@Url.Action("_Delete", new { attachmentID = Model.ID, topicID = Model.TopicID})">
+			<span class="glyphicon glyphicon-remove" title="Datei löschen"></span>
+		</a>
+
 	</td>
 </tr>

@@ -3,8 +3,8 @@
 @using (Ajax.BeginForm("_Submit", "Comments", new AjaxOptions
 {
 	UpdateTargetId = "comments_" + Model.TopicID,
-	OnBegin = "$('form').submit(function(){return false;});"
-}))
+	OnBegin = "$('#comment_form_" + @ViewBag.TopicID + "').submit(function(){return false;});"
+}, new { id = "comment_form_" + @ViewBag.TopicID }))
 {
 	@Html.AntiForgeryToken()
 	@Html.HiddenFor(model => model.TopicID)

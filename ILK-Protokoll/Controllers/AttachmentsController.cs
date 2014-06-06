@@ -72,11 +72,28 @@ namespace ILK_Protokoll.Controllers
 				string path = Path.Combine(Serverpath, attachment.FileName);
 				file.SaveAs(path);
 
-				return _UploadForm(topicID);
+				return _List(topicID);
 			}
 			else
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest,
 					"Der Server hat keine Datei erhalten, oder kann Sie keinem Thema zuordnen.");
+		}
+
+		public ActionResult _Delete(int attachmentID, int? topicID)
+		{
+			var a = db.Attachments.Find(attachmentID);
+			if (topicID.HasValue && a.TopicID == topicID)
+			{
+				db.Topics.Find(topicID).Attachments.Remove(a);
+				a.TopicID = null; // In den Papierkorb
+			}
+			else if (topicID == null && a.TopicID == null)
+				db.Attachments.Remove(a); // Endgültig löschen
+			else
+				return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Die Daten konnten nicht zugordnet werden.");
+
+			db.SaveChanges();
+			return _List(topicID);
 		}
 	}
 }

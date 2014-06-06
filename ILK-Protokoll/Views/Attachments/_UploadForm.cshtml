@@ -1,15 +1,20 @@
 ﻿@model int
 
 <div class="panel-footer">
-	@*using (Ajax.BeginForm("_Upload", "Attachments", null, new AjaxOptions { UpdateTargetId = "attachments_" + Model.TopicID }, new { @class = "" }))*@
-	@using (Html.BeginForm("_Upload", "Attachments", FormMethod.Post, new { enctype = "multipart/form-data" }))
+	@*@using (Html.BeginForm("_Upload", "Attachments", FormMethod.Post, new { @class = "form-horizontal", enctype = "multipart/form-data" }))*@
+	@using (Ajax.BeginForm("_Upload", "Attachments", null, new AjaxOptions() { UpdateTargetId = "attachments_" + Model, HttpMethod = "POST" }, new { @class = "form-horizontal", enctype = "multipart/form-data" }))
 	{
-		<div class="form-group">
+		<div class="row">
 			@Html.AntiForgeryToken()
 			@Html.Hidden("topicID", Model)
-			<label for="file" class="control-label ">Datei auswählen:</label>
-			<input type="file" name="file" class="" />
-			<button type="submit" class="form-control ">Hochladen</button>
+			<label for="file" class="control-label col-sm-2">Datei auswählen:</label>
+			@*<input type="file" name="file" class="" />*@
+			<div class="col-sm-8">
+				<input type="file" class="form-control" name="file" />
+			</div>
+			<div class="col-sm-2">
+				<button type="submit" class="btn btn-primary form-control">Hochladen</button>
+			</div>
 		</div>
 	}
 </div>
