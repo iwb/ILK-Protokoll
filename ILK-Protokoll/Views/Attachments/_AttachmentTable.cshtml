@@ -1,0 +1,21 @@
+﻿@using ILK_Protokoll.Models
+@model IEnumerable<Attachment>
+
+<table class="table table-striped file-table" id="attachments_@ViewBag.TopicID">
+	<thead>
+		<tr>
+			<th class="col-xs-1"></th>
+			<th>@Html.DisplayNameFor(model => model.DisplayName)</th>
+			<th class="col-xs-1">@Html.DisplayNameFor(model => model.FileSize)</th>
+			<th class="col-xs-1">@Html.DisplayNameFor(model => model.Uploader)</th>
+			<th class="col-xs-2">@Html.DisplayNameFor(model => model.Created)</th>
+			<th class="col-xs-1">Aktionen</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (Attachment file in Model)
+		{
+			Html.RenderPartial("~/Views/Attachments/_AttachmentRow.cshtml", file);
+		}
+	</tbody>
+</table>

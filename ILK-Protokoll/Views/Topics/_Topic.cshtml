@@ -3,6 +3,7 @@
 @using Microsoft.Ajax.Utilities
 @model ILK_Protokoll.Models.Topic
 
+<div class="col-md-6">
 <div class="panel panel-primary topic-panel">
 	<div class="panel-heading">
 		<div class="panel-title-right">
@@ -76,5 +77,15 @@
 			@Html.Action("_List", "Comments", Model)
 		</div>
 	</div>
-	<div class="panel-footer">Es sind keine Dateien angehängt.</div>
+	<div class="panel-footer">
+		@if (@Model.Attachments.Count == 0)
+		{
+			@:Keine Dateien vorhanden
+		}
+		else
+		{
+			@Html.Action("_List", "Attachments", new { topicID = Model.ID, makeList = true})
+		}
+	</div>
+</div>
 </div>

@@ -22,5 +22,13 @@ namespace ILK_Protokoll.Controllers
 			}
 			return user;
 		}
+
+		protected override void Dispose(bool disposing)
+		{
+			if (disposing)
+				db.Dispose();
+
+			base.Dispose(disposing);
+		}
 	}
 }

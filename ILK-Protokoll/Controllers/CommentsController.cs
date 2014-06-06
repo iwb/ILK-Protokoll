@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Threading;
 using System.Web.Mvc;
 using ILK_Protokoll.Models;
 
@@ -44,7 +43,8 @@ namespace ILK_Protokoll.Controllers
 			}
 			else
 			{
-				return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Dieser Kommentar kann nicht erstellt werden: Es fehlen Informationen.");
+				return new HttpStatusCodeResult(HttpStatusCode.BadRequest,
+					"Dieser Kommentar kann nicht erstellt werden: Es fehlen Informationen.");
 			}
 		}
 
@@ -61,11 +61,13 @@ namespace ILK_Protokoll.Controllers
 
 			if (id != lastcomment.ID)
 			{
-				return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Dieser Kommentar kann nicht gelöscht werden: Er ist nicht der letzte Kommentar der Diskussion.");
+				return new HttpStatusCodeResult(HttpStatusCode.BadRequest,
+					"Dieser Kommentar kann nicht gelöscht werden: Er ist nicht der letzte Kommentar der Diskussion.");
 			}
 			else if (lastcomment.Author != GetCurrentUser())
 			{
-				return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Dieser Kommentar kann nicht gelöscht werden: Sie sind nicht der Autor des Kommentars.");
+				return new HttpStatusCodeResult(HttpStatusCode.BadRequest,
+					"Dieser Kommentar kann nicht gelöscht werden: Sie sind nicht der Autor des Kommentars.");
 			}
 			else
 			{
@@ -74,15 +76,6 @@ namespace ILK_Protokoll.Controllers
 
 				return _List(t);
 			}
-		}
-
-		protected override void Dispose(bool disposing)
-		{
-			if (disposing)
-			{
-				db.Dispose();
-			}
-			base.Dispose(disposing);
 		}
 	}
 }

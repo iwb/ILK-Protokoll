@@ -17,11 +17,13 @@ namespace ILK_Protokoll.Controllers
 
 		private string Serverpath
 		{
-			get { return Server.MapPath("~/App_Data/uploads/"); }
+			get { return Server.MapPath(VirtualPath); }
 		}
 
+		public const string VirtualPath = "~/Uploads/";
+
 		// GET: Attachments
-		public ActionResult _List(int? topicID)
+		public PartialViewResult _List(int? topicID, bool makeList = false)
 		{
 			List<Attachment> files = db.Attachments
 				.Where(a => a.TopicID == topicID)
@@ -34,7 +36,10 @@ namespace ILK_Protokoll.Controllers
 				from path in Directory.GetFiles(Server.MapPath("~/img/fileicons"), "*.png")
 				select Path.GetFileNameWithoutExtension(path));
 
-			return PartialView("_AttachmentList", files);
+			if (makeList)
+				return PartialView("_AttachmentList", files);
+			else
+				return PartialView("_AttachmentTable", files);
 		}
 
 		public PartialViewResult _UploadForm(int topicID)

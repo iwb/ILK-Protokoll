@@ -3,6 +3,9 @@
 
 # Not used so far
 ILK_Protokoll.Tests/
+variables.css
+variables.min.css
+variables.css.map
 
 # User-specific files
 *.suo

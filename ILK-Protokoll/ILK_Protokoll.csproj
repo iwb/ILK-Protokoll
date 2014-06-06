@@ -278,10 +278,12 @@
     <Content Include="Scripts\jquery-2.1.1.min.js.map">
       <DependentUpon>jquery-2.1.1.min.js</DependentUpon>
     </Content>
-    <Content Include="Views\Attachments\_AttachmentList.cshtml" />
+    <Content Include="Views\Attachments\_AttachmentTable.cshtml" />
     <Content Include="Views\Attachments\_UploadForm.cshtml" />
     <Content Include="Views\Attachments\_AttachmentRow.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\DateTime.cshtml" />
+    <Content Include="Views\Attachments\_AttachmentTile.cshtml" />
+    <Content Include="Views\Attachments\_AttachmentList.cshtml" />
     <None Include="Web.Integration.config" />
     <None Include="Web.Testing.config" />
   </ItemGroup>
