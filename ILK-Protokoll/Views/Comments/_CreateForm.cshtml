@@ -1,12 +1,16 @@
 ﻿@model ILK_Protokoll.Models.Comment
 
-@using (Ajax.BeginForm("_Submit", "Comments", new AjaxOptions() { UpdateTargetId = "comments_" + Model.TopicID }))
+@using (Ajax.BeginForm("_Submit", "Comments", new AjaxOptions
+{
+	UpdateTargetId = "comments_" + Model.TopicID,
+	OnBegin = "$('form').submit(function(){return false;});"
+}))
 {
 	@Html.AntiForgeryToken()
 	@Html.HiddenFor(model => model.TopicID)
 
 	<div class="input-group">
-		<span class="input-group-addon">@User.Identity.Name.Split('\\').Last()</span>				
-		<input type="text" name="Content" class="form-control" placeholder="Kommentar hinzufügen">
+		<span class="input-group-addon">@User.Identity.Name.Split('\\').Last()</span>
+		<input type="text" name="Content" class="form-control" placeholder="Kommentar hinzufügen" id="comment_input_@Model.TopicID">
 	</div>
 }
