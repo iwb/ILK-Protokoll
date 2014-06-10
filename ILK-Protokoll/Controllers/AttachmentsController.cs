@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Validation;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -117,6 +118,7 @@ namespace ILK_Protokoll.Controllers
 			}
 			catch (DbEntityValidationException e)
 			{
+				Debug.WriteLine(e.EntityValidationErrors.First().ValidationErrors.First().ErrorMessage);
 				return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
 			}
 
