@@ -1,24 +1,32 @@
-﻿@model ILK_Protokoll.Models.Attachment
+﻿@using ILK_Protokoll.Controllers
+@model ILK_Protokoll.Models.Attachment
+
+@{
+	var iconname = Model.Extension ?? "default";
+	if (!((HashSet<string>)ViewBag.KnownExtensions).Contains(iconname))
+	{
+		iconname = "default";
+	}
+
+	var fileurl = AttachmentsController.VirtualPath + Model.FileName;
+}
 
 <tr id="attachment_@Model.ID">
 	<td>
-		@{
-			var iconname = Model.Extension ?? "default";
-			if (!((HashSet<string>)ViewBag.KnownExtensions).Contains(iconname))
-			{
-				iconname = "default";
-			}
-		}
-		<img src="~/img/fileicons/@(iconname).png" />
+		<a href="@Url.Content(fileurl)">
+			<img src="~/img/fileicons/@(iconname).png" height="48" />
+		</a>
 	</td>
-	<td>@Model.DisplayName</td>
+	<td>
+		<a href="@Url.Content(fileurl)">@Model.DisplayName</a>
+	</td>
 	<td>@Model.FileSize</td>
 	<td>@Model.Uploader.Name</td>
 	<td>@Html.DisplayFor(model => model.Created)</td>
 	<td class="actions">
 		<a href=""><span class="glyphicon glyphicon-edit" title="Name bearbeiten"></span></a>
-		
-		<a data-ajax="true" data-ajax-method="POST" data-ajax-mode="replace" data-ajax-update="#attachments_@Model.TopicID" href="@Url.Action("_Delete", new { attachmentID = Model.ID, topicID = Model.TopicID})">
+
+		<a data-ajax="true" data-ajax-method="POST" data-ajax-success="removeAttachment('#attachment_@Model.ID');" href="@Url.Action("_Delete", new { attachmentID = Model.ID, topicID = Model.TopicID})">
 			<span class="glyphicon glyphicon-remove" title="Datei löschen"></span>
 		</a>
 

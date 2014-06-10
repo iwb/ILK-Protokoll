@@ -5921,8 +5921,9 @@ a:hover {
 }
 .panel ul.auditorlist > li {
   display: inline-block;
-  margin-left: 20px;
+  margin-left: 10px;
   font-size: 18px;
+  width: 50px;
 }
 .panel ul.auditorlist > li .glyphicon-ok-sign,
 .votelink > .glyphicon-ok-sign {

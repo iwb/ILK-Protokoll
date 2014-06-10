@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ILK_Protokoll.Models
 {
+	[DisplayColumn("DisplayName")]
 	public class Attachment
 	{
 		public int ID { get; set; }
@@ -35,7 +36,7 @@ namespace ILK_Protokoll.Models
 
 		[Required]
 		[Display(Name = "Ersteller")]
-		public User Uploader { get; set; }
+		public virtual User Uploader { get; set; }
 
 		[Required]
 		[Display(Name = "Uploaddatum")]

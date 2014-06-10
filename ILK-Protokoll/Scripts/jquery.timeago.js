@@ -23,15 +23,15 @@
     factory(jQuery);
   }
 }(function ($) {
-  $.timeago = function(timestamp) {
+	$.timeago = function (timestamp) {
     if (timestamp instanceof Date) {
-      return inWords(timestamp);
+    	return inWords(timestamp, timestamp);
     } else if (typeof timestamp === "string") {
-      return inWords($.timeago.parse(timestamp));
+    	return inWords($.timeago.parse(timestamp), timestamp);
     } else if (typeof timestamp === "number") {
-      return inWords(new Date(timestamp));
+    	return inWords(new Date(timestamp), timestamp);
     } else {
-      return inWords($.timeago.datetime(timestamp));
+    	return inWords($.timeago.datetime(timestamp), timestamp);
     }
   };
   var $t = $.timeago;
@@ -49,7 +49,7 @@
         suffixAgo: null,
         suffixFromNow: null,
         inPast: 'jetzt',
-        seconds: "gerade eben",
+        seconds: "%d Sekunden",
         minute: "einer Minute",
         minutes: "%d Minuten",
         hour: "einer Stunde",
@@ -65,7 +65,7 @@
       }
     },
 
-    inWords: function(distanceMillis) {
+    inWords: function(distanceMillis, originalText) {
       if (!this.settings.allowPast && !this.settings.allowFuture) {
           throw 'timeago allowPast and allowFuture settings can not both be set to false.';
       }
@@ -102,11 +102,10 @@
         minutes < 90 && substitute($l.hour, 1) ||
         hours < 24 && substitute($l.hours, Math.round(hours)) ||
         hours < 42 && substitute($l.day, 1) ||
-        days < 30 && substitute($l.days, Math.round(days)) ||
-        days < 45 && substitute($l.month, 1) ||
-        days < 365 && substitute($l.months, Math.round(days / 30)) ||
-        years < 1.5 && substitute($l.year, 1) ||
-        substitute($l.years, Math.round(years));
+        days < 30 && substitute($l.days, Math.round(days));
+
+	    if (!words) // Not assigned
+		    return originalText; // Return original value
 
       var separator = $l.wordSeparator || "";
       if ($l.wordSeparator === undefined) { separator = " "; }
