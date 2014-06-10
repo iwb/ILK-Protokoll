@@ -1,105 +1,44 @@
 ﻿@using System.Reflection
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<meta name="description" content="Das ILK-Protokoll ermöglicht eine einfache Verwaltung der Diskussionen rund ums iwb und eine durchsuchbare Lise von Beschlüssen." />
-		<title>@ViewBag.Title &#8211; ILK-Protokoll</title>
-		@Styles.Render("~/Content/css")
-		@Scripts.Render("~/bundles/modernizr")
-	</head>
-	<body>
-		<div class="navbar navbar-inverse navbar-fixed-top">
-			<div class="container">
-				<div class="navbar-header">
-					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-					</button>
-					@Html.ActionLink("Dashboard", "Index", "Home", new {area = ""}, new {@class = "navbar-brand"})
-				</div>
-				<div class="navbar-collapse collapse">
-					<p class="navbar-right navbar-text">
-						<span class="visible-xs">Eingeloggt als <b>@User.Identity.Name</b></span>
-						<span class="hidden-xs usertile">@User.Identity.Name.Split('\\').Last()</span>
-					</p>
-
-					<form class="navbar-form navbar-right" role="search">
-						<div class="form-group">
-							<div class="input-group">
-								<input type="search" class="form-control" placeholder="Suche" name="search-term" id="search-term">
-								<div class="input-group-btn">
-									<button class="btn btn-default" type="button"><i class="glyphicon glyphicon-search"></i></button>
-								</div>
-							</div>
-						</div>
-					</form>
-
-					<ul class="nav navbar-nav">
-						<li>@Html.ActionLink("Diskussionspunkte", "Index", "Topics")</li>
-						<li>@Html.ActionLink("Beschlüsse", "About", "Home")</li>
-						<li>@Html.ActionLink("Sitzungen", "Index", "SessionTypes")</li>
-						<li>@Html.ActionLink("Aufgaben", "Index", "Home")</li>
-						<li>@Html.ActionLink("Sonstiges", "Index", "Home")</li>
-						<li>@Html.ActionLink("Verwaltung", "Index", "Home")</li>
-					</ul>
-				</div>
-			</div>
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta name="description" content="Das ILK-Protokoll ermöglicht eine einfache Verwaltung der Diskussionen rund ums iwb und eine durchsuchbare Lise von Beschlüssen." />
+	<title>@ViewBag.Title &#8211; ILK-Protokoll</title>
+	@Styles.Render("~/Content/css")
+	@Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+	@{ Html.RenderPartial("_Navbar"); }
+	<div class="container body-content">
+		<div id="javascript-warning" class="alert alert-danger jumbotron">
+			<h2><strong>Für diese Seite ist JavaScript erforderlich!</strong></h2>
 		</div>
-		<div class="container body-content">
-			<div id="javascript-warning" class="alert alert-danger jumbotron">
-				<h2><strong>Für diese Seite ist JavaScript erforderlich!</strong></h2>
-			</div>
-			<script type="text/javascript">
-				document.getElementById("javascript-warning").style.display = 'none';
-			</script>
-			@RenderBody()
-			<hr style="clear: both;" />
-			<footer>
-				<p>&copy; @DateTime.Now.Year - <i>iwb</i>, Technische Universität München</p>
-				@{
-					Assembly thisAssem = typeof (MvcApplication).Assembly;
-					Version ver = thisAssem.GetName().Version;
-				}
-				<p>
-					Version @ver.ToString(2)<br />
-					Build @ver.Build.ToString()
-				</p>
-			</footer>
-		</div>
-
-		@Scripts.Render("~/bundles/jquery")
-		@Scripts.Render("~/bundles/bootstrap")
-		@RenderSection("scripts", false)
 		<script type="text/javascript">
-			$(function() {
-				$("a[rel=popover]")
-					.popover({ html: true })
-					.click(function(e) {
-						e.preventDefault();
-					});
-
-				$("time[rel=timeago]").timeago();
-			});
-
-			$('.popover-markup > .trigger').popover({
-				html: true,
-				content: function() {
-					return $(this).parent().find('.content').html();
-				},
-				container: 'body',
-				placement: 'bottom'
-			}).click(function(e) {
-				e.stopPropagation();
-			});
-
-			$('html').click(function(e) {
-				$('.popover-markup > .trigger').popover('hide');
-			});
+			document.getElementById("javascript-warning").style.display = 'none';
 		</script>
-	</body>
+		@RenderBody()
+		<hr style="clear: both;" />
+		<footer>
+			<p>&copy; @DateTime.Now.Year - <i>iwb</i>, Technische Universität München</p>
+			@{
+				Assembly thisAssem = typeof(MvcApplication).Assembly;
+				Version ver = thisAssem.GetName().Version;
+			}
+			<p>
+				Version @ver.ToString(2)<br />
+				Build @ver.Build.ToString()
+			</p>
+		</footer>
+	</div>
+
+	@Scripts.Render("~/bundles/jquery")
+	@Scripts.Render("~/bundles/bootstrap")
+	
+	@{ Html.RenderPartial("_GlobalScripts"); }
+
+</body>
 </html>

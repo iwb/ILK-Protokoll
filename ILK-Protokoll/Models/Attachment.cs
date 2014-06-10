@@ -14,6 +14,12 @@ namespace ILK_Protokoll.Models
 		public int? TopicID { get; set; }
 
 		/// <summary>
+		/// Enthält das löschdatum, falls der Anhang gelöscht wurde, sonst null.
+		/// </summary>
+		[Display(Name = "Gelöscht am")]
+		public DateTime? Deleted { get; set; }
+
+		/// <summary>
 		/// Enthält den Namen, der angezeigt wird. Dieser name kann Zeichen beinhalten, die nicht nicht in Dateinamen zugelassen sind.
 		/// </summary>
 		[Required]

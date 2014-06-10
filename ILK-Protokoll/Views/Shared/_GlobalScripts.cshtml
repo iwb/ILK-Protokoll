@@ -1,0 +1,26 @@
+﻿<script type="text/javascript">
+
+	$("a[rel=popover]")
+		.popover({ html: true })
+		.click(function (e) {
+			e.preventDefault();
+		});
+
+	$("time[rel=timeago]").timeago();
+
+
+	$('.popover-markup > .trigger').popover({
+		html: true,
+		content: function () {
+			return $(this).parent().find('.content').html();
+		},
+		container: 'body',
+		placement: 'bottom'
+	}).click(function (e) {
+		e.stopPropagation();
+	});
+
+	$('html').click(function (e) {
+		$('.popover-markup > .trigger').popover('hide');
+	});
+</script>

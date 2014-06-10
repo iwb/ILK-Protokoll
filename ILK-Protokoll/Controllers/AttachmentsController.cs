@@ -28,6 +28,7 @@ namespace ILK_Protokoll.Controllers
 		{
 			List<Attachment> files = db.Attachments
 				.Where(a => a.TopicID == topicID)
+				.Where(a => a.Deleted == null)
 				.OrderBy(a => a.DisplayName)
 				.Include(a => a.Uploader)
 				.ToList();
@@ -59,11 +60,14 @@ namespace ILK_Protokoll.Controllers
 				if (file != null && file.ContentLength > 0 && topicID > 0)
 				{
 					string filename = Path.GetFileNameWithoutExtension(file.FileName);
-					string fileext = Path.GetExtension(file.FileName).Substring(1);
+					string fileext = Path.GetExtension(file.FileName);
+					if (!string.IsNullOrEmpty(fileext))
+						fileext = fileext.Substring(1);
 
 					var attachment = new Attachment
 					{
 						TopicID = topicID,
+						Deleted = null,
 						DisplayName = file.FileName,
 						SafeName = InvalidChars.Replace(filename, ""),
 						Extension = fileext,
@@ -88,20 +92,24 @@ namespace ILK_Protokoll.Controllers
 		}
 
 
-		public ActionResult _Delete(int attachmentID, int? topicID)
+		public ActionResult _Delete(int attachmentID, int topicID)
 		{
 			Attachment attachment = db.Attachments.Include(a => a.Uploader).First(a => a.ID == attachmentID);
-			if (topicID.HasValue && attachment.TopicID == topicID) // In den Papierkorb
+			if (attachment.TopicID != topicID)
+				return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Die Daten konnten nicht zugordnet werden.");
+
+
+			if (attachment.Deleted == null) // In den Papierkorb
 			{
-				db.Topics.Find(topicID).Attachments.Remove(attachment);
-				attachment.TopicID = null;
+				attachment.Deleted = DateTime.Now;
 			}
-			else if (topicID == null && attachment.TopicID == null) // Endgültig löschen
+			else // Endgültig löschen
 			{
 				try
 				{
 					string path = Path.Combine(Serverpath, attachment.FileName);
 					System.IO.File.Delete(path);
+					db.Topics.Find(topicID).Attachments.Remove(attachment);
 					db.Attachments.Remove(attachment);
 				}
 				catch (IOException)
@@ -109,8 +117,6 @@ namespace ILK_Protokoll.Controllers
 					return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
 				}
 			}
-			else
-				return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Die Daten konnten nicht zugordnet werden.");
 
 			try
 			{
