@@ -1,10 +1,10 @@
-﻿@using ILK_Protokoll.util
-@using ILK_Protokoll.Models
-@model Topic
+﻿@using ILK_Protokoll.Models
+@using ILK_Protokoll.util
+@model ILK_Protokoll.Models.Topic
 
 @{
 	ViewBag.Title = "Details (" + Model.Title + ")";
-	var history = (ICollection<TopicHistory>)ViewBag.TopicHistory;
+	var history = (ICollection<TopicHistory>) ViewBag.TopicHistory;
 }
 
 <h3>@ViewBag.Title</h3>
@@ -82,7 +82,7 @@
 		<h3 class="panel-title">@Html.DisplayNameFor(model => model.Votes)</h3>
 	</div>
 	<div class="panel-body" id="auditorlist_@Model.ID">
-		@Html.Action("_List", "Votes", new { t = Model, linkAllAuditors = true })
+		@Html.Action("_List", "Votes", new {t = Model, linkAllAuditors = true})
 	</div>
 </div>
 
@@ -109,15 +109,15 @@
 			}
 			else
 			{
-				@Html.Action("_List", "Attachments", new { topicID = Model.ID})
+				@Html.Action("_List", "Attachments", new {topicID = Model.ID})
 			}
-			@Html.Action("_UploadForm", "Attachments", new { topicID = Model.ID })
+			@Html.Action("_UploadForm", "Attachments", new {topicID = Model.ID})
 		</div>
 	</div>
 </div>
 
 
 <p>
-	@Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+	@Html.ActionLink("Edit", "Edit", new {id = Model.ID}) |
 	@Html.ActionLink("Back to List", "Index")
 </p>

@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Web;
+﻿using System.ComponentModel;
 
 namespace ILK_Protokoll.Models
 {
@@ -9,7 +6,6 @@ namespace ILK_Protokoll.Models
 	{
 		public Vote()
 		{
-
 		}
 
 		public Vote(User voter, VoteKind vote)
@@ -26,13 +22,9 @@ namespace ILK_Protokoll.Models
 
 	public enum VoteKind
 	{
-		[Description("Neutral")]
-		None,
-		[Description("Abgelehnt")]
-		Rejected,
-		[Description("Gespächsbedarf")]
-		Reservation,
-		[Description("Angenommen")]
-		Approved
+		[Description("Neutral")] None,
+		[Description("Abgelehnt")] Rejected,
+		[Description("Gespächsbedarf")] Reservation,
+		[Description("Angenommen")] Approved
 	}
 }

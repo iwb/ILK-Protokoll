@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure.Annotations;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Linq;
 using ILK_Protokoll.Models;
 using ILK_Protokoll.util;
-using System.Data.Entity.Infrastructure.Annotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ILK_Protokoll.DataLayer
 {
@@ -32,13 +31,14 @@ namespace ILK_Protokoll.DataLayer
 			modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
 
 			modelBuilder
-			 .Entity<TopicHistory>()
-			 .Property(t => t.TopicID)
-			 .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute()));
+				.Entity<TopicHistory>()
+				.Property(t => t.TopicID)
+				.HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute()));
 		}
 
 		/// <summary>
-		/// Gibt alle Benutzer zurück, mit dem aktuellen Benutzer als erstes Element und den restlichen benutzern in alphabetischer Reihenfolge.
+		///    Gibt alle Benutzer zurück, mit dem aktuellen Benutzer als erstes Element und den restlichen benutzern in
+		///    alphabetischer Reihenfolge.
 		/// </summary>
 		/// <param name="currentUser"></param>
 		/// <returns></returns>
@@ -46,19 +46,21 @@ namespace ILK_Protokoll.DataLayer
 		{
 			return
 				currentUser.ToEnumerable()
-					.Concat(Users.Where(u => u.ID != currentUser.ID).ToList().OrderBy(u => u.Name, StringComparer.CurrentCultureIgnoreCase));
+					.Concat(Users.Where(u => u.ID != currentUser.ID)
+						.ToList()
+						.OrderBy(u => u.Name, StringComparer.CurrentCultureIgnoreCase));
 		}
 
 		public Topic GetTopicAt(int id, DateTime time)
 		{
-			var t = Topics.Find(id);
+			Topic t = Topics.Find(id);
 			if (time > t.ValidFrom)
 				return t;
 			else if (time < t.Created)
 				return null;
 			else
 			{
-				var histdata = TopicHistory.Single(x => x.ValidFrom < time && x.ValidUntil > time);
+				TopicHistory histdata = TopicHistory.Single(x => x.ValidFrom < time && x.ValidUntil > time);
 				t.IncorporateHistory(histdata);
 				return t;
 			}

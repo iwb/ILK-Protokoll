@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Data.Entity;
 using ILK_Protokoll.Models;
-using System;
 
 namespace ILK_Protokoll.DataLayer
 {
@@ -56,14 +55,14 @@ namespace ILK_Protokoll.DataLayer
 					"Klingt lecker! und ich finde den Beschlussvorschlag auch total sinnvoll und angemessen. Eine Dissertation, deren Ergebnisse man nicht essen oder trinken kann, ist im Grunde wertlos. Insbesondere am Institut für Weißwurscht und Brezenwissenschaften."
 			});
 
-			topic.Comments.Add(new Comment { Author = users[4], Content = "Brauchen wir nicht drüber reden. Ist gegessen." });
+			topic.Comments.Add(new Comment {Author = users[4], Content = "Brauchen wir nicht drüber reden. Ist gegessen."});
 			topic.Comments.Add(new Comment
 			{
 				Author = users[8],
 				Content = "Möglicherweise sollten auch Themen im Komplex \"Backplanung und -steuerung\" erlaubt werden."
 			});
 
-			var sessiont = new SessionType { ID = 1, Name = "ILK-AK Garching" };
+			var sessiont = new SessionType {ID = 1, Name = "ILK-AK Garching"};
 			sessiont.Attendees.Add(users[9]);
 			sessiont.Attendees.Add(users[1]);
 			sessiont.Attendees.Add(users[4]);
@@ -76,17 +75,19 @@ namespace ILK_Protokoll.DataLayer
 			context.Topics.Add(topic);
 			context.SessionTypes.Add(sessiont);
 
-			topic = new Topic()
+			topic = new Topic
 			{
 				Owner = users[2],
 				Title = "Gleichberechtigung Kuchen <=> Kekse",
-				Proposal = "Kuchen und Kekse sind in allen belangen gleichberechtigt. Eine Gewährung von Vorteilen oder Benachteiligung eines Gebäcks aufgrund seiner Beschaffenheit ist in jedem Fall zu unterlassen.",
-				Description = "Eine Rücksprache mit der Gleichstellungsbeauftragten ergab, dass eine Förderung von Keksen gegen den Gleichstellungsgrundsatz verstößt. Daher sollte explizit klargestellt werden, dass beide Gebäckarten gleichberechtigt sind.",
+				Proposal =
+					"Kuchen und Kekse sind in allen belangen gleichberechtigt. Eine Gewährung von Vorteilen oder Benachteiligung eines Gebäcks aufgrund seiner Beschaffenheit ist in jedem Fall zu unterlassen.",
+				Description =
+					"Eine Rücksprache mit der Gleichstellungsbeauftragten ergab, dass eine Förderung von Keksen gegen den Gleichstellungsgrundsatz verstößt. Daher sollte explizit klargestellt werden, dass beide Gebäckarten gleichberechtigt sind.",
 				Priority = Priority.High,
 				SessionType = sessiont
 			};
 
-			foreach (var u in users)
+			foreach (User u in users)
 				topic.Votes.Add(new Vote(u, VoteKind.None));
 
 			context.Topics.Add(topic);

@@ -4,7 +4,7 @@
 {
 	UpdateTargetId = "comments_" + Model.TopicID,
 	OnBegin = "$('#comment_form_" + @ViewBag.TopicID + "').submit(function(){return false;});"
-}, new { id = "comment_form_" + @ViewBag.TopicID }))
+}, new {id = "comment_form_" + @ViewBag.TopicID}))
 {
 	@Html.AntiForgeryToken()
 	@Html.HiddenFor(model => model.TopicID)

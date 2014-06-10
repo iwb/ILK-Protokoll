@@ -2,7 +2,7 @@
 
 <div class="panel-footer">
 	@*using (Ajax.BeginForm("_Upload", "Attachments", null, new AjaxOptions() { UpdateTargetId = "attachments_" + Model, HttpMethod = "POST" }, new { @class = "form-horizontal", enctype = "multipart/form-data" }))*@
-	@using (Html.BeginForm("_Upload", "Attachments", FormMethod.Post, new { @class = "form-horizontal", enctype = "multipart/form-data" }))
+	@using (Html.BeginForm("_Upload", "Attachments", FormMethod.Post, new {@class = "form-horizontal", enctype = "multipart/form-data"}))
 	{
 		<div class="row">
 			@Html.AntiForgeryToken()

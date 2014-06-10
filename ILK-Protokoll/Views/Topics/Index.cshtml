@@ -1,4 +1,5 @@
-﻿@using ILK_Protokoll.util
+﻿@using ILK_Protokoll.Models
+@using ILK_Protokoll.util
 @model IEnumerable<ILK_Protokoll.Models.Topic>
 
 @{
@@ -8,7 +9,7 @@
 <h2>@ViewBag.Title</h2>
 
 <p>
-	@Html.ActionLink("Neue Diskussion", "Create", null, new { @class = "btn btn-primary" })
+	@Html.ActionLink("Neue Diskussion", "Create", null, new {@class = "btn btn-primary"})
 </p>
 
 <div class="panel-group" id="filter_accordion">
@@ -51,12 +52,13 @@
 		<th>Aktionen</th>
 	</tr>
 
-	@foreach (var item in Model)
+	@foreach (Topic item in Model)
 	{
 		<tr>
 			<td>
 				@Html.DisplayFor(modelItem => item.SessionType.Name)
-				@if (item.TargetSessionTypeID != null) {
+				@if (item.TargetSessionTypeID != null)
+				{
 					@:&#42;
 				}
 			</td>
@@ -76,9 +78,9 @@
 				@Html.DisplayFor(modelItem => item.ValidFrom)
 			</td>
 			<td style="min-width: 120px;">
-				@Html.ActionLink("Bearbeiten", "Edit", new { id = item.ID }) <br />
-				@Html.ActionLink("Details", "Details", new { id = item.ID }) <br />
-				@Html.ActionLink("Löschen", "Delete", new { id = item.ID })
+				@Html.ActionLink("Bearbeiten", "Edit", new {id = item.ID}) <br />
+				@Html.ActionLink("Details", "Details", new {id = item.ID}) <br />
+				@Html.ActionLink("Löschen", "Delete", new {id = item.ID})
 			</td>
 		</tr>
 	}

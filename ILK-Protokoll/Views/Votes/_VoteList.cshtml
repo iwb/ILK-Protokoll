@@ -1,6 +1,6 @@
-﻿@model IEnumerable<ILK_Protokoll.Models.Vote>
+﻿@using ILK_Protokoll.Models
 @using ILK_Protokoll.util
-@using ILK_Protokoll.Models
+@model IEnumerable<ILK_Protokoll.Models.Vote>
 
 @helper GetVoteIcon(VoteKind vk)
 {
@@ -38,7 +38,7 @@
 
 <ul class="auditorlist">
 	@{
-		Vote ownvote = ViewBag.ownvote as Vote;
+		var ownvote = ViewBag.ownvote as Vote;
 		if (ownvote != null)
 		{
 			<li class="ownvote">
@@ -56,7 +56,7 @@
 			</li>
 		}
 	}
-	@if (ViewBag.LinkAllAuditors != null && (bool)ViewBag.LinkAllAuditors)
+	@if (ViewBag.LinkAllAuditors != null && (bool) ViewBag.LinkAllAuditors)
 	{
 		foreach (Vote vote in Model)
 		{
@@ -91,12 +91,12 @@
 	if (window.jQuery) {
 		$('.popover-markup > .trigger').popover({
 			html: true,
-			content: function () {
+			content: function() {
 				return $(this).parent().find('.content').html();
 			},
 			container: 'body',
 			placement: 'bottom'
-		}).click(function (e) {
+		}).click(function(e) {
 			e.stopPropagation();
 		});
 	}

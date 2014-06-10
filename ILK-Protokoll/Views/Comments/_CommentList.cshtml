@@ -1,10 +1,11 @@
-﻿@model IEnumerable<ILK_Protokoll.Models.Comment>
+﻿@using ILK_Protokoll.Models
+@model IEnumerable<ILK_Protokoll.Models.Comment>
 
 <div class="panel-body">
-	@foreach (var comment in Model)
+	@foreach (Comment comment in Model)
 	{
 		Html.RenderPartial("~/Views/Comments/_Comment.cshtml", comment);
 	}
 
-	@Html.Action("_CreateForm", "Comments", new { TopicID = ViewBag.TopicID })
+	@Html.Action("_CreateForm", "Comments", new {ViewBag.TopicID})
 </div>

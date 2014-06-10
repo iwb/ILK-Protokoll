@@ -1,14 +1,14 @@
 ﻿@using ILK_Protokoll.Controllers
 @model ILK_Protokoll.Models.Attachment
 @{
-	var iconname = Model.Extension ?? "default";
-	if (!((HashSet<string>)ViewBag.KnownExtensions).Contains(iconname))
+	string iconname = Model.Extension ?? "default";
+	if (!((HashSet<string>) ViewBag.KnownExtensions).Contains(iconname))
 	{
 		iconname = "default";
 	}
 
-	var fileurl = AttachmentsController.VirtualPath + Model.FileName;
+	string fileurl = AttachmentsController.VirtualPath + Model.FileName;
 }<a href="@Url.Content(fileurl)" class="btn btn-default">
-	<img src="~/img/fileicons/@(iconname).png" height="16" />
-	@Model.DisplayName
-</a>
+	 <img src="~/img/fileicons/@(iconname).png" height="16" />
+	 @Model.DisplayName
+ </a>

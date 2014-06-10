@@ -6,8 +6,7 @@
 	@if (Model.ID == ViewBag.AllowDeletion)
 	{
 		<p class="comment-delete">
-			@Ajax.ActionLink(" ", "_Delete", new { id = Model.ID }, new AjaxOptions() { UpdateTargetId = "comments_" + Model.TopicID, Confirm = "Kommentar wirklich löschen?" },
-			htmlAttributes: new { @class = "glyphicon glyphicon-remove" })
+			@Ajax.ActionLink(" ", "_Delete", new {id = Model.ID}, new AjaxOptions {UpdateTargetId = "comments_" + Model.TopicID, Confirm = "Kommentar wirklich löschen?"}, new {@class = "glyphicon glyphicon-remove"})
 		</p>
 	}
 </div>

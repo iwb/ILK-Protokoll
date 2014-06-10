@@ -22,7 +22,7 @@ namespace ILK_Protokoll.Controllers
 
 		public PartialViewResult _CreateForm(int TopicID)
 		{
-			var c = new Comment { TopicID = TopicID };
+			var c = new Comment {TopicID = TopicID};
 			return PartialView("_CreateForm", c);
 		}
 

@@ -1,91 +1,91 @@
 ﻿@using ILK_Protokoll.Models
 @using ILK_Protokoll.util
-@using Microsoft.Ajax.Utilities
 @model ILK_Protokoll.Models.Topic
 
 <div class="col-md-6">
-<div class="panel panel-primary topic-panel">
-	<div class="panel-heading">
-		<div class="panel-title-right">
-			<p>
-				@{
-					string iconname = "";
-					switch (Model.Priority)
-					{
-						case Priority.Low:
-							iconname = "glyphicon glyphicon-minus";
-							break;
+	<div class="panel panel-primary topic-panel">
+		<div class="panel-heading">
+			<div class="panel-title-right">
+				<p>
+					@{
+						string iconname = "";
+						switch (Model.Priority)
+						{
+							case Priority.Low:
+								iconname = "glyphicon glyphicon-minus";
+								break;
 
-						case Priority.Medium:
-							iconname = "glyphicon glyphicon-asterisk";
-							break;
+							case Priority.Medium:
+								iconname = "glyphicon glyphicon-asterisk";
+								break;
 
-						case Priority.High:
-							iconname = "glyphicon glyphicon-plus";
-							break;
-						default:
-							break;
+							case Priority.High:
+								iconname = "glyphicon glyphicon-plus";
+								break;
+							default:
+								break;
+						}
 					}
-				}
-				<span class="prioicon" title="Priorität: @Model.Priority.DisplayName()"> <i class="@iconname"></i></span>
-				<a href="#">@Model.Owner</a>
-				@*@Html.ActionLink(Model.Owner.Name, "Detail", "Users", new { id = Model.Owner.ID }, new { @class = "userlink" })*@
-			</p>
-			<p title="@Model.Created.ToString("F")">Erstellt am @Model.Created.ToString("ddd, d.M.")</p>
+					<span class="prioicon" title="Priorität: @Model.Priority.DisplayName()"> <i class="@iconname"></i></span>
+					<a href="#">@Model.Owner</a>
+					@*@Html.ActionLink(Model.Owner.Name, "Detail", "Users", new { id = Model.Owner.ID }, new { @class = "userlink" })*@
+				</p>
+				<p title="@Model.Created.ToString("F")">Erstellt am @Model.Created.ToString("ddd, d.M.")</p>
+			</div>
+			<h3 class="panel-title">@Html.ActionLink(Model.Title, "Details", "Topics", new {id = Model.ID}, null)  </h3>
+			<p class="panel-title">@Model.SessionType.Name</p>
 		</div>
-		<h3 class="panel-title">@Html.ActionLink(Model.Title, "Details", "Topics", new { id = Model.ID }, null)  </h3>
-		<p class="panel-title">@Model.SessionType.Name</p>
-	</div>
-	<div class="panel-body">
-		<div class="col-md-7"><h6>@Html.DisplayNameFor(model => model.Description):</h6>@Model.Description</div>
-		<div class="col-md-5"><h6>@Html.DisplayNameFor(model => model.Proposal):</h6>@Model.Proposal</div>
-	</div>
-	<div class="panel-separator" id="auditorlist_@Model.ID">
-		@Html.Action("_List", "Votes", Model)
-	</div>
-
-	@{
-		string classA = "collapsed";
-		string classDiv = "panel-collapse collapse";
-
-		if (Model.Comments.Count < 2) // Sektion ausklappen
-		{
-			classA = "";
-			classDiv = "panel-collapse collapse in";
-		}
-	}
-	<div class="panel panel-primary">
-		<div class="panel-heading panel-collapse-heading">
-			<h4 class="panel-title">
-				<a data-toggle="collapse" data-target="#comments_@Model.ID" class="@classA">
-					@if (@Model.Comments.Count == 0)
-					{
-						@:Keine Kommentare
-					}
-					else if (@Model.Comments.Count == 1)
-					{
-						@:Ein Kommentar
-					}
-					else
-					{
-						@Model.Comments.Count @:Kommentare
-					}
-				</a>
-			</h4>
+		<div class="panel-body">
+			<div class="col-md-7"><h6>@Html.DisplayNameFor(model => model.Description):</h6>@Model.Description</div>
+			<div class="col-md-5"><h6>@Html.DisplayNameFor(model => model.Proposal):</h6>@Model.Proposal</div>
 		</div>
-		<div id="comments_@Model.ID" class="@classDiv">
-			@Html.Action("_List", "Comments", Model)
+		<div class="panel-separator" id="auditorlist_@Model.ID">
+			@Html.Action("_List", "Votes", Model)
+		</div>
+
+		@{
+			string classA = "collapsed";
+			string classDiv = "panel-collapse collapse";
+
+			if (Model.Comments.Count < 2) // Sektion ausklappen
+			{
+				classA = "";
+				classDiv = "panel-collapse collapse in";
+			}
+		}
+		<div class="panel panel-primary">
+			<div class="panel-heading panel-collapse-heading">
+				<h4 class="panel-title">
+					<a data-toggle="collapse" data-target="#comments_@Model.ID" class="@classA">
+						@if (@Model.Comments.Count == 0)
+						{
+							@:Keine Kommentare
+						}
+						else if (@Model.Comments.Count == 1)
+						{
+							@:Ein Kommentar
+						}
+						else
+						{
+							@Model.Comments.Count
+							@:Kommentare
+						}
+					</a>
+				</h4>
+			</div>
+			<div id="comments_@Model.ID" class="@classDiv">
+				@Html.Action("_List", "Comments", Model)
+			</div>
+		</div>
+		<div class="panel-footer">
+			@if (@Model.Attachments.Count == 0)
+			{
+				@:Keine Dateien vorhanden
+			}
+			else
+			{
+				@Html.Action("_List", "Attachments", new {topicID = Model.ID, makeList = true})
+			}
 		</div>
 	</div>
-	<div class="panel-footer">
-		@if (@Model.Attachments.Count == 0)
-		{
-			@:Keine Dateien vorhanden
-		}
-		else
-		{
-			@Html.Action("_List", "Attachments", new { topicID = Model.ID, makeList = true})
-		}
-	</div>
-</div>
 </div>

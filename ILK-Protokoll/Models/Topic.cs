@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
 using ILK_Protokoll.ViewModels;
 
 namespace ILK_Protokoll.Models
@@ -19,39 +18,6 @@ namespace ILK_Protokoll.Models
 			Attachments = new List<Attachment>();
 			Created = DateTime.Now;
 			ValidFrom = DateTime.Now;
-			// ReSharper restore DoNotCallOverridableMethodsInConstructor
-		}
-
-		public void IncorporateUpdates(TopicEdit updates)
-		{
-			if (!IsEditable)
-				throw new InvalidOperationException("Diese Diskussion ist beendet und kann daher nicht bearbeitet werden.");
-			// ReSharper disable DoNotCallOverridableMethodsInConstructor
-			Attachments = updates.Attachments;
-			Comments = new List<Comment>();
-			Description = updates.Description;
-			Duties = updates.Duties;
-			Owner = updates.Owner;
-			OwnerID = updates.OwnerID;
-			Priority = updates.Priority;
-			Proposal = updates.Proposal;
-			Title = updates.Title;
-			ToDo = updates.ToDo;
-			ValidFrom = DateTime.Now;
-			// ReSharper restore DoNotCallOverridableMethodsInConstructor
-		}
-
-		public void IncorporateHistory(TopicHistory history)
-		{
-			if (!IsEditable)
-				throw new InvalidOperationException("Diese Diskussion ist beendet und kann daher nicht bearbeitet werden.");
-			// ReSharper disable DoNotCallOverridableMethodsInConstructor
-			Description = history.Description;
-			OwnerID = history.OwnerID;
-			Proposal = history.Proposal;
-			SessionTypeID = history.SessionTypeID;
-			Title = history.Title;
-			ValidFrom = history.ValidFrom;
 			// ReSharper restore DoNotCallOverridableMethodsInConstructor
 		}
 
@@ -131,10 +97,40 @@ namespace ILK_Protokoll.Models
 		[NotMapped]
 		public bool IsEditable
 		{
-			get
-			{
-				return Decision == null;
-			}
+			get { return Decision == null; }
+		}
+
+		public void IncorporateUpdates(TopicEdit updates)
+		{
+			if (!IsEditable)
+				throw new InvalidOperationException("Diese Diskussion ist beendet und kann daher nicht bearbeitet werden.");
+			// ReSharper disable DoNotCallOverridableMethodsInConstructor
+			Attachments = updates.Attachments;
+			Comments = new List<Comment>();
+			Description = updates.Description;
+			Duties = updates.Duties;
+			Owner = updates.Owner;
+			OwnerID = updates.OwnerID;
+			Priority = updates.Priority;
+			Proposal = updates.Proposal;
+			Title = updates.Title;
+			ToDo = updates.ToDo;
+			ValidFrom = DateTime.Now;
+			// ReSharper restore DoNotCallOverridableMethodsInConstructor
+		}
+
+		public void IncorporateHistory(TopicHistory history)
+		{
+			if (!IsEditable)
+				throw new InvalidOperationException("Diese Diskussion ist beendet und kann daher nicht bearbeitet werden.");
+			// ReSharper disable DoNotCallOverridableMethodsInConstructor
+			Description = history.Description;
+			OwnerID = history.OwnerID;
+			Proposal = history.Proposal;
+			SessionTypeID = history.SessionTypeID;
+			Title = history.Title;
+			ValidFrom = history.ValidFrom;
+			// ReSharper restore DoNotCallOverridableMethodsInConstructor
 		}
 	}
 }

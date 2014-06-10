@@ -1,10 +1,7 @@
-﻿using System;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
-using System.Web.UI.WebControls;
-using ILK_Protokoll.DataLayer;
 using ILK_Protokoll.Models;
 using ILK_Protokoll.ViewModels;
 
@@ -12,11 +9,10 @@ namespace ILK_Protokoll.Controllers
 {
 	public class TopicsController : BaseController
 	{
-
 		// GET: Topics
 		public ActionResult Index()
 		{
-			var topics = db.Topics.Include(t => t.SessionType).Include(t => t.TargetSessionType);
+			IQueryable<Topic> topics = db.Topics.Include(t => t.SessionType).Include(t => t.TargetSessionType);
 			return View(topics.ToList());
 		}
 
@@ -53,15 +49,15 @@ namespace ILK_Protokoll.Controllers
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		public ActionResult Create(
-			[Bind(Include = "ID,Attachments,Description,Duties,OwnerID,Owner,Priority,Proposal,SessionTypeID,Title,ToDo")]
-			TopicEdit input)
+			[Bind(Include = "ID,Attachments,Description,Duties,OwnerID,Owner,Priority,Proposal,SessionTypeID,Title,ToDo")] TopicEdit input)
 		{
 			if (ModelState.IsValid)
 			{
 				var t = new Topic();
 				t.IncorporateUpdates(input);
 				t.SessionTypeID = input.SessionTypeID;
-				foreach (var user in db.SessionTypes.Include(st => st.Attendees).First(st => st.ID == input.SessionTypeID).Attendees)
+				foreach (
+					User user in db.SessionTypes.Include(st => st.Attendees).First(st => st.ID == input.SessionTypeID).Attendees)
 					t.Votes.Add(new Vote(user, VoteKind.None));
 
 				db.Topics.Add(t);
@@ -88,7 +84,7 @@ namespace ILK_Protokoll.Controllers
 				return HttpNotFound();
 			}
 
-			var viewmodel = TopicEdit.FromTopic(topic);
+			TopicEdit viewmodel = TopicEdit.FromTopic(topic);
 			viewmodel.SessionTypeList = new SelectList(db.SessionTypes, "ID", "Name");
 			viewmodel.TargetSessionTypeList = new SelectList(db.SessionTypes, "ID", "Name");
 			viewmodel.UserList = new SelectList(db.GetUserOrdered(GetCurrentUser()), "ID", "Name", viewmodel.OwnerID);
@@ -106,7 +102,7 @@ namespace ILK_Protokoll.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				var topic = db.Topics.Find(input.ID);
+				Topic topic = db.Topics.Find(input.ID);
 				db.TopicHistory.Add(TopicHistory.FromTopic(topic));
 
 				topic.IncorporateUpdates(input);
@@ -115,7 +111,7 @@ namespace ILK_Protokoll.Controllers
 				db.SaveChanges();
 				return RedirectToAction("Index");
 			}
-			var t = db.Topics.Find(input.ID);
+			Topic t = db.Topics.Find(input.ID);
 			input.SessionType = t.SessionType;
 			input.SessionTypeList = new SelectList(db.SessionTypes, "ID", "Name", input.SessionTypeID);
 			input.TargetSessionTypeList = new SelectList(db.SessionTypes, "ID", "Name", input.TargetSessionTypeID);

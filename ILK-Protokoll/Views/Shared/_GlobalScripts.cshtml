@@ -1,7 +1,7 @@
 ﻿<script type="text/javascript">
 	$("a[rel=popover]")
 		.popover({ html: true })
-		.click(function (e) {
+		.click(function(e) {
 			e.preventDefault();
 		});
 
@@ -10,16 +10,16 @@
 
 	$('.popover-markup > .trigger').popover({
 		html: true,
-		content: function () {
+		content: function() {
 			return $(this).parent().find('.content').html();
 		},
 		container: 'body',
 		placement: 'bottom'
-	}).click(function (e) {
+	}).click(function(e) {
 		e.stopPropagation();
 	});
 
-	$('html').click(function (e) {
+	$('html').click(function(e) {
 		$('.popover-markup > .trigger').popover('hide');
 	});
 </script>

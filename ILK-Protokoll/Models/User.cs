@@ -28,7 +28,7 @@ namespace ILK_Protokoll.Models
 
 		public bool Equals(User other)
 		{
-			if ((object)other == null)
+			if ((object) other == null)
 				return false;
 			else
 			{
@@ -55,7 +55,7 @@ namespace ILK_Protokoll.Models
 		{
 			if (ReferenceEquals(a, b))
 				return true;
-			else if ((object)a == null || (object)b == null)
+			else if ((object) a == null || (object) b == null)
 				return false;
 			else
 				return a.Name == b.Name;
@@ -65,6 +65,7 @@ namespace ILK_Protokoll.Models
 		{
 			return !(a == b);
 		}
+
 		#endregion
 	}
 }

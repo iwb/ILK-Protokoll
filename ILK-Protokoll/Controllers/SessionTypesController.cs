@@ -1,19 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using ILK_Protokoll.DataLayer;
 using ILK_Protokoll.Models;
 
 namespace ILK_Protokoll.Controllers
 {
 	public class SessionTypesController : BaseController
 	{
-
 		// GET: SessionTypes
 		public ActionResult Index()
 		{

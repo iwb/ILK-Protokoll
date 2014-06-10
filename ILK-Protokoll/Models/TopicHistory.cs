@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace ILK_Protokoll.Models
 {
@@ -20,7 +17,7 @@ namespace ILK_Protokoll.Models
 
 		public static TopicHistory FromTopic(Topic t)
 		{
-			return new TopicHistory()
+			return new TopicHistory
 			{
 				TopicID = t.ID,
 				Title = t.Title,
