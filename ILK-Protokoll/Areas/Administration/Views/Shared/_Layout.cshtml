@@ -12,6 +12,8 @@
 	</head>
 	<body>
 		@{ Html.RenderPartial("_Navbar"); }
+		@{ Html.RenderPartial("_AdminNavbar"); }
+
 		<div class="container body-content">
 			<div id="javascript-warning" class="alert alert-danger jumbotron">
 				<h2><strong>Für diese Seite ist JavaScript erforderlich!</strong></h2>
@@ -28,4 +30,5 @@
 
 		@{ Html.RenderPartial("_GlobalScripts"); }
 	</body>
+
 </html>

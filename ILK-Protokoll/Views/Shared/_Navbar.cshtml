@@ -26,12 +26,12 @@
 			</form>
 
 			<ul class="nav navbar-nav">
-				<li>@Html.ActionLink("Diskussionspunkte", "Index", "Topics")</li>
-				<li>@Html.ActionLink("Beschlüsse", "About", "Home")</li>
-				<li>@Html.ActionLink("Sitzungen", "Index", "SessionTypes")</li>
-				<li>@Html.ActionLink("Aufgaben", "Index", "Home")</li>
-				<li>@Html.ActionLink("Sonstiges", "Index", "Home")</li>
-				<li>@Html.ActionLink("Verwaltung", "Index", "Home")</li>
+				<li>@Html.ActionLink("Diskussionspunkte", "Index", "Topics", new { Area = "" }, null)</li>
+				<li>@Html.ActionLink("Beschlüsse", "About", "Home", new { Area = "" }, null)</li>
+				<li>@Html.ActionLink("Sitzungen", "Index", "SessionTypes", new { Area = "" }, null)</li>
+				<li>@Html.ActionLink("Aufgaben", "Index", "Home", new { Area = "" }, null)</li>
+				<li>@Html.ActionLink("Sonstiges", "Index", "Home", new { Area = "" }, null)</li>
+				<li>@Html.ActionLink("Verwaltung", "Index", "AdminHome", new { Area = "Administration" }, null)</li>
 			</ul>
 		</div>
 	</div>

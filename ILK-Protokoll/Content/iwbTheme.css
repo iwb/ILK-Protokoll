@@ -5786,7 +5786,7 @@ button.close {
   padding-bottom: 1px;
 }
 body {
-  padding-top: 50px;
+  padding-top: 57px;
   padding-bottom: 20px;
   overflow-y: scroll;
 }
@@ -5794,7 +5794,6 @@ body {
 .body-content {
   padding-left: 15px;
   padding-right: 15px;
-  margin-top: 10px;
 }
 @media (min-width: 768px) {
   .dl-horizontal dt {
@@ -5875,6 +5874,12 @@ textarea.form-control {
   font-weight: bold;
   border: 2px solid #D48625;
   border-radius: 4px;
+}
+.navbar-secondary {
+  top: 57px;
+}
+.navbar-secondary + .body-content {
+  margin-top: 50px;
 }
 /* Content */
 .topic-panel h6 {

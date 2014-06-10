@@ -122,6 +122,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Administration\AdministrationAreaRegistration.cs" />
+    <Compile Include="Areas\Administration\Controllers\AdminHomeController.cs" />
     <Compile Include="Areas\Administration\Controllers\RecycleBinController.cs" />
     <Compile Include="Controllers\AttachmentsController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
@@ -234,6 +235,8 @@
     <Content Include="Areas\Administration\Views\RecycleBin\Index.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\Administration\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Administration\Views\Shared\_AdminNavbar.cshtml" />
+    <Content Include="Areas\Administration\Views\AdminHome\Index.cshtml" />
     <None Include="Content\variables.less" />
     <Content Include="Content\iwbTheme.css.map">
       <DependentUpon>iwbTheme.css</DependentUpon>
@@ -303,7 +306,6 @@
   <ItemGroup />
   <ItemGroup>
     <Content Include="packages.config" />
-    <None Include="Project_Readme.html" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
