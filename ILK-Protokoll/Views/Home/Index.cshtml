@@ -36,6 +36,8 @@
 	Html.RenderPartial("~/Views/Topics/_Topic.cshtml", t);
 }
 
+@Ajax.ActionLink("text", "action", new AjaxOptions() {HttpMethod = "POST", OnFailure = "onf", OnSuccess = "ons"})
+
 <div class="row" style="clear: both;">
 	<p>
 		<button type="button" class="btn btn-default">Default</button>

@@ -30,4 +30,14 @@
 			$(element).remove();
 		}
 	}
+
+	function DisplayErrorMessage(text) {
+		$('#alerts').append('<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</utton><strong>Fehler: </strong>' + text + '</div>');
+	}
+	function DisplayInfoMessage(text) {
+		$('#alerts').append('<div class="alert alert-info alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</utton><strong>Fehler: </strong>' + text + '</div>');
+	}
+	function DisplaySuccessMessage(text) {
+		$('#alerts').append('<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</utton><strong>Fehler: </strong>' + text + '</div>');
+	}
 </script>

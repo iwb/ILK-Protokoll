@@ -45,6 +45,7 @@
 					$('#attachments_@Model').replaceWith(xhr.responseText);
 				}
 			}
+			xhr.onerror = function () { DisplayErrorMessage(xhr.statusText); };
 			e.preventDefault();
 		});
 	});
