@@ -51,13 +51,20 @@ namespace ILK_Protokoll.Controllers
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public ActionResult _Upload(int topicID, IEnumerable<HttpPostedFileBase> files)
+		public ActionResult _Upload(int topicID)
 		{
+			if (Request.Files.Count == 0)
+				return new HttpStatusCodeResult(HttpStatusCode.NoContent);
+
+			if (topicID <= 0)
+				return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Die Dateien können keiner Diskussion zugeordnet werden");
+
 			bool success = false;
 
-			foreach (HttpPostedFileBase file in files)
+			for (int i = 0; i < Request.Files.Count; i++)
 			{
-				if (file != null && file.ContentLength > 0 && topicID > 0)
+				var file = Request.Files[i];
+				if (file != null && file.ContentLength > 0)
 				{
 					string filename = Path.GetFileNameWithoutExtension(file.FileName);
 					string fileext = Path.GetExtension(file.FileName);
@@ -88,7 +95,7 @@ namespace ILK_Protokoll.Controllers
 				return _List(topicID);
 			else
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest,
-					"Der Server hat keine Datei erhalten, oder kann Sie keinem Thema zuordnen.");
+					"Der Server hat keine Datei erhalten.");
 		}
 
 		[HttpPost]

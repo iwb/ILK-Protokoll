@@ -86,18 +86,3 @@
 		}
 	}
 </ul>
-
-<script type="text/javascript">
-	if (window.jQuery) {
-		$('.popover-markup > .trigger').popover({
-			html: true,
-			content: function() {
-				return $(this).parent().find('.content').html();
-			},
-			container: 'body',
-			placement: 'bottom'
-		}).click(function(e) {
-			e.stopPropagation();
-		});
-	}
-</script>

@@ -6,9 +6,14 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<meta name="description" content="Das ILK-Protokoll ermöglicht eine einfache Verwaltung der Diskussionen rund ums iwb und eine durchsuchbare Liste von Beschlüssen." />
+		<meta http-equiv="cache-control" content="no-cache" />
+		<meta http-equiv="pragma" content="no-cache" />
+		<meta http-equiv="expires" content="0" />
 		<title>@ViewBag.Title &#8211; ILK-Protokoll</title>
 		@Styles.Render("~/Content/css")
 		@Scripts.Render("~/bundles/modernizr")
+		@Scripts.Render("~/bundles/jquery")
+		@Scripts.Render("~/bundles/bootstrap")
 	</head>
 	<body>
 		@{ Html.RenderPartial("_Navbar"); }
@@ -22,9 +27,6 @@
 			@RenderBody()
 			@{ Html.RenderPartial("_Footer"); }
 		</div>
-
-		@Scripts.Render("~/bundles/jquery")
-		@Scripts.Render("~/bundles/bootstrap")
 	
 		@{ Html.RenderPartial("_GlobalScripts"); }
 		@RenderSection("Scripts", false)
