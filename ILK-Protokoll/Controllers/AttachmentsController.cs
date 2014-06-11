@@ -91,12 +91,10 @@ namespace ILK_Protokoll.Controllers
 					"Der Server hat keine Datei erhalten, oder kann Sie keinem Thema zuordnen.");
 		}
 
-
-		public ActionResult _Delete(int attachmentID, int topicID)
+		[HttpPost]
+		public ActionResult _Delete(int attachmentID)
 		{
-			Attachment attachment = db.Attachments.Include(a => a.Uploader).First(a => a.ID == attachmentID);
-			if (attachment.TopicID != topicID)
-				return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Die Daten konnten nicht zugordnet werden.");
+			var attachment = db.Attachments.Include(a => a.Uploader).First(a => a.ID == attachmentID);
 
 
 			if (attachment.Deleted == null) // In den Papierkorb
@@ -109,7 +107,7 @@ namespace ILK_Protokoll.Controllers
 				{
 					string path = Path.Combine(Serverpath, attachment.FileName);
 					System.IO.File.Delete(path);
-					db.Topics.Find(topicID).Attachments.Remove(attachment);
+					attachment.Topic.Attachments.Remove(attachment);
 					db.Attachments.Remove(attachment);
 				}
 				catch (IOException)

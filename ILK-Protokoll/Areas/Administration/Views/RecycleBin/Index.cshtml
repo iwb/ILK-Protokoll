@@ -1,6 +1,81 @@
 ﻿@using ILK_Protokoll.Models
+@model IEnumerable<ILK_Protokoll.Models.Attachment>
 @{
 	ViewBag.Title = "Papierkorb";
 }
+@Html.ActionLink("Papierkorb leeren", "Purge", null, new { @class = "index-action btn btn-danger" })
 
 <h2>@ViewBag.Title</h2>
+
+@if (!Model.Any())
+{
+	<p>Der Papierkorb ist leer.</p>
+}
+else
+{
+	<table class="table">
+		<thead>
+			<tr>
+				<th>
+					@Html.DisplayNameFor(model => model.TopicID)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.Deleted)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.DisplayName)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.Created)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.FileSize)
+				</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (Attachment item in Model)
+			{
+				<tr id="attachment_@item.ID">
+					<td>
+						@Html.DisplayFor(modelItem => item.Topic.Title)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.Deleted)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.DisplayName)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.Created)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => item.FileSize)
+					</td>
+					<td>
+						@Ajax.ActionLink("Wiederherstellen", "_Restore", "RecycleBin",
+							new { attachmentID = item.ID },
+							new AjaxOptions { HttpMethod = "POST", OnSuccess = "removeFile('#attachment_" + @item.ID + "');" },
+							new { @class = "text-success" })
+						<br />
+						@Ajax.ActionLink("Löschen", "_Delete", "Attachments",
+							new { area="", attachmentID = item.ID },
+							new AjaxOptions { Confirm = "Datei endgültig löschen?", HttpMethod = "POST", OnSuccess = "removeFile('#attachment_" + @item.ID + "');" },
+							new { @class = "text-danger" })
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+}
+
+<script type="text/javascript">
+	function removeFile(element) {
+		if ($(element).siblings().length == 0) {
+			$(element).parent().parent().replaceWith("<p>Der Papierkorb ist leer.</p>"); // Remove the whole table
+		} else {
+			$(element).remove();
+		}
+	}
+</script>

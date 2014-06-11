@@ -13,10 +13,13 @@ namespace ILK_Protokoll.Models
 		[InverseProperty("Attachments")]
 		public int? TopicID { get; set; }
 
+		[ForeignKey("TopicID")]
+		public virtual Topic Topic { get; set; }
+
 		/// <summary>
 		/// Enthält das löschdatum, falls der Anhang gelöscht wurde, sonst null.
 		/// </summary>
-		[Display(Name = "Gelöscht am")]
+		[Display(Name = "Gelöscht")]
 		public DateTime? Deleted { get; set; }
 
 		/// <summary>

@@ -26,7 +26,8 @@
 	<td class="actions">
 		<a href=""><span class="glyphicon glyphicon-edit" title="Name bearbeiten"></span></a>
 
-		<a data-ajax="true" data-ajax-method="POST" data-ajax-success="removeAttachment('#attachment_@Model.ID');" href="@Url.Action("_Delete", new {attachmentID = Model.ID, topicID = Model.TopicID})">
+		<a data-ajax="true" data-ajax-method="POST" data-ajax-success="removeAttachment('#attachment_@Model.ID');"
+			href="@Url.Action("_Delete", new {attachmentID = Model.ID})">
 			<span class="glyphicon glyphicon-remove" title="Datei löschen"></span>
 		</a>
 

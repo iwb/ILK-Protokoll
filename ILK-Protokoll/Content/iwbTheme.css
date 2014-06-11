@@ -2037,7 +2037,7 @@ fieldset[disabled] .btn {
 .btn-default {
   color: #333333;
   background-color: #ffffff;
-  border-color: #222222;
+  border-color: #cccccc;
 }
 .btn-default:hover,
 .btn-default:focus,
@@ -2046,7 +2046,7 @@ fieldset[disabled] .btn {
 .open .dropdown-toggle.btn-default {
   color: #333333;
   background-color: #ebebeb;
-  border-color: #030303;
+  border-color: #adadad;
 }
 .btn-default:active,
 .btn-default.active,
@@ -2069,7 +2069,7 @@ fieldset[disabled] .btn-default:active,
 .btn-default[disabled].active,
 fieldset[disabled] .btn-default.active {
   background-color: #ffffff;
-  border-color: #222222;
+  border-color: #cccccc;
 }
 .btn-default .badge {
   color: #ffffff;
@@ -5855,9 +5855,6 @@ textarea.form-control {
     color: #DDD;
   }
 }
-.navbar-inverse .navbar-link {
-  color: #DDD;
-}
 .navbar-text {
   margin-top: 10px;
   margin-bottom: 5px;
@@ -5878,10 +5875,17 @@ textarea.form-control {
 .navbar-secondary {
   top: 57px;
 }
+.navbar-secondary .navbar-nav > li > a:hover {
+  background-color: #dddddd;
+}
 .navbar-secondary + .body-content {
   margin-top: 50px;
 }
 /* Content */
+.index-action {
+  margin-top: 20px;
+  float: right;
+}
 .topic-panel h6 {
   margin: 0;
   font-weight: bold;

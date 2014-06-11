@@ -6,11 +6,8 @@
 	ViewBag.Title = "Übersicht";
 }
 
+@Html.ActionLink("Neue Diskussion", "Create", null, new { @class = "index-action btn btn-primary" })
 <h2>@ViewBag.Title</h2>
-
-<p>
-	@Html.ActionLink("Neue Diskussion", "Create", null, new {@class = "btn btn-primary"})
-</p>
 
 <div class="panel-group" id="filter_accordion">
 	<div class="panel panel-primary">
