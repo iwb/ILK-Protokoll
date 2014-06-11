@@ -3,8 +3,9 @@
 @using (Ajax.BeginForm("_Submit", "Comments", new AjaxOptions
 {
 	UpdateTargetId = "comments_" + Model.TopicID,
-	OnBegin = "$('#comment_form_" + @ViewBag.TopicID + "').submit(function(){return false;});"
-}, new {id = "comment_form_" + @ViewBag.TopicID}))
+	OnBegin = "$('#comment_form_" + ViewBag.TopicID + "').submit(function(){return false;});",
+	OnFailure = "DisplayErrorMessage('#comments_" + ViewBag.TopicID + "', 'Der Kommentar konnte nicht verarbeitet werden.'); $('#comment_form_" + ViewBag.TopicID + "').unbind('submit');",
+}, new {id = "comment_form_" + ViewBag.TopicID}))
 {
 	@Html.AntiForgeryToken()
 	@Html.HiddenFor(model => model.TopicID)

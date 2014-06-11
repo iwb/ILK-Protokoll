@@ -7,17 +7,20 @@
 
 	$("time[rel=timeago]").timeago();
 
+	function enablePopovers() {
+		$('.popover-markup > .trigger').popover({
+			html: true,
+			content: function() {
+				return $(this).parent().find('.content').html();
+			},
+			container: 'body',
+			placement: 'bottom'
+		}).click(function(e) {
+			e.stopPropagation();
+		});
+	}
 
-	$('.popover-markup > .trigger').popover({
-		html: true,
-		content: function() {
-			return $(this).parent().find('.content').html();
-		},
-		container: 'body',
-		placement: 'bottom'
-	}).click(function(e) {
-		e.stopPropagation();
-	});
+	enablePopovers();
 
 	$('html').click(function(e) {
 		$('.popover-markup > .trigger').popover('hide');
@@ -31,13 +34,15 @@
 		}
 	}
 
-	function DisplayErrorMessage(text) {
-		$('#alerts').append('<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</utton><strong>Fehler: </strong>' + text + '</div>');
+	function DisplayErrorMessage(id, text) {
+		$(id).append('<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><strong>Fehler: </strong>' + text + '</div>');
 	}
-	function DisplayInfoMessage(text) {
-		$('#alerts').append('<div class="alert alert-info alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</utton><strong>Fehler: </strong>' + text + '</div>');
+
+	function DisplayInfoMessage(id, text) {
+		$(id).append('<div class="alert alert-info alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><strong>Fehler: </strong>' + text + '</div>');
 	}
-	function DisplaySuccessMessage(text) {
-		$('#alerts').append('<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</utton><strong>Fehler: </strong>' + text + '</div>');
+
+	function DisplaySuccessMessage(id, text) {
+		$(id).append('<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><strong>Fehler: </strong>' + text + '</div>');
 	}
 </script>

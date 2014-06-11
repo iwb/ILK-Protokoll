@@ -54,10 +54,10 @@ namespace ILK_Protokoll.Controllers
 		public ActionResult _Upload(int topicID)
 		{
 			if (Request.Files.Count == 0)
-				return new HttpStatusCodeResult(HttpStatusCode.NoContent);
+				return new HttpStatusCodeResult(HttpStatusCode.NoContent, "Es wurden keine Dateien empfangen.");
 
 			if (topicID <= 0)
-				return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Die Dateien können keiner Diskussion zugeordnet werden");
+				return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Die Dateien können keiner Diskussion zugeordnet werden.");
 
 			bool success = false;
 
@@ -75,7 +75,7 @@ namespace ILK_Protokoll.Controllers
 					{
 						TopicID = topicID,
 						Deleted = null,
-						DisplayName = file.FileName,
+						DisplayName = Path.GetFileName(file.FileName),
 						SafeName = InvalidChars.Replace(filename, ""),
 						Extension = fileext,
 						FileSize = file.ContentLength,
@@ -95,7 +95,7 @@ namespace ILK_Protokoll.Controllers
 				return _List(topicID);
 			else
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest,
-					"Der Server hat keine Datei erhalten.");
+					"Der Server hat zwar Dateien empfangen, konnte sie jedoch nicht verarbeiten.");
 		}
 
 		[HttpPost]

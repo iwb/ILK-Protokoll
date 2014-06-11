@@ -36,7 +36,7 @@ namespace ILK_Protokoll.Controllers
 
 			string message = string.Format("In Vertretung für {0} abgestimmt mit \"{1}\".", voter.Name, vote.GetDescription());
 
-			db.Comments.Add(new Comment {Author = GetCurrentUser(), TopicID = topicID, Content = message});
+			db.Comments.Add(new Comment { Author = GetCurrentUser(), TopicID = topicID, Content = message });
 			db.SaveChanges();
 			return _List(db.Topics.Find(topicID));
 		}

@@ -28,7 +28,13 @@
 @* Für die eigene Stimme *@
 @helper GetVoteLink(VoteKind vk)
 {
-	<a data-ajax="true" data-ajax-method="POST" data-ajax-mode="replace" data-ajax-update="#auditorlist_@ViewBag.TopicID" class="votelink" href="/Votes/_Register?TopicID=@ViewBag.TopicID&amp;vote=@vk.DisplayName()">@GetVoteIcon(vk)</a>
+	<a href="/Votes/_Register?TopicID=@ViewBag.TopicID&amp;vote=@vk.DisplayName()"
+	   data-ajax="true"
+	   data-ajax-method="POST"
+	   data-ajax-mode="replace"
+	   data-ajax-update="#auditorlist_@ViewBag.TopicID"
+	   data-ajax-failure="DisplayErrorMessage('#auditorlist_@ViewBag.TopicID', 'Die Stimme konnte nicht verarbeitet werden.');"
+	   class="votelink">@GetVoteIcon(vk)</a>
 }
 @* Für Abstimmen in Vertretung *@
 @helper GetVoteLink2(User voter, VoteKind vk)
@@ -86,3 +92,9 @@
 		}
 	}
 </ul>
+
+<script type="text/javascript">
+	if (window.jQuery) {
+		enablePopovers();
+	}
+</script>
