@@ -45,7 +45,6 @@
 					if (xhr.status == 200) {
 						$('#attachments_@Model').replaceWith(xhr.responseText);
 						$('#attachment_uploader_status').html('');
-						$('#files').replaceWith($(this).val('').clone(true)); // Clears the file input control
 						$('#attachment_uploader')[0].reset();
 					} else {
 						$('#attachment_uploader_status').html('<span class="text-danger">' + xhr.statusText + '</span>');

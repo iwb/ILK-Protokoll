@@ -19,9 +19,43 @@ namespace ILK_Protokoll.Controllers
 		public const string VirtualPath = "~/Attachments/Download/";
 		private static readonly Regex InvalidChars = new Regex(@"[^a-zA-Z0-9_-]");
 
+		private static readonly HashSet<string> OfficeExtensions = new HashSet<string>
+		{
+			"pdf",
+			"doc",
+			"docm",
+			"docx",
+			"dotx",
+			"one",
+			"pdf",
+			"potx",
+			"ppt",
+			"pptx",
+			"vsd",
+			"xls",
+			"xlsm",
+			"xlsx",
+			"xltx"
+		};
+
 		private string Serverpath
 		{
 			get { return @"C:\ILK-Protokoll_Uploads\"; }
+		}
+
+		public string GetVirtualPath(int attachmentID)
+		{
+			string userAgent = Request.UserAgent;
+			bool isInternetExplorer = !string.IsNullOrEmpty(userAgent) && userAgent.Contains("MSIE");
+			if (Environment.MachineName == "02MUCILK" && isInternetExplorer)
+			{
+				Attachment a = db.Attachments.Find(attachmentID);
+				bool isOfficeDocument = OfficeExtensions.Contains(a.Extension);
+				if (isOfficeDocument)
+					return "file://02mucilk/Uploads/" + a.FileName;
+			}
+
+			return Url.Action("Download", new { id = attachmentID });
 		}
 
 		// GET: Attachments

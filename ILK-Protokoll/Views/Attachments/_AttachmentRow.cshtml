@@ -8,12 +8,11 @@
 		iconname = "default";
 	}
 
-	string fileurl = AttachmentsController.VirtualPath + Model.ID;
+	string fileurl = ((AttachmentsController)ViewContext.Controller).GetVirtualPath(Model.ID);
 }
-
 <tr id="attachment_@Model.ID">
 	<td>
-		<a href="@Url.Content(fileurl)">
+		<a href="@fileurl">
 			<img src="~/img/fileicons/@(iconname).png" height="48" />
 		</a>
 	</td>

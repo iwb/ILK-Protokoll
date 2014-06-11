@@ -102,8 +102,7 @@
 			<div class="panel-heading">
 				<h3 class="panel-title">@Html.DisplayNameFor(model => model.Attachments)</h3>
 			</div>
-
-			@if (Model.Attachments.Count == 0)
+			@if (Model.Attachments.Count(a => a.Deleted == null) == 0)
 			{
 				<div class="panel-body" id="attachments_@Model.ID">Keine Dateianhänge vorhanden.</div>
 			}

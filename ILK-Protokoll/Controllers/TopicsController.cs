@@ -22,10 +22,11 @@ namespace ILK_Protokoll.Controllers
 			if (id == null)
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Für diesen Vorgang ist eine TopicID ist erforderlich.");
 
-			Topic topic = db.Topics.Find(id.Value);
+			Topic topic = db.Topics.Include(t => t.Attachments).First(t => t.ID == id.Value);
 			if (topic == null)
 				return HttpNotFound();
 
+			ViewBag.TopicID = id.Value;
 			ViewBag.TopicHistory = db.TopicHistory.Where(t => t.TopicID == id.Value).ToList();
 
 			return View(topic);
