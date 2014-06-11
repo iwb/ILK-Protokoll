@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Mime;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
@@ -15,12 +16,12 @@ namespace ILK_Protokoll.Controllers
 {
 	public class AttachmentsController : BaseController
 	{
-		public const string VirtualPath = "~/Uploads/";
+		public const string VirtualPath = "~/Attachments/Download/";
 		private static readonly Regex InvalidChars = new Regex(@"[^a-zA-Z0-9_-]");
 
 		private string Serverpath
 		{
-			get { return Server.MapPath(VirtualPath); }
+			get { return @"C:\ILK-Protokoll_Uploads\"; }
 		}
 
 		// GET: Attachments
@@ -63,7 +64,7 @@ namespace ILK_Protokoll.Controllers
 
 			for (int i = 0; i < Request.Files.Count; i++)
 			{
-				var file = Request.Files[i];
+				HttpPostedFileBase file = Request.Files[i];
 				if (file != null && file.ContentLength > 0)
 				{
 					string filename = Path.GetFileNameWithoutExtension(file.FileName);
@@ -101,7 +102,7 @@ namespace ILK_Protokoll.Controllers
 		[HttpPost]
 		public ActionResult _Delete(int attachmentID)
 		{
-			var attachment = db.Attachments.Include(a => a.Uploader).First(a => a.ID == attachmentID);
+			Attachment attachment = db.Attachments.Include(a => a.Uploader).First(a => a.ID == attachmentID);
 
 
 			if (attachment.Deleted == null) // In den Papierkorb
@@ -134,6 +135,20 @@ namespace ILK_Protokoll.Controllers
 			}
 
 			return new HttpStatusCodeResult(HttpStatusCode.NoContent);
+		}
+
+		public FileResult Download(int id)
+		{
+			Attachment a = db.Attachments.Find(id);
+
+			var cd = new ContentDisposition
+			{
+				FileName = a.DisplayName,
+				Inline = true,
+			};
+			Response.AppendHeader("Content-Disposition", cd.ToString());
+
+			return File(Path.Combine(Serverpath, a.FileName), MimeMapping.GetMimeMapping(a.DisplayName));
 		}
 	}
 }

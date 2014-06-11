@@ -7,7 +7,7 @@
 		iconname = "default";
 	}
 
-	string fileurl = AttachmentsController.VirtualPath + Model.FileName;
+	string fileurl = AttachmentsController.VirtualPath + Model.ID;
 }<a href="@Url.Content(fileurl)" class="btn btn-default">
 	 <img src="~/img/fileicons/@(iconname).png" height="16" />
 	 @Model.DisplayName
