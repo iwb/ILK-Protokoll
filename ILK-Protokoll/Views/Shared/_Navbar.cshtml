@@ -6,7 +6,7 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			@Html.ActionLink("Dashboard", "Index", "Home", new {area = ""}, new {@class = "navbar-brand"})
+			@Html.ActionLink("Dashboard", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
 		</div>
 		<div class="navbar-collapse collapse">
 			<p class="navbar-right navbar-text">
@@ -14,16 +14,17 @@
 				<span class="hidden-xs usertile">@User.Identity.Name.Split('\\').Last()</span>
 			</p>
 
-			<form class="navbar-form navbar-right" role="search">
+			@using (Html.BeginForm("Results", "Search", FormMethod.Get, new { @class = "navbar-form navbar-right" }))
+			{
 				<div class="form-group">
 					<div class="input-group">
-						<input type="search" class="form-control" placeholder="Suche" name="search-term" id="search-term">
+						<input type="search" class="form-control" placeholder="Suche" name="searchterm">
 						<div class="input-group-btn">
 							<button class="btn btn-default" type="button"><i class="glyphicon glyphicon-search"></i></button>
 						</div>
 					</div>
 				</div>
-			</form>
+			}
 
 			<ul class="nav navbar-nav">
 				<li>@Html.ActionLink("Diskussionspunkte", "Index", "Topics", new { Area = "" }, null)</li>

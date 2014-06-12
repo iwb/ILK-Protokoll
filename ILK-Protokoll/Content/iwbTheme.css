@@ -6059,6 +6059,10 @@ p.panel-title {
 .file-list a {
   margin: 3px 3px;
 }
+.highlight {
+  background-color: #EFDA1B;
+  color: #000;
+}
 /*IE-Hack*/
 @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
   /* IE10+ specific styles */

@@ -1,0 +1,32 @@
+﻿@using ILK_Protokoll.Models
+@model ICollection<ILK_Protokoll.Models.Topic>
+
+@{
+	ViewBag.Title = "Suchergebnisse";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@if (Model.Count == 1)
+{
+	<h4>Ihre Suche nach &quot;@ViewBag.SearchTerm&quot; hat ein Ergebnis ergeben.</h4>
+}
+else
+{
+	<h4>Ihre Suche nach &quot;@ViewBag.SearchTerm&quot; hat @Model.Count Ergebnisse ergeben.</h4>
+}
+
+<div class="row" id="searchresults">
+	@foreach (Topic t in Model)
+	{
+		Html.RenderPartial("~/Views/Topics/_Topic.cshtml", t);
+	}
+</div>
+
+<script type="text/javascript">
+	var terms = "@(ViewBag.SearchTerm)".split(" ");
+
+	$.each(terms, function (index, term) {
+		$('#searchresults').highlight(term);
+	});
+</script>

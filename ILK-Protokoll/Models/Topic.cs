@@ -133,4 +133,17 @@ namespace ILK_Protokoll.Models
 			// ReSharper restore DoNotCallOverridableMethodsInConstructor
 		}
 	}
+
+	class TopicByIdComparer : IEqualityComparer<Topic>
+	{
+		public bool Equals(Topic x, Topic y)
+		{
+			return x.ID == y.ID;
+		}
+
+		public int GetHashCode(Topic obj)
+		{
+			return obj.ID;
+		}
+	}
 }
