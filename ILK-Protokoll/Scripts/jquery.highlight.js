@@ -31,14 +31,14 @@ jQuery.fn.highlight = function (pat) {
 				middlebit.parentNode.replaceChild(spannode, middlebit);
 				skip = 1;
 			}
-		}
-		else if (node.nodeType == 1 && node.childNodes && !/(script|style)/i.test(node.tagName)) {
+		} else if (node.nodeType == 1 && node.childNodes && !/(script|style)/i.test(node.tagName)) {
 			for (var i = 0; i < node.childNodes.length; ++i) {
 				i += innerHighlight(node.childNodes[i], pat);
 			}
 		}
 		return skip;
 	}
+
 	return this.length && pat && pat.length ? this.each(function () {
 		innerHighlight(this, pat.toUpperCase());
 	}) : this;

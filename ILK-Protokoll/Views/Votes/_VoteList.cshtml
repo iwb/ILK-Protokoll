@@ -35,7 +35,7 @@
 @* Für die eigene Stimme *@
 @helper GetVoteLink(VoteKind vk)
 {
-	<a href="/Votes/_Register?TopicID=@ViewBag.TopicID&amp;vote=@vk.DisplayName()&amp;linkAllAuditors=@ViewBag.LinkAllAuditors.ToString()"
+	<a href="@Url.Action("_Register", new { topicID = ViewBag.TopicID, vote = vk.DisplayName(), linkAllAuditors = ViewBag.LinkAllAuditors})"
 		data-ajax="true"
 		data-ajax-method="POST"
 		data-ajax-mode="replace"
@@ -46,7 +46,7 @@
 @* Für Abstimmen in Vertretung *@
 @helper GetVoteLink2(User voter, VoteKind vk)
 {
-	<a href="/Votes/_Register2?TopicID=@ViewBag.TopicID&amp;VoterID=@voter.ID&amp;vote=@vk.DisplayName()&amp;linkAllAuditors=@ViewBag.LinkAllAuditors.ToString()"
+	<a href="@Url.Action("_Register2", new { topicID = ViewBag.TopicID, voterID = voter.ID, vote = vk.DisplayName(), linkAllAuditors = ViewBag.LinkAllAuditors})"
 		data-ajax="true"
 		data-ajax-method="POST"
 		data-ajax-mode="replace"
