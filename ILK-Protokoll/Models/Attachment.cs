@@ -32,14 +32,14 @@ namespace ILK_Protokoll.Models
 		/// <summary>
 		/// Enthält den sicheren Namen der für die Speicherung auf dem Server verwendet wird. Alle unsicheren Zeichen wurden entfernt.
 		/// </summary>
-		[Required]
+		[Required(AllowEmptyStrings = true)]
 		[ScaffoldColumn(false)]
 		public string SafeName { get; set; }
 
 		/// <summary>
 		/// Enthält die Dateiendung ohne führenden Punkt.
 		/// </summary>
-		[Required]
+		[Required(AllowEmptyStrings = true)]
 		[ScaffoldColumn(false)]
 		public string Extension { get; set; }
 
@@ -57,7 +57,13 @@ namespace ILK_Protokoll.Models
 
 		public string FileName
 		{
-			get { return ID + "_" + SafeName + '.' + Extension; }
+			get
+			{
+				if (string.IsNullOrWhiteSpace(Extension))
+					return ID + "_" + SafeName;
+				else
+					return ID + "_" + SafeName + '.' + Extension;
+			}
 		}
 	}
 }

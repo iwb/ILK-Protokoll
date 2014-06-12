@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Mime;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
@@ -94,43 +95,68 @@ namespace ILK_Protokoll.Controllers
 			if (topicID <= 0)
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Die Dateien können keiner Diskussion zugeordnet werden.");
 
-			bool success = false;
+			var statusMessage = new StringBuilder();
+			int successful = 0;
 
 			for (int i = 0; i < Request.Files.Count; i++)
 			{
 				HttpPostedFileBase file = Request.Files[i];
-				if (file != null && file.ContentLength > 0)
-				{
-					string filename = Path.GetFileNameWithoutExtension(file.FileName);
-					string fileext = Path.GetExtension(file.FileName);
-					if (!string.IsNullOrEmpty(fileext))
-						fileext = fileext.Substring(1);
 
-					var attachment = new Attachment
-					{
-						TopicID = topicID,
-						Deleted = null,
-						DisplayName = Path.GetFileName(file.FileName),
-						SafeName = InvalidChars.Replace(filename, ""),
-						Extension = fileext,
-						FileSize = file.ContentLength,
-						Uploader = GetCurrentUser(),
-						Created = DateTime.Now
-					};
+				if (file == null)
+					continue;
+
+				if (string.IsNullOrWhiteSpace(file.FileName))
+				{
+					statusMessage.AppendLine("Eine Datei hat einen ungültigen Dateinamen.");
+					continue;
+				}
+				string fullName = Path.GetFileName(file.FileName);
+				if (file.ContentLength == 0)
+				{
+					statusMessage.AppendFormat("Datei \"{0}\" hat keinen Inhalt.", fullName).AppendLine();
+					continue;
+				}
+
+				string filename = Path.GetFileNameWithoutExtension(file.FileName);
+				string fileext = Path.GetExtension(file.FileName);
+				if (!string.IsNullOrEmpty(fileext))
+					fileext = fileext.Substring(1);
+
+				var attachment = new Attachment
+				{
+					TopicID = topicID,
+					Deleted = null,
+					DisplayName = fullName,
+					SafeName = InvalidChars.Replace(filename, ""),
+					Extension = fileext,
+					FileSize = file.ContentLength,
+					Uploader = GetCurrentUser(),
+					Created = DateTime.Now
+				};
+				try
+				{
 					db.Attachments.Add(attachment);
 					db.SaveChanges(); // Damit das Attachment seine ID bekommt. Diese wird anschließend im Dateinamen hinterlegt
-
 					string path = Path.Combine(Serverpath, attachment.FileName);
 					file.SaveAs(path);
-					success = true;
+					successful++;
+				}
+				catch (DbEntityValidationException)
+				{
+					statusMessage.AppendFormat("Datei \"{0}\" konnte nicht in der Datenbank gespeichert werden.", fullName).AppendLine();
+				}
+				catch (IOException)
+				{
+					statusMessage.AppendFormat("Datei \"{0}\" konnte nicht gespeichert werden.", fullName).AppendLine();
 				}
 			}
+			statusMessage.AppendFormat(
+				successful == 1 ? "Eine Datei wurde erfolgreich verarbeitet." : "{0} Dateien wurden erfolgreich verarbeitet.",
+				successful);
 
-			if (success)
-				return _List(topicID);
-			else
-				return new HttpStatusCodeResult(HttpStatusCode.BadRequest,
-					"Der Server hat zwar Dateien empfangen, konnte sie jedoch nicht verarbeiten.");
+			ViewBag.StatusMessage = statusMessage.ToString();
+
+			return _List(topicID);
 		}
 
 		[HttpPost]

@@ -17,5 +17,16 @@
 		{
 			Html.RenderPartial("~/Views/Attachments/_AttachmentRow.cshtml", file);
 		}
+		@if (!string.IsNullOrEmpty(ViewBag.StatusMessage))
+		{
+			<tr><td colspan="6">
+	<span style="text-align: right;">@Html.Raw(Html.Encode(ViewBag.StatusMessage).Replace("\n", "<br />"))</span>
+</td></tr>
+		}
 	</tbody>
 </table>
+
+@if (Request.IsAjaxRequest())
+{
+	<script type="text/javascript">$("#attachments_@ViewBag.TopicID time[rel=timeago]").timeago();</script>
+}

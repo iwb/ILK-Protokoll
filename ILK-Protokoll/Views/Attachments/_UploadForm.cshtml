@@ -51,6 +51,7 @@
 					}
 				}
 			}
+			xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
 			xhr.send(formdata);
 			e.preventDefault();
 		});
