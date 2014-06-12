@@ -22,7 +22,7 @@ body {
 	padding-right: 15px;
 }
 
-@media (min-width: 768px) {
+@media (min-width: @screen-sm-min) {
 	.dl-horizontal dt {
 		width: 200px;
 	}
@@ -42,7 +42,7 @@ body {
 	}
 }
 
-@media (min-width: 767px) and (max-width: 1199px) {
+@media (min-width: @screen-sm-min) and (max-width: @screen-sm-max) {
 	.body-content {
 		margin-top: 60px;
 	}
@@ -91,7 +91,7 @@ textarea.form-control {
 	color: #DDD;
 }
 
-@media (max-width: 767px) {
+@media (max-width: @screen-xs-max) {
 	.navbar-inverse .navbar-nav .open .dropdown-menu > li > a {
 		color: #DDD;
 	}

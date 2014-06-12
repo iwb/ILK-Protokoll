@@ -5,7 +5,7 @@
 
 <h2>Aufgaben</h2>
 <div class="row">
-	<div class="col-md-6">
+	<div class="col-lg-6">
 		<div class="panel panel-primary">
 			<div class="panel-heading">
 				<h3 class="panel-title">Meine ToDo's</h3>
@@ -16,7 +16,7 @@
 		</div>
 	</div>
 
-	<div class="col-md-6">
+	<div class="col-lg-6">
 		<div class="panel panel-primary">
 			<div class="panel-heading">
 				<h3 class="panel-title">Meine Umsetzungsaufgaben</h3>
@@ -29,20 +29,9 @@
 </div>
 <hr />
 <h2>Diskussionspunkte</h2>
-
-
-@foreach (Topic t in ViewBag.Topics)
-{
-	Html.RenderPartial("~/Views/Topics/_Topic.cshtml", t);
-}
-
-<div class="row" style="clear: both;">
-	<p>
-		<button type="button" class="btn btn-default">Default</button>
-		<button type="button" class="btn btn-primary">Primary</button>
-		<button type="button" class="btn btn-success">Success</button>
-		<button type="button" class="btn btn-info">Info</button>
-		<button type="button" class="btn btn-warning">Warning</button>
-		<button type="button" class="btn btn-danger">Danger</button>
-	</p>
+<div class="row">
+	@foreach (Topic t in ViewBag.Topics)
+	{
+		Html.RenderPartial("~/Views/Topics/_Topic.cshtml", t);
+	}
 </div>
