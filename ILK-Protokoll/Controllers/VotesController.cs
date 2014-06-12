@@ -21,15 +21,15 @@ namespace ILK_Protokoll.Controllers
 			return PartialView("_VoteList", displayvotes);
 		}
 
-		public ActionResult _Register(int topicID, VoteKind vote)
+		public ActionResult _Register(int topicID, VoteKind vote, bool linkAllAuditors = false)
 		{
 			int cuid = GetCurrentUser().ID;
 			db.Votes.First(v => v.Voter.ID == cuid && v.Topic.ID == topicID).Kind = vote;
 			db.SaveChanges();
-			return _List(db.Topics.Find(topicID));
+			return _List(db.Topics.Find(topicID), linkAllAuditors);
 		}
 
-		public ActionResult _Register2(int topicID, int voterID, VoteKind vote)
+		public ActionResult _Register2(int topicID, int voterID, VoteKind vote, bool linkAllAuditors = false)
 		{
 			User voter = db.Users.Find(voterID);
 			db.Votes.First(v => v.Voter.ID == voter.ID && v.Topic.ID == topicID).Kind = vote;
@@ -38,7 +38,7 @@ namespace ILK_Protokoll.Controllers
 
 			db.Comments.Add(new Comment { Author = GetCurrentUser(), TopicID = topicID, Content = message });
 			db.SaveChanges();
-			return _List(db.Topics.Find(topicID));
+			return _List(db.Topics.Find(topicID), linkAllAuditors);
 		}
 	}
 }
