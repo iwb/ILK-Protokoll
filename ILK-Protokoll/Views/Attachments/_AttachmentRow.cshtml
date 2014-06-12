@@ -13,11 +13,11 @@
 <tr id="attachment_@Model.ID">
 	<td>
 		<a href="@fileurl">
-			<img src="~/img/fileicons/@(iconname).png" height="48" />
+			<img src="~/img/fileicons/@(iconname).png" height="32" />
 		</a>
 	</td>
 	<td>
-		<a href="@Url.Content(fileurl)">@Model.DisplayName</a>
+		<a href="@fileurl">@Model.DisplayName</a>
 	</td>
 	<td>@Model.FileSize</td>
 	<td>@Model.Uploader.Name</td>

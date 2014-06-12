@@ -46,7 +46,7 @@ namespace ILK_Protokoll.Controllers
 		public string GetVirtualPath(int attachmentID)
 		{
 			string userAgent = Request.UserAgent;
-			bool isInternetExplorer = !string.IsNullOrEmpty(userAgent) && userAgent.Contains("MSIE");
+			bool isInternetExplorer = !string.IsNullOrEmpty(userAgent) && userAgent.Contains("Trident");
 			if (Environment.MachineName == "02MUCILK" && isInternetExplorer)
 			{
 				Attachment a = db.Attachments.Find(attachmentID);
