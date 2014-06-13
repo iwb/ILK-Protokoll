@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
+using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 using ILK_Protokoll.DataLayer;
 using ILK_Protokoll.Models;
 
@@ -29,6 +31,19 @@ namespace ILK_Protokoll.Controllers
 				db.Dispose();
 
 			base.Dispose(disposing);
+		}
+
+		protected override void Initialize(RequestContext requestContext)
+		{
+			HttpContextBase Context = requestContext.HttpContext;
+
+			Context.Response.SuppressDefaultCacheControlHeader = true;
+
+			Context.Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
+			Context.Response.Headers["Pragma"] = "no-cache";
+			Context.Response.Headers["Expires"] = "0";
+
+			base.Initialize(requestContext);
 		}
 	}
 }

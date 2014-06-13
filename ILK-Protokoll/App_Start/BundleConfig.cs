@@ -13,6 +13,10 @@ namespace ILK_Protokoll
 				"~/Scripts/jquery.timeago.js",
 				"~/Scripts/jquery.highlight.js"));
 
+			bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
+				"~/Scripts/jquery.unobtrusive*",
+				"~/Scripts/jquery.validate*"));
+
 			// Verwenden Sie die Entwicklungsversion von Modernizr zum Entwickeln und Erweitern Ihrer Kenntnisse. Wenn Sie dann
 			// für die Produktion bereit sind, verwenden Sie das Buildtool unter "http://modernizr.com", um nur die benötigten Tests auszuwählen.
 			bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
