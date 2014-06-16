@@ -16,7 +16,7 @@ namespace ILK_Protokoll.Controllers
 			ViewBag.LinkAllAuditors = linkAllAuditors;
 
 			IOrderedEnumerable<Vote> displayvotes = t.Votes.Where(v => v.Voter != GetCurrentUser())
-				.OrderBy(v => v.Voter.Name, StringComparer.CurrentCultureIgnoreCase);
+				.OrderBy(v => v.Voter.ShortName, StringComparer.CurrentCultureIgnoreCase);
 
 			return PartialView("_VoteList", displayvotes);
 		}
@@ -34,7 +34,7 @@ namespace ILK_Protokoll.Controllers
 			User voter = db.Users.Find(voterID);
 			db.Votes.First(v => v.Voter.ID == voter.ID && v.Topic.ID == topicID).Kind = vote;
 
-			string message = string.Format("In Vertretung für {0} abgestimmt mit \"{1}\".", voter.Name, vote.GetDescription());
+			string message = string.Format("In Vertretung für {0} abgestimmt mit \"{1}\".", voter.ShortName, vote.GetDescription());
 
 			db.Comments.Add(new Comment { Author = GetCurrentUser(), TopicID = topicID, Content = message });
 			db.SaveChanges();

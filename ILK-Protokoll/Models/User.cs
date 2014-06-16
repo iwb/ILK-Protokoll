@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ILK_Protokoll.Models
@@ -9,17 +10,28 @@ namespace ILK_Protokoll.Models
 		public User()
 		{
 			SessionTypes = new List<SessionType>();
+			IsActive = true;
 		}
 
 		public User(string name)
 			: this()
 		{
-			Name = name;
+			ShortName = name;
 		}
 
 		public int ID { get; set; }
-		public string Name { get; set; }
+		[Required]
+		[Display(Name = "Kürzel")]
 
+		public virtual Guid Guid { get; set; }
+
+		public string ShortName { get; set; }
+
+		[Display(Name = "Name")]
+		public string LongName { get; set; }
+
+		[Display(Name = "Aktiv")]
+		public bool IsActive { get; set; }
 
 		[InverseProperty("Attendees")]
 		public virtual ICollection<SessionType> SessionTypes { get; private set; }
@@ -28,17 +40,17 @@ namespace ILK_Protokoll.Models
 
 		public bool Equals(User other)
 		{
-			if ((object) other == null)
+			if ((object)other == null)
 				return false;
 			else
 			{
-				return Name == other.Name;
+				return ShortName == other.ShortName;
 			}
 		}
 
 		public override string ToString()
 		{
-			return Name;
+			return ShortName;
 		}
 
 		public override bool Equals(object obj)
@@ -48,17 +60,17 @@ namespace ILK_Protokoll.Models
 
 		public override int GetHashCode()
 		{
-			return Name.GetHashCode();
+			return ShortName.GetHashCode();
 		}
 
 		public static bool operator ==(User a, User b)
 		{
 			if (ReferenceEquals(a, b))
 				return true;
-			else if ((object) a == null || (object) b == null)
+			else if ((object)a == null || (object)b == null)
 				return false;
 			else
-				return a.Name == b.Name;
+				return a.ShortName == b.ShortName;
 		}
 
 		public static bool operator !=(User a, User b)

@@ -48,7 +48,7 @@ namespace ILK_Protokoll.DataLayer
 				currentUser.ToEnumerable()
 					.Concat(Users.Where(u => u.ID != currentUser.ID)
 						.ToList()
-						.OrderBy(u => u.Name, StringComparer.CurrentCultureIgnoreCase));
+						.OrderBy(u => u.ShortName, StringComparer.CurrentCultureIgnoreCase));
 		}
 
 		public Topic GetTopicAt(int id, DateTime time)

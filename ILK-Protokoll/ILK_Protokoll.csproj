@@ -58,6 +58,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.DirectoryServices.AccountManagement" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
@@ -116,7 +117,6 @@
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Administration\Models\" />
     <Folder Include="Areas\Administration\Views\List\" />
-    <Folder Include="Areas\Administration\Views\User\" />
     <Folder Include="Views\Maintenance\" />
   </ItemGroup>
   <ItemGroup>
@@ -258,6 +258,7 @@
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Areas\Administration\Views\User\Index.cshtml" />
     <None Include="Content\bootstrap\wells.less" />
     <None Include="Content\bootstrap\variables.less" />
     <None Include="Content\bootstrap\utilities.less" />
@@ -379,6 +380,7 @@
     <Content Include="Views\Shared\_Footer.cshtml" />
     <Content Include="Views\Search\Search.cshtml" />
     <Content Include="Views\Search\Results.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\Boolean.cshtml" />
     <None Include="Web.Integration.config" />
     <None Include="Web.Testing.config" />
   </ItemGroup>

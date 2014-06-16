@@ -15,7 +15,7 @@ namespace ILK_Protokoll.Controllers
 		protected User GetCurrentUser()
 		{
 			string username = User.Identity.Name.Split('\\').Last();
-			User user = db.Users.SingleOrDefault(x => x.Name.Equals(username, StringComparison.CurrentCultureIgnoreCase));
+			User user = db.Users.SingleOrDefault(x => x.ShortName.Equals(username, StringComparison.CurrentCultureIgnoreCase));
 			if (user == null)
 			{
 				user = new User(username);

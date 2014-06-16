@@ -1,0 +1,44 @@
+﻿@model IEnumerable<ILK_Protokoll.Models.User>
+
+@{
+	ViewBag.Title = "Benutzerübersicht";
+}
+@Html.ActionLink("Benutzer abgleichen", "Sync", null, new { @class = "index-action btn btn-primary" })
+
+<h2>@ViewBag.Title</h2>
+
+<table class="table">
+	<thead>
+		<tr>
+			<th>
+				@Html.DisplayNameFor(model => model.ID)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.ShortName)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.LongName)
+			</th>
+			<th>@Html.DisplayNameFor(model => model.IsActive)</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model)
+		{
+			<tr>
+				<td>
+					@Html.DisplayFor(modelItem => item.ID)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.ShortName)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.LongName)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.IsActive)
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>

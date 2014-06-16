@@ -62,7 +62,7 @@
 			<li class="ownvote">
 				<div class="popover-markup">
 					<a class="trigger" id="ownvote_@ViewBag.TopicID">
-						@GetVoteIcon(ownvote.Kind) @ViewBag.CurrentUser.Name
+						@GetVoteIcon(ownvote.Kind) @(((User)ViewBag.CurrentUser).ShortName)
 					</a>
 					<div class="content hide votelinks">
 						@GetVoteLink(VoteKind.None)
