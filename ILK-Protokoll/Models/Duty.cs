@@ -3,8 +3,7 @@
 	/// <summary>
 	///    Eine Umsetzungsaufgabe ist ein einem Beschluss enthalten.
 	/// </summary>
-	public class Duty
+	public class Duty : Assignment
 	{
-		public int ID { get; set; }
 	}
 }

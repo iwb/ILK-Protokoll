@@ -3,8 +3,7 @@
 	/// <summary>
 	///    Eine Aufgabe, die einem Mitarbeiter auferlegt wird, die vor einem Beschluss erledigt werden muss.
 	/// </summary>
-	public class ToDo
+	public class ToDo : Assignment
 	{
-		public int ID { get; set; }
 	}
 }

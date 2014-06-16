@@ -13,7 +13,7 @@ namespace ILK_Protokoll.Models
 			// ReSharper disable DoNotCallOverridableMethodsInConstructor
 			Comments = new List<Comment>();
 			Votes = new List<Vote>();
-			ToDo = new List<ToDo>();
+			ToDos = new List<ToDo>();
 			Duties = new List<Duty>();
 			Attachments = new List<Attachment>();
 			Created = DateTime.Now;
@@ -62,8 +62,8 @@ namespace ILK_Protokoll.Models
 		[Display(Name = "Stimmen")]
 		public virtual ICollection<Vote> Votes { get; set; }
 
-		[Display(Name = "ToDo")]
-		public virtual ICollection<ToDo> ToDo { get; set; }
+		[Display(Name = "ToDos")]
+		public virtual ICollection<ToDo> ToDos { get; set; }
 
 		[Display(Name = "Umsetzungsaufgaben")]
 		public virtual ICollection<Duty> Duties { get; set; }
@@ -105,16 +105,13 @@ namespace ILK_Protokoll.Models
 			if (!IsEditable)
 				throw new InvalidOperationException("Diese Diskussion ist beendet und kann daher nicht bearbeitet werden.");
 			// ReSharper disable DoNotCallOverridableMethodsInConstructor
-			Attachments = updates.Attachments;
 			Comments = new List<Comment>();
 			Description = updates.Description;
-			Duties = updates.Duties;
 			Owner = updates.Owner;
 			OwnerID = updates.OwnerID;
 			Priority = updates.Priority;
 			Proposal = updates.Proposal;
 			Title = updates.Title;
-			ToDo = updates.ToDo;
 			ValidFrom = DateTime.Now;
 			// ReSharper restore DoNotCallOverridableMethodsInConstructor
 		}

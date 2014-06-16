@@ -10,14 +10,9 @@ namespace ILK_Protokoll.ViewModels
 	{
 		public TopicEdit()
 		{
-			// ReSharper disable DoNotCallOverridableMethodsInConstructor
-			ToDo = new List<ToDo>();
-			Duties = new List<Duty>();
-			Attachments = new List<Attachment>();
-			// ReSharper restore DoNotCallOverridableMethodsInConstructor
 		}
 
-		[Display(Name = "DiPuN")]
+		[Display(Name = "Topic-ID")]
 		public int ID { get; set; }
 
 		[Display(Name = "Besitzer")]
@@ -56,27 +51,15 @@ namespace ILK_Protokoll.ViewModels
 		[Required]
 		public string Proposal { get; set; }
 
-
-		[Display(Name = "ToDo")]
-		public virtual ICollection<ToDo> ToDo { get; set; }
-
-		[Display(Name = "Umsetzungsaufgaben")]
-		public virtual ICollection<Duty> Duties { get; set; }
-
 		[Display(Name = "Priorität")]
 		[Required]
 		public Priority Priority { get; set; }
-
-		[Display(Name = "Dateianhänge")]
-		public virtual ICollection<Attachment> Attachments { get; set; }
 
 		public static TopicEdit FromTopic(Topic t)
 		{
 			return new TopicEdit
 			{
-				Attachments = t.Attachments,
 				Description = t.Description,
-				Duties = t.Duties,
 				ID = t.ID,
 				Owner = t.Owner,
 				OwnerID = t.OwnerID,
@@ -87,7 +70,6 @@ namespace ILK_Protokoll.ViewModels
 				TargetSessionType = t.TargetSessionType,
 				TargetSessionTypeID = t.TargetSessionTypeID,
 				Title = t.Title,
-				ToDo = t.ToDo
 			};
 		}
 	}

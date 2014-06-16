@@ -16,6 +16,8 @@ namespace ILK_Protokoll.Controllers
 				.Include(t => t.Owner)
 				.Include(t => t.Votes)
 				.Include(t => t.Votes.Select(v => v.Voter))
+				.Include(t => t.ToDos)
+				.Include(t => t.Duties)
 				.Include(t => t.Comments).ToList();
 			ViewBag.Topics = to;
 			ViewBag.CurrentUser = GetCurrentUser();
