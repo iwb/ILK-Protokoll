@@ -8,12 +8,20 @@
 }
 
 <h3>@ViewBag.Title</h3>
+
+@Html.ActionLink("Zurück zum Index", "Index")
+
 <hr />
 
 <div class="row">
 	<div class="col-md-12">
 		<div class="panel panel-primary">
 			<div class="panel-heading">
+				<div class="panel-title-right">
+					<p>
+						<a href="@Url.Action("Edit", new { id = Model.ID })"><i class="glyphicon glyphicon-edit"></i> Bearbeiten</a>
+					</p>
+				</div>
 				<h3 class="panel-title">Stammdaten</h3>
 			</div>
 			<div class="panel-body">
@@ -114,9 +122,3 @@
 		</div>
 	</div>
 </div>
-
-
-<p>
-	@Html.ActionLink("Edit", "Edit", new {id = Model.ID}) |
-	@Html.ActionLink("Back to List", "Index")
-</p>

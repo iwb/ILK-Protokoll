@@ -275,12 +275,16 @@ a:hover {
 	font-weight: bold;
 }
 
+.panel-heading {
+	padding-bottom: 8px;
+}
+
 h3.panel-title {
 	font-size: 18px;
 }
 
 p.panel-title {
-	margin-top: 0;
+	margin-top: 2px;
 	margin-bottom: 0;
 	font-size: 12px;
 	color: inherit;
@@ -296,25 +300,30 @@ p.panel-title {
 	min-width: 150px;
 }
 
-.prioicon {
-	float: left;
+.panel-title-right a {
+	color: inherit;	
 }
 
 .panel-title-right p {
-	margin-top: 0;
-	margin-bottom: 2px;
+	margin-bottom: 0;
 	text-align: right;
+	color: #FFF;
 }
 
-.panel-title-right a {
-	padding: 3px;
+.panel-title-right p:first-child {
+	margin-bottom: 2px !important;
+}
+
+.panel-title-right .label {
+	float: left;
+}
+
+.panel-title-right span.usertile {
+	color: @brand-primary;
+	padding: 2px 5px;
 	border-radius: 3px;
 	background-color: #FFF;
 	font-weight: bold;
-}
-
-.panel-title-right a:hover {
-	text-decoration: none;
 }
 
 .panel-footer {
