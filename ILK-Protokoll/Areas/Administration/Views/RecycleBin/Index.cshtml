@@ -1,8 +1,10 @@
 ﻿@using ILK_Protokoll.Models
 @model IEnumerable<ILK_Protokoll.Models.Attachment>
+
 @{
 	ViewBag.Title = "Papierkorb";
 }
+
 @Html.ActionLink("Papierkorb leeren", "Purge", null, new { @class = "index-action btn btn-danger" })
 
 <h2>@ViewBag.Title</h2>
