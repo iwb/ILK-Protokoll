@@ -117,6 +117,8 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Administration\Views\List\" />
+    <Folder Include="Areas\Session\Views\Discussion\" />
+    <Folder Include="Areas\Session\Views\List\" />
     <Folder Include="Views\Maintenance\" />
   </ItemGroup>
   <ItemGroup>
@@ -129,6 +131,10 @@
     <Compile Include="Areas\Administration\Controllers\RecycleBinController.cs" />
     <Compile Include="Areas\Administration\Controllers\SessionTypesController.cs" />
     <Compile Include="Areas\Administration\Controllers\UserController.cs" />
+    <Compile Include="Areas\Session\Controllers\ListController.cs" />
+    <Compile Include="Areas\Session\Controllers\MasterController.cs" />
+    <Compile Include="Areas\Session\Controllers\DiscussionController.cs" />
+    <Compile Include="Areas\Session\SessionAreaRegistration.cs" />
     <Compile Include="Controllers\AttachmentsController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\CommentsController.cs" />
@@ -150,7 +156,7 @@
     <Compile Include="Models\TopicHistory.cs" />
     <Compile Include="util\HelperMethods.cs" />
     <Compile Include="Models\Priority.cs" />
-    <Compile Include="Models\Session.cs" />
+    <Compile Include="Areas\Session\Models\Session.cs" />
     <Compile Include="Areas\Administration\Models\SessionType.cs" />
     <Compile Include="Models\ToDo.cs" />
     <Compile Include="Models\Topic.cs" />
@@ -264,6 +270,11 @@
     <Content Include="Areas\Administration\Views\SessionTypes\Details.cshtml" />
     <Content Include="Areas\Administration\Views\SessionTypes\Edit.cshtml" />
     <Content Include="Areas\Administration\Views\SessionTypes\Index.cshtml" />
+    <Content Include="Areas\Session\Views\web.config" />
+    <Content Include="Areas\Session\Views\Shared\_SessionNavbar.cshtml" />
+    <Content Include="Areas\Session\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\Session\Views\Master\Index.cshtml" />
+    <Content Include="Areas\Session\Views\_ViewStart.cshtml" />
     <None Include="Content\bootstrap\wells.less" />
     <None Include="Content\bootstrap\variables.less" />
     <None Include="Content\bootstrap\utilities.less" />

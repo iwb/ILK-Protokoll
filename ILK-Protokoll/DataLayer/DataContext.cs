@@ -6,6 +6,7 @@ using System.Data.Entity.Infrastructure.Annotations;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Linq;
 using ILK_Protokoll.Areas.Administration.Models;
+using ILK_Protokoll.Areas.Session.Models;
 using ILK_Protokoll.Models;
 using ILK_Protokoll.util;
 

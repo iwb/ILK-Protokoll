@@ -1,4 +1,4 @@
-﻿namespace ILK_Protokoll.Models
+﻿namespace ILK_Protokoll.Areas.Session.Models
 {
 	public class Session
 	{
