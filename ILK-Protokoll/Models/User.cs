@@ -10,7 +10,7 @@ namespace ILK_Protokoll.Models
 		public User()
 		{
 			SessionTypes = new List<SessionType>();
-			IsActive = true;
+			IsActive = false;
 		}
 
 		public User(string name)
@@ -20,9 +20,9 @@ namespace ILK_Protokoll.Models
 		}
 
 		public int ID { get; set; }
+
 		[Required]
 		[Display(Name = "Kürzel")]
-
 		public virtual Guid Guid { get; set; }
 
 		public string ShortName { get; set; }

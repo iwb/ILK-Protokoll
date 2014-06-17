@@ -55,14 +55,14 @@ namespace ILK_Protokoll.DataLayer
 					"Klingt lecker! und ich finde den Beschlussvorschlag auch total sinnvoll und angemessen. Eine Dissertation, deren Ergebnisse man nicht essen oder trinken kann, ist im Grunde wertlos. Insbesondere am Institut für Weißwurscht und Brezenwissenschaften."
 			});
 
-			topic.Comments.Add(new Comment {Author = users[4], Content = "Brauchen wir nicht drüber reden. Ist gegessen."});
+			topic.Comments.Add(new Comment { Author = users[4], Content = "Brauchen wir nicht drüber reden. Ist gegessen." });
 			topic.Comments.Add(new Comment
 			{
 				Author = users[8],
 				Content = "Möglicherweise sollten auch Themen im Komplex \"Backplanung und -steuerung\" erlaubt werden."
 			});
 
-			var sessiont = new SessionType {ID = 1, Name = "ILK-AK Garching"};
+			var sessiont = new SessionType { ID = 1, Name = "ILK-AK Garching" };
 			sessiont.Attendees.Add(users[9]);
 			sessiont.Attendees.Add(users[1]);
 			sessiont.Attendees.Add(users[4]);

@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.DirectoryServices.AccountManagement;
 using System.Linq;
 using System.Net;
+using System.Security.Authentication;
+using System.Security.Principal;
 using System.Web.Mvc;
 using ILK_Protokoll.Controllers;
+using ILK_Protokoll.DataLayer;
 using ILK_Protokoll.Models;
 
 namespace ILK_Protokoll.Areas.Administration.Controllers
@@ -13,6 +15,9 @@ namespace ILK_Protokoll.Areas.Administration.Controllers
 	public class UserController : BaseController
 	{
 		// GET: Administration/User
+
+		private const string DomainName = "iwbmuc";
+
 		public ActionResult Index()
 		{
 			List<User> users = db.Users.ToList();
@@ -23,64 +28,126 @@ namespace ILK_Protokoll.Areas.Administration.Controllers
 		public ActionResult Sync()
 		{
 			List<User> myusers = db.Users.ToList();
-			Dictionary<Guid?, Principal> adusers = new Dictionary<Guid?, Principal>();
+			// Dieser Code kennzeichnet alle User, die nicht in der aktuellen ILK-Gruppe sind, als inaktiv.
+			foreach (User user in myusers)
+				user.IsActive = false;
 
-			const string groupName = "ILK";
+			const string addgroupName = "ILK"; // Benutzer dieser Gruppe werden hinzugefügt
+			const string allGroupName = "Mitarbeiter"; // Diese Gruppe wird zur Namensauflösung verwendet.
 
-			using (var ctx = new PrincipalContext(ContextType.Domain, "iwbmuc"))
-			using (GroupPrincipal grp = GroupPrincipal.FindByIdentity(ctx, IdentityType.SamAccountName, groupName))
+			using (var context = new PrincipalContext(ContextType.Domain, DomainName))
+			using (GroupPrincipal adEmployees = GroupPrincipal.FindByIdentity(context, IdentityType.SamAccountName, allGroupName)
+				)
 			{
-				if (grp == null)
+				if (adEmployees == null)
 				{
 					return new HttpStatusCodeResult(
 						HttpStatusCode.InternalServerError,
-						string.Format("Die Gruppe \"{0}\" wurde nicht gefunden.", groupName)
+						string.Format("Die Gruppe \"{0}\" wurde nicht gefunden.", allGroupName)
 						);
 				}
 
-				adusers = grp.GetMembers(true).ToDictionary(p => p.Guid);
-			}
+				Dictionary<Guid, Principal> employees =
+					adEmployees.GetMembers(true).Where(p => p.Guid != null).ToDictionary(p => p.Guid.Value);
 
-			//foreach (var user in myusers)
-			//	  user.IsActive = false;
 
-			foreach (var user in myusers.Where(u => u.Guid != Guid.Empty))
-			{
-				Principal p;
-				if (adusers.TryGetValue(user.Guid, out p))
+				// Benutzer, zu denen eine GUID gespeichert ist, werden zuerst synchronisiert, da die Übereinstimmung garantiert richtig ist
+				foreach (User user in myusers.Where(u => u.Guid != Guid.Empty))
 				{
-					user.ShortName = p.SamAccountName;
-					user.LongName = p.DisplayName;
-					user.IsActive = true;
-					adusers.Remove(p.Guid);
+					Principal p;
+					if (employees.TryGetValue(user.Guid, out p))
+					{
+						user.ShortName = p.SamAccountName;
+						user.LongName = p.DisplayName;
+						employees.Remove(user.Guid);
+					}
 				}
-			}
 
-			foreach (var user in myusers.Where(u => u.Guid == Guid.Empty))
-			{
-				var p = adusers.Values.SingleOrDefault(u => u.SamAccountName == user.ShortName);
-				if (p != null)
+				// Als zweites wird über das Namenskürzel synchronisiert. Die User ohen GUID bekommen hier eine GUID.
+
+				foreach (User user in myusers.Where(u => u.Guid == Guid.Empty))
 				{
-					user.Guid = p.Guid.Value;
-					user.LongName = p.DisplayName;
-					user.IsActive = true;
-					adusers.Remove(p.Guid);
+					Principal iwbuser = employees.Values.SingleOrDefault(u => u.SamAccountName == user.ShortName);
+
+					if (iwbuser != null && iwbuser.Guid != null)
+					{
+						user.Guid = iwbuser.Guid.Value;
+						user.LongName = iwbuser.DisplayName;
+						employees.Remove(user.Guid);
+					}
 				}
-			}
 
-			foreach (var p in adusers.Values)
-			{
-				db.Users.Add(new User
+				// Schließlich werden neue User in die Datenbank importiert.
+				using (GroupPrincipal ilks = GroupPrincipal.FindByIdentity(context, IdentityType.SamAccountName, addgroupName))
 				{
-					Guid = p.Guid.Value,
-					ShortName = p.SamAccountName,
-					LongName = p.DisplayName,
-					IsActive = true
-				});
+					if (ilks == null)
+					{
+						return new HttpStatusCodeResult(
+							HttpStatusCode.InternalServerError,
+							string.Format("Die Gruppe \"{0}\" wurde nicht gefunden.", allGroupName)
+							);
+					}
+					// Der Benutzer "TerminILK" ist hier nicht angebracht und wird über diese GUID entfernt.
+					var terminilkGuid = new Guid("{b5f9a1c7-ba25-4902-88a0-ffe59fae893a}");
+
+					foreach (Principal adIlk in ilks.GetMembers(true).Where(p => p.Guid != terminilkGuid))
+					{
+						User ilk = myusers.SingleOrDefault(u => u.Guid == adIlk.Guid);
+						if (ilk == null)
+						{
+							ilk = CreateUserFromADUser(adIlk);
+							db.Users.Add(ilk);
+						}
+						ilk.IsActive = true;
+					}
+				}
 			}
 			db.SaveChanges();
 
 			return Index();
+		}
+
+		public static User GetUser(DataContext db, IPrincipal userPrincipal)
+		{
+			string fullName = userPrincipal.Identity.Name;
+			string shortName = fullName.Split('\\').Last();
+
+			using (var context = new PrincipalContext(ContextType.Domain, DomainName))
+			using (UserPrincipal aduser = UserPrincipal.FindByIdentity(context, IdentityType.SamAccountName, fullName))
+			{
+				if (aduser == null || aduser.Guid == null)
+					throw new AuthenticationException("Keine GUID im AD gefunden.");
+
+				User user = db.Users.FirstOrDefault(u => u.Guid == aduser.Guid.Value);
+				if (user != null)
+					return user;
+				else
+				{
+					user = db.Users.SingleOrDefault(u => u.ShortName.Equals(shortName, StringComparison.CurrentCultureIgnoreCase));
+					if (user == null)
+					{
+						user = CreateUserFromADUser(aduser);
+						db.Users.Add(user);
+					}
+					else
+					{
+						user.Guid = aduser.Guid.Value;
+						user.LongName = aduser.DisplayName;
+					}
+					db.SaveChanges();
+					return user;
+				}
+			}
+		}
+
+		public static User CreateUserFromADUser(Principal aduser)
+		{
+			return new User
+			{
+				Guid = aduser.Guid ?? Guid.Empty,
+				ShortName = aduser.SamAccountName,
+				LongName = aduser.DisplayName,
+			};
 		}
 	}
 }

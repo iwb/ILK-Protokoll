@@ -1,8 +1,7 @@
-﻿using System;
-using System.Linq;
-using System.Web;
+﻿using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using ILK_Protokoll.Areas.Administration.Controllers;
 using ILK_Protokoll.DataLayer;
 using ILK_Protokoll.Models;
 
@@ -14,15 +13,10 @@ namespace ILK_Protokoll.Controllers
 
 		protected User GetCurrentUser()
 		{
-			string username = User.Identity.Name.Split('\\').Last();
-			User user = db.Users.SingleOrDefault(x => x.ShortName.Equals(username, StringComparison.CurrentCultureIgnoreCase));
-			if (user == null)
-			{
-				user = new User(username);
-				db.Users.Add(user);
-				db.SaveChanges();
-			}
-			return user;
+			if (Session["User"] == null)
+				Session["User"] = UserController.GetUser(db, User);
+
+			return (User)Session["User"];
 		}
 
 		protected override void Dispose(bool disposing)
