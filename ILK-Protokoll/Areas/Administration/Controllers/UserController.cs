@@ -20,7 +20,7 @@ namespace ILK_Protokoll.Areas.Administration.Controllers
 
 		public ActionResult Index()
 		{
-			List<User> users = db.Users.ToList();
+			List<User> users = db.Users.OrderByDescending(u => u.IsActive).ThenBy(u => u.ShortName).ToList();
 			return View("Index", users);
 		}
 

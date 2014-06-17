@@ -46,7 +46,8 @@ namespace ILK_Protokoll.DataLayer
 		{
 			return
 				currentUser.ToEnumerable()
-					.Concat(Users.Where(u => u.ID != currentUser.ID)
+					.Concat(Users
+					.Where(u => u.ID != currentUser.ID && u.IsActive)
 						.ToList()
 						.OrderBy(u => u.ShortName, StringComparer.CurrentCultureIgnoreCase));
 		}
