@@ -22,9 +22,10 @@ namespace ILK_Protokoll.Models
 		public int ID { get; set; }
 
 		[Required]
-		[Display(Name = "Kürzel")]
 		public virtual Guid Guid { get; set; }
 
+		[Display(Name = "Kürzel")]
+		[Required]
 		public string ShortName { get; set; }
 
 		[Display(Name = "Name")]

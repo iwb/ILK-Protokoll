@@ -33,22 +33,15 @@ namespace ILK_Protokoll.Areas.Administration.Controllers
 				user.IsActive = false;
 
 			const string addgroupName = "ILK"; // Benutzer dieser Gruppe werden hinzugefügt
-			const string allGroupName = "Mitarbeiter"; // Diese Gruppe wird zur Namensauflösung verwendet.
 
 			using (var context = new PrincipalContext(ContextType.Domain, DomainName))
-			using (GroupPrincipal adEmployees = GroupPrincipal.FindByIdentity(context, IdentityType.SamAccountName, allGroupName)
-				)
+			using (var userp = new UserPrincipal(context))
+			using (var searcher = new PrincipalSearcher(userp))
+			//using (GroupPrincipal adEmployees = GroupPrincipal.FindByIdentity(context, IdentityType.SamAccountName, allGroupName))
 			{
-				if (adEmployees == null)
-				{
-					return new HttpStatusCodeResult(
-						HttpStatusCode.InternalServerError,
-						string.Format("Die Gruppe \"{0}\" wurde nicht gefunden.", allGroupName)
-						);
-				}
+				var adEmployees = searcher.FindAll();
 
-				Dictionary<Guid, Principal> employees =
-					adEmployees.GetMembers(true).Where(p => p.Guid != null).ToDictionary(p => p.Guid.Value);
+				Dictionary<Guid, Principal> employees = adEmployees.Where(p => p.Guid != null).ToDictionary(p => p.Guid.Value);
 
 
 				// Benutzer, zu denen eine GUID gespeichert ist, werden zuerst synchronisiert, da die Übereinstimmung garantiert richtig ist
@@ -64,7 +57,6 @@ namespace ILK_Protokoll.Areas.Administration.Controllers
 				}
 
 				// Als zweites wird über das Namenskürzel synchronisiert. Die User ohen GUID bekommen hier eine GUID.
-
 				foreach (User user in myusers.Where(u => u.Guid == Guid.Empty))
 				{
 					Principal iwbuser = employees.Values.SingleOrDefault(u => u.SamAccountName == user.ShortName);
@@ -84,7 +76,7 @@ namespace ILK_Protokoll.Areas.Administration.Controllers
 					{
 						return new HttpStatusCodeResult(
 							HttpStatusCode.InternalServerError,
-							string.Format("Die Gruppe \"{0}\" wurde nicht gefunden.", allGroupName)
+							string.Format("Die Gruppe \"{0}\" wurde nicht gefunden.", addgroupName)
 							);
 					}
 					// Der Benutzer "TerminILK" ist hier nicht angebracht und wird über diese GUID entfernt.
