@@ -25,12 +25,12 @@ namespace ILK_Protokoll.Areas.Administration.Controllers
 		}
 
 		// GET: Administration/User/Sync
-		public ActionResult Sync()
+		public ActionResult _Sync()
 		{
 			List<User> myusers = db.Users.ToList();
-			// Dieser Code kennzeichnet alle User, die nicht in der aktuellen ILK-Gruppe sind, als inaktiv.
+			// Zunächst alle Benutzer (außer dem aktuellen Benutzer) auf inakitv setzen.
 			foreach (User user in myusers)
-				user.IsActive = false;
+				user.IsActive = user == GetCurrentUser();
 
 			const string addgroupName = "ILK"; // Benutzer dieser Gruppe werden hinzugefügt
 
@@ -39,7 +39,7 @@ namespace ILK_Protokoll.Areas.Administration.Controllers
 			using (var searcher = new PrincipalSearcher(userp))
 			//using (GroupPrincipal adEmployees = GroupPrincipal.FindByIdentity(context, IdentityType.SamAccountName, allGroupName))
 			{
-				var adEmployees = searcher.FindAll();
+				PrincipalSearchResult<Principal> adEmployees = searcher.FindAll();
 
 				Dictionary<Guid, Principal> employees = adEmployees.Where(p => p.Guid != null).ToDictionary(p => p.Guid.Value);
 
@@ -96,7 +96,7 @@ namespace ILK_Protokoll.Areas.Administration.Controllers
 			}
 			db.SaveChanges();
 
-			return Index();
+			return new HttpStatusCodeResult(HttpStatusCode.OK);
 		}
 
 		public static User GetUser(DataContext db, IPrincipal userPrincipal)
@@ -112,7 +112,14 @@ namespace ILK_Protokoll.Areas.Administration.Controllers
 
 				User user = db.Users.FirstOrDefault(u => u.Guid == aduser.Guid.Value);
 				if (user != null)
+				{
+					if (!user.IsActive)
+					{
+						user.IsActive = true;
+						db.SaveChanges();
+					}
 					return user;
+				}
 				else
 				{
 					user = db.Users.SingleOrDefault(u => u.ShortName.Equals(shortName, StringComparison.CurrentCultureIgnoreCase));
@@ -125,6 +132,7 @@ namespace ILK_Protokoll.Areas.Administration.Controllers
 					{
 						user.Guid = aduser.Guid.Value;
 						user.LongName = aduser.DisplayName;
+						user.IsActive = true;
 					}
 					db.SaveChanges();
 					return user;
@@ -132,13 +140,14 @@ namespace ILK_Protokoll.Areas.Administration.Controllers
 			}
 		}
 
-		public static User CreateUserFromADUser(Principal aduser)
+		private static User CreateUserFromADUser(Principal aduser)
 		{
 			return new User
 			{
 				Guid = aduser.Guid ?? Guid.Empty,
 				ShortName = aduser.SamAccountName,
 				LongName = aduser.DisplayName,
+				IsActive = true
 			};
 		}
 	}
