@@ -41,17 +41,18 @@ namespace ILK_Protokoll.Areas.Administration.Controllers
 			{
 				PrincipalSearchResult<Principal> adEmployees = searcher.FindAll();
 
-				Dictionary<Guid, Principal> employees = adEmployees.Where(p => p.Guid != null).ToDictionary(p => p.Guid.Value);
+				Dictionary<Guid, UserPrincipal> employees = adEmployees.Where(p => p.Guid != null).Cast<UserPrincipal>().ToDictionary(p => p.Guid.Value);
 
 
 				// Benutzer, zu denen eine GUID gespeichert ist, werden zuerst synchronisiert, da die Übereinstimmung garantiert richtig ist
 				foreach (User user in myusers.Where(u => u.Guid != Guid.Empty))
 				{
-					Principal p;
-					if (employees.TryGetValue(user.Guid, out p))
+					UserPrincipal iwbuser;
+					if (employees.TryGetValue(user.Guid, out iwbuser))
 					{
-						user.ShortName = p.SamAccountName;
-						user.LongName = p.DisplayName;
+						user.ShortName = iwbuser.SamAccountName;
+						user.LongName = iwbuser.DisplayName;
+						user.EmailAddress = iwbuser.EmailAddress;
 						employees.Remove(user.Guid);
 					}
 				}
@@ -59,12 +60,12 @@ namespace ILK_Protokoll.Areas.Administration.Controllers
 				// Als zweites wird über das Namenskürzel synchronisiert. Die User ohen GUID bekommen hier eine GUID.
 				foreach (User user in myusers.Where(u => u.Guid == Guid.Empty))
 				{
-					Principal iwbuser = employees.Values.SingleOrDefault(u => u.SamAccountName == user.ShortName);
-
+					UserPrincipal iwbuser = employees.Values.SingleOrDefault(u => u.SamAccountName == user.ShortName);
 					if (iwbuser != null && iwbuser.Guid != null)
 					{
 						user.Guid = iwbuser.Guid.Value;
 						user.LongName = iwbuser.DisplayName;
+						user.EmailAddress = iwbuser.EmailAddress;
 						employees.Remove(user.Guid);
 					}
 				}
@@ -82,7 +83,7 @@ namespace ILK_Protokoll.Areas.Administration.Controllers
 					// Der Benutzer "TerminILK" ist hier nicht angebracht und wird über diese GUID entfernt.
 					var terminilkGuid = new Guid("{b5f9a1c7-ba25-4902-88a0-ffe59fae893a}");
 
-					foreach (Principal adIlk in ilks.GetMembers(true).Where(p => p.Guid != terminilkGuid))
+					foreach (var adIlk in ilks.GetMembers(true).Cast<UserPrincipal>().Where(p => p.Guid != terminilkGuid))
 					{
 						User ilk = myusers.SingleOrDefault(u => u.Guid == adIlk.Guid);
 						if (ilk == null)
@@ -132,6 +133,7 @@ namespace ILK_Protokoll.Areas.Administration.Controllers
 					{
 						user.Guid = aduser.Guid.Value;
 						user.LongName = aduser.DisplayName;
+						user.EmailAddress = aduser.EmailAddress;
 						user.IsActive = true;
 					}
 					db.SaveChanges();
@@ -140,13 +142,14 @@ namespace ILK_Protokoll.Areas.Administration.Controllers
 			}
 		}
 
-		private static User CreateUserFromADUser(Principal aduser)
+		private static User CreateUserFromADUser(UserPrincipal aduser)
 		{
 			return new User
 			{
 				Guid = aduser.Guid ?? Guid.Empty,
 				ShortName = aduser.SamAccountName,
 				LongName = aduser.DisplayName,
+				EmailAddress = aduser.EmailAddress,
 				IsActive = true
 			};
 		}

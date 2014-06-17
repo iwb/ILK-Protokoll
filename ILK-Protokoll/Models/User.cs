@@ -31,6 +31,10 @@ namespace ILK_Protokoll.Models
 		[Display(Name = "Name")]
 		public string LongName { get; set; }
 
+		[Display(Name = "E-Mail Adresse")]
+		[DataType(DataType.EmailAddress)]
+		public string EmailAddress { get; set; }
+
 		[Display(Name = "Aktiv")]
 		public bool IsActive { get; set; }
 
