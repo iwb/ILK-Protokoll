@@ -116,7 +116,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Areas\Administration\Models\" />
     <Folder Include="Areas\Administration\Views\List\" />
     <Folder Include="Views\Maintenance\" />
   </ItemGroup>
@@ -152,7 +151,7 @@
     <Compile Include="util\HelperMethods.cs" />
     <Compile Include="Models\Priority.cs" />
     <Compile Include="Models\Session.cs" />
-    <Compile Include="Models\SessionType.cs" />
+    <Compile Include="Areas\Administration\Models\SessionType.cs" />
     <Compile Include="Models\ToDo.cs" />
     <Compile Include="Models\Topic.cs" />
     <Compile Include="Models\User.cs" />
