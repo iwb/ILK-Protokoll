@@ -2,19 +2,20 @@
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using ILK_Protokoll.Controllers;
 using ILK_Protokoll.Models;
 
-namespace ILK_Protokoll.Controllers
+namespace ILK_Protokoll.Areas.Administration.Controllers
 {
 	public class SessionTypesController : BaseController
 	{
-		// GET: SessionTypes
+		// GET: Administration/SessionTypes
 		public ActionResult Index()
 		{
 			return View(db.SessionTypes.ToList());
 		}
 
-		// GET: SessionTypes/Details/5
+		// GET: Administration/SessionTypes/Details/5
 		public ActionResult Details(int? id)
 		{
 			if (id == null)
@@ -35,9 +36,7 @@ namespace ILK_Protokoll.Controllers
 			return View();
 		}
 
-		// POST: SessionTypes/Create
-		// Aktivieren Sie zum Schutz vor übermäßigem Senden von Angriffen die spezifischen Eigenschaften, mit denen eine Bindung erfolgen soll. Weitere Informationen 
-		// finden Sie unter http://go.microsoft.com/fwlink/?LinkId=317598.
+		// POST: Administration/SessionTypes/Create
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		public ActionResult Create([Bind(Include = "ID,Name")] SessionType sessionType)
@@ -52,7 +51,7 @@ namespace ILK_Protokoll.Controllers
 			return View(sessionType);
 		}
 
-		// GET: SessionTypes/Edit/5
+		// GET: Administration/SessionTypes/Edit/5
 		public ActionResult Edit(int? id)
 		{
 			if (id == null)
@@ -67,9 +66,7 @@ namespace ILK_Protokoll.Controllers
 			return View(sessionType);
 		}
 
-		// POST: SessionTypes/Edit/5
-		// Aktivieren Sie zum Schutz vor übermäßigem Senden von Angriffen die spezifischen Eigenschaften, mit denen eine Bindung erfolgen soll. Weitere Informationen 
-		// finden Sie unter http://go.microsoft.com/fwlink/?LinkId=317598.
+		// POST: Administration/SessionTypes/Edit/5
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		public ActionResult Edit([Bind(Include = "ID,Name")] SessionType sessionType)
@@ -83,7 +80,7 @@ namespace ILK_Protokoll.Controllers
 			return View(sessionType);
 		}
 
-		// GET: SessionTypes/Delete/5
+		// GET: Administration/SessionTypes/Delete/5
 		public ActionResult Delete(int? id)
 		{
 			if (id == null)
@@ -98,7 +95,7 @@ namespace ILK_Protokoll.Controllers
 			return View(sessionType);
 		}
 
-		// POST: SessionTypes/Delete/5
+		// POST: Administration/SessionTypes/Delete/5
 		[HttpPost, ActionName("Delete")]
 		[ValidateAntiForgeryToken]
 		public ActionResult DeleteConfirmed(int id)

@@ -10,29 +10,31 @@
 		@Styles.Render("~/Content/css")
 		@Scripts.Render("~/bundles/modernizr")
 	</head>
-	<body>
-		@{ Html.RenderPartial("_Navbar"); }
-		@{ Html.RenderPartial("_AdminNavbar"); }
+<body>
+	@{ Html.RenderPartial("_Navbar"); }
+	@{ Html.RenderPartial("_AdminNavbar"); }
 
-		<div class="container body-content">
-			<div id="javascript-warning" class="alert alert-danger jumbotron">
-				<h2><strong>Für diese Seite ist JavaScript erforderlich!</strong></h2>
-			</div>
-			<script type="text/javascript">
-				document.getElementById("javascript-warning").style.display = 'none';
-			</script>
+	<div class="container body-content">
+		<div id="javascript-warning" class="alert alert-danger jumbotron">
+			<h2><strong>Für diese Seite ist JavaScript erforderlich!</strong></h2>
+		</div>
+		<script type="text/javascript">
+			document.getElementById("javascript-warning").style.display = 'none';
+		</script>
 
-			<div id="alerts">
-			</div>
-
-			@RenderBody()
-			@{ Html.RenderPartial("_Footer"); }
+		<div id="alerts">
 		</div>
 
-		@Scripts.Render("~/bundles/jquery")
-		@Scripts.Render("~/bundles/bootstrap")
+		@RenderBody()
+		@{ Html.RenderPartial("_Footer"); }
+	</div>
 
-		@{ Html.RenderPartial("_GlobalScripts"); }
-	</body>
+	@Scripts.Render("~/bundles/jquery")
+	@Scripts.Render("~/bundles/bootstrap")
+
+	@{ Html.RenderPartial("_GlobalScripts"); }
+	@RenderSection("Scripts", false)
+</body>
+
 
 </html>

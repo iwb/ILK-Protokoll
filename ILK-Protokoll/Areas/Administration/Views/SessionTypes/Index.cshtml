@@ -1,0 +1,46 @@
+﻿@using ILK_Protokoll.Models
+@model IEnumerable<ILK_Protokoll.Models.SessionType>
+
+@{
+	ViewBag.Title = "Sitzungstypen";
+}
+
+@Html.ActionLink("Neuer Sitzungstyp", "Create", null, new { @class = "index-action btn btn-primary" })
+
+<h2>@ViewBag.Title</h2>
+
+<table class="table">
+	<tr>
+		<th>
+			@Html.DisplayNameFor(model => model.ID)
+		</th>
+		<th>
+			@Html.DisplayNameFor(model => model.Attendees)
+		</th>
+		<th>
+			@Html.DisplayNameFor(model => model.Name)
+		</th>
+		<th>Aktionen</th>
+	</tr>
+
+	@foreach (SessionType item in Model)
+	{
+		<tr>
+			<td>
+				@Html.DisplayFor(modelItem => item.ID)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.Attendees.Count)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.Name)
+			</td>
+			<td>
+				@Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+				@Html.ActionLink("Details", "Details", new { id = item.ID }) |
+				@Html.ActionLink("Delete", "Delete", new { id = item.ID })
+			</td>
+		</tr>
+	}
+
+</table>

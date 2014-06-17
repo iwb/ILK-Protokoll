@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -9,6 +10,7 @@ namespace ILK_Protokoll.Models
 	{
 		public SessionType()
 		{
+			// ReSharper disable once DoNotCallOverridableMethodsInConstructor
 			Attendees = new List<User>();
 		}
 
@@ -16,6 +18,7 @@ namespace ILK_Protokoll.Models
 
 		public string Name { get; set; }
 
+		[DisplayName("Stammteilnehmer")]
 		[InverseProperty("SessionTypes")]
 		public virtual ICollection<User> Attendees { get; set; }
 	}
