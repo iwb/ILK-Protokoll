@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using ILK_Protokoll.Areas.Administration.Models;
 
 namespace ILK_Protokoll.Models
 {

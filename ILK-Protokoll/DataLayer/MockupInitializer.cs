@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Data.Entity;
+using ILK_Protokoll.Areas.Administration.Models;
 using ILK_Protokoll.Models;
 
 namespace ILK_Protokoll.DataLayer

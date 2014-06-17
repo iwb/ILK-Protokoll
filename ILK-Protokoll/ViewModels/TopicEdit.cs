@@ -1,17 +1,13 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Web.Mvc;
+using ILK_Protokoll.Areas.Administration.Models;
 using ILK_Protokoll.Models;
 
 namespace ILK_Protokoll.ViewModels
 {
 	public class TopicEdit
 	{
-		public TopicEdit()
-		{
-		}
-
 		[Display(Name = "Topic-ID")]
 		public int ID { get; set; }
 

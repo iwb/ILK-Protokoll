@@ -2,8 +2,9 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using ILK_Protokoll.Models;
 
-namespace ILK_Protokoll.Models
+namespace ILK_Protokoll.Areas.Administration.Models
 {
 	[DisplayColumn("Name")]
 	public class SessionType

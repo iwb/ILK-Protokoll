@@ -1,4 +1,4 @@
-﻿@model ILK_Protokoll.Models.SessionType
+﻿@model ILK_Protokoll.Areas.Administration.Models.SessionType
 
 @{
 	ViewBag.Title = "Details";
@@ -7,10 +7,10 @@
 <h2>Details</h2>
 
 <div>
-    <h4>SessionType</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
+	<h4>SessionType</h4>
+	<hr />
+	<dl class="dl-horizontal">
+		<dt>
 			@Html.DisplayNameFor(model => model.ID)
 		</dt>
 		<dd>
@@ -18,16 +18,16 @@
 		</dd>
 
 		<dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
+			@Html.DisplayNameFor(model => model.Name)
+		</dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
+		<dd>
+			@Html.DisplayFor(model => model.Name)
+		</dd>
 
-    </dl>
+	</dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
-    @Html.ActionLink("Back to List", "Index")
+	@Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+	@Html.ActionLink("Back to List", "Index")
 </p>

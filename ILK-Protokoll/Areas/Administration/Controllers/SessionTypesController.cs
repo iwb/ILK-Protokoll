@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using ILK_Protokoll.Areas.Administration.Models;
 using ILK_Protokoll.Controllers;
 using ILK_Protokoll.Models;
 

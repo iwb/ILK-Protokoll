@@ -5,6 +5,7 @@ using System.Data.Entity;
 using System.Data.Entity.Infrastructure.Annotations;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Linq;
+using ILK_Protokoll.Areas.Administration.Models;
 using ILK_Protokoll.Models;
 using ILK_Protokoll.util;
 
@@ -47,7 +48,7 @@ namespace ILK_Protokoll.DataLayer
 			return
 				currentUser.ToEnumerable()
 					.Concat(Users
-					.Where(u => u.ID != currentUser.ID && u.IsActive)
+						.Where(u => u.ID != currentUser.ID && u.IsActive)
 						.ToList()
 						.OrderBy(u => u.ShortName, StringComparer.CurrentCultureIgnoreCase));
 		}
