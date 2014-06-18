@@ -154,7 +154,7 @@
     <Compile Include="Models\TopicHistory.cs" />
     <Compile Include="util\HelperMethods.cs" />
     <Compile Include="Models\Priority.cs" />
-    <Compile Include="Areas\Session\Models\Session.cs" />
+    <Compile Include="Areas\Session\Models\ActiveSession.cs" />
     <Compile Include="Areas\Administration\Models\SessionType.cs" />
     <Compile Include="Models\ToDo.cs" />
     <Compile Include="Models\Topic.cs" />

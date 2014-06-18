@@ -6,7 +6,7 @@
 	ViewBag.Title = "Übersicht";
 }
 
-@Html.ActionLink("Neue Diskussion", "Create", null, new {@class = "index-action btn btn-primary"})
+@Html.ActionLink("Neue Diskussion", "Create", null, new { @class = "index-action btn btn-primary" })
 <h2>@ViewBag.Title</h2>
 
 <div class="panel-group" id="filter_accordion">
@@ -27,59 +27,61 @@
 </div>
 
 <table class="table">
-	<tr>
-		<th>
-			@Html.DisplayNameFor(model => model.SessionTypeID)
-		</th>
-		<th>
-			@Html.DisplayNameFor(model => model.Title)
-		</th>
-		<th>
-			@Html.DisplayNameFor(model => model.Description)
-		</th>
-		<th>
-			@Html.DisplayNameFor(model => model.Priority)
-		</th>
-		<th>
-			@Html.DisplayNameFor(model => model.Created)
-		</th>
-		<th>
-			@Html.DisplayNameFor(model => model.ValidFrom)
-		</th>
-		<th>Aktionen</th>
-	</tr>
-
-	@foreach (Topic item in Model)
-	{
+	<thead>
 		<tr>
-			<td>
-				@Html.DisplayFor(modelItem => item.SessionType.Name)
-				@if (item.TargetSessionTypeID != null)
-				{
-					@:&#42;
-				}
-			</td>
-			<td>
-				@Html.DisplayFor(modelItem => item.Title)
-			</td>
-			<td>
-				@Html.DisplayFor(modelItem => item.Description)
-			</td>
-			<td>
-				@item.Priority.DisplayName()
-			</td>
-			<td>
-				@Html.DisplayFor(modelItem => item.Created)
-			</td>
-			<td>
-				@Html.DisplayFor(modelItem => item.ValidFrom)
-			</td>
-			<td style="min-width: 120px;">
-				@Html.ActionLink("Bearbeiten", "Edit", new {id = item.ID}) <br />
-				@Html.ActionLink("Details", "Details", new {id = item.ID}) <br />
-				@Html.ActionLink("Löschen", "Delete", new {id = item.ID})
-			</td>
+			<th>
+				@Html.DisplayNameFor(model => model.SessionTypeID)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Title)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Description)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Priority)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Created)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.ValidFrom)
+			</th>
+			<th>Aktionen</th>
 		</tr>
-	}
-
+	</thead>
+	<tbody>
+		@foreach (Topic item in Model)
+		{
+			<tr>
+				<td>
+					@Html.DisplayFor(modelItem => item.SessionType.Name)
+					@if (item.TargetSessionTypeID != null)
+					{
+						@:&#42;
+				}
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Title)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Description)
+				</td>
+				<td>
+					@item.Priority.DisplayName()
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Created)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.ValidFrom)
+				</td>
+				<td style="min-width: 120px;">
+					@Html.ActionLink("Bearbeiten", "Edit", new { id = item.ID }) <br />
+					@Html.ActionLink("Details", "Details", new { id = item.ID }) <br />
+					@Html.ActionLink("Löschen", "Delete", new { id = item.ID })
+				</td>
+			</tr>
+		}
+	</tbody>
 </table>

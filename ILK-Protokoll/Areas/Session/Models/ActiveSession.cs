@@ -15,6 +15,8 @@ namespace ILK_Protokoll.Areas.Session.Models
 			// ReSharper disable DoNotCallOverridableMethodsInConstructor
 			SessionType = type;
 			PresentUsers = type.Attendees.ToDictionary(user => user, u => false);
+			DecidedTopics = new List<Topic>();
+			ChangedItems = new HashSet<object>();
 			// ReSharper restore DoNotCallOverridableMethodsInConstructor
 			Start = DateTime.Now;
 		}
@@ -36,5 +38,9 @@ namespace ILK_Protokoll.Areas.Session.Models
 
 		[DisplayName("Beginn")]
 		public DateTime Start { get; set; }
+
+		public virtual ICollection<Topic> DecidedTopics { get; set; }
+
+		public virtual HashSet<object> ChangedItems { get; set; }
 	}
 }
