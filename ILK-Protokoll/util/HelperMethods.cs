@@ -12,7 +12,7 @@ namespace ILK_Protokoll.util
 		{
 			FieldInfo field = value.GetType().GetField(value.ToString());
 
-			var attribute = Attribute.GetCustomAttribute(field, typeof (DescriptionAttribute)) as DescriptionAttribute;
+			var attribute = Attribute.GetCustomAttribute(field, typeof(DescriptionAttribute)) as DescriptionAttribute;
 
 			return attribute == null ? value.ToString() : attribute.Description;
 		}
@@ -22,7 +22,7 @@ namespace ILK_Protokoll.util
 			FieldInfo fieldInfo = value.GetType().GetField(value.ToString());
 
 			var descriptionAttributes = fieldInfo.GetCustomAttributes(
-				typeof (DisplayAttribute), false) as DisplayAttribute[];
+				typeof(DisplayAttribute), false) as DisplayAttribute[];
 
 			if (descriptionAttributes == null)
 				return string.Empty;
@@ -33,6 +33,14 @@ namespace ILK_Protokoll.util
 		public static IEnumerable<T> ToEnumerable<T>(this T item)
 		{
 			yield return item;
+		}
+
+		public static string Shorten(this string str, int maxLength)
+		{
+			if (str.Length > maxLength)
+				return str.Substring(0, maxLength - 1) + "…";
+			else
+				return str;
 		}
 	}
 }

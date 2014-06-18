@@ -148,7 +148,7 @@ textarea.form-control {
 	float: right;
 }
 
-.topic-panel h6 {
+.topic-panel h6, .faketable h6 {
 	margin: 0;
 	font-weight: bold;
 }
@@ -372,6 +372,38 @@ p.panel-title {
 .highlight {
 	background-color: #EFDA1B;
 	color: #000;
+}
+
+.faketable {
+	width: 100%;
+}
+
+.faketable-header > div {
+	font-weight: bold;
+	padding: 8px;
+}
+
+.faketable-body > div > div {
+	padding: @table-cell-padding;
+}
+
+.faketable-body > div > div > div {
+	padding: 0;
+}
+
+.faketable-body > div:nth-child(2n+1) {
+	background-color: @table-bg-accent;
+	border-bottom: 1px solid @table-border-color;
+	border-top: 1px solid @table-border-color;
+}
+
+.divlink {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	z-index: 1;
 }
 
 /*IE-Hack*/

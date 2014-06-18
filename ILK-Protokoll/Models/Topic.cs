@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using ILK_Protokoll.Areas.Administration.Models;
+using ILK_Protokoll.util;
 using ILK_Protokoll.ViewModels;
 
 namespace ILK_Protokoll.Models
@@ -47,15 +48,33 @@ namespace ILK_Protokoll.Models
 		[Required]
 		public string Title { get; set; }
 
+		[NotMapped]
+		public string ShortTitle
+		{
+			get { return Title.Shorten(60); }
+		}
+
 		[Display(Name = "Beschreibung")]
 		[DataType(DataType.MultilineText)]
 		[Required]
 		public string Description { get; set; }
 
+		[NotMapped]
+		public string ShortDescription
+		{
+			get { return Description.Shorten(150); }
+		}
+
 		[Display(Name = "Beschlussvorschlag")]
 		[DataType(DataType.MultilineText)]
 		[Required]
 		public string Proposal { get; set; }
+
+		[NotMapped]
+		public string ShortProposal
+		{
+			get { return Proposal.Shorten(150); }
+		}
 
 		[Display(Name = "Kommentare")]
 		public virtual ICollection<Comment> Comments { get; set; }
@@ -82,16 +101,15 @@ namespace ILK_Protokoll.Models
 		[Display(Name = "PDF-Report")]
 		public virtual Report Report { get; set; }
 
-		[Display(Name = "Erstelldatum")]
+		[Display(Name = "Erstellt")]
 		[Required]
 		public DateTime Created { get; set; }
 
 		/// <summary>
-		///    Jeder Diskussionspunkt kann mehrere Einträge in der Datenbank haben.
-		///    Es ist nur derjenige gültig, der hier das spätestes Datum besitzt.
-		///    Der Rest sind archivierte Versionen desselben Diskussionspunkts.
+		///    Gibt das Datum der letzten Änderung an. Falls der Diskussionspunkt nie geändert wurde, gleicht das Änderungsdatum
+		///    der Erstelldatum.
 		/// </summary>
-		[Display(Name = "Änderungsdatum")]
+		[Display(Name = "Geändert")]
 		[Required]
 		public DateTime ValidFrom { get; set; }
 
@@ -132,7 +150,7 @@ namespace ILK_Protokoll.Models
 		}
 	}
 
-	class TopicByIdComparer : IEqualityComparer<Topic>
+	internal class TopicByIdComparer : IEqualityComparer<Topic>
 	{
 		public bool Equals(Topic x, Topic y)
 		{

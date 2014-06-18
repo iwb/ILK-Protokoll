@@ -1461,7 +1461,7 @@ th {
 }
 .table-striped > tbody > tr:nth-child(odd) > td,
 .table-striped > tbody > tr:nth-child(odd) > th {
-  background-color: #f9f9f9;
+  background-color: #dddddd;
 }
 .table-hover > tbody > tr:hover > td,
 .table-hover > tbody > tr:hover > th {
@@ -5896,7 +5896,8 @@ textarea.form-control {
   margin-top: 20px;
   float: right;
 }
-.topic-panel h6 {
+.topic-panel h6,
+.faketable h6 {
   margin: 0;
   font-weight: bold;
 }
@@ -6081,6 +6082,32 @@ p.panel-title {
 .highlight {
   background-color: #EFDA1B;
   color: #000;
+}
+.faketable {
+  width: 100%;
+}
+.faketable-header > div {
+  font-weight: bold;
+  padding: 8px;
+}
+.faketable-body > div > div {
+  padding: 8px;
+}
+.faketable-body > div > div > div {
+  padding: 0;
+}
+.faketable-body > div:nth-child(2n+1) {
+  background-color: #dddddd;
+  border-bottom: 1px solid #dddddd;
+  border-top: 1px solid #dddddd;
+}
+.divlink {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1;
 }
 /*IE-Hack*/
 @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {

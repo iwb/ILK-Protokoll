@@ -26,62 +26,70 @@
 	</div>
 </div>
 
-<table class="table">
-	<thead>
-		<tr>
-			<th>
-				@Html.DisplayNameFor(model => model.SessionTypeID)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.Title)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.Description)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.Priority)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.Created)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.ValidFrom)
-			</th>
-			<th>Aktionen</th>
-		</tr>
-	</thead>
-	<tbody>
+<div class="faketable container">
+	<div class="faketable-header row hidden-sm hidden-xs">
+		<div class="col-md-1">
+			@Html.DisplayNameFor(model => model.SessionTypeID)
+		</div>
+		<div class="col-md-2">
+			@Html.DisplayNameFor(model => model.Title)
+		</div>
+		<div class="col-md-6">
+			@Html.DisplayNameFor(model => model.Description)
+		</div>
+		<div class="col-md-3">
+			<div class="row">
+				<div class="col-xs-4">
+					@Html.DisplayNameFor(model => model.Priority)
+				</div>
+				<div class="col-xs-4">
+					@Html.DisplayNameFor(model => model.Created)
+				</div>
+				<div class="col-xs-4">
+					@Html.DisplayNameFor(model => model.ValidFrom)
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="faketable-body">
 		@foreach (Topic item in Model)
 		{
-			<tr>
-				<td>
+			<div class="row">
+				<a href="@Url.Action("Details", new { id = item.ID })" class="hidden-xs hidden-sm"><span class="divlink"></span></a>
+				<div class="col-md-1">
+					<h6 class="visible-xs visible-sm">@Html.DisplayNameFor(model => model.SessionTypeID)</h6>
 					@Html.DisplayFor(modelItem => item.SessionType.Name)
 					@if (item.TargetSessionTypeID != null)
 					{
 						@:&#42;
-				}
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.Title)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.Description)
-				</td>
-				<td>
-					@item.Priority.DisplayName()
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.Created)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.ValidFrom)
-				</td>
-				<td style="min-width: 120px;">
-					@Html.ActionLink("Bearbeiten", "Edit", new { id = item.ID }) <br />
-					@Html.ActionLink("Details", "Details", new { id = item.ID }) <br />
-					@Html.ActionLink("Löschen", "Delete", new { id = item.ID })
-				</td>
-			</tr>
+					}
+				</div>
+				<div class="col-md-2">
+					<h6 class="visible-xs visible-sm">@Html.DisplayNameFor(model => model.Title)</h6>
+					@Html.ActionLink(item.ShortTitle, "Details", new { id = item.ID })
+				</div>
+				<div class="col-md-6">
+					<h6 class="visible-xs visible-sm">@Html.DisplayNameFor(model => model.Description)</h6>
+					@Html.ActionLink(item.ShortDescription, "Details", new { id = item.ID })
+				</div>
+				<div class="col-md-3">
+					<div class="row">
+						<div class="col-xs-4">
+							<h6 class="visible-xs visible-sm">@Html.DisplayNameFor(model => model.Priority)</h6>
+							@item.Priority.DisplayName()
+						</div>
+						<div class="col-xs-4">
+							<h6 class="visible-xs visible-sm">@Html.DisplayNameFor(model => model.Created)</h6>
+							@Html.DisplayFor(modelItem => item.Created)
+						</div>
+						<div class="col-xs-4">
+							<h6 class="visible-xs visible-sm">@Html.DisplayNameFor(model => model.ValidFrom)</h6>
+							@Html.DisplayFor(modelItem => item.ValidFrom)
+						</div>
+					</div>
+				</div>
+			</div>
 		}
-	</tbody>
-</table>
+	</div>
+</div>
