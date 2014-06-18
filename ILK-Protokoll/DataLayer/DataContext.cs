@@ -9,6 +9,7 @@ using ILK_Protokoll.Areas.Administration.Models;
 using ILK_Protokoll.Areas.Session.Models;
 using ILK_Protokoll.Models;
 using ILK_Protokoll.util;
+using JetBrains.Annotations;
 
 namespace ILK_Protokoll.DataLayer
 {
@@ -42,9 +43,9 @@ namespace ILK_Protokoll.DataLayer
 		///    Gibt alle Benutzer zurück, mit dem aktuellen Benutzer als erstes Element und den restlichen benutzern in
 		///    alphabetischer Reihenfolge.
 		/// </summary>
-		/// <param name="currentUser"></param>
+		/// <param name="currentUser">Der aktuelle Benutzer, dieser wird an den Anfang der Liste sortiert.</param>
 		/// <returns></returns>
-		public IEnumerable<User> GetUserOrdered(User currentUser)
+		public IEnumerable<User> GetUserOrdered([NotNull] User currentUser)
 		{
 			return
 				currentUser.ToEnumerable()
