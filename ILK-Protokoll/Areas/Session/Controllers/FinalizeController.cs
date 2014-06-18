@@ -7,12 +7,21 @@ using ILK_Protokoll.Controllers;
 
 namespace ILK_Protokoll.Areas.Session.Controllers
 {
-	public class MasterController : BaseController
+	public class FinalizeController : BaseController
 	{
-		// GET: Session/Master
+		// GET: Session/Finalize
+		[HttpGet]
 		public ActionResult Index()
 		{
-			return View(new Models.ActiveSession(db.SessionTypes.First()));
+			return View();
+		}
+
+		[HttpPost]
+		[ActionName("Index")]
+		[ValidateAntiForgeryToken]
+		public ActionResult Confirmed()
+		{
+			return View();
 		}
 	}
 }

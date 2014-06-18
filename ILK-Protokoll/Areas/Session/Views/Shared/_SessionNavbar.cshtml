@@ -11,10 +11,10 @@
 
 		<div class="navbar-collapse collapse">
 			<ul class="nav navbar-nav">
-				<li>@Html.ActionLink("Sitzungstypen", "Index", "SessionTypes", new { Area = "Administration" }, null)</li>
-				<li>@Html.ActionLink("Listen", "Index", "List", new { Area = "Administration" }, null)</li>
-				<li>@Html.ActionLink("Papierkorb", "Index", "RecycleBin", new { Area = "Administration" }, null)</li>
-				<li>@Html.ActionLink("Benutzer", "Index", "User", new { Area = "Administration" }, null)</li>
+				<li>@Html.ActionLink("Stammdaten", "Index", "Master", new { Area = "Session" }, null)</li>
+				<li>@Html.ActionLink("Listen", "Index", "Lists", new { Area = "Session" }, null)</li>
+				<li>@Html.ActionLink("Diskussion", "Index", "Discussion", new { Area = "Session" }, null)</li>
+				<li>@Html.ActionLink("Beenden", "Index", "Finalize", new { Area = "Session" }, null)</li>
 			</ul>
 		</div>
 	</div>

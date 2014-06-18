@@ -8,14 +8,14 @@ namespace ILK_Protokoll.Controllers
 {
 	public class VotesController : BaseController
 	{
-		public ActionResult _List(Topic t, bool linkAllAuditors = false)
+		public ActionResult _List(Topic topic, bool linkAllAuditors = false)
 		{
-			ViewBag.ownvote = t.Votes.SingleOrDefault(v => v.Voter == GetCurrentUser());
-			ViewBag.TopicID = t.ID;
+			ViewBag.ownvote = topic.Votes.SingleOrDefault(v => v.Voter == GetCurrentUser());
+			ViewBag.TopicID = topic.ID;
 			ViewBag.CurrentUser = GetCurrentUser();
 			ViewBag.LinkAllAuditors = linkAllAuditors;
 
-			IOrderedEnumerable<Vote> displayvotes = t.Votes.Where(v => v.Voter != GetCurrentUser())
+			IOrderedEnumerable<Vote> displayvotes = topic.Votes.Where(v => v.Voter != GetCurrentUser())
 				.OrderBy(v => v.Voter.ShortName, StringComparer.CurrentCultureIgnoreCase);
 
 			return PartialView("_VoteList", displayvotes);

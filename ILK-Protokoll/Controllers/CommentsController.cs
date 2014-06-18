@@ -9,10 +9,10 @@ namespace ILK_Protokoll.Controllers
 {
 	public class CommentsController : BaseController
 	{
-		public PartialViewResult _List(Topic t)
+		public PartialViewResult _List(Topic topic)
 		{
-			List<Comment> comments = t.Comments.OrderBy(c => c.Created).ToList();
-			ViewBag.TopicID = t.ID;
+			List<Comment> comments = topic.Comments.OrderBy(c => c.Created).ToList();
+			ViewBag.TopicID = topic.ID;
 
 			Comment lastcomment = comments.LastOrDefault();
 			ViewBag.AllowDeletion = (lastcomment != null) && (lastcomment.Author == GetCurrentUser()) ? lastcomment.ID : -1;

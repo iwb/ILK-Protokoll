@@ -1,0 +1,10 @@
+﻿@using ILK_Protokoll.Models
+@model Dictionary<User, bool>
+<ul class="userlist">
+	@foreach (var kvp in Model)
+	{
+		<li>
+			@(Html.EditorFor(model => kvp.Value))@kvp.Key.ShortName
+		</li>
+	}
+</ul>

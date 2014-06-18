@@ -1,0 +1,16 @@
+﻿
+@{
+	ViewBag.Title = "Sitzung beenden";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm("Index", "Finalize", FormMethod.Post))
+{
+	@Html.AntiForgeryToken()
+	<div class="form-group">
+		@Html.ActionLink("Zurück", "Index", "Discussion", null, new { @class = "btn btn-lg btn-default" })
+
+		<input type="submit" value="Sitzung beenden" class="btn btn-lg btn-danger" />
+	</div>
+}

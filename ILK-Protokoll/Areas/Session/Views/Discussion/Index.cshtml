@@ -1,0 +1,14 @@
+﻿@using ILK_Protokoll.Models
+@model ICollection<Topic>
+
+
+@{
+	ViewBag.Title = "Diskussion";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@foreach (var topic in Model)
+{
+	Html.RenderPartial("~/Views/Topics/_Topic.cshtml", topic);
+}
