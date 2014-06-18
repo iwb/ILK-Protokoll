@@ -5811,11 +5811,6 @@ body {
     padding-top: 5px;
   }
 }
-@media (min-width: 768px) and (max-width: 1199px) {
-  .body-content {
-    margin-top: 60px;
-  }
-}
 textarea.form-control {
   min-height: 120px;
 }
@@ -5834,9 +5829,12 @@ textarea.form-control {
   overflow-x: visible;
 }
 .navbar-brand {
-  padding: 17px 15px 8px 65px;
   margin-top: 3px;
   margin-bottom: 2px;
+  padding: 17px 15px 8px 15px;
+}
+.iwblogo {
+  padding-left: 65px;
   background-image: url("../img/iwbLogo_inv.png");
   background-size: contain;
   background-repeat: no-repeat;
@@ -5874,12 +5872,24 @@ textarea.form-control {
 }
 .navbar-secondary {
   top: 57px;
-}
-.navbar-secondary .navbar-nav > li > a:hover {
-  background-color: #dddddd;
+  z-index: 1;
 }
 .navbar-secondary + .body-content {
   margin-top: 50px;
+}
+@media (min-width: 768px) and (max-width: 1199px) {
+  .navbar-secondary {
+    top: 107px;
+  }
+  .body-content {
+    margin-top: 60px;
+  }
+  .navbar-secondary + .body-content {
+    margin-top: 100px;
+  }
+}
+.navbar-secondary .navbar-nav > li > a:hover {
+  background-color: #dddddd;
 }
 /* Content */
 .index-action {

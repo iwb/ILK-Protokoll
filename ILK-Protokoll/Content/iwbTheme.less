@@ -4,10 +4,10 @@
 @import "bootstrap/bootstrap.less";
 
 .navbar-inverse {
-  #gradient > .vertical(@start-color: @navbar-inverse-bg; @end-color: darken(@navbar-inverse-bg, 3%));
-  .reset-filter(); // Remove gradient in IE<10 to fix bug where dropdowns don't get triggered
-  border-bottom-color: #FFF;
-  padding-bottom: 1px;
+	#gradient > .vertical(@start-color: @navbar-inverse-bg; @end-color: darken(@navbar-inverse-bg, 3%));
+	.reset-filter(); // Remove gradient in IE<10 to fix bug where dropdowns don't get triggered
+	border-bottom-color: #FFF;
+	padding-bottom: 1px;
 }
 
 body {
@@ -42,12 +42,6 @@ body {
 	}
 }
 
-@media (min-width: @screen-sm-min) and (max-width: @screen-sm-max) {
-	.body-content {
-		margin-top: 60px;
-	}
-}
-
 textarea.form-control {
 	min-height: 120px;
 }
@@ -71,9 +65,13 @@ textarea.form-control {
 }
 
 .navbar-brand {
-	padding: 17px 15px 8px 65px;
 	margin-top: 3px;
 	margin-bottom: 2px;
+	padding: 17px 15px 8px 15px;
+}
+
+.iwblogo {
+	padding-left: 65px;
 	background-image: url("../img/iwbLogo_inv.png");
 	background-size: contain;
 	background-repeat: no-repeat;
@@ -118,15 +116,31 @@ textarea.form-control {
 
 .navbar-secondary {
 	top: 57px;
+	z-index: 1;
+}
+
+.navbar-secondary + .body-content {
+	margin-top: 50px;
+}
+
+@media (min-width: @screen-sm-min) and (max-width: @screen-sm-max) {
+	.navbar-secondary {
+		top: 107px;
+	}
+
+	.body-content {
+		margin-top: 60px;
+	}
+
+	.navbar-secondary + .body-content {
+		margin-top: 100px;
+	}
 }
 
 .navbar-secondary .navbar-nav > li > a:hover {
 	background-color: @gray-lighter;
 }
 
-.navbar-secondary + .body-content {
-	margin-top: 50px;
-}
 
 /* Content */
 .index-action {
@@ -305,7 +319,7 @@ p.panel-title {
 }
 
 .panel-title-right a {
-	color: inherit;	
+	color: inherit;
 }
 
 .panel-title-right p {
@@ -338,9 +352,11 @@ p.panel-title {
 .actions a:link {
 	color: #000;
 }
+
 .actions a:hover {
 	color: #388085;
 }
+
 .actions a:hover .glyphicon-remove {
 	color: #AF0331;
 }
@@ -354,8 +370,8 @@ p.panel-title {
 }
 
 .highlight {
-	 background-color: #EFDA1B;
-	 color: #000;
+	background-color: #EFDA1B;
+	color: #000;
 }
 
 /*IE-Hack*/

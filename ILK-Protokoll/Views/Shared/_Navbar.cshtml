@@ -1,14 +1,14 @@
 ﻿<div class="navbar navbar-inverse navbar-fixed-top">
 	<div class="container">
 		<div class="navbar-header">
-			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#primaryNavbarContent">
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			@Html.ActionLink("Dashboard", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+			@Html.ActionLink("Dashboard", "Index", "Home", new { area = "" }, new { @class = "navbar-brand iwblogo" })
 		</div>
-		<div class="navbar-collapse collapse">
+		<div class="navbar-collapse collapse" id="primaryNavbarContent">
 			<p class="navbar-right navbar-text">
 				<span class="visible-xs">Eingeloggt als <b>@User.Identity.Name</b></span>
 				<span class="hidden-xs usertile">@User.Identity.Name.Split('\\').Last()</span>
