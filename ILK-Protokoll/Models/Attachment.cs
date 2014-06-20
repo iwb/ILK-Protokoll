@@ -53,6 +53,7 @@ namespace ILK_Protokoll.Models
 
 		[Required]
 		[Display(Name = "Dateigröße")]
+		[UIHint("FileSize")]
 		public int FileSize { get; set; }
 
 		public string FileName

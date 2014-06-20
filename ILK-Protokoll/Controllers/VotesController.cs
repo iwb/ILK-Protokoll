@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Net;
 using System.Web.Mvc;
 using ILK_Protokoll.Models;
 using ILK_Protokoll.util;
@@ -10,6 +11,9 @@ namespace ILK_Protokoll.Controllers
 	{
 		public ActionResult _List(Topic topic, bool linkAllAuditors = false)
 		{
+			if (!ModelState.IsValid)
+				throw new InvalidOperationException("The Topic is invalid.");
+
 			ViewBag.ownvote = topic.Votes.SingleOrDefault(v => v.Voter == GetCurrentUser());
 			ViewBag.TopicID = topic.ID;
 			ViewBag.CurrentUser = GetCurrentUser();
@@ -24,7 +28,12 @@ namespace ILK_Protokoll.Controllers
 		public ActionResult _Register(int topicID, VoteKind vote, bool linkAllAuditors = false)
 		{
 			int cuid = GetCurrentUser().ID;
-			db.Votes.First(v => v.Voter.ID == cuid && v.Topic.ID == topicID).Kind = vote;
+			Vote dbvote = db.Votes.FirstOrDefault(v => v.Voter.ID == cuid && v.Topic.ID == topicID);
+
+			if (dbvote == null)
+				return new HttpStatusCodeResult(HttpStatusCode.Forbidden, "Es liegt keine Stimmberechtigung vor.");
+
+			dbvote.Kind = vote;
 			db.SaveChanges();
 			return _List(db.Topics.Find(topicID), linkAllAuditors);
 		}

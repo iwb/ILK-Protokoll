@@ -405,6 +405,7 @@
     <Content Include="Views\Shared\DisplayTemplates\Boolean.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\Dictionary_User_bool.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Dictionary_User_bool.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\FileSize.cshtml" />
     <None Include="Web.Integration.config" />
     <None Include="Web.Testing.config" />
   </ItemGroup>

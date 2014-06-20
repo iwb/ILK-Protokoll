@@ -19,7 +19,7 @@
 	<td>
 		<a href="@fileurl">@Model.DisplayName</a>
 	</td>
-	<td>@Model.FileSize</td>
+	<td>@Html.DisplayFor(model => model.FileSize)</td>
 	<td>@Model.Uploader.ShortName</td>
 	<td>@Html.DisplayFor(model => model.Created)</td>
 	<td class="actions">

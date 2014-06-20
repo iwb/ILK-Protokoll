@@ -15,7 +15,7 @@
 }
 else
 {
-	<table class="table">
+	<table class="table table-striped table-hover">
 		<thead>
 			<tr>
 				<th>
@@ -62,7 +62,7 @@ else
 							new { @class = "text-success" })
 						<br />
 						@Ajax.ActionLink("Löschen", "_Delete", "Attachments",
-							new { area="", attachmentID = item.ID },
+							new { area = "", attachmentID = item.ID },
 							new AjaxOptions { Confirm = "Datei endgültig löschen?", HttpMethod = "POST", OnSuccess = "removeFile('#attachment_" + @item.ID + "');" },
 							new { @class = "text-danger" })
 					</td>

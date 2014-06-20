@@ -4,7 +4,7 @@
 
 @{
 	ViewBag.Title = "Details (" + Model.Title + ")";
-	var history = (ICollection<TopicHistory>) ViewBag.TopicHistory;
+	var history = (ICollection<TopicHistory>)ViewBag.TopicHistory;
 }
 
 <h3>@ViewBag.Title</h3>
@@ -19,7 +19,7 @@
 			<div class="panel-heading">
 				<div class="panel-title-right">
 					<p>
-						<a href="@Url.Action("Edit", new { id = Model.ID })"><i class="glyphicon glyphicon-edit"></i> Bearbeiten</a>
+						<a href="@Url.Action("Edit", new {id = Model.ID})"><i class="glyphicon glyphicon-edit"></i> Bearbeiten</a>
 					</p>
 				</div>
 				<h3 class="panel-title">Stammdaten</h3>
@@ -90,7 +90,7 @@
 		<h3 class="panel-title">@Html.DisplayNameFor(model => model.Votes)</h3>
 	</div>
 	<div class="panel-body" id="auditorlist_@Model.ID">
-		@Html.Action("_List", "Votes", new {t = Model, linkAllAuditors = true})
+		@Html.Action("_List", "Votes", new {topic = Model, linkAllAuditors = true})
 	</div>
 </div>
 
