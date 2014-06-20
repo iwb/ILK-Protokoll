@@ -15,7 +15,7 @@ namespace ILK_Protokoll.Controllers
 			ViewBag.TopicID = topic.ID;
 
 			Comment lastcomment = comments.LastOrDefault();
-			ViewBag.AllowDeletion = (lastcomment != null) && (lastcomment.Author == GetCurrentUser()) ? lastcomment.ID : -1;
+			ViewBag.AllowDeletion = (lastcomment != null) && (lastcomment.Author.Equals(GetCurrentUser())) ? lastcomment.ID : -1;
 
 			return PartialView("_CommentList", comments);
 		}
@@ -65,7 +65,7 @@ namespace ILK_Protokoll.Controllers
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest,
 					"Dieser Kommentar kann nicht gelöscht werden: Er ist nicht der letzte Kommentar der Diskussion.");
 			}
-			else if (lastcomment.Author != GetCurrentUser())
+			else if (!lastcomment.Author.Equals(GetCurrentUser()))
 			{
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest,
 					"Dieser Kommentar kann nicht gelöscht werden: Sie sind nicht der Autor des Kommentars.");

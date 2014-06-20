@@ -30,7 +30,7 @@ namespace ILK_Protokoll.Areas.Administration.Controllers
 			List<User> myusers = db.Users.ToList();
 			// Zunächst alle Benutzer (außer dem aktuellen Benutzer) auf inakitv setzen.
 			foreach (User user in myusers)
-				user.IsActive = user == GetCurrentUser();
+				user.IsActive = user.Equals(GetCurrentUser());
 
 			const string addgroupName = "ILK"; // Benutzer dieser Gruppe werden hinzugefügt
 
@@ -57,7 +57,7 @@ namespace ILK_Protokoll.Areas.Administration.Controllers
 					}
 				}
 
-				// Als zweites wird über das Namenskürzel synchronisiert. Die User ohen GUID bekommen hier eine GUID.
+				// Als zweites wird über das Namenskürzel synchronisiert. Die User ohne GUID bekommen hier eine GUID.
 				foreach (User user in myusers.Where(u => u.Guid == Guid.Empty))
 				{
 					UserPrincipal iwbuser = employees.Values.SingleOrDefault(u => u.SamAccountName == user.ShortName);
@@ -139,6 +139,25 @@ namespace ILK_Protokoll.Areas.Administration.Controllers
 					db.SaveChanges();
 					return user;
 				}
+			}
+		}
+
+		public static User CreateUserFromShortName(string samname)
+		{
+			using (var context = new PrincipalContext(ContextType.Domain, DomainName))
+			using (UserPrincipal aduser = UserPrincipal.FindByIdentity(context, IdentityType.SamAccountName, samname))
+			{
+				if (aduser == null || aduser.Guid == null)
+					throw new AuthenticationException("Keine GUID im AD gefunden.");
+
+				return new User
+				{
+					Guid = aduser.Guid.Value,
+					ShortName = aduser.SamAccountName,
+					LongName = aduser.DisplayName,
+					EmailAddress = aduser.EmailAddress,
+					IsActive = true
+				};
 			}
 		}
 

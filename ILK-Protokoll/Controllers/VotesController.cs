@@ -14,12 +14,12 @@ namespace ILK_Protokoll.Controllers
 			if (!ModelState.IsValid)
 				throw new InvalidOperationException("The Topic is invalid.");
 
-			ViewBag.ownvote = topic.Votes.SingleOrDefault(v => v.Voter == GetCurrentUser());
+			ViewBag.ownvote = topic.Votes.SingleOrDefault(v => v.Voter.Equals(GetCurrentUser()));
 			ViewBag.TopicID = topic.ID;
 			ViewBag.CurrentUser = GetCurrentUser();
 			ViewBag.LinkAllAuditors = linkAllAuditors;
 
-			IOrderedEnumerable<Vote> displayvotes = topic.Votes.Where(v => v.Voter != GetCurrentUser())
+			IOrderedEnumerable<Vote> displayvotes = topic.Votes.Where(v => !v.Voter.Equals(GetCurrentUser()))
 				.OrderBy(v => v.Voter.ShortName, StringComparer.CurrentCultureIgnoreCase);
 
 			return PartialView("_VoteList", displayvotes);

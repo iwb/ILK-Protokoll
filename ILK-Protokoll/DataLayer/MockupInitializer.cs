@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Data.Entity;
+using ILK_Protokoll.Areas.Administration.Controllers;
 using ILK_Protokoll.Areas.Administration.Models;
 using ILK_Protokoll.Models;
 
@@ -11,18 +12,18 @@ namespace ILK_Protokoll.DataLayer
 		{
 			var users = new List<User>
 			{
-				new User("hz"),
-				new User("sw"),
-				new User("gf"),
-				new User("ga"),
-				new User("mf"),
-				new User("kj"),
-				new User("kf"),
-				new User("ls"),
-				new User("re"),
-				new User("ro"),
-				new User("zh"),
-				new User("hm"),
+				UserController.CreateUserFromShortName("hz"),
+				UserController.CreateUserFromShortName("sw"),
+				UserController.CreateUserFromShortName("gf"),
+				UserController.CreateUserFromShortName("ga"),
+				UserController.CreateUserFromShortName("mf"),
+				UserController.CreateUserFromShortName("kj"),
+				UserController.CreateUserFromShortName("kf"),
+				UserController.CreateUserFromShortName("ls"),
+				UserController.CreateUserFromShortName("re"),
+				UserController.CreateUserFromShortName("ro"),
+				UserController.CreateUserFromShortName("zh"),
+				UserController.CreateUserFromShortName("hm")
 			};
 
 			var topic = new Topic
@@ -56,14 +57,14 @@ namespace ILK_Protokoll.DataLayer
 					"Klingt lecker! und ich finde den Beschlussvorschlag auch total sinnvoll und angemessen. Eine Dissertation, deren Ergebnisse man nicht essen oder trinken kann, ist im Grunde wertlos. Insbesondere am Institut für Weißwurscht und Brezenwissenschaften."
 			});
 
-			topic.Comments.Add(new Comment { Author = users[4], Content = "Brauchen wir nicht drüber reden. Ist gegessen." });
+			topic.Comments.Add(new Comment {Author = users[4], Content = "Brauchen wir nicht drüber reden. Ist gegessen."});
 			topic.Comments.Add(new Comment
 			{
 				Author = users[8],
 				Content = "Möglicherweise sollten auch Themen im Komplex \"Backplanung und -steuerung\" erlaubt werden."
 			});
 
-			var sessiont = new SessionType { ID = 1, Name = "ILK-AK Garching" };
+			var sessiont = new SessionType {ID = 1, Name = "ILK-AK Garching"};
 			sessiont.Attendees.Add(users[9]);
 			sessiont.Attendees.Add(users[1]);
 			sessiont.Attendees.Add(users[4]);

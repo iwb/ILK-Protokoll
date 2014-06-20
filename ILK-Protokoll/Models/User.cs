@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Data;
+using ILK_Protokoll.Areas.Administration.Controllers;
 using ILK_Protokoll.Areas.Administration.Models;
 
 namespace ILK_Protokoll.Models
@@ -20,10 +22,17 @@ namespace ILK_Protokoll.Models
 			ShortName = name;
 		}
 
+		public User(string name, Guid guid)
+			: this(name)
+		{
+			Guid = guid;
+		}
+
 		public int ID { get; set; }
 
 		[Required]
-		public virtual Guid Guid { get; set; }
+		[Index("guid_index", IsUnique = true)]
+		public Guid Guid { get; set; }
 
 		[Display(Name = "Kürzel")]
 		[Required]
@@ -46,12 +55,10 @@ namespace ILK_Protokoll.Models
 
 		public bool Equals(User other)
 		{
-			if ((object)other == null)
-				return false;
-			else
-			{
-				return ShortName == other.ShortName;
-			}
+			if (ReferenceEquals(null, other)) return false;
+			if (ReferenceEquals(this, other)) return true;
+
+			return Guid.Equals(other.Guid);
 		}
 
 		public override string ToString()
@@ -61,27 +68,15 @@ namespace ILK_Protokoll.Models
 
 		public override bool Equals(object obj)
 		{
-			return Equals(obj as User);
+			if (ReferenceEquals(null, obj)) return false;
+			if (ReferenceEquals(this, obj)) return true;
+			if (obj.GetType() != typeof(User)) return false;
+			return Equals((User)obj);
 		}
 
 		public override int GetHashCode()
 		{
 			return ShortName.GetHashCode();
-		}
-
-		public static bool operator ==(User a, User b)
-		{
-			if (ReferenceEquals(a, b))
-				return true;
-			else if ((object)a == null || (object)b == null)
-				return false;
-			else
-				return a.ShortName == b.ShortName;
-		}
-
-		public static bool operator !=(User a, User b)
-		{
-			return !(a == b);
 		}
 
 		#endregion
