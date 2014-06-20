@@ -11,12 +11,22 @@ namespace ILK_Protokoll.Controllers
 	{
 		protected readonly DataContext db = new DataContext();
 
+		protected User _CurrentUser;
+
 		protected User GetCurrentUser()
 		{
-			if (Session["User"] == null)
-				Session["User"] = UserController.GetUser(db, User);
+			if (_CurrentUser == null)
+			{
+				if (Session["UserID"] == null)
+				{
+					_CurrentUser = UserController.GetUser(db, User);
+					Session["UserID"] = _CurrentUser.ID;
+				}
+				else
+					_CurrentUser = db.Users.Find(Session["UserID"]);
+			}
 
-			return (User)Session["User"];
+			return _CurrentUser;
 		}
 
 		protected override void Dispose(bool disposing)
