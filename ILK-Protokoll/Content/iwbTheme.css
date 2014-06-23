@@ -4041,7 +4041,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .navbar-inverse .navbar-nav > .active > a:hover,
 .navbar-inverse .navbar-nav > .active > a:focus {
   color: #ffffff;
-  background-color: #000817;
+  background-color: #00276e;
 }
 .navbar-inverse .navbar-nav > .disabled > a,
 .navbar-inverse .navbar-nav > .disabled > a:hover,
@@ -4066,7 +4066,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .navbar-inverse .navbar-nav > .open > a,
 .navbar-inverse .navbar-nav > .open > a:hover,
 .navbar-inverse .navbar-nav > .open > a:focus {
-  background-color: #000817;
+  background-color: #00276e;
   color: #ffffff;
 }
 @media (max-width: 767px) {
@@ -4088,7 +4088,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   .navbar-inverse .navbar-nav .open .dropdown-menu > .active > a:hover,
   .navbar-inverse .navbar-nav .open .dropdown-menu > .active > a:focus {
     color: #ffffff;
-    background-color: #000817;
+    background-color: #00276e;
   }
   .navbar-inverse .navbar-nav .open .dropdown-menu > .disabled > a,
   .navbar-inverse .navbar-nav .open .dropdown-menu > .disabled > a:hover,
@@ -5804,7 +5804,7 @@ body {
   }
   .navbar-nav > li > a {
     padding-top: 20px;
-    padding-bottom: 10px;
+    padding-bottom: 15px;
   }
   .navbar-form {
     width: 250px;
@@ -5881,7 +5881,7 @@ textarea.form-control {
   .navbar-secondary {
     top: 107px;
   }
-  .body-content {
+  #main-navbar + .body-content {
     margin-top: 60px;
   }
   .navbar-secondary + .body-content {
@@ -5895,6 +5895,9 @@ textarea.form-control {
 .index-action {
   margin-top: 20px;
   float: right;
+}
+.index-action > .btn {
+  margin-left: 7px;
 }
 .topic-panel h6,
 .faketable h6 {
@@ -5944,6 +5947,11 @@ a:hover {
   margin-left: 10px;
   font-size: 18px;
   width: 50px;
+}
+.userlist > li input {
+  display: inline-block;
+  width: auto;
+  height: auto;
 }
 .userlist > li .glyphicon-ok-sign,
 .userlist > li .glyphicon-ok,

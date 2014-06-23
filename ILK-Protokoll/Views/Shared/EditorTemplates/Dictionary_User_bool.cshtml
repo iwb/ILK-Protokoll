@@ -1,10 +1,23 @@
-﻿@using ILK_Protokoll.Models
+﻿@using System.Xml
+@using ILK_Protokoll.Models
 @model Dictionary<User, bool>
+@{
+	int index = 0;
+}
 <ul class="userlist">
 	@foreach (var kvp in Model)
 	{
+		index++;
 		<li>
-			@(Html.EditorFor(model => kvp.Value))@kvp.Key.ShortName
+			<label>
+				@{
+					var preset = kvp.Value ? "checked" : null;
+				}
+				<input name="PresentUsers[@(index)].Key" type="hidden" value="@kvp.Key.ID">
+				<input checked="@preset" class="form-control check-box" id="PresentUsers_@(index)_Value" name="PresentUsers[@(index)].Value" type="checkbox" value="true">
+				<input name="PresentUsers[@(index)].Value" type="hidden" value="false">
+				@kvp.Key.ShortName
+			</label>
 		</li>
 	}
 </ul>
