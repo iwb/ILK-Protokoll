@@ -6073,6 +6073,12 @@ p.panel-title {
   background-color: #EFDA1B;
   color: #000;
 }
+.table-striped > tbody > tr > td {
+  border-top: none;
+}
+.table > thead > tr > th {
+  border-bottom: 2px solid #777;
+}
 .faketable {
   width: 100%;
 }

@@ -1,0 +1,53 @@
+﻿@model IEnumerable<ILK_Protokoll.Models.Assignment>
+
+@{
+	ViewBag.Title = "Aufgaben";
+}
+
+@Html.ActionLink("Hinzufügen", "Create", null, new { @class = "index-action btn btn-primary" })
+
+<h2>@ViewBag.Title</h2>
+
+<table class="table table-striped table-hover">
+	<thead>
+		<tr>
+			<th>
+				@Html.DisplayNameFor(model => model.Title)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Description)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.DueDate)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.ReminderSent)
+			</th>
+			<th>Aktionen</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model)
+		{
+			<tr>
+				<td>
+					@Html.DisplayFor(modelItem => item.Title)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Description)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.DueDate)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.ReminderSent)
+				</td>
+				<td>
+					@Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+					@Html.ActionLink("Details", "Details", new { id = item.ID }) |
+					@Html.ActionLink("Delete", "Delete", new { id = item.ID })
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>

@@ -36,6 +36,8 @@ if (!String.IsNullOrEmpty(mvcHost.MasterPageFile)) {
 #>
 }
 
+@Html.ActionLink("Erstellen", "Create", null, new { @class = "index-action btn btn-primary" })
+
 <h2><#= mvcHost.ViewName#></h2>
 
 <#
@@ -58,9 +60,7 @@ if (!String.IsNullOrEmpty(mvcHost.MasterPageFile)) {
     PushIndent("    ");
 }
 #>
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+
 <table class="table table-striped table-hover">
     <tr>
 <#

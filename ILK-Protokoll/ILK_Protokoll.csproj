@@ -116,7 +116,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Maintenance\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -141,10 +140,13 @@
     <Compile Include="Areas\Session\Models\Lists\Opening.cs" />
     <Compile Include="Areas\Session\Models\Lists\Extension.cs" />
     <Compile Include="Areas\Session\SessionAreaRegistration.cs" />
+    <Compile Include="Controllers\AssignmentsController.cs" />
     <Compile Include="Controllers\AttachmentsController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\CommentsController.cs" />
+    <Compile Include="Controllers\DecisionsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ReportsController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Controllers\TopicsController.cs" />
     <Compile Include="Controllers\VotesController.cs" />
@@ -286,6 +288,9 @@
     <Content Include="Areas\Session\Views\Finalize\Index.cshtml" />
     <Content Include="Areas\Session\Views\Discussion\Index.cshtml" />
     <Content Include="Areas\Administration\Views\List\Index.cshtml" />
+    <Content Include="CodeTemplates\AddView\CSHTML\Create.tt" />
+    <Content Include="CodeTemplates\AddView\CSHTML\Edit.tt" />
+    <Content Include="CodeTemplates\AddView\CSHTML\MyList.tt" />
     <None Include="Content\bootstrap\wells.less" />
     <None Include="Content\bootstrap\variables.less" />
     <None Include="Content\bootstrap\utilities.less" />
@@ -406,10 +411,19 @@
     <Content Include="Views\Shared\DisplayTemplates\Dictionary_User_bool.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Dictionary_User_bool.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\FileSize.cshtml" />
+    <Content Include="Views\Assignments\Create.cshtml" />
+    <Content Include="Views\Assignments\Delete.cshtml" />
+    <Content Include="Views\Assignments\Details.cshtml" />
+    <Content Include="Views\Assignments\Edit.cshtml" />
+    <Content Include="Views\Assignments\Index.cshtml" />
+    <Content Include="Views\Decisions\Index.cshtml" />
+    <Content Include="Views\Reports\Index.cshtml" />
     <None Include="Web.Integration.config" />
     <None Include="Web.Testing.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>
