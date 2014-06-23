@@ -3,13 +3,6 @@
 @import "variables.less";
 @import "bootstrap/bootstrap.less";
 
-.navbar-inverse {
-	#gradient > .vertical(@start-color: @navbar-inverse-bg; @end-color: darken(@navbar-inverse-bg, 3%));
-	.reset-filter(); // Remove gradient in IE<10 to fix bug where dropdowns don't get triggered
-	border-bottom-color: #FFF;
-	padding-bottom: 1px;
-}
-
 body {
 	padding-top: 57px;
 	padding-bottom: 20px;
@@ -75,18 +68,6 @@ textarea.form-control {
 	background-image: url("../img/iwbLogo_inv.png");
 	background-size: contain;
 	background-repeat: no-repeat;
-}
-
-.navbar-inverse .navbar-brand {
-	color: #DDD;
-}
-
-.navbar-inverse .navbar-text {
-	color: #DDD;
-}
-
-.navbar-inverse .navbar-nav > li > a {
-	color: #DDD;
 }
 
 @media (max-width: @screen-xs-max) {
