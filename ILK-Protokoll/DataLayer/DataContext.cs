@@ -69,5 +69,11 @@ namespace ILK_Protokoll.DataLayer
 				return t;
 			}
 		}
+
+		public System.Data.Entity.DbSet<ILK_Protokoll.Models.Decision> Decisions { get; set; }
+
+		public System.Data.Entity.DbSet<ILK_Protokoll.Models.Report> Reports { get; set; }
+
+		public System.Data.Entity.DbSet<ILK_Protokoll.Models.Assignment> Assignments { get; set; }
 	}
 }

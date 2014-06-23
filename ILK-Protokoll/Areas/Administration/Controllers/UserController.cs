@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.DirectoryServices.AccountManagement;
 using System.Linq;
 using System.Net;
@@ -14,8 +15,14 @@ namespace ILK_Protokoll.Areas.Administration.Controllers
 {
 	public class UserController : BaseController
 	{
-		// GET: Administration/User
+		protected override void OnActionExecuting(ActionExecutingContext filterContext)
+		{
+			base.OnActionExecuting(filterContext);
+			ViewBag.AdminStyle = "active";
+			ViewBag.AUserStyle = "active";
+		}
 
+		// GET: Administration/User
 		private const string DomainName = "iwbmuc";
 
 		public ActionResult Index()

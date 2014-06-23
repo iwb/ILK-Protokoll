@@ -15,6 +15,13 @@ namespace ILK_Protokoll.Areas.Administration.Controllers
 {
 	public class RecycleBinController : BaseController
 	{
+		protected override void OnActionExecuting(ActionExecutingContext filterContext)
+		{
+			base.OnActionExecuting(filterContext);
+			ViewBag.AdminStyle = "active";
+			ViewBag.ARBStyle = "active";
+		}
+
 		// GET: Administration/RecycleBin
 		public ActionResult Index()
 		{

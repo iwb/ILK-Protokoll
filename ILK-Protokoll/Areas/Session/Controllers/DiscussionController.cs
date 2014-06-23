@@ -9,6 +9,12 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 {
 	public class DiscussionController : BaseController
 	{
+		protected override void OnActionExecuting(ActionExecutingContext filterContext)
+		{
+			base.OnActionExecuting(filterContext);
+			ViewBag.SDiscussionStyle = "active";
+		}
+
 		// GET: Session/Topic
 		public ActionResult Index()
 		{

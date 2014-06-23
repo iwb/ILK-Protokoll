@@ -10,6 +10,13 @@ namespace ILK_Protokoll.Areas.Administration.Controllers
 {
 	public class SessionTypesController : BaseController
 	{
+		protected override void OnActionExecuting(ActionExecutingContext filterContext)
+		{
+			base.OnActionExecuting(filterContext);
+			ViewBag.AdminStyle = "active";
+			ViewBag.ASTStyle = "active";
+		}
+
 		// GET: Administration/SessionTypes
 		public ActionResult Index()
 		{

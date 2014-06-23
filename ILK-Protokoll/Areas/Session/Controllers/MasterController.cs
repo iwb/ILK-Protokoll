@@ -10,6 +10,12 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 {
 	public class MasterController : BaseController
 	{
+		protected override void OnActionExecuting(ActionExecutingContext filterContext)
+		{
+			base.OnActionExecuting(filterContext);
+			ViewBag.SMasterStyle = "active";
+		}
+
 		// GET: Session/Master
 		public ActionResult Index()
 		{

@@ -9,6 +9,12 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 {
 	public class ListsController : BaseController
 	{
+		protected override void OnActionExecuting(ActionExecutingContext filterContext)
+		{
+			base.OnActionExecuting(filterContext);
+			ViewBag.SListsStyle = "active";
+		}
+
 		// GET: Session/List
 		public ActionResult Index()
 		{

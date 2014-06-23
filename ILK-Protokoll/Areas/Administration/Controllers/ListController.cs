@@ -9,6 +9,12 @@ namespace ILK_Protokoll.Areas.Administration.Controllers
 {
 	public class ListController : BaseController
 	{
+		protected override void OnActionExecuting(ActionExecutingContext filterContext)
+		{
+			base.OnActionExecuting(filterContext);
+			ViewBag.AdminStyle = "active";
+			ViewBag.AListsStyle = "active";
+		}
 		// GET: Administration/List
 		public ActionResult Index()
 		{

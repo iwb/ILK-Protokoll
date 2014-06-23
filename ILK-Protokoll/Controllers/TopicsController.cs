@@ -9,6 +9,12 @@ namespace ILK_Protokoll.Controllers
 {
 	public class TopicsController : BaseController
 	{
+		protected override void OnActionExecuting(ActionExecutingContext filterContext)
+		{
+			base.OnActionExecuting(filterContext);
+			ViewBag.TopicStyle = "active";
+		}
+
 		// GET: Topics
 		public ActionResult Index()
 		{
