@@ -1,6 +1,10 @@
-﻿
-@{
+﻿@{
 	ViewBag.Title = "Listen";
 }
+
+<div class="index-action">
+	@Html.ActionLink("Zurück", "Edit", "Master", new { Area = "Session" }, new { @class = "btn btn-default" })
+	@Html.ActionLink("Weiter", "Index", "Discussion", new { Area = "Session" }, new { @class = "btn btn-primary" })
+</div>
 
 <h2>@ViewBag.Title</h2>

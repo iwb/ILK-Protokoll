@@ -13,7 +13,7 @@ namespace ILK_Protokoll.Areas.Administration.Controllers
 		{
 			base.OnActionExecuting(filterContext);
 			ViewBag.AdminStyle = "active";
-			ViewBag.AListsStyle = "active";
+			ViewBag.AListStyle = "active";
 		}
 		// GET: Administration/List
 		public ActionResult Index()

@@ -1,7 +1,11 @@
-﻿
-@{
+﻿@{
 	ViewBag.Title = "Sitzung beenden";
 }
+
+<div class="index-action">
+	@Html.ActionLink("Zurück", "Index", "Discussion", new { Area = "Session" }, new { @class = "btn btn-default" })
+	<button class="btn btn-primary disabled">Weiter</button>
+</div>
 
 <h2>@ViewBag.Title</h2>
 

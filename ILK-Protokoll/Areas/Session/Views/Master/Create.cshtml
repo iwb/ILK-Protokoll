@@ -1,0 +1,15 @@
+﻿@model ILK_Protokoll.Areas.Session.Models.ActiveSession
+
+@{
+	ViewBag.Title = "Neue Sitzung";
+}
+
+<div class="index-action">
+	@Html.ActionLink("Weiter", "Edit", "Master", new { Area = "Session" }, new { @class = "btn btn-primary" })
+</div>
+<h2>@ViewBag.Title</h2>
+
+<p>
+	Eine neue Sitzung des Typs &quot;@Model.SessionType.Name&quot; wurde erstellt.<br />
+	Bitte verwenden Sie die Buttons oben rechts zur Navigation.
+</p>

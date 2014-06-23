@@ -1,0 +1,64 @@
+﻿@model ILK_Protokoll.Areas.Session.Models.ActiveSession
+
+@{
+	ViewBag.Title = "Stammdaten";
+}
+
+
+<div class="index-action">
+	<button class="btn btn-default disabled">Zurück</button>
+	@Html.ActionLink("Weiter", "Index", "Lists", new { Area = "Session" }, new { @class = "btn btn-primary" })
+</div>
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm())
+{
+	@Html.AntiForgeryToken()
+
+	<div class="form-horizontal">
+		@Html.ValidationSummary(true, "", new {@class = "text-danger"})
+		@Html.HiddenFor(model => model.ID)	
+
+		<div class="form-group">
+			@Html.LabelFor(model => model.PresentUsers, new { @class = "control-label col-md-2" })
+			<div class="col-md-5">
+				@Html.EditorFor(model => model.PresentUsers, new { htmlAttributes = new { @class = "form-control" } })
+				@Html.ValidationMessageFor(model => model.PresentUsers, "", new { @class = "text-danger" })
+			</div>
+		</div>
+
+		<div class="form-group">
+			@Html.LabelFor(model => model.AdditionalAttendees, new {@class = "control-label col-md-2"})
+			<div class="col-md-5">
+				@Html.EditorFor(model => model.AdditionalAttendees, new {htmlAttributes = new {@class = "form-control"}})
+				@Html.ValidationMessageFor(model => model.AdditionalAttendees, "", new {@class = "text-danger"})
+			</div>
+		</div>
+
+		<div class="form-group">
+			@Html.LabelFor(model => model.Notes, new { @class = "control-label col-md-2" })
+			<div class="col-md-5">
+				@Html.EditorFor(model => model.Notes, new { htmlAttributes = new { @class = "form-control" } })
+				@Html.ValidationMessageFor(model => model.Notes, "", new { @class = "text-danger" })
+			</div>
+		</div>
+		
+		<div class="form-group">
+			@Html.LabelFor(model => model.Start, new { @class = "control-label col-md-2" })
+			<div class="col-md-5 static-text">
+				@Html.DisplayFor(model => model.Start)
+			</div>
+		</div>
+
+		<div class="form-group">
+			<div class="col-md-offset-2 col-md-10">
+				<input type="submit" value="Weiter" class="btn btn-default" />
+			</div>
+		</div>
+	</div>
+}
+
+@section Scripts {
+	@Scripts.Render("~/bundles/jqueryval")
+}

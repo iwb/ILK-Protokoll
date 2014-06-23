@@ -10,15 +10,22 @@ namespace ILK_Protokoll.Areas.Session.Models
 {
 	public class ActiveSession
 	{
-		public ActiveSession(SessionType type)
+		public ActiveSession()
 		{
 			// ReSharper disable DoNotCallOverridableMethodsInConstructor
-			SessionType = type;
-			PresentUsers = type.Attendees.ToDictionary(user => user, u => false);
+			PresentUsers = new Dictionary<User, bool>();
 			DecidedTopics = new List<Topic>();
 			ChangedItems = new HashSet<object>();
 			// ReSharper restore DoNotCallOverridableMethodsInConstructor
 			Start = DateTime.Now;
+		}
+		public ActiveSession(SessionType type)
+			: this()
+		{
+			// ReSharper disable DoNotCallOverridableMethodsInConstructor
+			SessionType = type;
+			PresentUsers = type.Attendees.ToDictionary(user => user, u => false);
+			// ReSharper restore DoNotCallOverridableMethodsInConstructor
 		}
 
 		public int ID { get; set; }

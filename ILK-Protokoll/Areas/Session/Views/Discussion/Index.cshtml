@@ -6,6 +6,11 @@
 	ViewBag.Title = "Diskussion";
 }
 
+<div class="index-action">
+	@Html.ActionLink("Zurück", "Index", "Lists", new { Area = "Session" }, new { @class = "btn btn-default" })
+	@Html.ActionLink("Weiter", "Index", "Finalize", new { Area = "Session" }, new { @class = "btn btn-primary" })
+</div>
+
 <h2>@ViewBag.Title</h2>
 
 @foreach (var topic in Model)
