@@ -1,11 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using ILK_Protokoll.Models;
 
 namespace ILK_Protokoll.Areas.Session.Models.Lists
 {
-	public class Conference
+	/// <summary>
+	/// Auslandskonferenzen
+	/// </summary>
+	public class Conference : BaseItem
 	{
+		[DataType(DataType.Date)]
+		public DateTime StartDate { get; set; }
+
+		[DataType(DataType.Date)]
+		public DateTime EndDate { get; set; }
+
+		public string Description { get; set; }
+
+		public User Ilk { get; set; }
+
+		public string Employee { get; set; }
+
+		public string Funding { get; set; }
+
+		public bool Approved { get; set; }
 	}
 }

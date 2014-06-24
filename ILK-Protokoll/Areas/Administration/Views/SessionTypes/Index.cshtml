@@ -15,8 +15,11 @@
 			<th>
 				@Html.DisplayNameFor(model => model.ID)
 			</th>
-			<th class="col-xs-3">
+			<th class="col-xs-2">
 				@Html.DisplayNameFor(model => model.Name)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.LastDate)
 			</th>
 			<th>
 				@Html.DisplayNameFor(model => model.Attendees)
@@ -33,6 +36,16 @@
 				</td>
 				<td>
 					@Html.DisplayFor(modelItem => item.Name)
+				</td>
+				<td>
+					@if (item.LastDate.HasValue)
+					{
+						@item.LastDate
+					}
+					else
+					{
+						@:Noch nie
+					}
 				</td>
 				<td>
 					@Html.DisplayFor(modelItem => item.Attendees, "IEnumerable_User")

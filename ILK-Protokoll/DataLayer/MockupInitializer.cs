@@ -84,6 +84,7 @@ namespace ILK_Protokoll.DataLayer
 			st2.Attendees.Add(users[6]);
 			st2.Attendees.Add(users[7]);
 			st2.Attendees.Add(users[8]);
+			context.SessionTypes.Add(st2);
 
 			topic = new Topic
 			{

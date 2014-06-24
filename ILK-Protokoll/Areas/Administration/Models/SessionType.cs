@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -19,6 +20,9 @@ namespace ILK_Protokoll.Areas.Administration.Models
 		public int ID { get; set; }
 
 		public string Name { get; set; }
+
+		[DisplayName("Letzte Sitzung")]
+		public DateTime? LastDate { get; set; }
 
 		[DisplayName("Stammteilnehmer")]
 		[InverseProperty("SessionTypes")]

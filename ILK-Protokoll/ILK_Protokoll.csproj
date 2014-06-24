@@ -129,8 +129,11 @@
     <Compile Include="Areas\Administration\Controllers\UserController.cs" />
     <Compile Include="Areas\Session\Controllers\FinalizeController.cs" />
     <Compile Include="Areas\Session\Controllers\ListsController.cs" />
+    <Compile Include="Areas\Session\Controllers\Lists\EventsController.cs" />
+    <Compile Include="Areas\Session\Controllers\Lists\ParentController.cs" />
     <Compile Include="Areas\Session\Controllers\MasterController.cs" />
     <Compile Include="Areas\Session\Controllers\DiscussionController.cs" />
+    <Compile Include="Areas\Session\Models\Lists\BaseItem.cs" />
     <Compile Include="Areas\Session\Models\Lists\Event.cs" />
     <Compile Include="Areas\Session\Models\Lists\IlkDay.cs" />
     <Compile Include="Areas\Session\Models\Lists\IlkMeeting.cs" />
