@@ -1,15 +1,13 @@
 ﻿@model ILK_Protokoll.Areas.Administration.Models.SessionType
 
 @{
-	ViewBag.Title = "Delete";
+	ViewBag.Title = "Sitzungstyp löschen";
 }
 
-<h2>Delete</h2>
+<h2>@ViewBag.Title</h2>
 
-<h3>Are you sure you want to delete this?</h3>
 <div>
-	<h4>SessionType</h4>
-	<hr />
+	<h4>Dieser Schritt kann nicht rückgängig gemacht werden!</h4>
 	<dl class="dl-horizontal">
 		<dt>
 			@Html.DisplayNameFor(model => model.Name)
@@ -26,8 +24,8 @@
 		@Html.AntiForgeryToken()
 
 		<div class="form-actions no-color">
-			<input type="submit" value="Delete" class="btn btn-default" /> |
-			@Html.ActionLink("Back to List", "Index")
+			<input type="submit" value="Löschen" class="btn btn-danger" /> |
+			@Html.ActionLink("Zurück zum Index", "Index")
 		</div>
 	}
 </div>

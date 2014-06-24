@@ -1,0 +1,3 @@
+﻿@using ILK_Protokoll.Models
+@model IEnumerable<User>
+@string.Join(", ", Model.Select(u => u.ShortName))

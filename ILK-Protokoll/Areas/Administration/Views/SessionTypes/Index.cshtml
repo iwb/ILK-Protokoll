@@ -5,42 +5,44 @@
 	ViewBag.Title = "Sitzungstypen";
 }
 
-@Html.ActionLink("Neuer Sitzungstyp", "Create", null, new {@class = "index-action btn btn-primary"})
+@Html.ActionLink("Neuer Sitzungstyp", "Create", null, new { @class = "index-action btn btn-primary" })
 
 <h2>@ViewBag.Title</h2>
 
 <table class="table table-striped table-hover">
-	<tr>
-		<th>
-			@Html.DisplayNameFor(model => model.ID)
-		</th>
-		<th>
-			@Html.DisplayNameFor(model => model.Attendees)
-		</th>
-		<th>
-			@Html.DisplayNameFor(model => model.Name)
-		</th>
-		<th>Aktionen</th>
-	</tr>
-
-	@foreach (SessionType item in Model)
-	{
+	<thead>
 		<tr>
-			<td>
-				@Html.DisplayFor(modelItem => item.ID)
-			</td>
-			<td>
-				@Html.DisplayFor(modelItem => item.Attendees.Count)
-			</td>
-			<td>
-				@Html.DisplayFor(modelItem => item.Name)
-			</td>
-			<td>
-				@Html.ActionLink("Edit", "Edit", new {id = item.ID}) |
-				@Html.ActionLink("Details", "Details", new {id = item.ID}) |
-				@Html.ActionLink("Delete", "Delete", new {id = item.ID})
-			</td>
+			<th>
+				@Html.DisplayNameFor(model => model.ID)
+			</th>
+			<th class="col-xs-3">
+				@Html.DisplayNameFor(model => model.Name)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Attendees)
+			</th>
+			<th class="col-xs-3">Aktionen</th>
 		</tr>
-	}
-
+	</thead>
+	<tbody>
+		@foreach (SessionType item in Model)
+		{
+			<tr>
+				<td>
+					@Html.DisplayFor(modelItem => item.ID)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Name)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Attendees, "IEnumerable_User")
+				</td>
+				<td>
+					@Html.ActionLink("Bearbeiten", "Edit", new { id = item.ID }) |
+					@Html.ActionLink("Details", "Details", new { id = item.ID }) |
+					@Html.ActionLink("Löschen", "Delete", new { id = item.ID }, new { @class = "text-danger" })
+				</td>
+			</tr>
+		}
+	</tbody>
 </table>

@@ -7,17 +7,17 @@
 <ul class="userlist">
 	@foreach (var kvp in Model)
 	{
-		index++;
 		<li>
 			<label>
 				@{
 					var preset = kvp.Value ? "checked" : null;
 				}
-				<input name="PresentUsers[@(index)].Key" type="hidden" value="@kvp.Key.ID">
-				<input checked="@preset" class="form-control check-box" id="PresentUsers_@(index)_Value" name="PresentUsers[@(index)].Value" type="checkbox" value="true">
-				<input name="PresentUsers[@(index)].Value" type="hidden" value="false">
+				<input name="Users[@(index)].Key" type="hidden" value="@kvp.Key.ID">
+				<input checked="@preset" class="form-control check-box" id="Users_@(index)_Value" name="Users[@(index)].Value" type="checkbox" value="true">
+				<input name="Users[@(index)].Value" type="hidden" value="false">
 				@kvp.Key.ShortName
 			</label>
 		</li>
+		index++;
 	}
 </ul>

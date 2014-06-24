@@ -49,7 +49,7 @@ namespace ILK_Protokoll.Models
 		public bool IsActive { get; set; }
 
 		[InverseProperty("Attendees")]
-		public virtual ICollection<SessionType> SessionTypes { get; private set; }
+		public virtual ICollection<SessionType> SessionTypes { get; set; }
 
 		#region Equals() etc.
 

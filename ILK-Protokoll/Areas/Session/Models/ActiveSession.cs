@@ -30,6 +30,9 @@ namespace ILK_Protokoll.Areas.Session.Models
 
 		public int ID { get; set; }
 
+		[DisplayName("Sitzungsleiter")]
+		public User Manager { get; set; }
+
 		[DisplayName("Sitzungstyp")]
 		public virtual SessionType SessionType { get; set; }
 
@@ -41,6 +44,7 @@ namespace ILK_Protokoll.Areas.Session.Models
 		public string AdditionalAttendees { get; set; }
 
 		[DisplayName("Notizen")]
+		[DataType(DataType.MultilineText)]
 		public string Notes { get; set; }
 
 		[DisplayName("Beginn")]

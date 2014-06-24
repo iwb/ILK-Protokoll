@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 using ILK_Protokoll.Models;
 
 namespace ILK_Protokoll.Areas.Administration.Models

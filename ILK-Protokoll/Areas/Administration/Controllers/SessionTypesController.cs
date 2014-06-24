@@ -1,4 +1,6 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
@@ -41,21 +43,26 @@ namespace ILK_Protokoll.Areas.Administration.Controllers
 		// GET: SessionTypes/Create
 		public ActionResult Create()
 		{
+			ViewBag.UserDict = db.GetUserOrdered(GetCurrentUser()).ToDictionary(u => u, u => false);
 			return View();
 		}
 
 		// POST: Administration/SessionTypes/Create
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public ActionResult Create([Bind(Include = "ID,Name")] SessionType sessionType)
+		public ActionResult Create([Bind(Include = "ID,Name")] SessionType sessionType, IEnumerable<int> Attendees)
 		{
 			if (ModelState.IsValid)
 			{
+				foreach (int userid in Attendees)
+					sessionType.Attendees.Add(db.Users.Find(userid));
+
 				db.SessionTypes.Add(sessionType);
 				db.SaveChanges();
 				return RedirectToAction("Index");
 			}
 
+			ViewBag.UserDict = db.GetUserOrdered(GetCurrentUser()).ToDictionary(u => u, u => Attendees.Contains(u.ID));
 			return View(sessionType);
 		}
 
@@ -71,21 +78,30 @@ namespace ILK_Protokoll.Areas.Administration.Controllers
 			{
 				return HttpNotFound();
 			}
+			ViewBag.UserDict = db.GetUserOrdered(GetCurrentUser()).ToDictionary(u => u, u => sessionType.Attendees.Contains(u));
 			return View(sessionType);
 		}
 
 		// POST: Administration/SessionTypes/Edit/5
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public ActionResult Edit([Bind(Include = "ID,Name")] SessionType sessionType)
+		public ActionResult Edit([Bind(Include = "ID,Name")] SessionType input, IEnumerable<int> Attendees)
 		{
 			if (ModelState.IsValid)
 			{
-				db.Entry(sessionType).State = EntityState.Modified;
+				var sessionType = db.SessionTypes.Find(input.ID);
+				sessionType.Name = input.Name;
+				sessionType.Attendees.Clear();
+
+				if (Attendees != null)
+					foreach (var userid in Attendees)
+						sessionType.Attendees.Add(db.Users.Find(userid));
+
 				db.SaveChanges();
 				return RedirectToAction("Index");
 			}
-			return View(sessionType);
+			ViewBag.UserDict = db.GetUserOrdered(GetCurrentUser()).ToDictionary(u => u, u => Attendees.Contains(u.ID));
+			return View(input);
 		}
 
 		// GET: Administration/SessionTypes/Delete/5
@@ -100,7 +116,12 @@ namespace ILK_Protokoll.Areas.Administration.Controllers
 			{
 				return HttpNotFound();
 			}
-			return View(sessionType);
+
+			if (sessionType.Attendees.Count == 0)
+				return View(sessionType);
+			else
+				return View("DeleteHint", sessionType);
+
 		}
 
 		// POST: Administration/SessionTypes/Delete/5
@@ -109,6 +130,10 @@ namespace ILK_Protokoll.Areas.Administration.Controllers
 		public ActionResult DeleteConfirmed(int id)
 		{
 			SessionType sessionType = db.SessionTypes.Find(id);
+
+			if (sessionType.Attendees.Count != 0)
+				return View("DeleteHint", sessionType);
+
 			db.SessionTypes.Remove(sessionType);
 			db.SaveChanges();
 			return RedirectToAction("Index");

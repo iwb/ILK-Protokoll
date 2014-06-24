@@ -1,25 +1,18 @@
 ﻿@model ILK_Protokoll.Areas.Administration.Models.SessionType
 
 @{
-	ViewBag.Title = "Details";
+	ViewBag.Title = "Sitzungstyp löschen";
 }
 
-<h2>Details</h2>
+<h2>@ViewBag.Title</h2>
 
 <div>
-	<h4>SessionType</h4>
-	<hr />
+	<h4>Dieser Sitzungstyp kann nicht gelöscht werden, da er noch @Html.DisplayNameFor(model => model.Attendees) hat. Diese müssen zuvor entfernt werden.</h4>
 	<dl class="dl-horizontal">
-		<dt>
-			@Html.DisplayNameFor(model => model.ID)
-		</dt>
-		<dd>
-			@Html.DisplayFor(model => model.ID)
-		</dd>
-
 		<dt>
 			@Html.DisplayNameFor(model => model.Name)
 		</dt>
+
 		<dd>
 			@Html.DisplayFor(model => model.Name)
 		</dd>
@@ -31,8 +24,5 @@
 			@Html.DisplayFor(model => model.Attendees, "IEnumerable_User")
 		</dd>
 	</dl>
-</div>
-<p>
-	@Html.ActionLink("Bearbeiten", "Edit", new { id = Model.ID }) |
 	@Html.ActionLink("Zurück zum Index", "Index")
-</p>
+</div>
