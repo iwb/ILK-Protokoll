@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 using ILK_Protokoll.Models;
@@ -10,6 +11,7 @@ namespace ILK_Protokoll.Areas.Session.Models.Lists
 	/// <summary>
 	/// Auslandskonferenzen
 	/// </summary>
+	[Table("L_Conference")]
 	public class Conference : BaseItem
 	{
 		[DataType(DataType.Date)]

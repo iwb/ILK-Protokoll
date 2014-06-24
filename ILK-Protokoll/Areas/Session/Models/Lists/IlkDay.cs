@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 using ILK_Protokoll.Areas.Administration.Models;
@@ -11,6 +12,7 @@ namespace ILK_Protokoll.Areas.Session.Models.Lists
 	/// <summary>
 	/// Klausur-Tage
 	/// </summary>
+	[Table("L_IlkDay")]
 	public class IlkDay : BaseItem
 	{
 

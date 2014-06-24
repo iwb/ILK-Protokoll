@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 using ILK_Protokoll.Areas.Administration.Models;
@@ -10,6 +11,7 @@ namespace ILK_Protokoll.Areas.Session.Models.Lists
 	/// <summary>
 	/// ILK-Regeltermine
 	/// </summary>
+	[Table("L_IlkMeeting")]
 	public class IlkMeeting : BaseItem
 	{
 		public DateTime Start { get; set; }

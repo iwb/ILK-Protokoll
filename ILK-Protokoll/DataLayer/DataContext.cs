@@ -7,6 +7,7 @@ using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Linq;
 using ILK_Protokoll.Areas.Administration.Models;
 using ILK_Protokoll.Areas.Session.Models;
+using ILK_Protokoll.Areas.Session.Models.Lists;
 using ILK_Protokoll.Models;
 using ILK_Protokoll.util;
 using JetBrains.Annotations;
@@ -20,13 +21,16 @@ namespace ILK_Protokoll.DataLayer
 		{
 		}
 
+		public DbSet<ActiveSession> ActiveSessions { get; set; }
+		public DbSet<Attachment> Attachments { get; set; }
+		public DbSet<Comment> Comments { get; set; }
+		public DbSet<Decision> Decisions { get; set; }
+		public DbSet<Event> Events { get; set; }
+		public DbSet<Report> Reports { get; set; }
+		public DbSet<SessionType> SessionTypes { get; set; }
 		public DbSet<Topic> Topics { get; set; }
 		public DbSet<TopicHistory> TopicHistory { get; set; }
-		public DbSet<SessionType> SessionTypes { get; set; }
-		public DbSet<ActiveSession> Sessions { get; set; }
 		public DbSet<User> Users { get; set; }
-		public DbSet<Comment> Comments { get; set; }
-		public DbSet<Attachment> Attachments { get; set; }
 		public DbSet<Vote> Votes { get; set; }
 
 		protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -69,11 +73,5 @@ namespace ILK_Protokoll.DataLayer
 				return t;
 			}
 		}
-
-		public System.Data.Entity.DbSet<ILK_Protokoll.Models.Decision> Decisions { get; set; }
-
-		public System.Data.Entity.DbSet<ILK_Protokoll.Models.Report> Reports { get; set; }
-
-		public System.Data.Entity.DbSet<ILK_Protokoll.Models.Assignment> Assignments { get; set; }
 	}
 }

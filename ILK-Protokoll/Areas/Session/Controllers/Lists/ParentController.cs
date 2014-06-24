@@ -11,9 +11,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 	public class ParentController<TModel> : BaseController
 		where TModel : BaseItem
 	{
-		public ActionResult Index()
-		{
-			return View();
-		}
+
+
 	}
 }

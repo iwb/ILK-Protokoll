@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
@@ -8,6 +9,7 @@ namespace ILK_Protokoll.Areas.Session.Models.Lists
 	/// <summary>
 	/// Professorenurlaub
 	/// </summary>
+	[Table("L_ProfHoliday")]
 	public class ProfHoliday : BaseItem
 	{
 		public Prof Professor { get; set; }

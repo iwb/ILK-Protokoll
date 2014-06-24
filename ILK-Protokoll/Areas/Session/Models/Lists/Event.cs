@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 using ILK_Protokoll.Models;
@@ -10,6 +11,7 @@ namespace ILK_Protokoll.Areas.Session.Models.Lists
 	/// <summary>
 	/// Termine und Veranstaltungen, die das ganze Institut betreffen
 	/// </summary>
+	[Table("L_Event")]
 	public class Event : BaseItem
 	{
 
