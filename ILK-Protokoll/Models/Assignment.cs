@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -29,5 +30,8 @@ namespace ILK_Protokoll.Models
 		[Display(Name = "Erinnert")]
 		[Required]
 		public bool ReminderSent { get; set; }
+
+		[DisplayName("Erledigt")]
+		public bool IsDone { get; set; }
 	}
 }

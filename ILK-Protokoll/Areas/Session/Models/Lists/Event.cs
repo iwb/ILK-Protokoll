@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -21,12 +22,16 @@ namespace ILK_Protokoll.Areas.Session.Models.Lists
 		[DataType(DataType.Date)]
 		public DateTime? EndDate { get; set; }
 
+		[DisplayName("Uhrzeit")]
 		public string Time { get; set; }
 
+		[DisplayName("Ort")]
 		public string Place { get; set; }
 
-		public User Organizer { get; set; }
+		[DisplayName("Verantwortlich")]
+		public string Organizer { get; set; }
 
+		[DisplayName("Besucher / Thema")]
 		public string Description { get; set; }
 	}
 }

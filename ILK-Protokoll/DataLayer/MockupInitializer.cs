@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using ILK_Protokoll.Areas.Administration.Controllers;
 using ILK_Protokoll.Areas.Administration.Models;
+using ILK_Protokoll.Areas.Session.Models.Lists;
 using ILK_Protokoll.Models;
 
 namespace ILK_Protokoll.DataLayer
@@ -85,6 +87,17 @@ namespace ILK_Protokoll.DataLayer
 			st2.Attendees.Add(users[7]);
 			st2.Attendees.Add(users[8]);
 			context.SessionTypes.Add(st2);
+
+			context.L_Events.Add(new Event()
+			{
+				Created = DateTime.Now.AddHours(-1),
+				Description = "TG-Tag",
+				StartDate = DateTime.Parse("2014-07-11"),
+				EndDate = DateTime.Parse("2014-07-11"),
+				Place = "Legoland",
+				Organizer = "hm, hz",
+				Time = "ganztags"
+			});
 
 			topic = new Topic
 			{

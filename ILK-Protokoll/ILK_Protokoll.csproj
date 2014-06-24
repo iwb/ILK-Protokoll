@@ -116,6 +116,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Duties\" />
+    <Folder Include="Views\ToDos\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -148,9 +150,11 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\CommentsController.cs" />
     <Compile Include="Controllers\DecisionsController.cs" />
+    <Compile Include="Controllers\DutiesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ReportsController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
+    <Compile Include="Controllers\ToDosController.cs" />
     <Compile Include="Controllers\TopicsController.cs" />
     <Compile Include="Controllers\VotesController.cs" />
     <Compile Include="DataLayer\DataContext.cs" />
@@ -175,6 +179,7 @@
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\Vote.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\FilteredAssignments.cs" />
     <Compile Include="ViewModels\TopicEdit.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -297,6 +302,12 @@
     <Content Include="Areas\Session\Views\Master\Create.cshtml" />
     <Content Include="Areas\Session\Views\Master\Index.cshtml" />
     <Content Include="Areas\Administration\Views\SessionTypes\DeleteHint.cshtml" />
+    <Content Include="Areas\Session\Views\Events\Create.cshtml" />
+    <Content Include="Areas\Session\Views\Events\Delete.cshtml" />
+    <Content Include="Areas\Session\Views\Events\Details.cshtml" />
+    <Content Include="Areas\Session\Views\Events\Edit.cshtml" />
+    <Content Include="Areas\Session\Views\Events\Index.cshtml" />
+    <Content Include="Areas\Session\Views\Events\_CreateForm.cshtml" />
     <None Include="Content\bootstrap\wells.less" />
     <None Include="Content\bootstrap\variables.less" />
     <None Include="Content\bootstrap\utilities.less" />

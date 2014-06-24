@@ -1,0 +1,31 @@
+﻿@model ILK_Protokoll.Areas.Session.Models.Lists.Event
+@using (Html.BeginForm("Create", "Events", FormMethod.Post))
+	{
+<tr>
+		<td>
+			@Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
+		</td>
+		<td>
+			@Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
+		</td>
+		<td>
+			@Html.EditorFor(model => model.Time, new { htmlAttributes = new { @class = "form-control" } })
+		</td>
+		<td>
+			@Html.EditorFor(model => model.Place, new { htmlAttributes = new { @class = "form-control" } })
+		</td>
+		<td>
+			@Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+		</td>
+		<td>
+			@Html.EditorFor(model => model.Organizer, new { htmlAttributes = new { @class = "form-control" } })
+		</td>
+</tr>
+<tr>
+	<td colspan="4"></td>
+	<td colspan="2" style="text-align: right;">
+		<button type="reset" class="btn btn-danger">Verwerfen</button>
+		<button type="submit" class="btn btn-success">Speichern</button>
+	</td>
+</tr>
+	}
