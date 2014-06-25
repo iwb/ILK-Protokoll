@@ -22,8 +22,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 				.Include(t => t.SessionType)
 				.Include(t => t.TargetSessionType)
 				.Include(t => t.Owner)
-				.Include(t => t.ToDos)
-				.Include(t => t.Duties)
+				.Include(t => t.Assignments)
 				.Include(t => t.Comments).ToList();
 			return View(topics);
 		}

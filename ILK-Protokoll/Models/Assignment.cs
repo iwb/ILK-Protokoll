@@ -1,13 +1,16 @@
 ﻿using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ILK_Protokoll.Models
 {
 	public class Assignment
 	{
 		public int ID { get; set; }
+
+		[Display(Name = "Typ")]
+		public AssignmentType Type { get; set; }
+
 		[Display(Name = "Titel")]
 		[Required]
 		public string Title { get; set; }
@@ -33,5 +36,11 @@ namespace ILK_Protokoll.Models
 
 		[DisplayName("Erledigt")]
 		public bool IsDone { get; set; }
+	}
+
+	public enum AssignmentType
+	{
+		[Display(Name = "ToDo")] ToDo,
+		[Display(Name = "Umsetzungsaufgabe")] Duty
 	}
 }

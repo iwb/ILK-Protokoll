@@ -22,14 +22,13 @@ namespace ILK_Protokoll.DataLayer
 		}
 
 		public DbSet<ActiveSession> ActiveSessions { get; set; }
+		public DbSet<Assignment> Assignments { get; set; }
 		public DbSet<Attachment> Attachments { get; set; }
 		public DbSet<Comment> Comments { get; set; }
 		public DbSet<Decision> Decisions { get; set; }
-		public DbSet<Duty> Duties { get; set; }
 		public DbSet<Event> L_Events { get; set; }
 		public DbSet<Report> Reports { get; set; }
 		public DbSet<SessionType> SessionTypes { get; set; }
-		public DbSet<ToDo> ToDos { get; set; }
 		public DbSet<Topic> Topics { get; set; }
 		public DbSet<TopicHistory> TopicHistory { get; set; }
 		public DbSet<User> Users { get; set; }

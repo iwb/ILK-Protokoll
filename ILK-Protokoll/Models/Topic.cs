@@ -15,8 +15,7 @@ namespace ILK_Protokoll.Models
 			// ReSharper disable DoNotCallOverridableMethodsInConstructor
 			Comments = new List<Comment>();
 			Votes = new List<Vote>();
-			ToDos = new List<ToDo>();
-			Duties = new List<Duty>();
+			Assignments = new List<Assignment>();
 			Attachments = new List<Attachment>();
 			Created = DateTime.Now;
 			ValidFrom = DateTime.Now;
@@ -82,11 +81,8 @@ namespace ILK_Protokoll.Models
 		[Display(Name = "Stimmen")]
 		public virtual ICollection<Vote> Votes { get; set; }
 
-		[Display(Name = "ToDos")]
-		public virtual ICollection<ToDo> ToDos { get; set; }
-
-		[Display(Name = "Umsetzungsaufgaben")]
-		public virtual ICollection<Duty> Duties { get; set; }
+		[Display(Name = "Aufgaben")]
+		public virtual ICollection<Assignment> Assignments { get; set; }
 
 		[Display(Name = "Beschluss")]
 		public virtual Decision Decision { get; set; }
