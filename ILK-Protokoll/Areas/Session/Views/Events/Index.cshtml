@@ -23,17 +23,26 @@
 			<th class="col-xs-1">
 				@Html.DisplayNameFor(model => model.Organizer)
 			</th>
+			<th class="col-xs-1">
+			</th>
 		</tr>
 	</thead>
 	<tbody>
 		@foreach (var item in Model)
 		{
-			<tr>
+			<tr id="event_@item.ID">
 				<td>
-					@Html.DisplayFor(modelItem => item.StartDate)
+					@item.StartDate.ToString("d")
 				</td>
 				<td>
-					@Html.DisplayFor(modelItem => item.EndDate)
+					@if (item.EndDate.HasValue)
+					{
+						@item.EndDate.Value.ToString("d")
+					}
+					else
+					{
+						@:-
+					}
 				</td>
 				<td>
 					@Html.DisplayFor(modelItem => item.Time)
@@ -47,10 +56,27 @@
 				<td>
 					@Html.DisplayFor(modelItem => item.Organizer)
 				</td>
+				<td class="actions">
+					<a data-ajax="true"
+						data-ajax-method="POST"
+						data-ajax-mode="replace"
+						data-ajax-update="#event_@item.ID"
+						href="@Url.Action("_BeginEdit", "Events", new {Area="Session", eventID = item.ID})">
+						<span class="glyphicon glyphicon-edit" title="Termin bearbeiten"></span>
+					</a>
+
+					<a data-ajax="true"
+					   data-ajax-method="POST"
+					   data-ajax-confirm="Termin wirklich löschen?"
+						data-ajax-success="$('#event_@item.ID').remove();"
+						href="@Url.Action("_Delete", "Events", new {Area="Session", eventID = item.ID})">
+						<span class="glyphicon glyphicon-remove" title="Termin löschen"></span>
+					</a>
+				</td>
 			</tr>
 		}
-		
+
 		@Html.Action("_CreateForm", "Events")
-	
+
 	</tbody>
 </table>

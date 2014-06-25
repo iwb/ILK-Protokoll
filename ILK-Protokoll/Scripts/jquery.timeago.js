@@ -42,7 +42,7 @@
 			allowPast: true,
 			allowFuture: false,
 			localeTitle: false,
-			cutoff: 0,
+			cutoff: 2592000000, // 30 Tage
 			strings: {
 				prefixAgo: "vor",
 				prefixFromNow: "in",

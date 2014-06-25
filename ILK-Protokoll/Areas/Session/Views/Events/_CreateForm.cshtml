@@ -1,7 +1,8 @@
 ﻿@model ILK_Protokoll.Areas.Session.Models.Lists.Event
-@using (Html.BeginForm("Create", "Events", FormMethod.Post))
-	{
-<tr>
+@using (Html.BeginForm("Create", "Events", new { Area = "Session" }, FormMethod.Post))
+{
+	@Html.AntiForgeryToken();
+	<tr id="event_createform">
 		<td>
 			@Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
 		</td>
@@ -20,12 +21,8 @@
 		<td>
 			@Html.EditorFor(model => model.Organizer, new { htmlAttributes = new { @class = "form-control" } })
 		</td>
-</tr>
-<tr>
-	<td colspan="4"></td>
-	<td colspan="2" style="text-align: right;">
-		<button type="reset" class="btn btn-danger">Verwerfen</button>
-		<button type="submit" class="btn btn-success">Speichern</button>
-	</td>
-</tr>
-	}
+		<td>
+			<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-check"></span></button>
+		</td>
+	</tr>
+}

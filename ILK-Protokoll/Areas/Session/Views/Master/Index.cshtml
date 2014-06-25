@@ -29,7 +29,7 @@ else
 				<th>
 					@Html.DisplayNameFor(model => model.PresentUsers)
 				</th>
-				<th></th>
+				<th>Aktionen</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -46,9 +46,9 @@ else
 						@Html.DisplayFor(modelItem => item.Manager)
 					</td>
 					<td>
-						@Html.DisplayFor(model => item.PresentUsers.Keys, "IEnumerable_User");
+						@Html.DisplayFor(modelItem => item.PresentUsers, "IEnumerable_User")
 					</td>
-					<td></td>
+					<td>@Html.ActionLink("Übernehmen", "Resume", "Master", new { Area = "Session", SessionID = item.ID }, null)</td>
 				</tr>
 			}
 		</tbody>

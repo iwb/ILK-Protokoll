@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using System.Web.WebPages;
 using ILK_Protokoll.Areas.Session.Models;
 using ILK_Protokoll.Controllers;
-using Microsoft.Ajax.Utilities;
 
 namespace ILK_Protokoll.Areas.Session.Controllers
 {
@@ -21,15 +17,11 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 
 		private ActiveSession GetSession()
 		{
-			var session = Session["S"] as ActiveSession;
-			if (session == null)
-			{
-				session = new ActiveSession(db.SessionTypes.First());
-				Session["S"] = session;
-				return session;
-				throw new InvalidOperationException("Es konnte keine laufende Sitzung gefudnen werden.");
-			}
-			return session;
+			var sessionID = (int?)Session["SessionID"];
+			if (sessionID.HasValue && sessionID > 0)
+				return db.ActiveSessions.Find(sessionID);
+			else
+				return null;
 		}
 
 		// GET: Session/Master
@@ -46,7 +38,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 			{
 				var session = db.ActiveSessions.Add(new ActiveSession(st));
 				db.SaveChanges();
-				Session["S"] = session;
+				Session["SessionID"] = session.ID;
 				return View(session);
 			}
 			else
@@ -60,8 +52,8 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 			var session = db.ActiveSessions.Find(SessionID);
 			if (session != null)
 			{
-				Session["S"] = session;
-				return View(session);
+				Session["SessionID"] = session.ID;
+				return RedirectToAction("Edit");
 			}
 			else
 			{
@@ -69,9 +61,32 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 			}
 		}
 
+		[HttpGet]
 		public ActionResult Edit()
 		{
+			var session = GetSession();
+			if (session == null)
+				return RedirectToAction("Index");
+
+			ViewBag.UserDict = session.SessionType.Attendees.ToDictionary(u => u, u => session.PresentUsers.Contains(u));
+
 			return View(GetSession());
+		}
+
+		[HttpPost]
+		public ActionResult Edit(Dictionary<int, bool> Users,
+			[Bind(Include = "AdditionalAttendees,Notes")] ActiveSession input)
+		{
+			var session = GetSession();
+			if (session == null)
+				return RedirectToAction("Index");
+
+			session.AdditionalAttendees = input.AdditionalAttendees;
+			session.Notes = input.Notes;
+			session.PresentUsers = Users.Where(kvp => kvp.Value).Select(kvp => db.Users.Find(kvp.Key)).ToList();
+			db.SaveChanges();
+
+			return RedirectToAction("Index", "Lists", new {Area = "Session"});
 		}
 	}
 }

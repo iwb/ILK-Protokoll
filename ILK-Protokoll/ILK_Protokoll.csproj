@@ -166,7 +166,6 @@
     <Compile Include="Models\Attachment.cs" />
     <Compile Include="Models\Comment.cs" />
     <Compile Include="Models\Decision.cs" />
-    <Compile Include="Models\Duty.cs" />
     <Compile Include="Models\Report.cs" />
     <Compile Include="Models\TopicHistory.cs" />
     <Compile Include="util\ResharperAnnotations.cs" />
@@ -174,7 +173,6 @@
     <Compile Include="Models\Priority.cs" />
     <Compile Include="Areas\Session\Models\ActiveSession.cs" />
     <Compile Include="Areas\Administration\Models\SessionType.cs" />
-    <Compile Include="Models\ToDo.cs" />
     <Compile Include="Models\Topic.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\Vote.cs" />
@@ -305,7 +303,7 @@
     <Content Include="Areas\Session\Views\Events\Create.cshtml" />
     <Content Include="Areas\Session\Views\Events\Delete.cshtml" />
     <Content Include="Areas\Session\Views\Events\Details.cshtml" />
-    <Content Include="Areas\Session\Views\Events\Edit.cshtml" />
+    <Content Include="Areas\Session\Views\Events\_Edit.cshtml" />
     <Content Include="Areas\Session\Views\Events\Index.cshtml" />
     <Content Include="Areas\Session\Views\Events\_CreateForm.cshtml" />
     <None Include="Content\bootstrap\wells.less" />

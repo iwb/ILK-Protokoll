@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using ILK_Protokoll.Areas.Administration.Models;
 using ILK_Protokoll.Models;
 
@@ -13,18 +12,18 @@ namespace ILK_Protokoll.Areas.Session.Models
 		public ActiveSession()
 		{
 			// ReSharper disable DoNotCallOverridableMethodsInConstructor
-			PresentUsers = new Dictionary<User, bool>();
+			PresentUsers = new List<User>();
 			DecidedTopics = new List<Topic>();
 			ChangedItems = new HashSet<object>();
 			// ReSharper restore DoNotCallOverridableMethodsInConstructor
 			Start = DateTime.Now;
 		}
+
 		public ActiveSession(SessionType type)
 			: this()
 		{
 			// ReSharper disable DoNotCallOverridableMethodsInConstructor
 			SessionType = type;
-			PresentUsers = type.Attendees.ToDictionary(user => user, u => false);
 			// ReSharper restore DoNotCallOverridableMethodsInConstructor
 		}
 
@@ -37,8 +36,7 @@ namespace ILK_Protokoll.Areas.Session.Models
 		public virtual SessionType SessionType { get; set; }
 
 		[DisplayName("Anwesenheit")]
-		[UIHint("Dictionary_User_bool")]
-		public virtual Dictionary<User, bool> PresentUsers { get; set; }
+		public virtual ICollection<User> PresentUsers { get; set; }
 
 		[DisplayName("Weitere Personen")]
 		public string AdditionalAttendees { get; set; }

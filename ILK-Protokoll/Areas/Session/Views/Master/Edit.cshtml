@@ -1,19 +1,20 @@
-﻿@model ILK_Protokoll.Areas.Session.Models.ActiveSession
+﻿@using ILK_Protokoll.Models
+@model ILK_Protokoll.Areas.Session.Models.ActiveSession
 
 @{
 	ViewBag.Title = "Stammdaten";
+	var users = (Dictionary<User, bool>)ViewBag.UserDict;
 }
-
+@using (Html.BeginForm("Edit", "Master", new { Area = "Session" }, FormMethod.Post))
+{
 
 <div class="index-action">
 	<button class="btn btn-default disabled">Zurück</button>
-	@Html.ActionLink("Weiter", "Index", "Lists", new { Area = "Session" }, new { @class = "btn btn-primary" })
+	<button class="btn btn-primary" type="submit">Weiter</button>
 </div>
 
 <h2>@ViewBag.Title</h2>
 
-@using (Html.BeginForm())
-{
 	@Html.AntiForgeryToken()
 
 	<div class="form-horizontal">
@@ -23,7 +24,7 @@
 		<div class="form-group">
 			@Html.LabelFor(model => model.PresentUsers, new { @class = "control-label col-md-2" })
 			<div class="col-md-5">
-				@Html.EditorFor(model => model.PresentUsers, new { htmlAttributes = new { @class = "form-control" } })
+				@Html.EditorFor(model => users, "Dictionary_User_bool")
 				@Html.ValidationMessageFor(model => model.PresentUsers, "", new { @class = "text-danger" })
 			</div>
 		</div>
@@ -48,12 +49,6 @@
 			@Html.LabelFor(model => model.Start, new { @class = "control-label col-md-2" })
 			<div class="col-md-5 static-text">
 				@Html.DisplayFor(model => model.Start)
-			</div>
-		</div>
-
-		<div class="form-group">
-			<div class="col-md-offset-2 col-md-10">
-				<input type="submit" value="Weiter" class="btn btn-default" />
 			</div>
 		</div>
 	</div>
