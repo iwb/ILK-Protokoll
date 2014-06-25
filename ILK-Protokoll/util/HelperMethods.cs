@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Linq.Expressions;
 using System.Reflection;
+using System.Web.Mvc;
 
 namespace ILK_Protokoll.util
 {
@@ -41,6 +43,18 @@ namespace ILK_Protokoll.util
 				return str.Substring(0, maxLength - 1) + "…";
 			else
 				return str;
+		}
+
+		public static MvcHtmlString DisplayColumnNameFor<TModel, TClass, TProperty>(
+			this HtmlHelper<TModel> helper, IEnumerable<TClass> model,
+			Expression<Func<TClass, TProperty>> expression)
+		{
+			var name = ExpressionHelper.GetExpressionText(expression);
+			name = helper.ViewContext.ViewData.TemplateInfo.GetFullHtmlFieldName(name);
+			var metadata = ModelMetadataProviders.Current.GetMetadataForProperty(
+				() => Activator.CreateInstance<TClass>(), typeof(TClass), name);
+
+			return new MvcHtmlString(metadata.DisplayName);
 		}
 	}
 }

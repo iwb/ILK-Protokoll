@@ -1,7 +1,9 @@
-﻿@model IEnumerable<ILK_Protokoll.ViewModels.FilteredAssignments>
+﻿@using ILK_Protokoll.util
+@model ILK_Protokoll.ViewModels.FilteredAssignments
 
 @{
 	ViewBag.Title = "Aufgaben";
+
 }
 
 <h2>@ViewBag.Title</h2>
@@ -10,22 +12,22 @@
 	<thead>
 		<tr>
 			<th>
-				@Html.DisplayNameFor(model => model.Title)
+				@Html.DisplayColumnNameFor(Model.Assignments, a => a.Title)
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.Description)
+				@Html.DisplayColumnNameFor(Model.Assignments, a => a.Description)
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.DueDate)
+				@Html.DisplayColumnNameFor(Model.Assignments, a => a.DueDate)
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.ReminderSent)
+				@Html.DisplayColumnNameFor(Model.Assignments, a => a.ReminderSent)
 			</th>
 			<th>Aktionen</th>
 		</tr>
 	</thead>
 	<tbody>
-		@foreach (var item in Model)
+		@foreach (var item in Model.Assignments)
 		{
 			<tr>
 				<td>
