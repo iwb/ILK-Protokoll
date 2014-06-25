@@ -1,0 +1,38 @@
+﻿@model IEnumerable<ILK_Protokoll.Areas.Session.Models.Lists.Event>
+
+<h3>Termine</h3>
+
+<table class="table table-striped">
+	<thead>
+		<tr>
+			<th class="col-sm-2">
+				@Html.DisplayNameFor(model => model.StartDate)
+			</th>
+			<th class="col-sm-2">
+				@Html.DisplayNameFor(model => model.EndDate)
+			</th>
+			<th class="col-sm-1">
+				@Html.DisplayNameFor(model => model.Time)
+			</th>
+			<th class="col-sm-1">
+				@Html.DisplayNameFor(model => model.Place)
+			</th>
+			<th class="col-sm-4">
+				@Html.DisplayNameFor(model => model.Description)
+			</th>
+			<th class="col-sm-1">
+				@Html.DisplayNameFor(model => model.Organizer)
+			</th>
+			<th class="col-sm-1"></th>
+		</tr>
+	</thead>
+	<tbody id="eventlist_body">
+		@foreach (var item in Model)
+		{
+			Html.RenderPartial("_Row", item);
+		}
+	</tbody>
+	<tfoot>
+		@Html.Action("_CreateForm", "LEvents")
+	</tfoot>
+</table>

@@ -116,6 +116,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Areas\Session\Views\SessionBase\" />
     <Folder Include="Views\Duties\" />
     <Folder Include="Views\ToDos\" />
   </ItemGroup>
@@ -131,10 +132,11 @@
     <Compile Include="Areas\Administration\Controllers\UserController.cs" />
     <Compile Include="Areas\Session\Controllers\FinalizeController.cs" />
     <Compile Include="Areas\Session\Controllers\ListsController.cs" />
-    <Compile Include="Areas\Session\Controllers\Lists\EventsController.cs" />
+    <Compile Include="Areas\Session\Controllers\Lists\LEventsController.cs" />
     <Compile Include="Areas\Session\Controllers\Lists\ParentController.cs" />
     <Compile Include="Areas\Session\Controllers\MasterController.cs" />
     <Compile Include="Areas\Session\Controllers\DiscussionController.cs" />
+    <Compile Include="Areas\Session\Controllers\SessionBaseController.cs" />
     <Compile Include="Areas\Session\Models\Lists\BaseItem.cs" />
     <Compile Include="Areas\Session\Models\Lists\Event.cs" />
     <Compile Include="Areas\Session\Models\Lists\IlkDay.cs" />
@@ -300,12 +302,10 @@
     <Content Include="Areas\Session\Views\Master\Create.cshtml" />
     <Content Include="Areas\Session\Views\Master\Index.cshtml" />
     <Content Include="Areas\Administration\Views\SessionTypes\DeleteHint.cshtml" />
-    <Content Include="Areas\Session\Views\Events\Create.cshtml" />
-    <Content Include="Areas\Session\Views\Events\Delete.cshtml" />
-    <Content Include="Areas\Session\Views\Events\Details.cshtml" />
-    <Content Include="Areas\Session\Views\Events\_Edit.cshtml" />
-    <Content Include="Areas\Session\Views\Events\Index.cshtml" />
-    <Content Include="Areas\Session\Views\Events\_CreateForm.cshtml" />
+    <Content Include="Areas\Session\Views\LEvents\_Edit.cshtml" />
+    <Content Include="Areas\Session\Views\LEvents\_List.cshtml" />
+    <Content Include="Areas\Session\Views\LEvents\_CreateForm.cshtml" />
+    <Content Include="Areas\Session\Views\LEvents\_Row.cshtml" />
     <None Include="Content\bootstrap\wells.less" />
     <None Include="Content\bootstrap\variables.less" />
     <None Include="Content\bootstrap\utilities.less" />

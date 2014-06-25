@@ -8,7 +8,7 @@ using ILK_Protokoll.Controllers;
 
 namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 {
-	public class ParentController<TModel> : BaseController
+	public class ParentController<TModel> : SessionBaseController
 		where TModel : BaseItem
 	{
 

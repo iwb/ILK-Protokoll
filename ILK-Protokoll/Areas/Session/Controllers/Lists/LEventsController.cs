@@ -1,14 +1,15 @@
-﻿using System.Linq;
+﻿using System.Data.Entity;
+using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using ILK_Protokoll.Areas.Session.Models.Lists;
 
 namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 {
-	public class EventsController : ParentController<Event>
+	public class LEventsController : ParentController<Event>
 	{
 		// GET: Session/Events
-		public PartialViewResult Index()
+		public PartialViewResult _List()
 		{
 			return PartialView(db.L_Events.ToList());
 		}
@@ -19,21 +20,25 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 			return PartialView("_CreateForm", new Event());
 		}
 
+		// GET: Session/Events/FetchRow
+		public PartialViewResult _FetchRow(int eventID)
+		{
+			return PartialView("_Row", db.L_Events.Find(eventID));
+		}
+
 		// POST: Session/Events/Create
 		// Aktivieren Sie zum Schutz vor übermäßigem Senden von Angriffen die spezifischen Eigenschaften, mit denen eine Bindung erfolgen soll. Weitere Informationen 
 		// finden Sie unter http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public ActionResult Create([Bind(Include = "StartDate,EndDate,Time,Place,Description,Organizer")] Event ev)
+		public ActionResult _Create([Bind(Include = "StartDate,EndDate,Time,Place,Description,Organizer")] Event ev)
 		{
-			if (ModelState.IsValid)
-			{
-				db.L_Events.Add(ev);
-				db.SaveChanges();
-				return RedirectToAction("Index");
-			}
+			if (!ModelState.IsValid)
+				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-			return View(ev);
+			db.L_Events.Add(ev);
+			db.SaveChanges();
+			return PartialView("_Row", ev);
 		}
 
 		// POST: Session/Events/Edit
@@ -43,38 +48,36 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 			if (ev == null)
 				return HttpNotFound();
 
-			return View("_Edit", ev);
+			return PartialView("_Edit", ev);
 		}
 
-		//// POST: Session/Events/Edit/5
-		//// Aktivieren Sie zum Schutz vor übermäßigem Senden von Angriffen die spezifischen Eigenschaften, mit denen eine Bindung erfolgen soll. Weitere Informationen 
-		//// finden Sie unter http://go.microsoft.com/fwlink/?LinkId=317598.
-		//[HttpPost]
-		//[ValidateAntiForgeryToken]
-		//public ActionResult Edit([Bind(Include = "ID,StartDate,EndDate,Time,Place,Description,Created")] Event @event)
-		//{
-		//	if (ModelState.IsValid)
-		//	{
-		//		db.Entry(@event).State = EntityState.Modified;
-		//		db.SaveChanges();
-		//		return RedirectToAction("Index");
-		//	}
-		//	return View(@event);
-		//}
+		// POST: Session/Events/Edit
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public ActionResult _Edit([Bind(Include = "ID,StartDate,EndDate,Time,Place,Description,Organizer")] Event input)
+		{
+			if (!ModelState.IsValid)
+				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+			db.Entry(input).State = EntityState.Modified;
+			db.SaveChanges();
+			return PartialView("_Row", input);
+		}
 
 		// POST: Session/Events/Delete
 		[HttpPost]
 		public ActionResult _Delete(int? eventID)
 		{
 			if (eventID == null)
-			{
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-			}
+
 			Event ev = db.L_Events.Find(eventID.Value);
 			if (ev == null)
-			{
 				return HttpNotFound();
-			}
+
+			db.L_Events.Remove(db.L_Events.Find(eventID));
+			db.SaveChanges();
+
 			return new HttpStatusCodeResult(HttpStatusCode.NoContent);
 		}
 	}

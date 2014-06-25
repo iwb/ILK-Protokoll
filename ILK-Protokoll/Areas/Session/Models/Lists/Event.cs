@@ -11,13 +11,21 @@ namespace ILK_Protokoll.Areas.Session.Models.Lists
 	[Table("L_Event")]
 	public class Event : BaseItem
 	{
+		public Event()
+		{
+			StartDate = DateTime.Today;
+			EndDate = DateTime.Today;
+		}
+
 		[DisplayName("Von")]
 		[DataType(DataType.Date)]
+		[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
 		public DateTime StartDate { get; set; }
 
 		[DisplayName("Bis")]
 		[DataType(DataType.Date)]
-		public DateTime? EndDate { get; set; }
+		[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+		public DateTime EndDate { get; set; }
 
 		[DisplayName("Uhrzeit")]
 		public string Time { get; set; }
@@ -25,7 +33,7 @@ namespace ILK_Protokoll.Areas.Session.Models.Lists
 		[DisplayName("Ort")]
 		public string Place { get; set; }
 
-		[DisplayName("Verantwortlich")]
+		[DisplayName("Verant.")]
 		public string Organizer { get; set; }
 
 		[DisplayName("Besucher / Thema")]

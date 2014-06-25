@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using ILK_Protokoll.Controllers;
+﻿using System.Web.Mvc;
 
 namespace ILK_Protokoll.Areas.Session.Controllers
 {
-	public class ListsController : BaseController
+	public class ListsController : SessionBaseController
 	{
 		protected override void OnActionExecuting(ActionExecutingContext filterContext)
 		{
@@ -18,6 +13,10 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 		// GET: Session/List
 		public ActionResult Index()
 		{
+			var session = GetSession();
+			if (session == null)
+				return RedirectToAction("Index", "Master");
+
 			return View();
 		}
 	}

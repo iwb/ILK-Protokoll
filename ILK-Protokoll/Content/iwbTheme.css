@@ -6097,6 +6097,12 @@ p.panel-title {
   border-bottom: 1px solid #dddddd;
   border-top: 1px solid #dddddd;
 }
+.tableform > div.row {
+  margin: -8px;
+}
+.tableform > div > div {
+  padding: 8px;
+}
 .divlink {
   position: absolute;
   width: 100%;

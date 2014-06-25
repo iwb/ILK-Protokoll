@@ -1,27 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using ILK_Protokoll.Areas.Session.Models;
-using ILK_Protokoll.Controllers;
 
 namespace ILK_Protokoll.Areas.Session.Controllers
 {
-	public class MasterController : BaseController
+	public class MasterController : SessionBaseController
 	{
 		protected override void OnActionExecuting(ActionExecutingContext filterContext)
 		{
 			base.OnActionExecuting(filterContext);
 			ViewBag.SMasterStyle = "active";
-		}
-
-		private ActiveSession GetSession()
-		{
-			var sessionID = (int?)Session["SessionID"];
-			if (sessionID.HasValue && sessionID > 0)
-				return db.ActiveSessions.Find(sessionID);
-			else
-				return null;
 		}
 
 		// GET: Session/Master
@@ -35,30 +26,22 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 		{
 			var st = db.SessionTypes.Find(SessionTypeID);
 			if (st != null)
-			{
-				var session = db.ActiveSessions.Add(new ActiveSession(st));
-				db.SaveChanges();
-				Session["SessionID"] = session.ID;
-				return View(session);
-			}
+				return View(CreateNewSession(st));
 			else
-			{
 				return new HttpStatusCodeResult(HttpStatusCode.NotFound, "Sitzungstyp nicht gefunden.");
-			}
 		}
 
 		public ActionResult Resume(int SessionID)
 		{
-			var session = db.ActiveSessions.Find(SessionID);
-			if (session != null)
+			try
 			{
-				Session["SessionID"] = session.ID;
-				return RedirectToAction("Edit");
+				ResumeSession(SessionID);
 			}
-			else
+			catch (ArgumentException)
 			{
 				return new HttpStatusCodeResult(HttpStatusCode.NotFound, "Sitzungstyp nicht gefunden.");
 			}
+			return RedirectToAction("Edit");
 		}
 
 		[HttpGet]

@@ -1,0 +1,36 @@
+﻿@model ILK_Protokoll.Areas.Session.Models.Lists.Event
+
+<tr id="event_@Model.ID">
+	<td>
+		@Model.StartDate.ToString("d")
+	</td>
+	<td>
+		@Model.EndDate.ToString("d")
+	</td>
+	<td>
+		@Html.DisplayFor(model => model.Time)
+	</td>
+	<td>
+		@Html.DisplayFor(model => model.Place)
+	</td>
+	<td>
+		@Html.DisplayFor(model => model.Description)
+	</td>
+	<td>
+		@Html.DisplayFor(model => model.Organizer)
+	</td>
+	<td class="actions">
+		<a data-ajax="true"
+		   data-ajax-method="POST"
+		   data-ajax-mode="replace"
+		   data-ajax-update="#event_@Model.ID"
+		   href="@Url.Action("_BeginEdit", "LEvents", new {Area = "Session", eventID = Model.ID})"><span class="glyphicon glyphicon-edit" title="Termin bearbeiten"></span></a>
+
+		<a data-ajax="true"
+		   data-ajax-method="POST"
+		   data-ajax-confirm="Termin wirklich löschen?"
+		   data-ajax-success="$('#event_@Model.ID').remove();"
+		   href="@Url.Action("_Delete", "LEvents", new {Area = "Session", eventID = Model.ID})"><span class="glyphicon glyphicon-remove" title="Termin löschen"></span>
+		</a>
+	</td>
+</tr>
