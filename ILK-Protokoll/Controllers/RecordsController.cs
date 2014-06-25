@@ -1,121 +1,116 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using ILK_Protokoll.DataLayer;
 using ILK_Protokoll.Models;
 
 namespace ILK_Protokoll.Controllers
 {
-	public class ReportsController : BaseController
+	public class RecordsController : BaseController
 	{
 		protected override void OnActionExecuting(ActionExecutingContext filterContext)
 		{
 			base.OnActionExecuting(filterContext);
-			ViewBag.ReportStyle = "active";
+			ViewBag.RecordStyle = "active";
 		}
 
-		// GET: Reports
+		// GET: Records
 		public ActionResult Index()
 		{
-			return View(db.Reports.ToList());
+			return View(db.Records.ToList());
 		}
 
-		// GET: Reports/Details/5
+		// GET: Records/Details/5
 		public ActionResult Details(int? id)
 		{
 			if (id == null)
 			{
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 			}
-			Report report = db.Reports.Find(id);
-			if (report == null)
+			Record Record = db.Records.Find(id);
+			if (Record == null)
 			{
 				return HttpNotFound();
 			}
-			return View(report);
+			return View(Record);
 		}
 
-		// GET: Reports/Create
+		// GET: Records/Create
 		public ActionResult Create()
 		{
 			return View();
 		}
 
-		// POST: Reports/Create
+		// POST: Records/Create
 		// Aktivieren Sie zum Schutz vor übermäßigem Senden von Angriffen die spezifischen Eigenschaften, mit denen eine Bindung erfolgen soll. Weitere Informationen 
 		// finden Sie unter http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public ActionResult Create([Bind(Include = "ID,TopicID,Name,Created")] Report report)
+		public ActionResult Create([Bind(Include = "ID,TopicID,Name,Created")] Record Record)
 		{
 			if (ModelState.IsValid)
 			{
-				db.Reports.Add(report);
+				db.Records.Add(Record);
 				db.SaveChanges();
 				return RedirectToAction("Index");
 			}
 
-			return View(report);
+			return View(Record);
 		}
 
-		// GET: Reports/Edit/5
+		// GET: Records/Edit/5
 		public ActionResult Edit(int? id)
 		{
 			if (id == null)
 			{
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 			}
-			Report report = db.Reports.Find(id);
-			if (report == null)
+			Record Record = db.Records.Find(id);
+			if (Record == null)
 			{
 				return HttpNotFound();
 			}
-			return View(report);
+			return View(Record);
 		}
 
-		// POST: Reports/Edit/5
+		// POST: Records/Edit/5
 		// Aktivieren Sie zum Schutz vor übermäßigem Senden von Angriffen die spezifischen Eigenschaften, mit denen eine Bindung erfolgen soll. Weitere Informationen 
 		// finden Sie unter http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public ActionResult Edit([Bind(Include = "ID,TopicID,Name,Created")] Report report)
+		public ActionResult Edit([Bind(Include = "ID,TopicID,Name,Created")] Record Record)
 		{
 			if (ModelState.IsValid)
 			{
-				db.Entry(report).State = EntityState.Modified;
+				db.Entry(Record).State = EntityState.Modified;
 				db.SaveChanges();
 				return RedirectToAction("Index");
 			}
-			return View(report);
+			return View(Record);
 		}
 
-		// GET: Reports/Delete/5
+		// GET: Records/Delete/5
 		public ActionResult Delete(int? id)
 		{
 			if (id == null)
 			{
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 			}
-			Report report = db.Reports.Find(id);
-			if (report == null)
+			Record Record = db.Records.Find(id);
+			if (Record == null)
 			{
 				return HttpNotFound();
 			}
-			return View(report);
+			return View(Record);
 		}
 
-		// POST: Reports/Delete/5
+		// POST: Records/Delete/5
 		[HttpPost, ActionName("Delete")]
 		[ValidateAntiForgeryToken]
 		public ActionResult DeleteConfirmed(int id)
 		{
-			Report report = db.Reports.Find(id);
-			db.Reports.Remove(report);
+			Record Record = db.Records.Find(id);
+			db.Records.Remove(Record);
 			db.SaveChanges();
 			return RedirectToAction("Index");
 		}

@@ -152,7 +152,7 @@
     <Compile Include="Controllers\DecisionsController.cs" />
     <Compile Include="Controllers\DutiesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\ReportsController.cs" />
+    <Compile Include="Controllers\RecordsController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Controllers\ToDosController.cs" />
     <Compile Include="Controllers\TopicsController.cs" />
@@ -166,7 +166,7 @@
     <Compile Include="Models\Attachment.cs" />
     <Compile Include="Models\Comment.cs" />
     <Compile Include="Models\Decision.cs" />
-    <Compile Include="Models\Report.cs" />
+    <Compile Include="Models\Record.cs" />
     <Compile Include="Models\TopicHistory.cs" />
     <Compile Include="util\ResharperAnnotations.cs" />
     <Compile Include="util\HelperMethods.cs" />
@@ -432,7 +432,7 @@
     <Content Include="Views\Assignments\Edit.cshtml" />
     <Content Include="Views\Assignments\Index.cshtml" />
     <Content Include="Views\Decisions\Index.cshtml" />
-    <Content Include="Views\Reports\Index.cshtml" />
+    <Content Include="Views\Records\Index.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\IEnumerable_User.cshtml" />
     <None Include="Web.Integration.config" />
     <None Include="Web.Testing.config" />

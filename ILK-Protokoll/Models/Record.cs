@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ILK_Protokoll.Models
 {
-	public class Report
+	public class Record
 	{
 		public int ID { get; set; }
 
@@ -21,7 +21,7 @@ namespace ILK_Protokoll.Models
 		[NotMapped]
 		public string URL
 		{
-			get { return string.Format(@"\\02mucilk\Reports\{0}_{1}", ID, Name); }
+			get { return string.Format(@"\\02mucilk\Records\{0}_{1}", ID, Name); }
 		}
 	}
 }

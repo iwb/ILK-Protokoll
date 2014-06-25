@@ -27,7 +27,7 @@ namespace ILK_Protokoll.DataLayer
 		public DbSet<Comment> Comments { get; set; }
 		public DbSet<Decision> Decisions { get; set; }
 		public DbSet<Event> L_Events { get; set; }
-		public DbSet<Report> Reports { get; set; }
+		public DbSet<Record> Records { get; set; }
 		public DbSet<SessionType> SessionTypes { get; set; }
 		public DbSet<Topic> Topics { get; set; }
 		public DbSet<TopicHistory> TopicHistory { get; set; }

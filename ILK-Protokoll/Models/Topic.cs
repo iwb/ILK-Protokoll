@@ -94,9 +94,6 @@ namespace ILK_Protokoll.Models
 		[Display(Name = "Dateianhänge")]
 		public virtual ICollection<Attachment> Attachments { get; set; }
 
-		[Display(Name = "PDF-Report")]
-		public virtual Report Report { get; set; }
-
 		[Display(Name = "Erstellt")]
 		[Required]
 		public DateTime Created { get; set; }
