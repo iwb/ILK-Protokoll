@@ -1,22 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Web;
 using ILK_Protokoll.Areas.Administration.Models;
 using ILK_Protokoll.Models;
 
 namespace ILK_Protokoll.Areas.Session.Models.Lists
 {
 	/// <summary>
-	/// Klausur-Tage
+	///    Klausur-Tage
 	/// </summary>
 	[Table("L_IlkDay")]
 	public class IlkDay : BaseItem
 	{
-
+		[DisplayName("Beginn")]
+		[DataType(DataType.DateTime)]
 		public DateTime Start { get; set; }
+
+		[DisplayName("Ende")]
+		[DataType(DataType.DateTime)]
+		public DateTime End { get; set; }
 
 		public string Place { get; set; }
 

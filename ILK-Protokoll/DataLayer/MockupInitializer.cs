@@ -59,14 +59,34 @@ namespace ILK_Protokoll.DataLayer
 					"Klingt lecker! und ich finde den Beschlussvorschlag auch total sinnvoll und angemessen. Eine Dissertation, deren Ergebnisse man nicht essen oder trinken kann, ist im Grunde wertlos. Insbesondere am Institut für Weißwurscht und Brezenwissenschaften."
 			});
 
-			topic.Comments.Add(new Comment { Author = users[4], Content = "Brauchen wir nicht drüber reden. Ist gegessen." });
+			topic.Comments.Add(new Comment {Author = users[4], Content = "Brauchen wir nicht drüber reden. Ist gegessen."});
 			topic.Comments.Add(new Comment
 			{
 				Author = users[8],
 				Content = "Möglicherweise sollten auch Themen im Komplex \"Backplanung und -steuerung\" erlaubt werden."
 			});
 
-			var sessiont = new SessionType { ID = 1, Name = "ILK-AK Garching" };
+			topic.Assignments.Add(new Assignment
+			{
+				Title = "Kekse backen",
+				Description = "siehe Titel",
+				DueDate = DateTime.Today.AddDays(7),
+				Owner = users[0],
+				Type = AssignmentType.ToDo,
+				Topic = topic
+			});
+
+			topic.Assignments.Add(new Assignment
+			{
+				Title = "Regelmäßige Kekslieferung organisieren",
+				Description = "siehe Titel",
+				DueDate = DateTime.Today.AddMonths(5),
+				Owner = users[3],
+				Type = AssignmentType.Duty,
+				Topic = topic
+			});
+
+			var sessiont = new SessionType {ID = 1, Name = "ILK-AK Garching"};
 			sessiont.Attendees.Add(users[9]);
 			sessiont.Attendees.Add(users[1]);
 			sessiont.Attendees.Add(users[4]);
@@ -79,7 +99,7 @@ namespace ILK_Protokoll.DataLayer
 			context.Topics.Add(topic);
 			context.SessionTypes.Add(sessiont);
 
-			var st2 = new SessionType() { Name = "ILK-AK Augsburg" };
+			var st2 = new SessionType {Name = "ILK-AK Augsburg"};
 			st2.Attendees.Add(users[0]);
 			st2.Attendees.Add(users[1]);
 			st2.Attendees.Add(users[3]);
@@ -88,7 +108,7 @@ namespace ILK_Protokoll.DataLayer
 			st2.Attendees.Add(users[8]);
 			context.SessionTypes.Add(st2);
 
-			context.L_Events.Add(new Event()
+			context.LEvents.Add(new Event
 			{
 				Created = DateTime.Now.AddHours(-1),
 				Description = "TG-Tag",

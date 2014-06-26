@@ -1,23 +1,26 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Web;
 
 namespace ILK_Protokoll.Areas.Session.Models.Lists
 {
 	/// <summary>
-	/// Professorenurlaub
+	///    Professorenurlaub
 	/// </summary>
 	[Table("L_ProfHoliday")]
 	public class ProfHoliday : BaseItem
 	{
+		[DisplayName("Professor")]
 		public Prof Professor { get; set; }
 
+		[DisplayName("Anlass")]
 		public string Occasion { get; set; }
 
+
+		[DisplayName("Beginn")]
 		public DateTime? Start { get; set; }
 
+		[DisplayName("Ende")]
 		public DateTime? End { get; set; }
 
 		public override string ToString()
@@ -31,6 +34,7 @@ namespace ILK_Protokoll.Areas.Session.Models.Lists
 
 	public enum Prof
 	{
-		Zäh, Reinhart
+		Zäh,
+		Reinhart
 	}
 }

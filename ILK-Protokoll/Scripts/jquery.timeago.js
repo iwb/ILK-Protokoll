@@ -40,8 +40,8 @@
 		settings: {
 			refreshMillis: 15000,
 			allowPast: true,
-			allowFuture: false,
-			localeTitle: false,
+			allowFuture: true,
+			localeTitle: true,
 			cutoff: 2592000000, // 30 Tage
 			strings: {
 				prefixAgo: "vor",

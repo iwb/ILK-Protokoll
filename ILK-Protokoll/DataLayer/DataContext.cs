@@ -26,7 +26,14 @@ namespace ILK_Protokoll.DataLayer
 		public DbSet<Attachment> Attachments { get; set; }
 		public DbSet<Comment> Comments { get; set; }
 		public DbSet<Decision> Decisions { get; set; }
-		public DbSet<Event> L_Events { get; set; }
+		public DbSet<Conference> LConferences { get; set; }
+		public DbSet<EmployeePresentation> LEmployeePresentations { get; set; }
+		public DbSet<Event> LEvents { get; set; }
+		public DbSet<Extension> LExtensions { get; set; }
+		public DbSet<IlkDay> LIlkDays { get; set; }
+		public DbSet<IlkMeeting> LIlkMeetings { get; set; }
+		public DbSet<ProfHoliday> LProfHolidays { get; set; }
+		public DbSet<Opening> LOpenings { get; set; }
 		public DbSet<Record> Records { get; set; }
 		public DbSet<SessionType> SessionTypes { get; set; }
 		public DbSet<Topic> Topics { get; set; }

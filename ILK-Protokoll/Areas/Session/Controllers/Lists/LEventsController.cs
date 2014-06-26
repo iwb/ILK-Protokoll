@@ -11,7 +11,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 		// GET: Session/Events
 		public PartialViewResult _List()
 		{
-			return PartialView(db.L_Events.ToList());
+			return PartialView(db.LEvents.ToList());
 		}
 
 		// GET: Session/Events/Create
@@ -23,7 +23,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 		// GET: Session/Events/FetchRow
 		public PartialViewResult _FetchRow(int eventID)
 		{
-			return PartialView("_Row", db.L_Events.Find(eventID));
+			return PartialView("_Row", db.LEvents.Find(eventID));
 		}
 
 		// POST: Session/Events/Create
@@ -36,7 +36,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 			if (!ModelState.IsValid)
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-			db.L_Events.Add(ev);
+			db.LEvents.Add(ev);
 			db.SaveChanges();
 			return PartialView("_Row", ev);
 		}
@@ -44,7 +44,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 		// POST: Session/Events/Edit
 		public ActionResult _BeginEdit(int eventID)
 		{
-			var ev = db.L_Events.Find(eventID);
+			var ev = db.LEvents.Find(eventID);
 			if (ev == null)
 				return HttpNotFound();
 
@@ -71,11 +71,11 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 			if (eventID == null)
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-			Event ev = db.L_Events.Find(eventID.Value);
+			Event ev = db.LEvents.Find(eventID.Value);
 			if (ev == null)
 				return HttpNotFound();
 
-			db.L_Events.Remove(db.L_Events.Find(eventID));
+			db.LEvents.Remove(db.LEvents.Find(eventID));
 			db.SaveChanges();
 
 			return new HttpStatusCodeResult(HttpStatusCode.NoContent);

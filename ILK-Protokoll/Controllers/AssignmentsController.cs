@@ -41,5 +41,11 @@ namespace ILK_Protokoll.Controllers
 
 			return View(filter);
 		}
+
+		// GET: Assignments/Details/5
+		public ActionResult Details(int id)
+		{
+			return null;
+		}
 	}
 }
