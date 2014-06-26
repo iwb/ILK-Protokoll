@@ -7,15 +7,6 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 {
 	public class SessionBaseController : BaseController
 	{
-		protected ActiveSession GetSession()
-		{
-			var sessionID = (int?)Session["SessionID"];
-			if (sessionID.HasValue && sessionID > 0)
-				return db.ActiveSessions.Find(sessionID);
-			else
-				return null;
-		}
-
 		protected ActiveSession CreateNewSession(SessionType type)
 		{
 			var session = db.ActiveSessions.Add(new ActiveSession(type));

@@ -2,6 +2,7 @@
 using System.Web.Mvc;
 using System.Web.Routing;
 using ILK_Protokoll.Areas.Administration.Controllers;
+using ILK_Protokoll.Areas.Session.Models;
 using ILK_Protokoll.DataLayer;
 using ILK_Protokoll.Models;
 
@@ -27,6 +28,15 @@ namespace ILK_Protokoll.Controllers
 			}
 
 			return _CurrentUser;
+		}
+
+		protected ActiveSession GetSession()
+		{
+			var sessionID = (int?)Session["SessionID"];
+			if (sessionID.HasValue && sessionID > 0)
+				return db.ActiveSessions.Find(sessionID);
+			else
+				return null;
 		}
 
 		protected override void Dispose(bool disposing)
