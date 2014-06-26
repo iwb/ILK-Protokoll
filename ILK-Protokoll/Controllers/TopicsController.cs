@@ -66,9 +66,12 @@ namespace ILK_Protokoll.Controllers
 				var t = new Topic();
 				t.IncorporateUpdates(input);
 				t.SessionTypeID = input.SessionTypeID;
-				foreach (
-					User user in db.SessionTypes.Include(st => st.Attendees).First(st => st.ID == input.SessionTypeID).Attendees)
+				foreach (User user in db.SessionTypes
+					.Include(st => st.Attendees)
+					.First(st => st.ID == input.SessionTypeID).Attendees)
+				{
 					t.Votes.Add(new Vote(user, VoteKind.None));
+				}
 
 				db.Topics.Add(t);
 				db.SaveChanges();
@@ -85,14 +88,10 @@ namespace ILK_Protokoll.Controllers
 		public ActionResult Edit(int? id)
 		{
 			if (id == null)
-			{
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-			}
 			Topic topic = db.Topics.Find(id);
 			if (topic == null)
-			{
 				return HttpNotFound();
-			}
 
 			TopicEdit viewmodel = TopicEdit.FromTopic(topic);
 			viewmodel.SessionTypeList = new SelectList(db.SessionTypes, "ID", "Name");
@@ -133,14 +132,10 @@ namespace ILK_Protokoll.Controllers
 		public ActionResult Delete(int? id)
 		{
 			if (id == null)
-			{
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-			}
 			Topic topic = db.Topics.Find(id);
 			if (topic == null)
-			{
 				return HttpNotFound();
-			}
 			return View(topic);
 		}
 

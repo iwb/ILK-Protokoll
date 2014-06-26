@@ -116,8 +116,7 @@ namespace ILK_Protokoll.Models
 		{
 			if (!IsEditable)
 				throw new InvalidOperationException("Diese Diskussion ist beendet und kann daher nicht bearbeitet werden.");
-			// ReSharper disable DoNotCallOverridableMethodsInConstructor
-			Comments = new List<Comment>();
+
 			Description = updates.Description;
 			Owner = updates.Owner;
 			OwnerID = updates.OwnerID;
@@ -125,7 +124,6 @@ namespace ILK_Protokoll.Models
 			Proposal = updates.Proposal;
 			Title = updates.Title;
 			ValidFrom = DateTime.Now;
-			// ReSharper restore DoNotCallOverridableMethodsInConstructor
 		}
 
 		public void IncorporateHistory(TopicHistory history)
