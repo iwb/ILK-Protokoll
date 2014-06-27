@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Net;
 using System.Web.Mvc;
 using ILK_Protokoll.Models;
 using ILK_Protokoll.ViewModels;
@@ -46,6 +47,26 @@ namespace ILK_Protokoll.Controllers
 		public ActionResult Details(int id)
 		{
 			return null;
+		}
+
+		// GET: Assignments/Create
+		[HttpGet]
+		public ActionResult Create(int? topicID)
+		{
+			var a = new Assignment();
+
+			if (topicID.HasValue)
+				a.Topic = db.Topics.Find(topicID.Value);
+
+			return View(a);
+		}
+
+		// POST: Administration/SessionTypes/Create
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public ActionResult Create([Bind(Include = "ID,Name")] Assignment input)
+		{
+			return new HttpStatusCodeResult(HttpStatusCode.PaymentRequired);
 		}
 	}
 }

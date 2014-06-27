@@ -436,6 +436,7 @@
     <Content Include="Views\Records\Index.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\IEnumerable_User.cshtml" />
     <Content Include="Views\Assignments\_Table.cshtml" />
+    <Content Include="Views\Assignments\_DetailedTable.cshtml" />
     <None Include="Web.Integration.config" />
     <None Include="Web.Testing.config" />
   </ItemGroup>

@@ -30,6 +30,7 @@ namespace ILK_Protokoll.Controllers
 
 			Topic topic = db.Topics
 				.Include(t => t.Votes)
+				.Include(t => t.Assignments)
 				.Include(t => t.Attachments)
 				.First(t => t.ID == id.Value);
 			if (topic == null)

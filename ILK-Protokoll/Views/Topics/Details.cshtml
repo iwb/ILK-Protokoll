@@ -90,7 +90,7 @@
 		<h3 class="panel-title">@Html.DisplayNameFor(model => model.Votes)</h3>
 	</div>
 	<div class="panel-body" id="auditorlist_@Model.ID">
-		@Html.Action("_List", "Votes", new {topic = Model, linkAllAuditors = true})
+		@Html.Action("_List", "Votes", new { topic = Model, linkAllAuditors = true })
 	</div>
 </div>
 
@@ -100,6 +100,26 @@
 	</div>
 	<div class="panel-body" id="comments_@Model.ID">
 		@Html.Action("_List", "Comments", Model)
+	</div>
+</div>
+
+
+<div class="panel panel-primary">
+	<div class="panel-heading">
+		<h3 class="panel-title">Aufgaben</h3>
+	</div>
+	@if (Model.Assignments.Any())
+	{
+		Html.RenderPartial("~/Views/Assignments/_DetailedTable.cshtml", Model.Assignments.OrderBy(a => a.Type).ThenByDescending(a => a.DueDate));
+	}
+	else
+	{
+		<div class="panel-body">
+			Diese Diskussion enthält keine Aufgaben.
+		</div>
+	}
+	<div class="panel-footer">
+		@Html.ActionLink("Neue Aufgabe erstellen", "Create", "Assignments", new {topicID = Model.ID}, null)
 	</div>
 </div>
 
@@ -116,9 +136,9 @@
 			}
 			else
 			{
-				@Html.Action("_List", "Attachments", new {topicID = Model.ID})
+				@Html.Action("_List", "Attachments", new { topicID = Model.ID })
 			}
-			@Html.Action("_UploadForm", "Attachments", new {topicID = Model.ID})
+			@Html.Action("_UploadForm", "Attachments", new { topicID = Model.ID })
 		</div>
 	</div>
 </div>
