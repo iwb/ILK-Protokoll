@@ -12,6 +12,12 @@
 	<thead>
 		<tr>
 			<th>
+				@Html.DisplayColumnNameFor(Model.Assignments, a => a.Type)
+			</th>
+			<th>
+				@Html.DisplayColumnNameFor(Model.Assignments, a => a.Owner)
+			</th>
+			<th>
 				@Html.DisplayColumnNameFor(Model.Assignments, a => a.Title)
 			</th>
 			<th>
@@ -31,10 +37,16 @@
 		{
 			<tr>
 				<td>
+					@item.Type.DisplayName()
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Owner.ShortName)
+				</td>
+				<td>
 					@Html.DisplayFor(modelItem => item.Title)
 				</td>
 				<td>
-					@Html.DisplayFor(modelItem => item.Description)
+					@item.Description.Shorten(100)
 				</td>
 				<td>
 					@Html.DisplayFor(modelItem => item.DueDate)

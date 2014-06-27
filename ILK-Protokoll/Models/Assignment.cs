@@ -41,6 +41,6 @@ namespace ILK_Protokoll.Models
 	public enum AssignmentType
 	{
 		[Display(Name = "ToDo")] ToDo,
-		[Display(Name = "Umsetzungsaufgabe")] Duty
+		[Display(Name = "Umsetzung")] Duty
 	}
 }
