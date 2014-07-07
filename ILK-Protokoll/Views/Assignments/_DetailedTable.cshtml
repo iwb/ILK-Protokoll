@@ -8,7 +8,7 @@
 				@Html.DisplayNameFor(model => model.Type)
 			</th>
 			<th class="col-xs-1">
-				@Html.DisplayNameFor(model => model.Owner)
+				@Html.DisplayNameFor(model => model.OwnerID)
 			</th>
 			<th class="col-xs-3">
 				@Html.DisplayNameFor(model => model.Title)
@@ -28,6 +28,19 @@
 	<tbody>
 		@foreach (var item in Model)
 		{
+			string visual;
+			if ((DateTime.Now - item.DueDate).Duration().TotalDays < 1)
+			{
+				visual = "warning";
+			}
+			else if (item.DueDate < DateTime.Now)
+			{
+				visual = "danger";
+			}
+			else
+			{
+				visual = null;
+			}
 			<tr>
 				<td>
 					@item.Type.DisplayName()
@@ -41,16 +54,16 @@
 				<td>
 					@item.Description.Shorten(120)
 				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.DueDate)
+				<td class="@visual">
+					@item.DueDate.ToShortDateString()
 				</td>
 				<td>
 					@Html.DisplayFor(modelItem => item.ReminderSent)
 				</td>
-				<td>
-					@Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
-					@Html.ActionLink("Details", "Details", new { id = item.ID }) |
-					@Html.ActionLink("Delete", "Delete", new { id = item.ID })
+				<td class="actions">
+					<a href="@Url.Action("Details", "Assignments", new { id = item.ID})"><span class="glyphicon glyphicon-expand" title="Details"></span></a>
+					&nbsp;
+					<a href="@Url.Action("Edit", "Assignments", new { id = item.ID })"><span class="glyphicon glyphicon-edit" title="Bearbeiten"></span></a>
 				</td>
 			</tr>
 		}

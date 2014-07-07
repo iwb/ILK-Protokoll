@@ -1,11 +1,68 @@
-﻿@using ILK_Protokoll.util
-@model ILK_Protokoll.ViewModels.FilteredAssignments
+﻿@model ILK_Protokoll.ViewModels.FilteredAssignments
 
 @{
 	ViewBag.Title = "Aufgaben";
-
 }
 
 <h2>@ViewBag.Title</h2>
 
+<div class="panel panel-primary">
+	<div class="panel-heading" style="position: relative;">
+		<h4 class="panel-title">Filter</h4>
+	</div>
+	<div class="panel-body">
+		@using (Html.BeginForm("Index", "Assignments", FormMethod.Get))
+		{
+			<div class="form-inline">
+				<div class="col-xs-3">
+					<div class="form-group">
+						@Html.EditorFor(model => model.ShowToDos)
+						@Html.LabelFor(model => model.ShowToDos)
+					</div>
+					<br />
+					<div class="form-group">
+						@Html.EditorFor(model => model.ShowDuties)
+						@Html.LabelFor(model => model.ShowDuties)
+					</div>
+				</div>
+				<div class="col-xs-3">
+					<div class="form-group">
+						@Html.EditorFor(model => model.ShowPast)
+						@Html.LabelFor(model => model.ShowPast)
+					</div>
+					<br />
+					<div class="form-group">
+						@Html.EditorFor(model => model.ShowFuture)
+						@Html.LabelFor(model => model.ShowFuture)
+					</div>
+				</div>
+				<div class="col-xs-3">
+					<div class="form-group">
+						@Html.EditorFor(model => model.ShowDone)
+						@Html.LabelFor(model => model.ShowDone)
+					</div>
+					<br />
+					<div class="form-group">
+						@Html.DropDownListFor(m => m.UserID, Model.UserList, "(alle Benutzer)", new {@class = "form-control"})
+					</div>
+				</div>
+				<div class="col-xs-3">
+					<br />
+					<div class="form-group">
+						<input type="submit" value="Filtern" class="btn btn-primary" />
+					</div>
+				</div>
+			</div>
+		}
+	</div>
+</div>
+
+<!--
+	ShowDuties = true;
+	ShowPast = true;
+	ShowFuture = true;
+	ShowDone = false;
+	UserID = 0;
+
+	-->
 @{ Html.RenderPartial("~/Views/Assignments/_DetailedTable.cshtml", Model.Assignments); }

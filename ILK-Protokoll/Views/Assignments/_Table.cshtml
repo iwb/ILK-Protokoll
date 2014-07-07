@@ -1,4 +1,5 @@
-﻿@model IEnumerable<ILK_Protokoll.Models.Assignment>
+﻿@using ILK_Protokoll.util
+@model IEnumerable<ILK_Protokoll.Models.Assignment>
 
 <table class="table table-striped table-hover">
 	<thead>
@@ -19,23 +20,37 @@
 		</tr>
 	</thead>
 	<tbody>
+		
 		@foreach (var item in Model)
 		{
-			<tr>
+			string visual;
+			if ((DateTime.Now - item.DueDate).Duration().TotalDays < 1)
+			{
+				visual = "warning";
+			}
+			else if (item.DueDate < DateTime.Now)
+			{
+				visual = "danger";
+			}
+			else
+			{
+				visual = null;
+			}
+			<tr class="@visual">
 				<td>
-					@Html.DisplayFor(modelItem => item.Title)
+					@item.Title.Shorten(100)
 				</td>
 				<td>
-					@Html.DisplayFor(modelItem => item.Description)
+					@item.Description.Shorten(120)
 				</td>
 				<td>
-					@Html.DisplayFor(modelItem => item.DueDate)
+					@item.DueDate.ToShortDateString()
 				</td>
 				<td>
 					@Html.DisplayFor(modelItem => item.ReminderSent)
 				</td>
 				<td>
-					@Html.ActionLink("Details", "Details", new { id = item.ID })
+					@Html.ActionLink("Details", "Details", "Assignments", new { id = item.ID }, null)
 				</td>
 			</tr>
 		}

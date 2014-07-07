@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
+using System.Web.Mvc;
 using ILK_Protokoll.Models;
 
 namespace ILK_Protokoll.ViewModels
@@ -14,6 +15,7 @@ namespace ILK_Protokoll.ViewModels
 			ShowFuture = true;
 			ShowDone = false;
 			UserID = 0;
+// ReSharper disable once DoNotCallOverridableMethodsInConstructor
 			Assignments = new List<Assignment>();
 		}
 
@@ -34,6 +36,8 @@ namespace ILK_Protokoll.ViewModels
 
 		[DisplayName("Benutzer")]
 		public int UserID { get; set; }
+
+		public SelectList UserList { get; set; }
 
 		public virtual ICollection<Assignment> Assignments { get; set; }
 	}

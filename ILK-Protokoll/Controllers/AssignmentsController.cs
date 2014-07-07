@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Net;
 using System.Web.Mvc;
 using ILK_Protokoll.Models;
 using ILK_Protokoll.ViewModels;
@@ -16,7 +15,8 @@ namespace ILK_Protokoll.Controllers
 		}
 
 		// GET: Assignments
-		public ActionResult Index([Bind(Include = "ShowPast, ShowFuture, ShowDone, UserID")] FilteredAssignments filter)
+		public ActionResult Index(
+			[Bind(Include = "ShowToDos,ShowDuties,ShowPast, ShowFuture, ShowDone, UserID")] FilteredAssignments filter)
 		{
 			IQueryable<Assignment> query = db.Assignments;
 
@@ -30,7 +30,7 @@ namespace ILK_Protokoll.Controllers
 				query = query.Where(a => a.DueDate > DateTime.Today);
 
 			if (!filter.ShowFuture)
-				query = query.Where(a => a.DueDate < DateTime.Today);
+				query = query.Where(a => a.DueDate <= DateTime.Today);
 
 			if (!filter.ShowDone)
 				query = query.Where(a => !a.IsDone);
@@ -38,7 +38,8 @@ namespace ILK_Protokoll.Controllers
 			if (filter.UserID != 0)
 				query = query.Where(a => a.Owner.ID == filter.UserID);
 
-			filter.Assignments = query.ToList();
+			filter.Assignments = query.OrderBy(a => a.DueDate).ToList();
+			filter.UserList = new SelectList(db.GetUserOrdered(GetCurrentUser()), "ID", "Shortname");
 
 			return View(filter);
 		}
@@ -58,15 +59,27 @@ namespace ILK_Protokoll.Controllers
 			if (topicID.HasValue)
 				a.Topic = db.Topics.Find(topicID.Value);
 
+			ViewBag.UserList = new SelectList(db.GetUserOrdered(GetCurrentUser()), "ID", "ShortName");
+
 			return View(a);
 		}
 
 		// POST: Administration/SessionTypes/Create
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public ActionResult Create([Bind(Include = "ID,Name")] Assignment input)
+		public ActionResult Create([Bind(Include = "Type,Title,Description,TopicID,OwnerID,DueDate,")] Assignment input)
 		{
-			return new HttpStatusCodeResult(HttpStatusCode.PaymentRequired);
+			if (!ModelState.IsValid)
+			{
+				ViewBag.UserList = new SelectList(db.GetUserOrdered(GetCurrentUser()), "ID", "ShortName");
+				return View(input);
+			}
+			else
+			{
+				db.Assignments.Add(input);
+				db.SaveChanges();
+				return RedirectToAction("Index", "Assignments");
+			}
 		}
 	}
 }
