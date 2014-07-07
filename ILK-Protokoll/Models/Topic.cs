@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using ILK_Protokoll.Areas.Administration.Models;
-using ILK_Protokoll.util;
 using ILK_Protokoll.ViewModels;
 
 namespace ILK_Protokoll.Models
@@ -47,33 +46,15 @@ namespace ILK_Protokoll.Models
 		[Required]
 		public string Title { get; set; }
 
-		[NotMapped]
-		public string ShortTitle
-		{
-			get { return Title.Shorten(60); }
-		}
-
 		[Display(Name = "Beschreibung")]
 		[DataType(DataType.MultilineText)]
 		[Required]
 		public string Description { get; set; }
 
-		[NotMapped]
-		public string ShortDescription
-		{
-			get { return Description.Shorten(150); }
-		}
-
 		[Display(Name = "Beschlussvorschlag")]
 		[DataType(DataType.MultilineText)]
 		[Required]
 		public string Proposal { get; set; }
-
-		[NotMapped]
-		public string ShortProposal
-		{
-			get { return Proposal.Shorten(150); }
-		}
 
 		[Display(Name = "Kommentare")]
 		public virtual ICollection<Comment> Comments { get; set; }

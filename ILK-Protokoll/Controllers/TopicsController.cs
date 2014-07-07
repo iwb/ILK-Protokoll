@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using System.Web.Routing;
 using ILK_Protokoll.Models;
 using ILK_Protokoll.ViewModels;
 
@@ -119,7 +120,7 @@ namespace ILK_Protokoll.Controllers
 				topic.TargetSessionTypeID = input.TargetSessionTypeID;
 				db.Entry(topic).State = EntityState.Modified;
 				db.SaveChanges();
-				return RedirectToAction("Index");
+				return RedirectToAction("Details", new {Area = "", id = input.ID});
 			}
 			Topic t = db.Topics.Find(input.ID);
 			input.SessionType = t.SessionType;
@@ -146,6 +147,7 @@ namespace ILK_Protokoll.Controllers
 		public ActionResult DeleteConfirmed(int id)
 		{
 			Topic topic = db.Topics.Find(id);
+			db.Votes.RemoveRange(db.Votes.Where(v => v.Topic.ID == id));
 			db.Topics.Remove(topic);
 			db.SaveChanges();
 			return RedirectToAction("Index");

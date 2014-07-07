@@ -30,12 +30,18 @@
 			<p class="panel-title">@Model.SessionType.Name</p>
 		</div>
 		<div class="panel-body">
-			<div class="col-md-6"><h6>@Html.DisplayNameFor(model => model.Description):</h6>@Model.Description</div>
+			<div class="col-md-6">
+				<h6>@Html.DisplayNameFor(model => model.Description):</h6>
+				@Html.DisplayFor(model => model.Description, "String_Multiline")
+			</div>
 			<hr class="visible-xs visible-sm" />
-			<div class="col-md-6"><h6>@Html.DisplayNameFor(model => model.Proposal):</h6>@Model.Proposal</div>
+			<div class="col-md-6">
+				<h6>@Html.DisplayNameFor(model => model.Proposal):</h6>
+				@Html.DisplayFor(model => model.Proposal, "String_Multiline")
+			</div>
 		</div>
 		<div class="panel-separator" id="auditorlist_@Model.ID">
-			@Html.Action("_List", "Votes", new {topic = Model, Area = ""})
+			@Html.Action("_List", "Votes", new { topic = Model, Area = "" })
 		</div>
 
 		@{

@@ -68,11 +68,11 @@
 				</div>
 				<div class="col-md-2">
 					<h6 class="visible-xs visible-sm">@Html.DisplayNameFor(model => model.Title)</h6>
-					@Html.ActionLink(item.ShortTitle, "Details", new { id = item.ID })
+					@item.Title.Shorten(60)
 				</div>
 				<div class="col-md-6">
 					<h6 class="visible-xs visible-sm">@Html.DisplayNameFor(model => model.Description)</h6>
-					@Html.ActionLink(item.ShortDescription, "Details", new { id = item.ID })
+					@item.Description.Shorten(150)
 				</div>
 				<div class="col-md-3">
 					<div class="row">

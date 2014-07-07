@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using System.Web.Mvc;
 
 namespace ILK_Protokoll.util
@@ -39,10 +40,11 @@ namespace ILK_Protokoll.util
 
 		public static string Shorten(this string str, int maxLength)
 		{
-			if (str.Length > maxLength)
-				return str.Substring(0, maxLength - 1) + "…";
+			var stripped = Regex.Replace(str, @"\s+", " ");
+			if (stripped.Length > maxLength)
+				return stripped.Substring(0, maxLength - 1) + "…";
 			else
-				return str;
+				return stripped;
 		}
 
 		public static MvcHtmlString DisplayColumnNameFor<TModel, TClass, TProperty>(
