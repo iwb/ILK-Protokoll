@@ -47,7 +47,8 @@ namespace ILK_Protokoll.Controllers
 		// GET: Assignments/Details/5
 		public ActionResult Details(int id)
 		{
-			return null;
+			var a = db.Assignments.Find(id);
+			return View(a);
 		}
 
 		// GET: Assignments/Create

@@ -5,10 +5,10 @@
 	<thead>
 		<tr>
 			<th class="col-xs-4">
-				@Html.DisplayNameFor(model => model.Title)
+				@Html.DisplayNameFor(model => model.TopicID)
 			</th>
 			<th class="col-xs-5">
-				@Html.DisplayNameFor(model => model.Description)
+				@Html.DisplayNameFor(model => model.Title)
 			</th>
 			<th class="col-xs-1">
 				@Html.DisplayNameFor(model => model.DueDate)
@@ -38,10 +38,10 @@
 			}
 			<tr class="@visual">
 				<td>
-					@item.Title.Shorten(100)
+					@Html.ActionLink(item.Topic.Title.Shorten(100), "Details", "Topics", new { id = item.TopicID }, null)
 				</td>
 				<td>
-					@item.Description.Shorten(120)
+					@item.Title.Shorten(100)
 				</td>
 				<td>
 					@item.DueDate.ToShortDateString()
@@ -50,7 +50,7 @@
 					@Html.DisplayFor(modelItem => item.ReminderSent)
 				</td>
 				<td>
-					@Html.ActionLink("Details", "Details", "Assignments", new { id = item.ID }, null)
+					@Html.ActionLink("Details", "Details", "Assignments", new {id = item.ID}, null)
 				</td>
 			</tr>
 		}

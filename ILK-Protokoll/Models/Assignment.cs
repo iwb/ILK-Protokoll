@@ -23,6 +23,7 @@ namespace ILK_Protokoll.Models
 		public string Title { get; set; }
 
 		[Display(Name = "Beschreibung")]
+		[DataType(DataType.MultilineText)]
 		[Required]
 		public string Description { get; set; }
 
