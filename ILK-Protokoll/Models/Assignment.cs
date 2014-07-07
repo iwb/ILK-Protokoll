@@ -1,11 +1,18 @@
 ﻿using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using ILK_Protokoll.util;
 
 namespace ILK_Protokoll.Models
 {
 	public class Assignment
 	{
+		public Assignment()
+		{
+			DueDate = DateTime.Today;
+		}
+
 		public int ID { get; set; }
 
 		[Display(Name = "Typ")]
@@ -20,13 +27,21 @@ namespace ILK_Protokoll.Models
 		public string Description { get; set; }
 
 		[Display(Name = "Diskussion")]
-		[Required]
+		public int TopicID { get; set; }
+
+		[ForeignKey("TopicID")]
 		public virtual Topic Topic { get; set; }
 
 		[Display(Name = "Besitzer")]
+		public int OwnerID { get; set; }
+
+		[ForeignKey("OwnerID")]
 		public virtual User Owner { get; set; }
 
 		[Display(Name = "Deadline")]
+		[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+		[FutureDate(ErrorMessage = "Die Deadline muss in der Zukunft liegen.")]
+		[DataType(DataType.Date)]
 		[Required]
 		public DateTime DueDate { get; set; }
 

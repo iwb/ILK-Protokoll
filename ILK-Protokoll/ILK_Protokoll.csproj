@@ -163,6 +163,10 @@
     <Compile Include="Migrations\201406260726539_InitialCreate.Designer.cs">
       <DependentUpon>201406260726539_InitialCreate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201407071302127_Assignments_FKeys.cs" />
+    <Compile Include="Migrations\201407071302127_Assignments_FKeys.Designer.cs">
+      <DependentUpon>201407071302127_Assignments_FKeys.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Assignment.cs" />
     <Compile Include="Models\Attachment.cs" />
@@ -170,6 +174,7 @@
     <Compile Include="Models\Decision.cs" />
     <Compile Include="Models\Record.cs" />
     <Compile Include="Models\TopicHistory.cs" />
+    <Compile Include="util\FutureDateAttribute.cs" />
     <Compile Include="util\ResharperAnnotations.cs" />
     <Compile Include="util\HelperMethods.cs" />
     <Compile Include="Models\Priority.cs" />
@@ -450,6 +455,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201406260726539_InitialCreate.resx">
       <DependentUpon>201406260726539_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201407071302127_Assignments_FKeys.resx">
+      <DependentUpon>201407071302127_Assignments_FKeys.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
