@@ -6074,10 +6074,13 @@ p.panel-title {
   color: #000;
 }
 .table-striped > tbody > tr > td {
-  border-top: none;
+  border-top: 1px solid #777;
 }
 .table > thead > tr > th {
-  border-bottom: 2px solid #777;
+  border-bottom: 2px solid #666;
+}
+.table-sortable > thead > tr > th {
+  border-bottom-width: 3px;
 }
 .faketable {
   width: 100%;
@@ -6085,6 +6088,7 @@ p.panel-title {
 .faketable-header > div {
   font-weight: bold;
   padding: 8px;
+  border-bottom: 2px solid #666;
 }
 .faketable-body > div > div {
   padding: 8px;
@@ -6110,6 +6114,23 @@ p.panel-title {
   top: 0;
   left: 0;
   z-index: 1;
+}
+th.headerSortUp,
+th.headerSortDown {
+  border-bottom-color: #af0331 !important;
+  padding-right: 0 !important;
+}
+th.headerSortUp:after {
+  font-family: 'Glyphicons Halflings';
+  font-size: 75%;
+  padding-left: 5px;
+  content: "\e113";
+}
+th.headerSortDown:after {
+  font-family: 'Glyphicons Halflings';
+  font-size: 75%;
+  padding-left: 5px;
+  content: "\e114";
 }
 /*IE-Hack*/
 @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {

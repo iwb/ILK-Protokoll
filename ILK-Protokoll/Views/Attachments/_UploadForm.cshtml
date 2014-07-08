@@ -46,6 +46,7 @@
 						$('#attachments_@Model').replaceWith(xhr.responseText);
 						$('#attachment_uploader_status').html('');
 						$('#attachment_uploader')[0].reset();
+						$('#attachments_@Model').tablesorter();
 					} else {
 						$('#attachment_uploader_status').html('<span class="text-danger">' + xhr.statusText + '</span>');
 					}

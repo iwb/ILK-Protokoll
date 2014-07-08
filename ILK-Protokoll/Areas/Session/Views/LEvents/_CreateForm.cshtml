@@ -3,7 +3,8 @@
 {
 	HttpMethod = "POST",
 	InsertionMode = InsertionMode.InsertAfter,
-	UpdateTargetId = "eventlist_body"
+	UpdateTargetId = "eventlist_body",
+	OnSuccess = "$('#eventlist_body').trigger('update');"
 }))
 {
 	@Html.AntiForgeryToken()

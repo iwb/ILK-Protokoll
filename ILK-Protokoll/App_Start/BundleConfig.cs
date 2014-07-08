@@ -11,7 +11,8 @@ namespace ILK_Protokoll
 				"~/Scripts/jquery-{version}.js",
 				"~/Scripts/jquery.unobtrusive-ajax.js",
 				"~/Scripts/jquery.timeago.js",
-				"~/Scripts/jquery.highlight.js"));
+				"~/Scripts/jquery.highlight.js",
+				"~/Scripts/jquery.tablesorter.js"));
 
 			bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
 				"~/Scripts/jquery.unobtrusive*",

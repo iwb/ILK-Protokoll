@@ -1,7 +1,7 @@
 ﻿@using ILK_Protokoll.util
 @model IEnumerable<ILK_Protokoll.Models.Assignment>
 
-<table class="table table-striped table-hover">
+<table class="table table-striped table-hover table-sortable">
 	<thead>
 		<tr>
 			<th class="col-xs-4">
@@ -20,7 +20,7 @@
 		</tr>
 	</thead>
 	<tbody>
-		
+
 		@foreach (var item in Model)
 		{
 			string visual;
@@ -50,7 +50,7 @@
 					@Html.DisplayFor(modelItem => item.ReminderSent)
 				</td>
 				<td>
-					@Html.ActionLink("Details", "Details", "Assignments", new {id = item.ID}, null)
+					@Html.ActionLink("Details", "Details", "Assignments", new { id = item.ID }, null)
 				</td>
 			</tr>
 		}

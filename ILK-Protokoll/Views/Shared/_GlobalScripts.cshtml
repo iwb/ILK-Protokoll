@@ -7,6 +7,14 @@
 
 	$("time[rel=timeago]").timeago();
 
+	$(document).ready(function() {
+		$("table.table-sortable").tablesorter({
+			// enable debug mode 
+			debug: true
+		});
+		}
+	);
+
 	function enablePopovers() {
 		$('.popover-markup > .trigger').popover({
 			html: true,
@@ -31,6 +39,7 @@
 			$(element).parent().parent().replaceWith("<div class=\"panel-body\" id=\"attachments_@ViewBag.TopicID\">Keine Dateianhänge vorhanden.</div>"); // Remove the whole table
 		} else {
 			$(element).remove();
+			$("table.table-sortable").trigger("update");
 		}
 	}
 
