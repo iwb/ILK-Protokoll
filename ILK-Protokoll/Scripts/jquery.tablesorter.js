@@ -306,6 +306,8 @@
 						// Parsing for relative time information within a time-tag
 						if (node.firstElementChild && node.firstElementChild.tagName == "TIME" && node.firstElementChild.hasAttribute("datetime")) {
 							text = node.firstElementChild.getAttribute("datetime");
+						} else if (node.firstElementChild && node.firstElementChild.tagName == "FILESIZE" && node.firstElementChild.hasAttribute("bytes")) {
+							text = node.firstElementChild.getAttribute("bytes");
 						} else if (config.supportsTextContent) {
 							text = node.textContent;
 						} else {
