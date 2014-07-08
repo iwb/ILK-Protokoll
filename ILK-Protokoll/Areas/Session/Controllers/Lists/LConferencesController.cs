@@ -15,5 +15,11 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 			ViewBag.UserList = new SelectList(db.GetUserOrdered(GetCurrentUser()), "ID", "ShortName");
 			return base._CreateForm();
 		}
+
+		public override ActionResult _BeginEdit(int id)
+		{
+			ViewBag.UserList = new SelectList(db.GetUserOrdered(GetCurrentUser()), "ID", "ShortName");
+			return base._BeginEdit(id);
+		}
 	}
 }

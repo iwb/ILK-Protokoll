@@ -19,7 +19,7 @@
 			@Html.EditorFor(model => model.Description, new {htmlAttributes = new {@class = "form-control"}})
 		</td>
 		<td>
-			@Html.DropDownListFor(m => m.Ilk_ID, (SelectList)ViewBag.UserList, new { @class = "form-control" })
+			@Html.DropDownListFor(m => m.IlkID, (SelectList)ViewBag.UserList, new { @class = "form-control" })
 		</td>
 		<td>
 			@Html.EditorFor(model => model.Employee, new { htmlAttributes = new { @class = "form-control" } })

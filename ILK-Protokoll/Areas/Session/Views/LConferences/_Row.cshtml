@@ -11,7 +11,7 @@
 		@Html.DisplayFor(model => model.Description)
 	</td>
 	<td>
-		@Html.DisplayFor(model => model.Ilk)
+		@Html.DisplayFor(model => model.Ilk.ShortName)
 	</td>
 	<td>
 		@Html.DisplayFor(model => model.Employee)
@@ -32,7 +32,7 @@
 
 		<a data-ajax="true"
 			data-ajax-method="POST"
-			data-ajax-confirm="Termin wirklich löschen?"
+			data-ajax-confirm="Diese Konferenz wirklich löschen?"
 			data-ajax-success="$('#conference_@Model.ID').remove(); $('table.table-sortable').trigger('update');"
 			href="@Url.Action("_Delete", "LConferences", new {Area = "Session", id = Model.ID})">
 			<span class="glyphicon glyphicon-remove" title="Konferenz löschen"></span>

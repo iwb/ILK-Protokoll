@@ -25,7 +25,10 @@ namespace ILK_Protokoll.Areas.Session.Models.Lists
 
 		public SessionType SessionType { get; set; }
 
-		public User Organizer { get; set; }
+		public virtual User Organizer { get; set; }
+
+		[ForeignKey("Organizer")]
+		public int OrganizerID { get; set; }
 
 		public string Topics { get; set; }
 

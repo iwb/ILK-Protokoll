@@ -12,24 +12,24 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 	{
 		protected DbSet<TModel> _dbSet;
 
-		public PartialViewResult _List()
+		public virtual PartialViewResult _List()
 		{
 			return PartialView(_dbSet.ToList());
 		}
 
-		public PartialViewResult _CreateForm()
+		public virtual PartialViewResult _CreateForm()
 		{
 			return PartialView("_CreateForm", new TModel());
 		}
 
-		public PartialViewResult _FetchRow(int id)
+		public virtual PartialViewResult _FetchRow(int id)
 		{
 			return PartialView("_Row", _dbSet.Find(id));
 		}
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public ActionResult _Create([Bind(Include = "StartDate,EndDate,Time,Place,Description,Organizer")] TModel ev)
+		public virtual ActionResult _Create([Bind(Exclude = "ID, Created")] TModel ev)
 		{
 			if (!ModelState.IsValid)
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -39,9 +39,9 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 			return PartialView("_Row", ev);
 		}
 
-		public ActionResult _BeginEdit(int id)
+		public virtual ActionResult _BeginEdit(int id)
 		{
-			var ev = _dbSet.Find(id);
+			TModel ev = _dbSet.Find(id);
 			if (ev == null)
 				return HttpNotFound();
 
@@ -50,7 +50,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public ActionResult _Edit([Bind(Include = "ID,StartDate,EndDate,Time,Place,Description,Organizer")] TModel input)
+		public virtual ActionResult _Edit([Bind(Exclude = "Created")] TModel input)
 		{
 			if (!ModelState.IsValid)
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -61,12 +61,12 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 		}
 
 		[HttpPost]
-		public ActionResult _Delete(int? id)
+		public virtual ActionResult _Delete(int? id)
 		{
 			if (id == null)
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-			var ev = _dbSet.Find(id.Value);
+			TModel ev = _dbSet.Find(id.Value);
 			if (ev == null)
 				return HttpNotFound();
 

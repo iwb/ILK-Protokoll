@@ -17,7 +17,10 @@ namespace ILK_Protokoll.Areas.Session.Models.Lists
 		public string Employee { get; set; }
 
 		[DisplayName("ILK")]
-		public User Ilk { get; set; }
+		public virtual User Ilk { get; set; }
+
+		[ForeignKey("Ilk")]
+		public int IlkID { get; set; }
 
 		[DisplayName("Prof.")]
 		public Prof Prof { get; set; }

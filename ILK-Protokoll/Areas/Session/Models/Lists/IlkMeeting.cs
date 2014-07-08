@@ -28,6 +28,9 @@ namespace ILK_Protokoll.Areas.Session.Models.Lists
 		[DisplayName("Verant.")]
 		public virtual User Organizer { get; set; }
 
+		[ForeignKey("Organizer")]
+		public int OrganizerID { get; set; }
+
 		[DisplayName("Anmerkung")]
 		public string Comments { get; set; }
 	}

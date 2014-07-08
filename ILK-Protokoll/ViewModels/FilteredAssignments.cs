@@ -25,7 +25,7 @@ namespace ILK_Protokoll.ViewModels
 		[DisplayName("Umsetzungsaufgaben")]
 		public bool ShowDuties { get; set; }
 
-		[DisplayName("Überfällig")]
+		[DisplayName("Fällig")]
 		public bool ShowPast { get; set; }
 
 		[DisplayName("Zukünftig")]

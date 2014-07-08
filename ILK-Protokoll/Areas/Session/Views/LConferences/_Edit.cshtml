@@ -1,45 +1,45 @@
 ﻿@model ILK_Protokoll.Areas.Session.Models.Lists.Conference
 
-<td colspan="7">
-	@using (Ajax.BeginForm("_Edit", "LConferences", new {Area = "Session"}, new AjaxOptions
-	{
-		OnSuccess = "$('#conference_" + Model.ID + "').replaceWith(data);",
-		HttpMethod = "POST",
-	}, new {@class = "tableform"}))
-	{
-		@Html.AntiForgeryToken()
-		<div class="row">
-			<div class="col-sm-2">
-				@Html.EditorFor(model => model.StartDate, new {htmlAttributes = new {@class = "form-control"}})
-			</div>
-			<div class="col-sm-2">
-				@Html.EditorFor(model => model.EndDate, new {htmlAttributes = new {@class = "form-control"}})
-			</div>
-			<div class="col-sm-3">
-				@Html.EditorFor(model => model.Description, new {htmlAttributes = new {@class = "form-control"}})
-			</div>
-			<div class="col-sm-1">
-				@Html.EditorFor(model => model.Ilk, new { htmlAttributes = new { @class = "form-control" } })
-			</div>
-			<div class="col-sm-1">
-				@Html.EditorFor(model => model.Employee, new { htmlAttributes = new { @class = "form-control" } })
-			</div>
-			<div class="col-sm-1">
-				@Html.EditorFor(model => model.Funding, new { htmlAttributes = new { @class = "form-control" } })
-			</div>
-			<div class="col-sm-1">
-				@Html.EditorFor(model => model.Approved, new { htmlAttributes = new { @class = "form-control" } })
-			</div>
-			<div class="col-sm-1" class="actions">
-				@Html.HiddenFor(model => model.ID)
-				<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-check"></span></button>
-				<a data-ajax="true"
-				   data-ajax-method="POST"
-				   data-ajax-success="$('#conference_@Model.ID').replaceWith(data);"
-				   href="@Url.Action("_FetchRow", "LConferences", new {Area = "Session", id = Model.ID})">
-					<span class="glyphicon glyphicon-remove" title="Bearbeitung abbrechen"></span>
-				</a>
-			</div>
+<td colspan="8">
+@using (Ajax.BeginForm("_Edit", "LConferences", new {Area = "Session"}, new AjaxOptions
+{
+	OnSuccess = "$('#conference_" + Model.ID + "').replaceWith(data);",
+	HttpMethod = "POST",
+}, new {@class = "tableform"}))
+{
+	@Html.AntiForgeryToken()
+	<div class="row">
+		<div class="col-sm-2">
+			@Html.EditorFor(model => model.StartDate, new {htmlAttributes = new {@class = "form-control"}})
 		</div>
-	}
+		<div class="col-sm-2">
+			@Html.EditorFor(model => model.EndDate, new {htmlAttributes = new {@class = "form-control"}})
+		</div>
+		<div class="col-sm-3">
+			@Html.EditorFor(model => model.Description, new {htmlAttributes = new {@class = "form-control"}})
+		</div>
+		<div class="col-sm-1">
+			@Html.DropDownListFor(m => m.Ilk, (SelectList)ViewBag.UserList, new {@class = "form-control"})
+		</div>
+		<div class="col-sm-1">
+			@Html.EditorFor(model => model.Employee, new {htmlAttributes = new {@class = "form-control"}})
+		</div>
+		<div class="col-sm-1">
+			@Html.EditorFor(model => model.Funding, new {htmlAttributes = new {@class = "form-control"}})
+		</div>
+		<div class="col-sm-1">
+			@Html.EditorFor(model => model.Approved, new {htmlAttributes = new {@class = "form-control"}})
+		</div>
+		<div class="col-sm-1" class="actions">
+			@Html.HiddenFor(model => model.ID)
+			<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-check"></span></button>
+			<a data-ajax="true"
+			   data-ajax-method="POST"
+			   data-ajax-success="$('#conference_@Model.ID').replaceWith(data);"
+			   href="@Url.Action("_FetchRow", "LConferences", new {Area = "Session", id = Model.ID})">
+				<span class="glyphicon glyphicon-remove" title="Bearbeitung abbrechen"></span>
+			</a>
+		</div>
+	</div>
+}
 </td>

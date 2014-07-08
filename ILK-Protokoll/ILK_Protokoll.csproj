@@ -168,6 +168,10 @@
     <Compile Include="Migrations\201407071302127_Assignments_FKeys.Designer.cs">
       <DependentUpon>201407071302127_Assignments_FKeys.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201407081432283_ILK-ID.cs" />
+    <Compile Include="Migrations\201407081432283_ILK-ID.Designer.cs">
+      <DependentUpon>201407081432283_ILK-ID.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Assignment.cs" />
     <Compile Include="Models\Attachment.cs" />
@@ -464,6 +468,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201407071302127_Assignments_FKeys.resx">
       <DependentUpon>201407071302127_Assignments_FKeys.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201407081432283_ILK-ID.resx">
+      <DependentUpon>201407081432283_ILK-ID.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
