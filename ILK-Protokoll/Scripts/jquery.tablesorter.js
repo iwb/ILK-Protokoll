@@ -301,9 +301,12 @@
 					if (!node) return "";
 
 					if (!config.supportsTextContent) config.supportsTextContent = node.textContent || false;
-
+					
 					if (config.textExtraction == "simple") {
-                    if (config.supportsTextContent) {
+						// Parsing for relative time information within a time-tag
+						if (node.firstElementChild && node.firstElementChild.tagName == "TIME" && node.firstElementChild.hasAttribute("datetime")) {
+							text = node.firstElementChild.getAttribute("datetime");
+						} else if (config.supportsTextContent) {
 							text = node.textContent;
 						} else {
 							if (node.childNodes[0] && node.childNodes[0].hasChildNodes()) {
