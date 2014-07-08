@@ -938,11 +938,10 @@
 	ts.addParser({
 		id: "isoDate",
 		is: function(s) {
-			return /^\d{4}[\/-]\d{1,2}[\/-]\d{1,2}$/.test(s);
+			return /^\d{4}[\/-]\d{1,2}[\/-]\d{1,2}/.test(s);
 		},
 		format: function(s) {
-			return $.tablesorter.formatFloat((s != "") ? new Date(s.replace(
-				new RegExp(/-/g), "/")).getTime() : "0");
+			return $.tablesorter.formatFloat((s != "") ? new Date(s).getTime() : "0");
 		},
 		type: "numeric"
 	});
@@ -976,17 +975,24 @@
 		},
 		format: function(s, table) {
 			var c = table.config;
-			s = s.replace(/\-/g, "/");
-			if (c.dateFormat == "us") {
-				// reformat the string in ISO format
-				s = s.replace(/(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{2,4})/, "$3-$1-$2");
-			} else if (c.dateFormat == "uk") {
-				// reformat the string in ISO format
-				s = s.replace(/(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{2,4})/, "$3-$2-$1");
-			} else if (c.dateFormat == "dd/mm/yy" || c.dateFormat == "dd-mm-yy") {
-				s = s.replace(/(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{2,4})/, "$3-$2-$1");
+
+			var isUS = /\d{1,2}\/\d{1,2}\/\d{2,4}/.test(s);
+			var isDE = /\d{1,2}[.\-]\d{1,2}[.\-]\d{2,4}/.test(s);
+			var isISO = /\d{2,4}-\d{1,2}-\d{1,2}/.test(s);
+
+			if (isUS) {
+				s = s.replace(/(\d{1,2})\/(\d{1,2})\/(\d{2,4})/, "$3-$1-$2");
 			}
-			s = s.replace(/^(\d{2})[\/\-.]/, "20$1");
+			else if (isDE) {
+				s = s.replace(/(\d{1,2})[.\-](\d{1,2})[.\-](\d{2,4})/, "$3-$2-$1");
+				
+			} else if (isISO) {
+				// Everything okay
+			} else {
+				return $.tablesorter.formatFloat(new Date(s.trim()).getTime());
+			}
+			
+			s = s.replace(/\D(\d{2})-(\d{1,2})-(\d{1,2})/, "20$1-$2-$3").trim();
 			return $.tablesorter.formatFloat(new Date(s).getTime());
 		},
 		type: "numeric"
