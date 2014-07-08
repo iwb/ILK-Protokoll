@@ -1,0 +1,41 @@
+﻿@model ILK_Protokoll.Areas.Session.Models.Lists.Conference
+
+<tr id="conference_@Model.ID">
+	<td>
+		@Model.StartDate.ToString("d")
+	</td>
+	<td>
+		@Model.EndDate.ToString("d")
+	</td>
+	<td>
+		@Html.DisplayFor(model => model.Description)
+	</td>
+	<td>
+		@Html.DisplayFor(model => model.Ilk)
+	</td>
+	<td>
+		@Html.DisplayFor(model => model.Employee)
+	</td>
+	<td>
+		@Html.DisplayFor(model => model.Funding)
+	</td>
+	<td>
+		@Html.DisplayFor(model => model.Approved)
+	</td>
+	<td class="actions">
+		<a data-ajax="true"
+			data-ajax-method="POST"
+			data-ajax-mode="replace"
+			data-ajax-update="#conference_@Model.ID"
+			data-ajax-success="$('table.table-sortable').trigger('update');"
+			href="@Url.Action("_BeginEdit", "LConferences", new {Area = "Session", id = Model.ID})"><span class="glyphicon glyphicon-edit" title="Konferenz bearbeiten"></span></a>
+
+		<a data-ajax="true"
+			data-ajax-method="POST"
+			data-ajax-confirm="Termin wirklich löschen?"
+			data-ajax-success="$('#conference_@Model.ID').remove(); $('table.table-sortable').trigger('update');"
+			href="@Url.Action("_Delete", "LConferences", new {Area = "Session", id = Model.ID})">
+			<span class="glyphicon glyphicon-remove" title="Konferenz löschen"></span>
+		</a>
+	</td>
+</tr>

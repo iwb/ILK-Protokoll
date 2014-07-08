@@ -1,0 +1,37 @@
+﻿@model ILK_Protokoll.Areas.Session.Models.Lists.Conference
+@using (Ajax.BeginForm("_Create", "LConferences", new {Area = "Session"}, new AjaxOptions
+{
+	HttpMethod = "POST",
+	InsertionMode = InsertionMode.InsertAfter,
+	UpdateTargetId = "conferencelist_body",
+	OnSuccess = "$('#conferencelist_body').trigger('update');"
+}))
+{
+	@Html.AntiForgeryToken()
+	<tr id="event_createform">
+		<td>
+			@Html.EditorFor(model => model.StartDate, new {htmlAttributes = new {@class = "form-control"}})
+		</td>
+		<td>
+			@Html.EditorFor(model => model.EndDate, new {htmlAttributes = new {@class = "form-control"}})
+		</td>
+		<td>
+			@Html.EditorFor(model => model.Description, new {htmlAttributes = new {@class = "form-control"}})
+		</td>
+		<td>
+			@Html.DropDownListFor(m => m.Ilk_ID, (SelectList)ViewBag.UserList, new { @class = "form-control" })
+		</td>
+		<td>
+			@Html.EditorFor(model => model.Employee, new { htmlAttributes = new { @class = "form-control" } })
+		</td>
+		<td>
+			@Html.EditorFor(model => model.Funding, new { htmlAttributes = new { @class = "form-control" } })
+		</td>
+		<td>
+			@Html.EditorFor(model => model.Approved, new { htmlAttributes = new { @class = "form-control" } })
+		</td>
+		<td>
+			<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-check"></span></button>
+		</td>
+	</tr>
+}
