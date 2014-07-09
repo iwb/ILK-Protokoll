@@ -9,6 +9,8 @@
 
 <h2>@ViewBag.Title</h2>
 
+<p>Letzte Sitzung am @ViewBag.LastSession</p>
+
 @Html.Action("_List", "LEvents", new { Area = "Session" })
 <hr />
 @Html.Action("_List", "LConferences", new { Area = "Session" })

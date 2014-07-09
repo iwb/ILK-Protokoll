@@ -6132,6 +6132,9 @@ th.headerSortDown:after {
   padding-left: 5px;
   content: "\e114";
 }
+.newlistitem {
+  font-weight: bold;
+}
 /*IE-Hack*/
 @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
   /* IE10+ specific styles */

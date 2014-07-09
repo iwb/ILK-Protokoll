@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
@@ -14,6 +15,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 
 		public virtual PartialViewResult _List()
 		{
+			ViewBag.LastSession = GetSession().SessionType.LastDate ?? DateTime.MinValue;
 			return PartialView(_dbSet.ToList());
 		}
 

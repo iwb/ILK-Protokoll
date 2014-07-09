@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Web.Mvc;
 
 namespace ILK_Protokoll.Areas.Session.Controllers
 {
@@ -16,6 +17,8 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 			var session = GetSession();
 			if (session == null)
 				return RedirectToAction("Index", "Master");
+
+			ViewBag.LastSession = GetSession().SessionType.LastDate ?? DateTime.MinValue;
 
 			return View();
 		}
