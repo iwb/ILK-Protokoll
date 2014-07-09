@@ -30,7 +30,7 @@ namespace ILK_Protokoll.util
 		///          Print once (i.e. if within a looped partial), using identified block via
 		///          <code>@Html.RenderDelayed("one-time")</code>.  Code:
 		///          <code>
-		/// @using (Html.Delayed("one-time", isOnlyOne: "one-time")) {
+		/// @using (Html.Delayed("one-time", snippetId: "one-time")) {
 		///     <b>show me once</b>
 		///     <span>@Model.First().Value</span>
 		/// }
@@ -40,14 +40,14 @@ namespace ILK_Protokoll.util
 		/// </summary>
 		/// <param name="helper">the helper from which we use the context</param>
 		/// <param name="injectionBlockId">optional unique identifier to specify one or many injection blocks</param>
-		/// <param name="isOnlyOne">
+		/// <param name="snippetId">
 		///    extra identifier used to ensure that this item is only added once; if provided, content should
 		///    only appear once in the page (i.e. only the first block called for this identifier is used)
 		/// </param>
 		/// <returns>using block to wrap delayed output</returns>
-		public static IDisposable Delayed(this HtmlHelper helper, string injectionBlockId = null, string isOnlyOne = null)
+		public static IDisposable Delayed(this HtmlHelper helper, string injectionBlockId = null, string snippetId = null)
 		{
-			return new DelayedInjectionBlock(helper, injectionBlockId, isOnlyOne);
+			return new DelayedInjectionBlock(helper, injectionBlockId, snippetId);
 		}
 
 		/// <summary>
@@ -131,7 +131,7 @@ namespace ILK_Protokoll.util
 			private const string CACHE_KEY = "DCCF8C78-2E36-4567-B0CF-FE052ACCE309"; // "DelayedInjectionBlocks";
 
 			/// <summary>
-			///    Internal storage identifier for remembering unique/isOnlyOne items
+			///    Internal storage identifier for remembering unique/snippetId items
 			/// </summary>
 			private const string UNIQUE_IDENTIFIER_KEY = CACHE_KEY;
 
@@ -143,18 +143,18 @@ namespace ILK_Protokoll.util
 
 			private readonly HtmlHelper helper;
 			private readonly string identifier;
-			private readonly string isOnlyOne;
+			private readonly string snippetId;
 
 			/// <summary>
 			///    Create a new using block from the given helper (used for trapping appropriate context)
 			/// </summary>
 			/// <param name="helper">the helper from which we use the context</param>
 			/// <param name="identifier">optional unique identifier to specify one or many injection blocks</param>
-			/// <param name="isOnlyOne">
+			/// <param name="snippetId">
 			///    extra identifier used to ensure that this item is only added once; if provided, content should
 			///    only appear once in the page (i.e. only the first block called for this identifier is used)
 			/// </param>
-			public DelayedInjectionBlock(HtmlHelper helper, string identifier = null, string isOnlyOne = null)
+			public DelayedInjectionBlock(HtmlHelper helper, string identifier = null, string snippetId = null)
 			{
 				this.helper = helper;
 
@@ -162,7 +162,7 @@ namespace ILK_Protokoll.util
 				((WebViewPage)this.helper.ViewDataContainer).OutputStack.Push(new StringWriter());
 
 				this.identifier = identifier ?? EMPTY_IDENTIFIER;
-				this.isOnlyOne = isOnlyOne;
+				this.snippetId = snippetId;
 			}
 
 			/// <summary>
@@ -173,8 +173,8 @@ namespace ILK_Protokoll.util
 				// render the internal content of the injection block helper
 				// make sure to pop from the stack rather than just render from the Writer
 				// so it will remove it from regular rendering
-				var content = ((WebViewPage)helper.ViewDataContainer).OutputStack;
-				var renderedContent = content.Count == 0 ? string.Empty : content.Pop().ToString();
+				Stack<TextWriter> content = ((WebViewPage)helper.ViewDataContainer).OutputStack;
+				string renderedContent = content.Count == 0 ? string.Empty : content.Pop().ToString();
 
 				// if we only want one, remove the existing
 				Queue<string> queue = GetQueue(helper, identifier);
@@ -184,19 +184,15 @@ namespace ILK_Protokoll.util
 
 				// only save the result if this isn't meant to be unique, or
 				// if it's supposed to be unique and we haven't encountered this identifier before
-				if (isOnlyOne == null || !existingIdentifiers.ContainsKey(isOnlyOne))
-				{
-					// remove the new writing context we created for this block
-					// and save the output to the queue for later
-					queue.Enqueue(renderedContent);
+				if (snippetId != null && existingIdentifiers.ContainsKey(snippetId))
+					return;
+				// remove the new writing context we created for this block
+				// and save the output to the queue for later
+				queue.Enqueue(renderedContent);
 
-					// only remember this if supposed to
-					if (isOnlyOne != null)
-					{
-						existingIdentifiers[isOnlyOne] = queue.Count;
-						// save the index, so we could remove it directly (if we want to use the last instance of the block rather than the first)
-					}
-				}
+				// only remember this if supposed to
+				if (snippetId != null)
+					existingIdentifiers[snippetId] = queue.Count;
 			}
 
 			/// <summary>
