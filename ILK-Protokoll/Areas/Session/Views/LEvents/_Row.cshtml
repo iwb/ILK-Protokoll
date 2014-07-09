@@ -22,15 +22,13 @@
 	<td class="actions">
 		<a data-ajax="true"
 			data-ajax-method="POST"
-			data-ajax-mode="replace"
-			data-ajax-update="#event_@Model.ID"
-			data-ajax-success="$('table.table-sortable').trigger('update');"
+			data-ajax-success="ReplaceRow('event', @Model.ID, data);"
 			href="@Url.Action("_BeginEdit", "LEvents", new {Area = "Session", id = Model.ID})"><span class="glyphicon glyphicon-edit" title="Termin bearbeiten"></span></a>
 
 		<a data-ajax="true"
 			data-ajax-method="POST"
 			data-ajax-confirm="Termin wirklich löschen?"
-			data-ajax-success="$('#event_@Model.ID').remove(); $('table.table-sortable').trigger('update');"
+			data-ajax-success="RemoveRow('event', @Model.ID);"
 			href="@Url.Action("_Delete", "LEvents", new {Area = "Session", id = Model.ID})">
 			<span class="glyphicon glyphicon-remove" title="Termin löschen"></span>
 		</a>

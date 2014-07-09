@@ -2,10 +2,8 @@
 @using (Ajax.BeginForm("_Create", "LConferences", new {Area = "Session"}, new AjaxOptions
 {
 	HttpMethod = "POST",
-	InsertionMode = InsertionMode.InsertAfter,
-	UpdateTargetId = "conferencelist_body",
-	OnSuccess = "$('#conferencelist_body').trigger('update');"
-}))
+	OnSuccess = "AddRow('conference', data);"
+}, new {id = "conference_form"}))
 {
 	@Html.AntiForgeryToken()
 	<tr id="event_createform">

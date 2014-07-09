@@ -25,15 +25,13 @@
 	<td class="actions">
 		<a data-ajax="true"
 			data-ajax-method="POST"
-			data-ajax-mode="replace"
-			data-ajax-update="#conference_@Model.ID"
-			data-ajax-success="$('table.table-sortable').trigger('update');"
+			data-ajax-success="ReplaceRow('conference', @Model.ID, data);"
 			href="@Url.Action("_BeginEdit", "LConferences", new {Area = "Session", id = Model.ID})"><span class="glyphicon glyphicon-edit" title="Konferenz bearbeiten"></span></a>
 
 		<a data-ajax="true"
 			data-ajax-method="POST"
 			data-ajax-confirm="Diese Konferenz wirklich löschen?"
-			data-ajax-success="$('#conference_@Model.ID').remove(); $('table.table-sortable').trigger('update');"
+			data-ajax-success="RemoveRow('conference', @Model.ID);"
 			href="@Url.Action("_Delete", "LConferences", new {Area = "Session", id = Model.ID})">
 			<span class="glyphicon glyphicon-remove" title="Konferenz löschen"></span>
 		</a>

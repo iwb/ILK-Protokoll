@@ -34,9 +34,11 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 			if (!ModelState.IsValid)
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-			_dbSet.Add(ev);
+			var row = _dbSet.Create();
+			TryUpdateModel(row, "", null, new[] {"Created"});
+			_dbSet.Add(row);
 			db.SaveChanges();
-			return PartialView("_Row", ev);
+			return PartialView("_Row", row);
 		}
 
 		public virtual ActionResult _BeginEdit(int id)
@@ -55,9 +57,11 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 			if (!ModelState.IsValid)
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-			db.Entry(input).State = EntityState.Modified;
+			// Get the object from the database to enble lasy loading.
+			var row = _dbSet.Find(input.ID);
+			TryUpdateModel(row, "", null, new[] {"Created"});
 			db.SaveChanges();
-			return PartialView("_Row", input);
+			return PartialView("_Row", row);
 		}
 
 		[HttpPost]

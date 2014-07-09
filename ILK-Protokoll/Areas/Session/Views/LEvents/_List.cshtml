@@ -1,4 +1,5 @@
-﻿@model IEnumerable<ILK_Protokoll.Areas.Session.Models.Lists.Event>
+﻿@using ILK_Protokoll.util
+@model IEnumerable<ILK_Protokoll.Areas.Session.Models.Lists.Event>
 
 <h3>Termine</h3>
 
@@ -26,7 +27,7 @@
 			<th class="col-sm-1"></th>
 		</tr>
 	</thead>
-	<tbody id="eventlist_body">
+	<tbody id="event_tbody">
 		@foreach (var item in Model)
 		{
 			Html.RenderPartial("_Row", item);
@@ -36,3 +37,8 @@
 		@Html.Action("_CreateForm", "LEvents")
 	</tfoot>
 </table>
+
+@using (Html.Delayed(null, "List_Utilities"))
+{
+	<script type="text/javascript" src="~/Scripts/ListUtilities.js"></script>
+}
