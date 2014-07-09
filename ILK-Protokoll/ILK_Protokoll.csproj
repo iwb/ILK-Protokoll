@@ -179,6 +179,7 @@
     <Compile Include="Models\Decision.cs" />
     <Compile Include="Models\Record.cs" />
     <Compile Include="Models\TopicHistory.cs" />
+    <Compile Include="util\DelayedRenderExtensions.cs" />
     <Compile Include="util\FutureDateAttribute.cs" />
     <Compile Include="util\ResharperAnnotations.cs" />
     <Compile Include="util\HelperMethods.cs" />

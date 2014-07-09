@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using ILK_Protokoll.util
+<!DOCTYPE html>
 <html>
 	<head>
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -34,5 +35,6 @@
 	
 		@{ Html.RenderPartial("_GlobalScripts"); }
 		@RenderSection("Scripts", false)
+		@Html.RenderDelayed()
 	</body>
 </html>

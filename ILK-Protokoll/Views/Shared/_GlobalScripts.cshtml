@@ -31,15 +31,6 @@
 		$('.popover-markup > .trigger').popover('hide');
 	});
 
-	function removeAttachment(element) {
-		if ($(element).siblings().length == 0) {
-			$(element).parent().parent().replaceWith("<div class=\"panel-body\" id=\"attachments_@ViewBag.TopicID\">Keine Dateianhänge vorhanden.</div>"); // Remove the whole table
-		} else {
-			$(element).remove();
-			$("table.table-sortable").trigger("update");
-		}
-	}
-
 	function DisplayErrorMessage(id, text) {
 		$(id).append('<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><strong>Fehler: </strong>' + text + '</div>');
 	}
