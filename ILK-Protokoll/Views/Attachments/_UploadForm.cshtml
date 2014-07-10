@@ -1,4 +1,4 @@
-﻿@model int
+﻿@model Tuple<AttachmentContainer, int>
 
 <div class="panel-footer">
 	@using (Html.BeginForm("_Upload", "Attachments",
@@ -7,7 +7,8 @@
 	{
 		<div class="row">
 			@Html.AntiForgeryToken()
-			@Html.Hidden("topicID", Model)
+			@Html.Hidden("entity", Model.Item1.ToString())
+			@Html.Hidden("id", Model.Item2)
 			<label for="files" class="control-label col-sm-2">Datei auswählen:</label>
 			<div class="col-sm-8">
 				<input type="file" class="form-control" id="files" multiple="multiple" />
@@ -43,15 +44,16 @@
 			xhr.onreadystatechange = function () {
 				if (xhr.readyState == 4) {
 					if (xhr.status == 200) {
-						$('#attachments_@Model').replaceWith(xhr.responseText);
+						$('#attachments_@Model.Item2').replaceWith(xhr.responseText);
 						$('#attachment_uploader_status').html('');
 						$('#attachment_uploader')[0].reset();
-						$('#attachments_@Model').tablesorter();
+						$('#attachments_@Model.Item2').tablesorter();
+						$('#attachments_@Model.Item2').timeago();
 					} else {
 						$('#attachment_uploader_status').html('<span class="text-danger">' + xhr.statusText + '</span>');
 					}
 				}
-			}
+			};
 			xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
 			xhr.send(formdata);
 			e.preventDefault();

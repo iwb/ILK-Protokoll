@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using ILK_Protokoll.Areas.Session.Models.Lists;
 
 namespace ILK_Protokoll.Models
 {
@@ -9,6 +10,7 @@ namespace ILK_Protokoll.Models
 	{
 		public int ID { get; set; }
 
+		//----------------------------------------------------------------------------------------------------
 		[Display(Name = "Diskussion")]
 		[InverseProperty("Attachments")]
 		public int? TopicID { get; set; }
@@ -16,28 +18,41 @@ namespace ILK_Protokoll.Models
 		[ForeignKey("TopicID")]
 		public virtual Topic Topic { get; set; }
 
+		//----------------------------------------------------------------------------------------------------
+
+		[Display(Name = "Präsentation")]
+		[InverseProperty("Attachments")]
+		public int? EmployeePresentationID { get; set; }
+
+		[ForeignKey("EmployeePresentationID")]
+		public virtual EmployeePresentation EmployeePresentation { get; set; }
+
+		//----------------------------------------------------------------------------------------------------
+
 		/// <summary>
-		/// Enthält das löschdatum, falls der Anhang gelöscht wurde, sonst null.
+		///    Enthält das Löschdatum, falls der Anhang gelöscht wurde, sonst null.
 		/// </summary>
 		[Display(Name = "Gelöscht")]
 		public DateTime? Deleted { get; set; }
 
 		/// <summary>
-		/// Enthält den Namen, der angezeigt wird. Dieser name kann Zeichen beinhalten, die nicht nicht in Dateinamen zugelassen sind.
+		///    Enthält den Namen, der angezeigt wird. Dieser name kann Zeichen beinhalten, die nicht nicht in Dateinamen zugelassen
+		///    sind.
 		/// </summary>
 		[Required]
 		[Display(Name = "Name")]
 		public string DisplayName { get; set; }
 
 		/// <summary>
-		/// Enthält den sicheren Namen der für die Speicherung auf dem Server verwendet wird. Alle unsicheren Zeichen wurden entfernt.
+		///    Enthält den sicheren Namen der für die Speicherung auf dem Server verwendet wird. Alle unsicheren Zeichen wurden
+		///    entfernt.
 		/// </summary>
 		[Required(AllowEmptyStrings = true)]
 		[ScaffoldColumn(false)]
 		public string SafeName { get; set; }
 
 		/// <summary>
-		/// Enthält die Dateiendung ohne führenden Punkt.
+		///    Enthält die Dateiendung ohne führenden Punkt.
 		/// </summary>
 		[Required(AllowEmptyStrings = true)]
 		[ScaffoldColumn(false)]
@@ -66,5 +81,11 @@ namespace ILK_Protokoll.Models
 					return ID + "_" + SafeName + '.' + Extension;
 			}
 		}
+	}
+
+	public enum AttachmentContainer
+	{
+		Topic,
+		EmployeePresentation
 	}
 }

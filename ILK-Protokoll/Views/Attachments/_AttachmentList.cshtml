@@ -1,7 +1,7 @@
 ﻿@using ILK_Protokoll.Models
 @model IEnumerable<ILK_Protokoll.Models.Attachment>
 
-<div class="file-list" id="attachments_@ViewBag.TopicID">
+<div class="file-list" id="attachments_@ViewBag.EntityID">
 	@foreach (Attachment file in Model)
 	{
 		Html.RenderPartial("~/Views/Attachments/_AttachmentTile.cshtml", file);

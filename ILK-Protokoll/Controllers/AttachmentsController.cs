@@ -56,43 +56,48 @@ namespace ILK_Protokoll.Controllers
 					return "file://02mucilk/Uploads/" + a.FileName;
 			}
 
-			return Url.Action("Download", new { id = attachmentID });
+			return Url.Action("Download", new {id = attachmentID});
 		}
 
 		// GET: Attachments
-		public PartialViewResult _List(int? topicID, bool makeList = false)
+		public PartialViewResult _List(AttachmentContainer entity, int id, bool makeList = false)
 		{
-			List<Attachment> files = db.Attachments
-				.Where(a => a.TopicID == topicID)
+			var files = db.Attachments
 				.Where(a => a.Deleted == null)
 				.OrderBy(a => a.DisplayName)
-				.Include(a => a.Uploader)
-				.ToList();
-			ViewBag.TopicID = topicID;
+				.Include(a => a.Uploader);
+
+			if (entity == AttachmentContainer.Topic)
+				files = files.Where(a => a.TopicID == id);
+			else if (entity == AttachmentContainer.EmployeePresentation)
+				files = files.Where(a => a.EmployeePresentationID == id);
+
+
+			ViewBag.EntityID = id;
 			ViewBag.CurrentUser = GetCurrentUser();
 			ViewBag.KnownExtensions = new HashSet<string>(
 				from path in Directory.GetFiles(Server.MapPath("~/img/fileicons"), "*.png")
 				select Path.GetFileNameWithoutExtension(path));
 
 			if (makeList)
-				return PartialView("_AttachmentList", files);
+				return PartialView("_AttachmentList", files.ToList());
 			else
-				return PartialView("_AttachmentTable", files);
+				return PartialView("_AttachmentTable", files.ToList());
 		}
 
-		public PartialViewResult _UploadForm(int topicID)
+		public PartialViewResult _UploadForm(AttachmentContainer entity, int id)
 		{
-			return PartialView("_UploadForm", topicID);
+			return PartialView("_UploadForm", Tuple.Create(entity, id));
 		}
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public ActionResult _Upload(int topicID)
+		public ActionResult _Upload(AttachmentContainer entity, int id)
 		{
 			if (Request.Files.Count == 0)
 				return new HttpStatusCodeResult(HttpStatusCode.NoContent, "Es wurden keine Dateien empfangen.");
 
-			if (topicID <= 0)
+			if (id <= 0)
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Die Dateien können keiner Diskussion zugeordnet werden.");
 
 			var statusMessage = new StringBuilder();
@@ -124,7 +129,6 @@ namespace ILK_Protokoll.Controllers
 
 				var attachment = new Attachment
 				{
-					TopicID = topicID,
 					Deleted = null,
 					DisplayName = fullName,
 					SafeName = InvalidChars.Replace(filename, ""),
@@ -133,6 +137,18 @@ namespace ILK_Protokoll.Controllers
 					Uploader = GetCurrentUser(),
 					Created = DateTime.Now
 				};
+
+				switch (entity)
+				{
+					case AttachmentContainer.Topic:
+						attachment.TopicID = id;
+						break;
+					case AttachmentContainer.EmployeePresentation:
+						attachment.EmployeePresentationID = id;
+						break;
+				}
+
+
 				try
 				{
 					db.Attachments.Add(attachment);
@@ -143,7 +159,8 @@ namespace ILK_Protokoll.Controllers
 				}
 				catch (DbEntityValidationException)
 				{
-					statusMessage.AppendFormat("Datei \"{0}\" konnte nicht in der Datenbank gespeichert werden.", fullName).AppendLine();
+					statusMessage.AppendFormat("Datei \"{0}\" konnte nicht in der Datenbank gespeichert werden.", fullName)
+						.AppendLine();
 				}
 				catch (IOException)
 				{
@@ -156,7 +173,7 @@ namespace ILK_Protokoll.Controllers
 
 			ViewBag.StatusMessage = statusMessage.ToString();
 
-			return _List(topicID);
+			return _List(entity, id);
 		}
 
 		[HttpPost]
@@ -166,9 +183,7 @@ namespace ILK_Protokoll.Controllers
 
 
 			if (attachment.Deleted == null) // In den Papierkorb
-			{
 				attachment.Deleted = DateTime.Now;
-			}
 			else // Endgültig löschen
 			{
 				try

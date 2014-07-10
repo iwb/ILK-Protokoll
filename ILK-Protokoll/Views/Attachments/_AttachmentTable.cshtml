@@ -2,7 +2,7 @@
 @using ILK_Protokoll.util
 @model IEnumerable<ILK_Protokoll.Models.Attachment>
 
-<table class="table table-striped file-table table-sortable" id="attachments_@ViewBag.TopicID">
+<table class="table table-striped file-table table-sortable" id="attachments_@ViewBag.EntityID">
 	<thead>
 		<tr>
 			<th class="col-xs-1"></th>
@@ -33,7 +33,7 @@
 
 @if (Request.IsAjaxRequest())
 {
-	<script type="text/javascript"> $("#attachments_@ViewBag.TopicID time[rel=timeago]").timeago(); </script>
+	<script type="text/javascript"> $("#attachments_@ViewBag.EntityID time[rel=timeago]").timeago(); </script>
 }
 
 @using (Html.Delayed())
@@ -41,7 +41,7 @@
 	<script type="text/javascript">
 		function removeAttachment(element) {
 			if ($(element).siblings().length == 0) {
-				$(element).parent().parent().replaceWith("<div class=\"panel-body\" id=\"attachments_@ViewBag.TopicID\">Keine Dateianhänge vorhanden.</div>"); // Remove the whole table
+				$(element).parent().parent().replaceWith("<div class=\"panel-body\" id=\"attachments_@ViewBag.EntityID\">Keine Dateianhänge vorhanden.</div>"); // Remove the whole table
 			} else {
 				$(element).remove();
 				$("table.table-sortable").trigger("update");
