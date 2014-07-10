@@ -10,6 +10,8 @@
 		<title>@ViewBag.Title &#8211; ILK-Protokoll</title>
 		@Styles.Render("~/Content/css")
 		@Scripts.Render("~/bundles/modernizr")
+		@Scripts.Render("~/bundles/jquery")
+		@Scripts.Render("~/bundles/bootstrap")
 	</head>
 	<body>
 		@{ Html.RenderPartial("_SessionNavbar"); }
@@ -28,10 +30,7 @@
 			@RenderBody()
 			@{ Html.RenderPartial("_Footer"); }
 		</div>
-
-		@Scripts.Render("~/bundles/jquery")
-		@Scripts.Render("~/bundles/bootstrap")
-
+		
 		@{ Html.RenderPartial("_GlobalScripts"); }
 		@RenderSection("Scripts", false)
 		@Html.RenderDelayed()
