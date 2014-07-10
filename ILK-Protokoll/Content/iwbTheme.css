@@ -6138,7 +6138,7 @@ th.headerSortDown:after {
 /*IE-Hack*/
 @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
   /* IE10+ specific styles */
-  .navbar-brand {
+  .iwblogo {
     background-image: url("../img/iwbLogo_inv_small.png") !important;
   }
 }
