@@ -1,0 +1,40 @@
+﻿@model ILK_Protokoll.Areas.Session.Models.Lists.EmployeePresentation
+@{
+	string trclass = Model.Created > ViewBag.LastSession ? "newlistitem" : null;
+}
+
+<tr class="@trclass" id="employeePresentation_@Model.ID">
+	<td>
+		@Html.DisplayFor(model => model.Employee)
+	</td>
+	<td>
+		@Html.DisplayFor(model => model.Ilk.ShortName)
+	</td>
+	<td>
+		@Html.DisplayFor(model => model.Prof)
+	</td>
+	<td>
+		@Html.DisplayFor(model => model.LastPresentation)
+	</td>
+	<td>
+		@Html.DisplayFor(model => model.Attachments)
+	</td>
+	<td class="actions">
+
+		<a href="@Url.Action("Edit", "LEmployeePresentations", new {Area = "Session", id = Model.ID})"><span class="glyphicon glyphicon-new-window" title="Eintrag ausführlich bearbeiten"></span></a>
+		
+
+		<a data-ajax="true"
+		   data-ajax-method="POST"
+		   data-ajax-success="ReplaceRow('employeePresentation', @Model.ID, data);"
+		   href="@Url.Action("_BeginEdit", "LEmployeePresentations", new { Area = "Session", id = Model.ID })"><span class="glyphicon glyphicon-edit" title="Eintrag bearbeiten"></span></a>
+
+		<a data-ajax="true"
+			data-ajax-method="POST"
+			data-ajax-confirm="Eintrag wirklich löschen?"
+			data-ajax-success="RemoveRow('employeePresentation', @Model.ID);"
+			href="@Url.Action("_Delete", "LEmployeePresentations", new {Area = "Session", id = Model.ID})">
+			<span class="glyphicon glyphicon-remove" title="Eintrag löschen"></span>
+		</a>
+	</td>
+</tr>

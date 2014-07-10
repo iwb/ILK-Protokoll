@@ -1,0 +1,30 @@
+﻿@model ILK_Protokoll.Areas.Session.Models.Lists.EmployeePresentation
+@using (Ajax.BeginForm("_Create", "LEmployeePresentations", new { Area = "Session" }, new AjaxOptions
+{
+	HttpMethod = "POST",
+	OnSuccess = "AddRow('employeePresentation', data);",
+	OnFailure = "DisplayErrorMessage('#employeePresentation_table', error + '\\n' + xhr.responseText);"
+}, new { id = "employeePresentation_form" }))
+{
+	@Html.AntiForgeryToken()
+	<tr id="employeePresentation_createform">
+		<td>
+			@Html.EditorFor(model => model.Employee, new { htmlAttributes = new { @class = "form-control" } })
+		</td>
+		<td>
+			@Html.DropDownListFor(m => m.IlkID, (SelectList)ViewBag.UserList, new { @class = "form-control" })
+		</td>
+		<td>
+			@Html.EnumDropDownListFor(model => model.Prof, new { @class = "form-control" })
+		</td>
+		<td>
+			@Html.EditorFor(model => model.LastPresentation, new { htmlAttributes = new { @class = "form-control" } })
+		</td>
+		<td>
+			
+		</td>
+		<td>
+			<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-check"></span></button>
+		</td>
+	</tr>
+}

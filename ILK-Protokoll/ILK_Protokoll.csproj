@@ -130,6 +130,7 @@
     <Compile Include="Areas\Administration\Controllers\UserController.cs" />
     <Compile Include="Areas\Session\Controllers\FinalizeController.cs" />
     <Compile Include="Areas\Session\Controllers\ListsController.cs" />
+    <Compile Include="Areas\Session\Controllers\Lists\LEmployeePresentationController.cs" />
     <Compile Include="Areas\Session\Controllers\Lists\LExtensionsController.cs" />
     <Compile Include="Areas\Session\Controllers\Lists\LConferencesController.cs" />
     <Compile Include="Areas\Session\Controllers\Lists\LEventsController.cs" />
@@ -327,6 +328,10 @@
     <Content Include="Areas\Session\Views\LExtensions\_Edit.cshtml" />
     <Content Include="Areas\Session\Views\LExtensions\_List.cshtml" />
     <Content Include="Areas\Session\Views\LExtensions\_Row.cshtml" />
+    <Content Include="Areas\Session\Views\LEmployeePresentations\_CreateForm.cshtml" />
+    <Content Include="Areas\Session\Views\LEmployeePresentations\_Edit.cshtml" />
+    <Content Include="Areas\Session\Views\LEmployeePresentations\_List.cshtml" />
+    <Content Include="Areas\Session\Views\LEmployeePresentations\_Row.cshtml" />
     <None Include="Content\bootstrap\wells.less" />
     <None Include="Content\bootstrap\variables.less" />
     <None Include="Content\bootstrap\utilities.less" />

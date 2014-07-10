@@ -13,6 +13,11 @@ namespace ILK_Protokoll.Areas.Session.Models.Lists
 	[Table("L_EmployeePresentation")]
 	public class EmployeePresentation : BaseItem
 	{
+		public EmployeePresentation()
+		{
+			LastPresentation = DateTime.Today;
+		}
+
 		[DisplayName("Mitarbeiter")]
 		public string Employee { get; set; }
 
@@ -30,6 +35,7 @@ namespace ILK_Protokoll.Areas.Session.Models.Lists
 		[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
 		public DateTime LastPresentation { get; set; }
 
+		[DisplayName("Dateien")]
 		public ICollection<Attachment> Attachments { get; set; }
 
 		public bool Selected { get; set; }
