@@ -1,7 +1,7 @@
 ﻿@model ILK_Protokoll.Areas.Session.Models.Lists.EmployeePresentation
 
 <tr id="employeePresentation_@Model.ID">
-	<td colspan="6">
+	<td colspan="7">
 		@using (Ajax.BeginForm("_Edit", "LEmployeePresentations", new { Area = "Session" }, new AjaxOptions
 	{
 		OnSuccess = "ReplaceRow('employeePresentation', " + Model.ID + ", data);",
