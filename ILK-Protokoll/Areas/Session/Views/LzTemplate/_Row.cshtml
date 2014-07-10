@@ -1,0 +1,39 @@
+﻿@model ILK_Protokoll.Areas.Session.Models.Lists.%%CLASSNAME%%
+@{
+	string trclass = Model.Created > ViewBag.LastSession ? "newlistitem" : null;
+}
+
+<tr class="@trclass" id="%%classname%%_@Model.ID">
+	<td>
+		@Model.StartDate.ToString("d")
+	</td>
+	<td>
+		@Model.EndDate.ToString("d")
+	</td>
+	<td>
+		@Html.DisplayFor(model => model.Time)
+	</td>
+	<td>
+		@Html.DisplayFor(model => model.Place)
+	</td>
+	<td>
+		@Html.DisplayFor(model => model.Description)
+	</td>
+	<td>
+		@Html.DisplayFor(model => model.Organizer)
+	</td>
+	<td class="actions">
+		<a data-ajax="true"
+			data-ajax-method="POST"
+			data-ajax-success="ReplaceRow('%%classname%%', @Model.ID, data);"
+			href="@Url.Action("_BeginEdit", "L%%CLASSNAME%%s", new {Area = "Session", id = Model.ID})"><span class="glyphicon glyphicon-edit" title="%%Name%% bearbeiten"></span></a>
+
+		<a data-ajax="true"
+			data-ajax-method="POST"
+			data-ajax-confirm="%%Name%% wirklich löschen?"
+			data-ajax-success="RemoveRow('%%classname%%', @Model.ID);"
+			href="@Url.Action("_Delete", "L%%CLASSNAME%%s", new {Area = "Session", id = Model.ID})">
+			<span class="glyphicon glyphicon-remove" title="%%Name%% löschen"></span>
+		</a>
+	</td>
+</tr>
