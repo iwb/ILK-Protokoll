@@ -19,4 +19,5 @@ function RefreshTables(list) {
 		list += ' ';
 	}
 	$(list + 'table.table-sortable').trigger('update');
+	$("table.table-sortable time[rel=timeago]").timeago();
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Web.Mvc;
 using ILK_Protokoll.Areas.Administration.Models;
 using ILK_Protokoll.Areas.Session.Models;
 using ILK_Protokoll.Controllers;
@@ -7,6 +8,13 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 {
 	public class SessionBaseController : BaseController
 	{
+		protected override void OnActionExecuting(ActionExecutingContext filterContext)
+		{
+			base.OnActionExecuting(filterContext);
+			if (GetSession() != null)
+				ViewBag.LastSession = GetSession().SessionType.LastDate;
+		}
+
 		protected ActiveSession CreateNewSession(SessionType type)
 		{
 			var session = db.ActiveSessions.Add(new ActiveSession(type) {Manager = GetCurrentUser()});

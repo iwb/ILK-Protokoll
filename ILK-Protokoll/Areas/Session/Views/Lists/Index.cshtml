@@ -3,19 +3,26 @@
 }
 
 <div class="index-action">
-	@Html.ActionLink("Zurück", "Edit", "Master", new { Area = "Session" }, new { @class = "btn btn-default" })
-	@Html.ActionLink("Weiter", "Index", "Discussion", new { Area = "Session" }, new { @class = "btn btn-primary" })
+	@Html.ActionLink("Zurück", "Edit", "Master", new {Area = "Session"}, new {@class = "btn btn-default"})
+	@Html.ActionLink("Weiter", "Index", "Discussion", new {Area = "Session"}, new {@class = "btn btn-primary"})
 </div>
 
 <h2>@ViewBag.Title</h2>
 
-<p>Letzte Sitzung am @ViewBag.LastSession</p>
+@if (ViewBag.LastSession != null)
+{
+	<p>Letzte Sitzung am @ViewBag.LastSession</p>
+}
+else
+{
+	<p>Diese Sitzung wird das erste Mal durchgeführt.</p>
+}
+		
 
-@Html.Action("_List", "LEvents", new { Area = "Session" })
+@Html.Action("_List", "LEvents", new {Area = "Session"})
 <hr />
-@Html.Action("_List", "LConferences", new { Area = "Session" })
+@Html.Action("_List", "LConferences", new {Area = "Session"})
 <hr />
-@Html.Action("_List", "LExtensions", new { Area = "Session" })
+@Html.Action("_List", "LExtensions", new {Area = "Session"})
 <hr />
-@Html.Action("_List", "LEmployeePresentations", new { Area = "Session" })
-
+@Html.Action("_List", "LEmployeePresentations", new {Area = "Session"})
