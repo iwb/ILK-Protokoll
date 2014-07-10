@@ -1,0 +1,41 @@
+﻿@model ILK_Protokoll.Areas.Session.Models.Lists.Extension
+
+<tr id="extension_@Model.ID">
+	<td colspan="6">
+		@using (Ajax.BeginForm("_Edit", "LExtensions", new {Area = "Session"}, new AjaxOptions
+		{
+			OnSuccess = "ReplaceRow('extension', " + Model.ID + ", data);",
+			HttpMethod = "POST",
+		}, new {@class = "tableform"}))
+		{
+			@Html.AntiForgeryToken()
+			<div class="row">
+				<div class="col-sm-2">
+					@Html.EditorFor(model => model.Employee, new {htmlAttributes = new {@class = "form-control"}})
+				</div>
+				<div class="col-sm-2">
+					@Html.EditorFor(model => model.EndDate, new {htmlAttributes = new {@class = "form-control"}})
+				</div>
+				<div class="col-sm-2">
+					@Html.EditorFor(model => model.ExtensionNumber, new {htmlAttributes = new {@class = "form-control"}})
+				</div>
+				<div class="col-sm-4">
+					@Html.EditorFor(model => model.Comment, new {htmlAttributes = new {@class = "form-control"}})
+				</div>
+				<div class="col-sm-1">
+					@Html.EditorFor(model => model.Approved, new {htmlAttributes = new {@class = "form-control"}})
+				</div>
+				<div class="col-sm-1 actions">
+					@Html.HiddenFor(model => model.ID)
+					<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-check"></span></button>
+					<a data-ajax="true"
+					   data-ajax-method="POST"
+					   data-ajax-success="ReplaceRow('extension', @Model.ID, data);"
+					   href="@Url.Action("_FetchRow", "LExtensions", new {Area = "Session", id = Model.ID})">
+						<span class="glyphicon glyphicon-remove" title="Bearbeitung abbrechen"></span>
+					</a>
+				</div>
+			</div>
+		}
+	</td>
+</tr>

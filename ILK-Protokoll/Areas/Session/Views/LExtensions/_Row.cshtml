@@ -1,0 +1,36 @@
+﻿@model ILK_Protokoll.Areas.Session.Models.Lists.Extension
+@{
+	string trclass = Model.Created > ViewBag.LastSession ? "newlistitem" : null;
+}
+
+<tr class="@trclass" id="extension_@Model.ID">
+	<td>
+		@Html.DisplayFor(model => model.Employee)
+	</td>
+	<td>
+		@Model.EndDate.ToString("d")
+	</td>
+	<td>
+		@Html.DisplayFor(model => model.ExtensionNumber)
+	</td>
+	<td>
+		@Html.DisplayFor(model => model.Comment)
+	</td>
+	<td>
+		@Html.DisplayFor(model => model.Approved)
+	</td>
+	<td class="actions">
+		<a data-ajax="true"
+		   data-ajax-method="POST"
+		   data-ajax-success="ReplaceRow('extension', @Model.ID, data);"
+		   href="@Url.Action("_BeginEdit", "LExtensions", new {Area = "Session", id = Model.ID})"><span class="glyphicon glyphicon-edit" title="Vertragsverlängerung bearbeiten"></span></a>
+
+		<a data-ajax="true"
+		   data-ajax-method="POST"
+		   data-ajax-confirm="Vertragsverlängerung wirklich löschen?"
+		   data-ajax-success="RemoveRow('extension', @Model.ID);"
+		   href="@Url.Action("_Delete", "LExtensions", new {Area = "Session", id = Model.ID})">
+			<span class="glyphicon glyphicon-remove" title="Vertragsverlängerung löschen"></span>
+		</a>
+	</td>
+</tr>
