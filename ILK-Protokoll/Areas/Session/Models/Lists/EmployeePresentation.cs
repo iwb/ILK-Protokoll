@@ -38,6 +38,7 @@ namespace ILK_Protokoll.Areas.Session.Models.Lists
 		[DisplayName("Dateien")]
 		public ICollection<Attachment> Attachments { get; set; }
 
+		[DisplayName("Vorgemerkt")]
 		public bool Selected { get; set; }
 	}
 }

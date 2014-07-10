@@ -19,6 +19,9 @@
 	<td>
 		@Html.DisplayFor(model => model.Attachments)
 	</td>
+	<td>
+		@Html.DisplayFor(model => model.Selected)
+	</td>
 	<td class="actions">
 
 		<a href="@Url.Action("Edit", "LEmployeePresentations", new {Area = "Session", id = Model.ID})"><span class="glyphicon glyphicon-new-window" title="Eintrag ausführlich bearbeiten"></span></a>

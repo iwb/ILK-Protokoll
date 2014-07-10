@@ -22,8 +22,11 @@
 				<div class="col-sm-2">
 					@Html.EditorFor(model => model.LastPresentation, new { htmlAttributes = new { @class = "form-control" } })
 				</div>
-				<div class="col-sm-3">
-					
+				<div class="col-sm-2">
+
+				</div>
+				<div class="col-sm-1">
+					@Html.EditorFor(model => model.Selected, new { htmlAttributes = new { @class = "form-control" } })
 				</div>
 				<div class="col-sm-1 actions">
 					@Html.HiddenFor(model => model.ID)
