@@ -136,9 +136,9 @@
 			}
 			else
 			{
-				@Html.Action("_List", "Attachments", new { topicID = Model.ID })
+				@Html.Action("_List", "Attachments", new { entity = AttachmentContainer.Topic, id = Model.ID })
 			}
-			@Html.Action("_UploadForm", "Attachments", new { entity = "topic", id = Model.ID })
+			@Html.Action("_UploadForm", "Attachments", new { entity = AttachmentContainer.Topic, id = Model.ID })
 		</div>
 	</div>
 </div>
