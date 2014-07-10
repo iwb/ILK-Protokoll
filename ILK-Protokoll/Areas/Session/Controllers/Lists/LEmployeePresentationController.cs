@@ -1,4 +1,6 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Data.Entity;
+using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using ILK_Protokoll.Areas.Session.Models.Lists;
@@ -10,6 +12,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 		public LEmployeePresentationsController()
 		{
 			_dbSet = db.LEmployeePresentations;
+			Entities = _dbSet.Include(ep => ep.Attachments);
 		}
 
 		public override PartialViewResult _CreateForm()
@@ -29,7 +32,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 			if (id == null)
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-			EmployeePresentation presentation = _dbSet.Find(id);
+			EmployeePresentation presentation = _dbSet.Include(ep => ep.Attachments).First(ep => ep.ID == id);
 			if (presentation == null)
 				return HttpNotFound();
 
@@ -49,6 +52,29 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 			}
 			ViewBag.UserList = new SelectList(db.GetUserOrdered(GetCurrentUser()), "ID", "ShortName");
 			return View(input);
+		}
+
+		public override ActionResult _Delete(int? id)
+		{
+			if (id == null)
+				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+			EmployeePresentation ep = _dbSet.Find(id.Value);
+			if (ep == null)
+				return HttpNotFound();
+
+			foreach (var file in ep.Attachments)
+			{
+				file.EmployeePresentationID = null;
+				file.Deleted = DateTime.Now;
+			}
+			ep.Attachments.Clear();
+			db.SaveChanges();
+
+			_dbSet.Remove(_dbSet.Find(id));
+			db.SaveChanges();
+
+			return new HttpStatusCodeResult(HttpStatusCode.NoContent);
 		}
 	}
 }

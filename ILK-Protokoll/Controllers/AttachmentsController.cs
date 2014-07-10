@@ -72,7 +72,6 @@ namespace ILK_Protokoll.Controllers
 			else if (entity == AttachmentContainer.EmployeePresentation)
 				files = files.Where(a => a.EmployeePresentationID == id);
 
-
 			ViewBag.EntityID = id;
 			ViewBag.CurrentUser = GetCurrentUser();
 			ViewBag.KnownExtensions = new HashSet<string>(
@@ -148,7 +147,6 @@ namespace ILK_Protokoll.Controllers
 						break;
 				}
 
-
 				try
 				{
 					db.Attachments.Add(attachment);
@@ -181,7 +179,6 @@ namespace ILK_Protokoll.Controllers
 		{
 			Attachment attachment = db.Attachments.Include(a => a.Uploader).First(a => a.ID == attachmentID);
 
-
 			if (attachment.Deleted == null) // In den Papierkorb
 				attachment.Deleted = DateTime.Now;
 			else // Endgültig löschen
@@ -190,7 +187,10 @@ namespace ILK_Protokoll.Controllers
 				{
 					string path = Path.Combine(Serverpath, attachment.FileName);
 					System.IO.File.Delete(path);
-					attachment.Topic.Attachments.Remove(attachment);
+
+					attachment.TopicID = null;
+					attachment.EmployeePresentationID = null;
+
 					db.Attachments.Remove(attachment);
 				}
 				catch (IOException)

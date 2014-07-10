@@ -12,6 +12,13 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 		where TModel : BaseItem, new()
 	{
 		protected DbSet<TModel> _dbSet;
+		private IQueryable<TModel> _entities;
+
+		protected IQueryable<TModel> Entities
+		{
+			get { return _entities ?? _dbSet; }
+			set { _entities = value; }
+		}
 
 		public virtual PartialViewResult _List()
 		{
@@ -25,7 +32,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 
 		public virtual PartialViewResult _FetchRow(int id)
 		{
-			return PartialView("_Row", _dbSet.Find(id));
+			return PartialView("_Row", Entities.Single(m => m.ID == id));
 		}
 
 		[HttpPost]
@@ -49,12 +56,12 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 			TryUpdateModel(row, "", null, new[] {"Created"});
 			_dbSet.Add(row);
 			db.SaveChanges();
-			return PartialView("_Row", row);
+			return _FetchRow(row.ID);
 		}
 
 		public virtual ActionResult _BeginEdit(int id)
 		{
-			TModel ev = _dbSet.Find(id);
+			TModel ev = Entities.Single(m => m.ID == id);
 			if (ev == null)
 				return HttpNotFound();
 
@@ -69,10 +76,10 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
 			// Get the object from the database to enble lasy loading.
-			var row = _dbSet.Find(input.ID);
+			var row = Entities.Single(m => m.ID == input.ID);
 			TryUpdateModel(row, "", null, new[] {"Created"});
 			db.SaveChanges();
-			return PartialView("_Row", row);
+			return _FetchRow(input.ID);
 		}
 
 		[HttpPost]

@@ -15,7 +15,6 @@ namespace ILK_Protokoll
 				"~/Scripts/jquery.tablesorter.js"));
 
 			bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
-				"~/Scripts/jquery.unobtrusive*",
 				"~/Scripts/jquery.validate*"));
 
 			// Verwenden Sie die Entwicklungsversion von Modernizr zum Entwickeln und Erweitern Ihrer Kenntnisse. Wenn Sie dann

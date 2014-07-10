@@ -14,10 +14,10 @@
 		@Html.DisplayFor(model => model.Prof)
 	</td>
 	<td>
-		@Html.DisplayFor(model => model.LastPresentation)
+		@Model.LastPresentation.ToString("d")
 	</td>
 	<td>
-		@Html.DisplayFor(model => model.Attachments)
+		@Model.Attachments.Count(a => a.Deleted == null)
 	</td>
 	<td>
 		@Html.DisplayFor(model => model.Selected)

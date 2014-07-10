@@ -16,6 +16,7 @@ namespace ILK_Protokoll.Areas.Session.Models.Lists
 		public EmployeePresentation()
 		{
 			LastPresentation = DateTime.Today;
+			Attachments = new List<Attachment>();
 		}
 
 		[DisplayName("Mitarbeiter")]

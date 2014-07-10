@@ -1,4 +1,9 @@
-﻿@model ILK_Protokoll.Areas.Session.Models.Lists.EmployeePresentation
+﻿@using ILK_Protokoll.Models
+@model ILK_Protokoll.Areas.Session.Models.Lists.EmployeePresentation
+
+@{
+	ViewBag.Title = "Mitarbeiterpräsentation bearbeiten (" + Model.Employee + ")";
+}
 
 
 @using (Html.BeginForm())
@@ -61,7 +66,24 @@
 	</div>
 }
 
-
+<div class="row">
+	<div class="col-md-10 col-md-offset-1">
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<h3 class="panel-title">@Html.DisplayNameFor(model => model.Attachments)</h3>
+			</div>
+			@if (Model.Attachments.Count(a => a.Deleted == null) == 0)
+			{
+				<div class="panel-body" id="attachments_@Model.ID">Keine Dateianhänge vorhanden.</div>
+			}
+			else
+			{
+				@Html.Action("_List", "Attachments", new {Area = "", entity = AttachmentContainer.EmployeePresentation, id = Model.ID})
+			}
+			@Html.Action("_UploadForm", "Attachments", new {Area = "", entity = AttachmentContainer.EmployeePresentation, id = Model.ID})
+		</div>
+	</div>
+</div>
 
 <div>
 	@Html.ActionLink("Zurück", "Index", "Lists", new {Area = "Session"}, null)
