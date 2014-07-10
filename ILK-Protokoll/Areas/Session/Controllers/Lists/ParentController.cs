@@ -2,6 +2,7 @@
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Web.Mvc;
 using ILK_Protokoll.Areas.Session.Models.Lists;
 
@@ -34,7 +35,17 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 		public virtual ActionResult _Create([Bind(Exclude = "ID, Created")] TModel ev)
 		{
 			if (!ModelState.IsValid)
-				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+			{
+				StringBuilder msg = new StringBuilder("<br />");
+				foreach (var kvp in ModelState)
+					foreach (var error in kvp.Value.Errors)
+						msg.AppendFormat("{1} <br />", kvp.Key, error.ErrorMessage);
+
+				Response.Clear();
+				Response.StatusCode = 422;
+				Response.StatusDescription = "Unprocessable Entity";
+				return Content(msg.ToString());
+			}
 
 			var row = _dbSet.Create();
 			TryUpdateModel(row, "", null, new[] {"Created"});

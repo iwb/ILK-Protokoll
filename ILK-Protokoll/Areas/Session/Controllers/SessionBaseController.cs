@@ -9,7 +9,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 	{
 		protected ActiveSession CreateNewSession(SessionType type)
 		{
-			var session = db.ActiveSessions.Add(new ActiveSession(type));
+			var session = db.ActiveSessions.Add(new ActiveSession(type) {Manager = GetCurrentUser()});
 			db.SaveChanges();
 			Session["SessionID"] = session.ID;
 			return session;

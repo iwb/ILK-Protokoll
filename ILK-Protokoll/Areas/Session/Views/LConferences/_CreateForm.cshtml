@@ -2,7 +2,8 @@
 @using (Ajax.BeginForm("_Create", "LConferences", new {Area = "Session"}, new AjaxOptions
 {
 	HttpMethod = "POST",
-	OnSuccess = "AddRow('conference', data);"
+	OnSuccess = "AddRow('conference', data);",
+	OnFailure = "DisplayErrorMessage('#conference_table', error + '\\n' + xhr.responseText);"
 }, new {id = "conference_form"}))
 {
 	@Html.AntiForgeryToken()
