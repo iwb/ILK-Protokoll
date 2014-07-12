@@ -134,6 +134,7 @@
     <Compile Include="Areas\Session\Controllers\Lists\LExtensionsController.cs" />
     <Compile Include="Areas\Session\Controllers\Lists\LConferencesController.cs" />
     <Compile Include="Areas\Session\Controllers\Lists\LEventsController.cs" />
+    <Compile Include="Areas\Session\Controllers\Lists\LIlkDaysController.cs" />
     <Compile Include="Areas\Session\Controllers\Lists\ParentController.cs" />
     <Compile Include="Areas\Session\Controllers\MasterController.cs" />
     <Compile Include="Areas\Session\Controllers\DiscussionController.cs" />
@@ -177,6 +178,10 @@
     <Compile Include="Migrations\201407101336098_AttachmentForEP.cs" />
     <Compile Include="Migrations\201407101336098_AttachmentForEP.Designer.cs">
       <DependentUpon>201407101336098_AttachmentForEP.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201407121757222_SessionTypeID.cs" />
+    <Compile Include="Migrations\201407121757222_SessionTypeID.Designer.cs">
+      <DependentUpon>201407121757222_SessionTypeID.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Assignment.cs" />
@@ -337,6 +342,10 @@
     <Content Include="Areas\Session\Views\LEmployeePresentations\_List.cshtml" />
     <Content Include="Areas\Session\Views\LEmployeePresentations\_Row.cshtml" />
     <Content Include="Areas\Session\Views\LEmployeePresentations\Edit.cshtml" />
+    <Content Include="Areas\Session\Views\LIlkDays\_CreateForm.cshtml" />
+    <Content Include="Areas\Session\Views\LIlkDays\_Edit.cshtml" />
+    <Content Include="Areas\Session\Views\LIlkDays\_List.cshtml" />
+    <Content Include="Areas\Session\Views\LIlkDays\_Row.cshtml" />
     <None Include="Content\bootstrap\wells.less" />
     <None Include="Content\bootstrap\variables.less" />
     <None Include="Content\bootstrap\utilities.less" />
@@ -491,6 +500,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201407101336098_AttachmentForEP.resx">
       <DependentUpon>201407101336098_AttachmentForEP.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201407121757222_SessionTypeID.resx">
+      <DependentUpon>201407121757222_SessionTypeID.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

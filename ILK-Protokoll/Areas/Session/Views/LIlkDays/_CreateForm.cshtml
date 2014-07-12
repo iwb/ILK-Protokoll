@@ -1,0 +1,62 @@
+﻿@model ILK_Protokoll.Areas.Session.Models.Lists.IlkDay
+@using (Ajax.BeginForm("_Create", "LIlkDays", new { Area = "Session" }, new AjaxOptions
+{
+	HttpMethod = "POST",
+	OnSuccess = "AddRow('ilkDay', data);",
+	OnFailure = "DisplayErrorMessage('#ilkDay_table', error + '\\n' + xhr.responseText);"
+}, new { id = "ilkDay_form" }))
+{
+	@Html.AntiForgeryToken()
+	<tr id="ilkDay_createform">
+		<td>
+			<div class="form-inline">
+				<div class="form-group">
+					<input class="form-control text-box single-line" data-val="true" data-val-date="Das Feld &quot;Beginn&quot; muss eine Datumsangabe sein." data-val-required="Das Feld &quot;Beginn&quot; ist erforderlich." id="Start_date" name="Start_date" type="date" value="@Model.Start.ToString("yyyy-MM-dd")" style="width:160px;">
+				</div>
+				<div class="form-group">
+					<input class="form-control text-box single-line" data-val="true" data-val-date="Das Feld &quot;Beginn&quot; muss eine Zeitangabe sein." data-val-required="Das Feld &quot;Beginn&quot; ist erforderlich." id="Start_time" name="Start_time" type="time" value="@Model.Start.ToString("HH:mm")">
+				</div>
+				<div class="form-group">
+					<input class="form-control text-box single-line" data-val="true" data-val-date="Das Feld &quot;Ende&quot; muss eine Datumsangabe sein." data-val-required="Das Feld &quot;Ende&quot; ist erforderlich." id="End_date" name="End_date" type="date" value="@Model.End.ToString("yyyy-MM-dd")" style="width:160px;">
+				</div>
+				<div class="form-group">
+					<input class="form-control text-box single-line" data-val="true" data-val-date="Das Feld &quot;Ende&quot; muss eine Zeitangabe sein." data-val-required="Das Feld &quot;Ende&quot; ist erforderlich." id="End_time" name="End_time" type="time" value="@Model.End.ToString("HH:mm")">
+				</div>
+
+				<input type="hidden" id="StartDateTime" name="Start" value="@Model.Start.ToString("s")" />
+				<input type="hidden" id="EndDateTime" name="End" value="@Model.End.ToString("s")" />
+				
+				<script type="text/javascript">
+					$('#Start_date, #Start_time').change(function() {
+						var dateparts = $('#Start_date')[0].value.split('-');
+						var timeparts = $('#Start_time')[0].value.split(':');
+						$('#StartDateTime').val(new Date(dateparts[0], dateparts[1] - 1, dateparts[2], timeparts[0], timeparts[1]).toISOString());
+					});
+					$('#End_date, #End_time').change(function () {
+						var dateparts = $('#End_date')[0].value.split('-');
+						var timeparts = $('#End_time')[0].value.split(':');
+						$('#EndDateTime').val(new Date(dateparts[0], dateparts[1] - 1, dateparts[2], timeparts[0], timeparts[1]).toISOString());
+					});
+				</script>
+			</div>
+		</td>
+		<td>
+			@Html.EditorFor(model => model.Place, new { htmlAttributes = new { @class = "form-control" } })
+		</td>
+		<td>
+			@Html.DropDownListFor(m => m.SessionTypeID, (SelectList)ViewBag.SessionTypeList, "(bitte auswählen)", new { @class = "form-control" })
+		</td>
+		<td>
+			@Html.EditorFor(model => model.Topics, new { htmlAttributes = new { @class = "form-control" } })
+		</td>
+		<td>
+			@Html.DropDownListFor(m => m.OrganizerID, (SelectList)ViewBag.UserList, new { @class = "form-control" })
+		</td>
+		<td>
+			@Html.EditorFor(model => model.Participants, new { htmlAttributes = new { @class = "form-control" } })
+		</td>
+		<td>
+			<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-check"></span></button>
+		</td>
+	</tr>
+}

@@ -1,0 +1,14 @@
+In diesem Ordner befindet sich das Template für neue listen.
+
+Um eine neue Liste einzupflegen, müssen folgende Schritte erledigt werden:
+
+1. Anlagen der Modellklasse, die von "BaseItem" ableitet.
+2. Anlagen des Controllers, der von "ParentController" ableitet.
+3. Anlegen der Views (hierfür einfach das Template kopieren)
+4. Suchen und ersetzen der Platzhalter
+	%%CLASSNAME%% durch den tatsächlichen namen der Klasse (z.B. "Event")
+	%%classname%% durch den Namen der Klasse mit Kleinbuchstaben am Anfang (z.B. "event")
+	%%Name%% durch den Anzeigenamen eines einzelnen Listeneintrags (z.B. "Termin")
+5. Anpassen der Dateien an die Modellklasse
+6. Darauf achten, dass das colspan Attribut in _Edit den richtigen Wert hat
+7. Aufrufen der Liste in der Datei Views/Lists/Index.cshtml

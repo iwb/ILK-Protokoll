@@ -13,25 +13,41 @@ namespace ILK_Protokoll.Areas.Session.Models.Lists
 	[Table("L_IlkDay")]
 	public class IlkDay : BaseItem
 	{
+		public IlkDay()
+		{
+			Start = DateTime.Today.AddHours(9);
+			End = DateTime.Today.AddHours(17);
+		}
+
 		[DisplayName("Beginn")]
 		[DataType(DataType.DateTime)]
+		[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm}", ApplyFormatInEditMode = true)]
 		public DateTime Start { get; set; }
 
 		[DisplayName("Ende")]
 		[DataType(DataType.DateTime)]
+		[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm}", ApplyFormatInEditMode = true)]
 		public DateTime End { get; set; }
 
+		[DisplayName("Ort")]
 		public string Place { get; set; }
 
-		public SessionType SessionType { get; set; }
+		[DisplayName("Sitzung")]
+		public virtual SessionType SessionType { get; set; }
 
+		[ForeignKey("SessionType")]
+		public int SessionTypeID { get; set; }
+
+		[DisplayName("Organisator")]
 		public virtual User Organizer { get; set; }
 
 		[ForeignKey("Organizer")]
 		public int OrganizerID { get; set; }
 
+		[DisplayName("Themen")]
 		public string Topics { get; set; }
 
+		[DisplayName("Teilnehmer")]
 		public string Participants { get; set; }
 	}
 }

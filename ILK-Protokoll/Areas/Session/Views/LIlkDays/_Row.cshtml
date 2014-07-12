@@ -1,0 +1,50 @@
+﻿@model ILK_Protokoll.Areas.Session.Models.Lists.IlkDay
+@{
+	string trclass = Model.Created > ViewBag.LastSession ? "newlistitem" : null;
+}
+
+<tr class="@trclass" id="ilkDay_@Model.ID">
+	@if (Model.Start.Date == Model.End.Date)
+	{
+		<td>
+			@Model.Start.ToString("d") ( @Model.Start.ToString("t")&#8239;&#8211;&#8239;@Model.End.ToString("t") )
+		</td>
+	}
+	else
+	{
+		<td>
+			@Model.Start.ToString("g")
+			<br />
+			@Model.End.ToString("g")
+		</td>
+	}
+	<td>
+		@Html.DisplayFor(model => model.Place)
+	</td>
+	<td>
+		@Html.DisplayFor(model => model.SessionType.Name)
+	</td>
+	<td>
+		@Html.DisplayFor(model => model.Topics)
+	</td>
+	<td>
+		@Html.DisplayFor(model => model.Organizer.ShortName)
+	</td>
+	<td>
+		@Html.DisplayFor(model => model.Participants)
+	</td>
+	<td class="actions">
+		<a data-ajax="true"
+		   data-ajax-method="POST"
+		   data-ajax-success="ReplaceRow('ilkDay', @Model.ID, data);"
+		   href="@Url.Action("_BeginEdit", "LIlkDays", new {Area = "Session", id = Model.ID})"><span class="glyphicon glyphicon-edit" title="Klausur-Tag bearbeiten"></span></a>
+
+		<a data-ajax="true"
+		   data-ajax-method="POST"
+		   data-ajax-confirm="Klausur-Tag wirklich löschen?"
+		   data-ajax-success="RemoveRow('ilkDay', @Model.ID);"
+		   href="@Url.Action("_Delete", "LIlkDays", new {Area = "Session", id = Model.ID})">
+			<span class="glyphicon glyphicon-remove" title="Klausur-Tag löschen"></span>
+		</a>
+	</td>
+</tr>
