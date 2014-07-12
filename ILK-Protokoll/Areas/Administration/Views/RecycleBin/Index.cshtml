@@ -1,11 +1,11 @@
 ﻿@using ILK_Protokoll.Models
-@model IEnumerable<Attachment>
+@model IEnumerable<ILK_Protokoll.Models.Attachment>
 
 @{
 	ViewBag.Title = "Papierkorb";
 }
 
-@Html.ActionLink("Papierkorb leeren", "Purge", null, new { @class = "index-action btn btn-danger" })
+@Html.ActionLink("Papierkorb leeren", "Purge", null, new {@class = "index-action btn btn-danger"})
 
 <h2>@ViewBag.Title</h2>
 
@@ -56,15 +56,18 @@ else
 						@Html.DisplayFor(modelItem => item.FileSize)
 					</td>
 					<td>
-						@Ajax.ActionLink("Wiederherstellen", "_Restore", "RecycleBin",
-							new { attachmentID = item.ID },
-							new AjaxOptions { HttpMethod = "POST", OnSuccess = "removeFile('#attachment_" + @item.ID + "');" },
-							new { @class = "text-success" })
-						<br />
-						@Ajax.ActionLink("Löschen", "_Delete", "Attachments",
-							new { area = "", attachmentID = item.ID },
-							new AjaxOptions { Confirm = "Datei endgültig löschen?", HttpMethod = "POST", OnSuccess = "removeFile('#attachment_" + @item.ID + "');" },
-							new { @class = "text-danger" })
+						@if (item.TopicID != null || item.EmployeePresentationID != null)
+						{
+							@Ajax.ActionLink("Wiederherstellen", "_Restore", "RecycleBin",
+								new {attachmentID = item.ID},
+								new AjaxOptions {HttpMethod = "POST", OnSuccess = "removeFile('#attachment_" + @item.ID + "');"},
+								new {@class = "text-success"})
+							<br />
+						}
+						@Ajax.ActionLink("Löschen", "_PermanentDelete", "Attachments",
+							new {area = "", attachmentID = item.ID},
+							new AjaxOptions {Confirm = "Datei endgültig löschen?", HttpMethod = "POST", OnSuccess = "removeFile('#attachment_" + @item.ID + "');"},
+							new {@class = "text-danger"})
 					</td>
 				</tr>
 			}

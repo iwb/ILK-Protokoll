@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data.Entity;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
@@ -63,14 +64,24 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 			if (ep == null)
 				return HttpNotFound();
 
-			foreach (var file in ep.Attachments)
+			var linkedFiles = db.Attachments.Include(a => a.Uploader).Where(a => a.EmployeePresentationID == id);
+
+			foreach (var file in linkedFiles)
 			{
 				file.EmployeePresentationID = null;
-				file.Deleted = DateTime.Now;
+				file.Deleted = file.Deleted ?? DateTime.Now;
 			}
-			ep.Attachments.Clear();
-			db.SaveChanges();
+			try
+			{
+				db.SaveChanges();
+			}
+			catch (DbEntityValidationException e)
+			{
+				Response.Write(e.EntityValidationErrors.First().ValidationErrors.First().ErrorMessage);
+				return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
+			}
 
+			ep.Attachments.Clear();
 			_dbSet.Remove(_dbSet.Find(id));
 			db.SaveChanges();
 

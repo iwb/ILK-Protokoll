@@ -41,17 +41,17 @@
 
 	function DisplayInfoMessage(id, text) {
 		if (id) {
-			$(id).after('<div class="alert alert-info alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><strong>Fehler: </strong>' + text + '</div>');
+			$(id).after('<div class="alert alert-info alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><strong>Information: </strong>' + text + '</div>');
 		} else {
-			$(".body-content").prepend('<div class="alert alert-info alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><strong>Fehler: </strong>' + text + '</div>');
+			$(".body-content").prepend('<div class="alert alert-info alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><strong>Information: </strong>' + text + '</div>');
 		}
 	}
 
 	function DisplaySuccessMessage(id, text) {
 		if (id) {
-			$(id).after('<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><strong>Fehler: </strong>' + text + '</div>');
+			$(id).after('<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><strong>Vorgang erfolgreich: </strong>' + text + '</div>');
 		} else {
-			$(".body-content").prepend('<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><strong>Fehler: </strong>' + text + '</div>');
+			$(".body-content").prepend('<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><strong>Vorgang erfolgreich: </strong>' + text + '</div>');
 		}
 	}
 </script>

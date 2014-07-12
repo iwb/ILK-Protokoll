@@ -22,7 +22,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 
 		public virtual PartialViewResult _List()
 		{
-			return PartialView(_dbSet.ToList());
+			return PartialView(Entities.ToList());
 		}
 
 		public virtual PartialViewResult _CreateForm()

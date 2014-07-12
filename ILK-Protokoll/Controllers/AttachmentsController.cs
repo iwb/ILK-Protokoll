@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Validation;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -179,24 +178,47 @@ namespace ILK_Protokoll.Controllers
 		{
 			Attachment attachment = db.Attachments.Include(a => a.Uploader).First(a => a.ID == attachmentID);
 
-			if (attachment.Deleted == null) // In den Papierkorb
-				attachment.Deleted = DateTime.Now;
-			else // Endgültig löschen
+			if (attachment.Deleted != null)
+				return HTTPStatus(422, "Das Objekt befindet sich bereits im Papierkorb.");
+
+			attachment.Deleted = DateTime.Now; // In den Papierkorb
+			try
 			{
-				try
-				{
-					string path = Path.Combine(Serverpath, attachment.FileName);
-					System.IO.File.Delete(path);
+				db.SaveChanges();
+			}
+			catch (DbEntityValidationException e)
+			{
+				string msg = "";
+				foreach (var validationResult in e.EntityValidationErrors)
+					foreach (var error in validationResult.ValidationErrors)
+						msg += error.ErrorMessage + "<br />";
 
-					attachment.TopicID = null;
-					attachment.EmployeePresentationID = null;
+				return HTTPStatus(500, msg);
+			}
 
-					db.Attachments.Remove(attachment);
-				}
-				catch (IOException)
-				{
-					return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
-				}
+			return new HttpStatusCodeResult(HttpStatusCode.NoContent);
+		}
+
+		public ActionResult _PermanentDelete(int attachmentID)
+		{
+			Attachment attachment = db.Attachments.Include(a => a.Uploader).First(a => a.ID == attachmentID);
+
+			if (attachment.Deleted == null) // In den Papierkorb
+				return HTTPStatus(422, "Das Objekt befindet sich noch nicht im Papierkorb.");
+
+			try
+			{
+				string path = Path.Combine(Serverpath, attachment.FileName);
+				System.IO.File.Delete(path);
+
+				attachment.TopicID = null;
+				attachment.EmployeePresentationID = null;
+
+				db.Attachments.Remove(attachment);
+			}
+			catch (IOException)
+			{
+				return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
 			}
 
 			try
@@ -205,8 +227,12 @@ namespace ILK_Protokoll.Controllers
 			}
 			catch (DbEntityValidationException e)
 			{
-				Debug.WriteLine(e.EntityValidationErrors.First().ValidationErrors.First().ErrorMessage);
-				return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
+				string msg = "";
+				foreach (var validationResult in e.EntityValidationErrors)
+					foreach (var error in validationResult.ValidationErrors)
+						msg += error.ErrorMessage + "<br />";
+
+				return HTTPStatus(500, msg);
 			}
 
 			return new HttpStatusCodeResult(HttpStatusCode.NoContent);

@@ -1,15 +1,10 @@
 ﻿using System.Data.Entity;
-using System.Data.Entity.Core.Common.CommandTrees;
 using System.Data.Entity.Validation;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Data;
 using System.Net;
-using System.Security.Cryptography;
 using System.Web.Mvc;
 using ILK_Protokoll.Controllers;
-using ILK_Protokoll.Models;
 
 namespace ILK_Protokoll.Areas.Administration.Controllers
 {
@@ -25,7 +20,8 @@ namespace ILK_Protokoll.Areas.Administration.Controllers
 		// GET: Administration/RecycleBin
 		public ActionResult Index()
 		{
-			var items = db.Attachments.Where(a => a.Deleted != null).Include(a => a.Topic).OrderByDescending(a => a.Created).ToList();
+			var items =
+				db.Attachments.Where(a => a.Deleted != null).Include(a => a.Topic).OrderByDescending(a => a.Created).ToList();
 			return View(items);
 		}
 
@@ -33,6 +29,10 @@ namespace ILK_Protokoll.Areas.Administration.Controllers
 		public ActionResult _Restore(int attachmentID)
 		{
 			var attachment = db.Attachments.Include(a => a.Uploader).First(a => a.ID == attachmentID);
+
+			if (attachment.TopicID == null && attachment.EmployeePresentationID == null) // Verwaist
+				return HTTPStatus(422, "Wiederherstellungsziel ist nicht mehr vorhanden");
+
 			attachment.Deleted = null;
 
 			try

@@ -39,6 +39,14 @@ namespace ILK_Protokoll.Controllers
 				return null;
 		}
 
+		protected ContentResult HTTPStatus(int statuscode, string message)
+		{
+			Response.Clear();
+			Response.StatusCode = statuscode;
+			Response.StatusDescription = "Unprocessable Entity";
+			return Content(message);
+		}
+
 		protected override void Dispose(bool disposing)
 		{
 			if (disposing)
