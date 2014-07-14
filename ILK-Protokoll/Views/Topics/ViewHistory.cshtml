@@ -95,3 +95,34 @@
 		</div>
 	</div>
 }
+
+<div class="row">
+	<div class="col-md-12">
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<h3 class="panel-title">Aktuelle Version (seit @Model.Current.ValidFrom.ToString("g") )</h3>
+			</div>
+			<div class="panel-body">
+				<dl class="dl-horizontal">
+					<dt>@Html.DisplayNameFor(model => model.Current.Title)</dt>
+					<dd>@Html.DisplayFor(model => model.Current.Title)</dd>
+
+					<dt>@Html.DisplayNameFor(model => model.Current.SessionTypeID)</dt>
+					<dd>@Model.SessionTypes[@Model.Current.SessionTypeID]</dd>
+
+					<dt>@Html.DisplayNameFor(model => model.Current.OwnerID)</dt>
+					<dd>@Model.Usernames[@Model.Current.OwnerID]</dd>
+
+					<dt>@Html.DisplayNameFor(model => model.Current.Priority)</dt>
+					<dd>@Model.Current.Priority.DisplayName()</dd>
+
+					<dt>@Html.DisplayNameFor(model => model.Current.Description)</dt>
+					<dd>@Html.DisplayFor(model => model.Current.Description, "String_Multiline")</dd>
+
+					<dt>@Html.DisplayNameFor(model => model.Current.Proposal)</dt>
+					<dd>@Html.DisplayFor(model => model.Current.Proposal, "String_Multiline")</dd>
+				</dl>
+			</div>
+		</div>
+	</div>
+</div>
