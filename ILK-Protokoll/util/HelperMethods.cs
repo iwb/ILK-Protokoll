@@ -38,6 +38,20 @@ namespace ILK_Protokoll.util
 			yield return item;
 		}
 
+		public static IEnumerable<Tuple<T, T>> Pairwise<T>(this IEnumerable<T> source)
+		{
+			using (var it = source.GetEnumerator())
+			{
+				if (!it.MoveNext())
+					yield break;
+
+				var previous = it.Current;
+
+				while (it.MoveNext())
+					yield return Tuple.Create(previous, previous = it.Current);
+			}
+		}
+
 		public static string Shorten(this string str, int maxLength)
 		{
 			var stripped = Regex.Replace(str, @"\s+", " ");

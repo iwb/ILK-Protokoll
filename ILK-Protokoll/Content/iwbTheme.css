@@ -6132,8 +6132,24 @@ th.headerSortDown:after {
   padding-left: 5px;
   content: "\e114";
 }
+dl {
+  margin-bottom: 0;
+}
 .newlistitem {
   font-weight: bold;
+}
+.text-unchanged {
+  white-space: pre-wrap;
+  color: #888;
+}
+.text-inserted {
+  white-space: pre-wrap;
+  background-color: #bbd98f;
+}
+.text-deleted {
+  white-space: pre-wrap;
+  text-decoration: line-through;
+  background-color: #feb3c7;
 }
 /*IE-Hack*/
 @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {

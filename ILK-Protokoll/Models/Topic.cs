@@ -116,6 +116,7 @@ namespace ILK_Protokoll.Models
 			OwnerID = history.OwnerID;
 			Proposal = history.Proposal;
 			SessionTypeID = history.SessionTypeID;
+			Priority = history.Priority;
 			Title = history.Title;
 			ValidFrom = history.ValidFrom;
 			// ReSharper restore DoNotCallOverridableMethodsInConstructor

@@ -183,6 +183,10 @@
     <Compile Include="Migrations\201407121757222_SessionTypeID.Designer.cs">
       <DependentUpon>201407121757222_SessionTypeID.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201407141206213_PrioHistory.cs" />
+    <Compile Include="Migrations\201407141206213_PrioHistory.Designer.cs">
+      <DependentUpon>201407141206213_PrioHistory.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Assignment.cs" />
     <Compile Include="Models\Attachment.cs" />
@@ -191,6 +195,7 @@
     <Compile Include="Models\Record.cs" />
     <Compile Include="Models\TopicHistory.cs" />
     <Compile Include="util\DelayedRenderExtensions.cs" />
+    <Compile Include="util\DiffMatchPatch.cs" />
     <Compile Include="util\FutureDateAttribute.cs" />
     <Compile Include="util\ResharperAnnotations.cs" />
     <Compile Include="util\HelperMethods.cs" />
@@ -204,6 +209,7 @@
     <Compile Include="ViewModels\DashBoard.cs" />
     <Compile Include="ViewModels\FilteredAssignments.cs" />
     <Compile Include="ViewModels\TopicEdit.cs" />
+    <Compile Include="ViewModels\TopicHistoryViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
@@ -479,6 +485,8 @@
     <Content Include="Views\Assignments\_DetailedTable.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\String_Multiline.cshtml" />
     <Content Include="Views\Assignments\Details.cshtml" />
+    <Content Include="Views\Topics\ViewHistory.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\Diff.cshtml" />
     <None Include="Web.Integration.config" />
     <None Include="Web.Testing.config" />
   </ItemGroup>
@@ -503,6 +511,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201407121757222_SessionTypeID.resx">
       <DependentUpon>201407121757222_SessionTypeID.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201407141206213_PrioHistory.resx">
+      <DependentUpon>201407141206213_PrioHistory.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -436,8 +436,28 @@ th.headerSortDown:after {
 	content: "\e114";
 }
 
+dl {
+	margin-bottom: 0;
+}
+
 .newlistitem {
 	font-weight: bold;
+}
+
+.text-unchanged {
+	white-space: pre-wrap;
+	color: #888;
+}
+
+.text-inserted {
+	white-space: pre-wrap;
+	background-color: lighten(@brand-success, 15%);
+}
+
+.text-deleted{
+	white-space: pre-wrap;
+	text-decoration: line-through;
+	background-color: lighten(@brand-danger, 50%);
 }
 
 /*IE-Hack*/

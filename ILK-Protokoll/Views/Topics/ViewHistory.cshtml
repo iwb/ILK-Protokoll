@@ -1,0 +1,101 @@
+﻿@using ILK_Protokoll.Models
+@using ILK_Protokoll.util
+@model ILK_Protokoll.ViewModels.TopicHistoryViewModel
+
+@{
+	ViewBag.Title = "Versionsverlauf (" + Model.Current.Title + ")";
+}
+
+<h3>@ViewBag.Title</h3>
+
+@Html.ActionLink("Zurück zu Details", "Details", new { id = Model.Current.ID })
+<p>
+	@Html.DisplayNameFor(model => model.Current.Created) @Html.DisplayFor(model => model.Current.Created)
+	(Insgesamt @Model.Differences.Count mal geändert)
+</p>
+
+<hr />
+
+<div class="row">
+	<div class="col-md-12">
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<h3 class="panel-title">Initialversion (@Html.DisplayFor(model => model.Current.Created))</h3>
+			</div>
+			<div class="panel-body">
+				<dl class="dl-horizontal">
+					<dt>@Html.DisplayNameFor(model => model.Current.Title)</dt>
+					<dd>@Html.DisplayFor(model => model.Initial.Title)</dd>
+
+					<dt>@Html.DisplayNameFor(model => model.Current.SessionTypeID)</dt>
+					<dd>@Model.SessionTypes[@Model.Initial.SessionTypeID]</dd>
+
+					<dt>@Html.DisplayNameFor(model => model.Current.OwnerID)</dt>
+					<dd>@Model.Usernames[@Model.Initial.OwnerID]</dd>
+
+					<dt>@Html.DisplayNameFor(model => model.Current.Priority)</dt>
+					<dd>@Model.Initial.Priority.DisplayName()</dd>
+
+					<dt>@Html.DisplayNameFor(model => model.Current.Description)</dt>
+					<dd>@Html.DisplayFor(model => model.Initial.Description, "String_Multiline")</dd>
+
+					<dt>@Html.DisplayNameFor(model => model.Current.Proposal)</dt>
+					<dd>@Html.DisplayFor(model => model.Initial.Proposal, "String_Multiline")</dd>
+				</dl>
+			</div>
+		</div>
+	</div>
+</div>
+
+@for (int i = 0; i < Model.Differences.Count; i++)
+{
+	var item = Model.Differences[i];
+	<div class="row">
+		<div class="col-md-12">
+			<div class="panel panel-primary">
+				<div class="panel-heading">
+					<h3 class="panel-title">@(i + 1). Änderung (@Html.DisplayFor(model => item.Modified))</h3>
+				</div>
+				<div class="panel-body">
+					<dl class="dl-horizontal">
+						@if (item.Title.Any(d => d.operation != Operation.EQUAL))
+						{
+							<dt>@Html.DisplayNameFor(model => model.Current.Title)</dt>
+							<dd>@Html.DisplayFor(model => item.Title)</dd>
+						}
+						
+						@if (item.SessionType != null)
+						{
+							<dt>Neuer Sitzungstyp</dt>
+							<dd>@Html.DisplayFor(model => item.SessionType)</dd>
+						}
+						
+						@if (item.Owner != null)
+						{
+							<dt>Neuer Besitzer</dt>
+							<dd>@Html.DisplayFor(model => item.Owner)</dd>
+						}
+						
+						@if (item.Priority != null)
+						{
+							<dt>Neue Priorität</dt>
+							<dd>@Html.DisplayFor(model => item.Priority)</dd>
+						}
+						
+						@if (item.Description.Any(d => d.operation != Operation.EQUAL))
+						{
+							<dt>@Html.DisplayNameFor(model => model.Current.Description)</dt>
+							<dd>@Html.DisplayFor(model => item.Description)</dd>
+						}
+						
+						@if (item.Proposal.Any(d => d.operation != Operation.EQUAL))
+						{
+							<dt>@Html.DisplayNameFor(model => model.Current.Proposal)</dt>
+							<dd>@Html.DisplayFor(model => item.Proposal)</dd>
+						}
+					</dl>
+				</div>
+			</div>
+		</div>
+	</div>
+}

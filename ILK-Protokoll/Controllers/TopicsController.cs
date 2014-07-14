@@ -1,9 +1,11 @@
-﻿using System.Data.Entity;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
-using System.Web.Routing;
 using ILK_Protokoll.Models;
+using ILK_Protokoll.util;
 using ILK_Protokoll.ViewModels;
 
 namespace ILK_Protokoll.Controllers
@@ -151,6 +153,52 @@ namespace ILK_Protokoll.Controllers
 			db.Topics.Remove(topic);
 			db.SaveChanges();
 			return RedirectToAction("Index");
+		}
+
+		// GET: Topics/ViewHistory/5
+		public ActionResult ViewHistory(int id)
+		{
+			Topic topic = db.Topics.Find(id);
+			var history = db.TopicHistory.Where(th => th.TopicID == topic.ID).OrderBy(th => th.ValidFrom).ToList();
+			
+			if (history.Count == 0)
+				return RedirectToAction("Details", id);
+
+			history.Add(TopicHistory.FromTopic(topic));
+
+			var vm = new TopicHistoryViewModel()
+			{
+				Usernames = db.Users.Where(u => u.IsActive).ToDictionary(u => u.ID, u => u.ShortName),
+				SessionTypes = db.SessionTypes.ToDictionary(s => s.ID, s => s.Name),
+				Current = topic,
+				Initial = history[0]
+			};
+
+			var diff = new diff_match_patch()
+			{
+				Diff_Timeout = 0.4f,
+			};
+
+			foreach (var historyPair in history.Pairwise())
+			{
+				vm.Differences.Add(new TopicHistoryDiff()
+				{
+					Modified = historyPair.Item2.ValidFrom,
+					SessionType = SimpleDiff(historyPair.Item1.SessionTypeID, historyPair.Item2.SessionTypeID, vm.SessionTypes),
+					Owner = SimpleDiff(historyPair.Item1.OwnerID, historyPair.Item2.OwnerID, vm.Usernames),
+					Priority = historyPair.Item1.Priority == historyPair.Item2.Priority ? null : historyPair.Item2.Priority.DisplayName(),
+					Title = diff.diff_main(historyPair.Item1.Title, historyPair.Item2.Title),
+					Description = diff.diff_main(historyPair.Item1.Description, historyPair.Item2.Description),
+					Proposal = diff.diff_main(historyPair.Item1.Proposal, historyPair.Item2.Proposal)
+				});
+			}
+
+			return View(vm);
+		}
+
+		private string SimpleDiff(int idA, int idB, IDictionary<int, string> dict)
+		{
+			return idA == idB ? null : dict[idB];
 		}
 	}
 }
