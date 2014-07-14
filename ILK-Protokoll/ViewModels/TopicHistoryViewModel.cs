@@ -29,6 +29,8 @@ namespace ILK_Protokoll.ViewModels
 	{
 		public DateTime Modified { get; set; }
 
+		public string Editor { get; set; }
+
 		public string SessionType { get; set; }
 
 		public string Owner { get; set; }

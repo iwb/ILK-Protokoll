@@ -1,14 +1,8 @@
 ﻿@using ILK_Protokoll.util
 @model ILK_Protokoll.util.Diff
 @if (Model.operation == Operation.EQUAL)
-{
-	<span class="text-unchanged">@Model.text</span>
-}
+{<span class="text-unchanged">@Model.text</span>}
 else if (Model.operation == Operation.DELETE)
-{
-	<span class="text-deleted">@Model.text</span>
-}
+{<span class="text-deleted">@Model.text</span>}
 else if (Model.operation == Operation.INSERT)
-{
-	<span class="text-inserted">@Model.text</span>
-}
+{<span class="text-inserted">@Model.text</span>}

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.Web.Mvc.Html;
 
 namespace ILK_Protokoll.Models
 {
@@ -11,6 +10,9 @@ namespace ILK_Protokoll.Models
 
 		[Required]
 		public int TopicID { get; set; }
+
+		[Required]
+		public int EditorID { get; set; }
 
 		[Required]
 		public string Title { get; set; }
@@ -36,12 +38,13 @@ namespace ILK_Protokoll.Models
 		[Required]
 		public DateTime ValidUntil { get; set; }
 
-		public static TopicHistory FromTopic(Topic t)
+		public static TopicHistory FromTopic(Topic t, int editorID)
 		{
 			return new TopicHistory
 			{
 				TopicID = t.ID,
-				Title = t.Title,
+				EditorID = editorID,
+			Title = t.Title,
 				Description = t.Description,
 				Proposal = t.Proposal,
 				OwnerID = t.OwnerID,

@@ -187,6 +187,14 @@
     <Compile Include="Migrations\201407141206213_PrioHistory.Designer.cs">
       <DependentUpon>201407141206213_PrioHistory.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201407141506229_TopicEditor.cs" />
+    <Compile Include="Migrations\201407141506229_TopicEditor.Designer.cs">
+      <DependentUpon>201407141506229_TopicEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201407141524557_TopicCreator.cs" />
+    <Compile Include="Migrations\201407141524557_TopicCreator.Designer.cs">
+      <DependentUpon>201407141524557_TopicCreator.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Assignment.cs" />
     <Compile Include="Models\Attachment.cs" />
@@ -230,6 +238,9 @@
     <Content Include="Content\images\ui-icons_DDD_256x240.png" />
     <Content Include="Content\iwbTheme.css">
       <DependentUpon>iwbTheme.less</DependentUpon>
+    </Content>
+    <Content Include="Content\iwbTheme.min.css">
+      <DependentUpon>iwbTheme.css</DependentUpon>
     </Content>
     <Content Include="Content\themes\base\jquery-ui.css" />
     <Content Include="Content\themes\base\jquery.ui.accordion.css" />
@@ -363,6 +374,9 @@
     <Content Include="Areas\Administration\Views\Shared\_AdminNavbar.cshtml" />
     <Content Include="Areas\Administration\Views\AdminHome\Index.cshtml" />
     <Content Include="Areas\Administration\Views\RecycleBin\Purge.cshtml" />
+    <Content Include="Content\iwbTheme.css.map">
+      <DependentUpon>iwbTheme.css</DependentUpon>
+    </Content>
     <None Include="Content\variables.less" />
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.1.js" />
@@ -453,6 +467,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201407141206213_PrioHistory.resx">
       <DependentUpon>201407141206213_PrioHistory.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201407141506229_TopicEditor.resx">
+      <DependentUpon>201407141506229_TopicEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201407141524557_TopicCreator.resx">
+      <DependentUpon>201407141524557_TopicCreator.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

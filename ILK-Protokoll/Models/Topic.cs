@@ -79,6 +79,10 @@ namespace ILK_Protokoll.Models
 		[Required]
 		public DateTime Created { get; set; }
 
+		[Display(Name = "Ersteller")]
+		[Required]
+		public User Creator { get; set; }
+
 		/// <summary>
 		///    Gibt das Datum der letzten Änderung an. Falls der Diskussionspunkt nie geändert wurde, gleicht das Änderungsdatum
 		///    der Erstelldatum.

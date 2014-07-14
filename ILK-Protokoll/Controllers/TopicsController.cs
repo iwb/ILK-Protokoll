@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
@@ -116,7 +115,7 @@ namespace ILK_Protokoll.Controllers
 			if (ModelState.IsValid)
 			{
 				Topic topic = db.Topics.Find(input.ID);
-				db.TopicHistory.Add(TopicHistory.FromTopic(topic));
+				db.TopicHistory.Add(TopicHistory.FromTopic(topic, GetCurrentUser().ID));
 
 				topic.IncorporateUpdates(input);
 				topic.TargetSessionTypeID = input.TargetSessionTypeID;
@@ -160,11 +159,11 @@ namespace ILK_Protokoll.Controllers
 		{
 			Topic topic = db.Topics.Find(id);
 			var history = db.TopicHistory.Where(th => th.TopicID == topic.ID).OrderBy(th => th.ValidFrom).ToList();
-			
+
 			if (history.Count == 0)
 				return RedirectToAction("Details", id);
 
-			history.Add(TopicHistory.FromTopic(topic));
+			history.Add(TopicHistory.FromTopic(topic, 0));
 
 			var vm = new TopicHistoryViewModel()
 			{
@@ -179,17 +178,18 @@ namespace ILK_Protokoll.Controllers
 				Diff_Timeout = 0.4f,
 			};
 
-			foreach (var historyPair in history.Pairwise())
+			foreach (var p in history.Pairwise())
 			{
 				vm.Differences.Add(new TopicHistoryDiff()
 				{
-					Modified = historyPair.Item2.ValidFrom,
-					SessionType = SimpleDiff(historyPair.Item1.SessionTypeID, historyPair.Item2.SessionTypeID, vm.SessionTypes),
-					Owner = SimpleDiff(historyPair.Item1.OwnerID, historyPair.Item2.OwnerID, vm.Usernames),
-					Priority = historyPair.Item1.Priority == historyPair.Item2.Priority ? null : historyPair.Item2.Priority.DisplayName(),
-					Title = diff.diff_main(historyPair.Item1.Title, historyPair.Item2.Title),
-					Description = diff.diff_main(historyPair.Item1.Description, historyPair.Item2.Description),
-					Proposal = diff.diff_main(historyPair.Item1.Proposal, historyPair.Item2.Proposal)
+					Modified = p.Item1.ValidUntil,
+					Editor = vm.Usernames[p.Item1.EditorID],
+					SessionType = SimpleDiff(p.Item1.SessionTypeID, p.Item2.SessionTypeID, vm.SessionTypes),
+					Owner = SimpleDiff(p.Item1.OwnerID, p.Item2.OwnerID, vm.Usernames),
+					Priority = p.Item1.Priority == p.Item2.Priority ? null : p.Item2.Priority.DisplayName(),
+					Title = diff.diff_main(p.Item1.Title, p.Item2.Title),
+					Description = diff.diff_main(p.Item1.Description, p.Item2.Description),
+					Proposal = diff.diff_main(p.Item1.Proposal, p.Item2.Proposal)
 				});
 			}
 

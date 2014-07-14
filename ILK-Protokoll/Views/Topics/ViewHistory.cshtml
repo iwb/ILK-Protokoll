@@ -9,10 +9,6 @@
 <h3>@ViewBag.Title</h3>
 
 @Html.ActionLink("Zurück zu Details", "Details", new { id = Model.Current.ID })
-<p>
-	@Html.DisplayNameFor(model => model.Current.Created) @Html.DisplayFor(model => model.Current.Created)
-	(Insgesamt @Model.Differences.Count mal geändert)
-</p>
 
 <hr />
 
@@ -20,7 +16,7 @@
 	<div class="col-md-12">
 		<div class="panel panel-primary">
 			<div class="panel-heading">
-				<h3 class="panel-title">Initialversion (@Html.DisplayFor(model => model.Current.Created))</h3>
+				<h3 class="panel-title">Initialversion (@Model.Current.Creator @Html.DisplayFor(model => model.Current.Created))</h3>
 			</div>
 			<div class="panel-body">
 				<dl class="dl-horizontal">
@@ -54,7 +50,7 @@
 		<div class="col-md-12">
 			<div class="panel panel-primary">
 				<div class="panel-heading">
-					<h3 class="panel-title">@(i + 1). Änderung (@Html.DisplayFor(model => item.Modified))</h3>
+					<h3 class="panel-title">@(i + 1). Änderung (@item.Editor @Html.DisplayFor(model => item.Modified))</h3>
 				</div>
 				<div class="panel-body">
 					<dl class="dl-horizontal">
