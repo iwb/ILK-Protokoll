@@ -29,7 +29,7 @@ namespace ILK_Protokoll
 
 			bundles.Add(new StyleBundle("~/Content/css").Include(
 				"~/Content/iwbTheme.css",
-				"~/Content/themes/base/jquery.ui.all.css"));
+				"~/Content/themes/base/jquery.ui.*"));
 
 			// Festlegen von EnableOptimizations auf false für Debugzwecke. Weitere Informationen
 			// finden Sie unter http://go.microsoft.com/fwlink/?LinkId=301862
