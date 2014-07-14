@@ -6,6 +6,9 @@ ILK_Protokoll.Tests/
 variables.css
 variables.min.css
 variables.css.map
+*.min.css
+*.min.js
+*.map
 
 # User-specific files
 *.suo
