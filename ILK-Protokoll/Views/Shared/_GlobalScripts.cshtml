@@ -31,6 +31,29 @@
 		$('.popover-markup > .trigger').popover('hide');
 	});
 
+	// Datepicker für Internet Explorer und Firefox
+	// Diese unterstützen leider noch nicht <input type="date" />
+	if (!Modernizr.inputtypes.date) {
+		$.datepicker.setDefaults($.datepicker.regional["de"]);
+		$('input[type=date]').datepicker({
+			dateFormat: "yy-mm-dd",
+			showOtherMonths: true,
+			selectOtherMonths: true,
+			numberOfMonths: 2,
+			showWeek: true,
+			firstDay: 1,
+			monthNames: ['Januar', 'Februar', 'M&auml;rz', 'April', 'Mai', 'Juni',
+            'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'],
+			monthNamesShort: ['Jan', 'Feb', 'M&auml;r', 'Apr', 'Mai', 'Jun',
+			  'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'],
+			dayNames: ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'],
+			dayNamesShort: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
+			dayNamesMin: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
+			weekHeader: 'KW',
+		});
+	}
+
+
 	function DisplayErrorMessage(id, text) {
 		if (id) {
 			$(id).after('<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><strong>Fehler: </strong>' + text + '</div>');

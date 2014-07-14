@@ -11,6 +11,7 @@ namespace ILK_Protokoll
 				"~/Scripts/jquery-{version}.js",
 				"~/Scripts/jquery.unobtrusive-ajax.js",
 				"~/Scripts/jquery.timeago.js",
+				"~/Scripts/jquery-ui-{version}.js",
 				"~/Scripts/jquery.highlight.js",
 				"~/Scripts/jquery.tablesorter.js"));
 
@@ -27,7 +28,8 @@ namespace ILK_Protokoll
 				"~/Scripts/respond.js"));
 
 			bundles.Add(new StyleBundle("~/Content/css").Include(
-				"~/Content/iwbTheme.css"));
+				"~/Content/iwbTheme.css",
+				"~/Content/themes/base/jquery.ui.all.css"));
 
 			// Festlegen von EnableOptimizations auf false für Debugzwecke. Weitere Informationen
 			// finden Sie unter http://go.microsoft.com/fwlink/?LinkId=301862
