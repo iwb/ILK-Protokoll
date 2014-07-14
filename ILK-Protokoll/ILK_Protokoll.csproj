@@ -231,74 +231,23 @@
     <Content Include="Content\iwbTheme.css">
       <DependentUpon>iwbTheme.less</DependentUpon>
     </Content>
-    <Content Include="Content\iwbTheme.min.css">
-      <DependentUpon>iwbTheme.css</DependentUpon>
-    </Content>
     <Content Include="Content\themes\base\jquery-ui.css" />
-    <Content Include="Content\themes\base\jquery-ui.min.css">
-      <DependentUpon>jquery-ui.css</DependentUpon>
-    </Content>
     <Content Include="Content\themes\base\jquery.ui.accordion.css" />
-    <Content Include="Content\themes\base\jquery.ui.accordion.min.css">
-      <DependentUpon>jquery.ui.accordion.css</DependentUpon>
-    </Content>
     <Content Include="Content\themes\base\jquery.ui.autocomplete.css" />
-    <Content Include="Content\themes\base\jquery.ui.autocomplete.min.css">
-      <DependentUpon>jquery.ui.autocomplete.css</DependentUpon>
-    </Content>
     <Content Include="Content\themes\base\jquery.ui.base.css" />
     <Content Include="Content\themes\base\jquery.ui.button.css" />
-    <Content Include="Content\themes\base\jquery.ui.button.min.css">
-      <DependentUpon>jquery.ui.button.css</DependentUpon>
-    </Content>
     <Content Include="Content\themes\base\jquery.ui.core.css" />
-    <Content Include="Content\themes\base\jquery.ui.core.min.css">
-      <DependentUpon>jquery.ui.core.css</DependentUpon>
-    </Content>
     <Content Include="Content\themes\base\jquery.ui.datepicker.css" />
-    <Content Include="Content\themes\base\jquery.ui.datepicker.min.css">
-      <DependentUpon>jquery.ui.datepicker.css</DependentUpon>
-    </Content>
     <Content Include="Content\themes\base\jquery.ui.dialog.css" />
-    <Content Include="Content\themes\base\jquery.ui.dialog.min.css">
-      <DependentUpon>jquery.ui.dialog.css</DependentUpon>
-    </Content>
     <Content Include="Content\themes\base\jquery.ui.menu.css" />
-    <Content Include="Content\themes\base\jquery.ui.menu.min.css">
-      <DependentUpon>jquery.ui.menu.css</DependentUpon>
-    </Content>
     <Content Include="Content\themes\base\jquery.ui.progressbar.css" />
-    <Content Include="Content\themes\base\jquery.ui.progressbar.min.css">
-      <DependentUpon>jquery.ui.progressbar.css</DependentUpon>
-    </Content>
     <Content Include="Content\themes\base\jquery.ui.resizable.css" />
-    <Content Include="Content\themes\base\jquery.ui.resizable.min.css">
-      <DependentUpon>jquery.ui.resizable.css</DependentUpon>
-    </Content>
     <Content Include="Content\themes\base\jquery.ui.selectable.css" />
-    <Content Include="Content\themes\base\jquery.ui.selectable.min.css">
-      <DependentUpon>jquery.ui.selectable.css</DependentUpon>
-    </Content>
     <Content Include="Content\themes\base\jquery.ui.slider.css" />
-    <Content Include="Content\themes\base\jquery.ui.slider.min.css">
-      <DependentUpon>jquery.ui.slider.css</DependentUpon>
-    </Content>
     <Content Include="Content\themes\base\jquery.ui.spinner.css" />
-    <Content Include="Content\themes\base\jquery.ui.spinner.min.css">
-      <DependentUpon>jquery.ui.spinner.css</DependentUpon>
-    </Content>
     <Content Include="Content\themes\base\jquery.ui.tabs.css" />
-    <Content Include="Content\themes\base\jquery.ui.tabs.min.css">
-      <DependentUpon>jquery.ui.tabs.css</DependentUpon>
-    </Content>
     <Content Include="Content\themes\base\jquery.ui.theme.css" />
-    <Content Include="Content\themes\base\jquery.ui.theme.min.css">
-      <DependentUpon>jquery.ui.theme.css</DependentUpon>
-    </Content>
     <Content Include="Content\themes\base\jquery.ui.tooltip.css" />
-    <Content Include="Content\themes\base\jquery.ui.tooltip.min.css">
-      <DependentUpon>jquery.ui.tooltip.css</DependentUpon>
-    </Content>
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="img\fileicons\default.png" />
@@ -415,103 +364,22 @@
     <Content Include="Areas\Administration\Views\AdminHome\Index.cshtml" />
     <Content Include="Areas\Administration\Views\RecycleBin\Purge.cshtml" />
     <None Include="Content\variables.less" />
-    <Content Include="Content\iwbTheme.css.map">
-      <DependentUpon>iwbTheme.css</DependentUpon>
-    </Content>
-    <Content Include="Scripts\bootstrap.min.js.map">
-      <DependentUpon>bootstrap.min.js</DependentUpon>
-    </Content>
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />
-    <Content Include="Scripts\bootstrap.min.js">
-      <DependentUpon>bootstrap.js</DependentUpon>
-    </Content>
-    <Content Include="Scripts\jquery-2.1.1.intellisense.min.js">
-      <DependentUpon>jquery-2.1.1.intellisense.js</DependentUpon>
-    </Content>
     <Content Include="Scripts\jquery-2.1.1.js" />
-    <Content Include="Scripts\jquery-2.1.1.min.js">
-      <DependentUpon>jquery-2.1.1.js</DependentUpon>
-    </Content>
     <Content Include="Scripts\jquery-ui-1.10.4.js" />
-    <Content Include="Scripts\jquery-ui-1.10.4.min.js">
-      <DependentUpon>jquery-ui-1.10.4.js</DependentUpon>
-    </Content>
     <Content Include="Scripts\jquery.form.js" />
-    <Content Include="Scripts\jquery.form.min.js">
-      <DependentUpon>jquery.form.js</DependentUpon>
-    </Content>
     <Content Include="Scripts\jquery.highlight.js" />
-    <Content Include="Scripts\jquery.highlight.min.js">
-      <DependentUpon>jquery.highlight.js</DependentUpon>
-    </Content>
     <Content Include="Scripts\jquery.tablesorter.js" />
-    <Content Include="Scripts\jquery.tablesorter.min.js">
-      <DependentUpon>jquery.tablesorter.js</DependentUpon>
-    </Content>
     <Content Include="Scripts\jquery.timeago.js" />
-    <Content Include="Scripts\jquery.timeago.min.js">
-      <DependentUpon>jquery.timeago.js</DependentUpon>
-    </Content>
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
-    <Content Include="Scripts\jquery-2.1.1.intellisense.min.js.map">
-      <DependentUpon>jquery-2.1.1.intellisense.min.js</DependentUpon>
-    </Content>
-    <Content Include="Scripts\jquery-2.1.1.min.js.map">
-      <DependentUpon>jquery-2.1.1.min.js</DependentUpon>
-    </Content>
-    <Content Include="Scripts\jquery-ui-1.10.4.min.js.map">
-      <DependentUpon>jquery-ui-1.10.4.min.js</DependentUpon>
-    </Content>
-    <Content Include="Scripts\jquery.form.min.js.map">
-      <DependentUpon>jquery.form.min.js</DependentUpon>
-    </Content>
-    <Content Include="Scripts\jquery.highlight.min.js.map">
-      <DependentUpon>jquery.highlight.min.js</DependentUpon>
-    </Content>
-    <Content Include="Scripts\jquery.tablesorter.min.js.map">
-      <DependentUpon>jquery.tablesorter.min.js</DependentUpon>
-    </Content>
-    <Content Include="Scripts\jquery.timeago.min.js.map">
-      <DependentUpon>jquery.timeago.min.js</DependentUpon>
-    </Content>
-    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js.map">
-      <DependentUpon>jquery.unobtrusive-ajax.min.js</DependentUpon>
-    </Content>
     <None Include="Scripts\jquery.validate-vsdoc.js" />
-    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js">
-      <DependentUpon>jquery.unobtrusive-ajax.js</DependentUpon>
-    </Content>
-    <Content Include="Scripts\jquery.validate-vsdoc.min.js">
-      <DependentUpon>jquery.validate-vsdoc.js</DependentUpon>
-    </Content>
     <Content Include="Scripts\jquery.validate.js" />
-    <Content Include="Scripts\jquery.validate.min.js">
-      <DependentUpon>jquery.validate.js</DependentUpon>
-    </Content>
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
-    <Content Include="Scripts\jquery.validate.unobtrusive.min.js">
-      <DependentUpon>jquery.validate.unobtrusive.js</DependentUpon>
-    </Content>
     <Content Include="Scripts\ListUtilities.js" />
-    <Content Include="Scripts\ListUtilities.min.js">
-      <DependentUpon>ListUtilities.js</DependentUpon>
-    </Content>
     <Content Include="Scripts\modernizr-2.7.2.js" />
-    <Content Include="Scripts\modernizr-2.7.2.min.js">
-      <DependentUpon>modernizr-2.7.2.js</DependentUpon>
-    </Content>
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.js" />
-    <Content Include="Scripts\respond.matchmedia.addListener.min.js">
-      <DependentUpon>respond.matchmedia.addListener.js</DependentUpon>
-    </Content>
-    <Content Include="Scripts\respond.min.js">
-      <DependentUpon>respond.js</DependentUpon>
-    </Content>
     <Content Include="Scripts\_references.js" />
-    <Content Include="Scripts\_references.min.js">
-      <DependentUpon>_references.js</DependentUpon>
-    </Content>
     <Content Include="Web.config" />
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
@@ -558,30 +426,6 @@
     <Content Include="Views\Assignments\Details.cshtml" />
     <Content Include="Views\Topics\ViewHistory.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\Diff.cshtml" />
-    <Content Include="Scripts\jquery.validate-vsdoc.min.js.map">
-      <DependentUpon>jquery.validate-vsdoc.min.js</DependentUpon>
-    </Content>
-    <Content Include="Scripts\jquery.validate.min.js.map">
-      <DependentUpon>jquery.validate.min.js</DependentUpon>
-    </Content>
-    <Content Include="Scripts\jquery.validate.unobtrusive.min.js.map">
-      <DependentUpon>jquery.validate.unobtrusive.min.js</DependentUpon>
-    </Content>
-    <Content Include="Scripts\ListUtilities.min.js.map">
-      <DependentUpon>ListUtilities.min.js</DependentUpon>
-    </Content>
-    <Content Include="Scripts\modernizr-2.7.2.min.js.map">
-      <DependentUpon>modernizr-2.7.2.min.js</DependentUpon>
-    </Content>
-    <Content Include="Scripts\respond.min.js.map">
-      <DependentUpon>respond.min.js</DependentUpon>
-    </Content>
-    <Content Include="Scripts\respond.matchmedia.addListener.min.js.map">
-      <DependentUpon>respond.matchmedia.addListener.min.js</DependentUpon>
-    </Content>
-    <Content Include="Scripts\_references.min.js.map">
-      <DependentUpon>_references.min.js</DependentUpon>
-    </Content>
     <None Include="Web.Integration.config" />
     <None Include="Web.Testing.config" />
   </ItemGroup>
