@@ -1,4 +1,5 @@
-﻿@using ILK_Protokoll.util
+﻿@using ILK_Protokoll.Models
+@using ILK_Protokoll.util
 <!DOCTYPE html>
 <html>
 	<head>
@@ -8,6 +9,15 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<meta name="description" content="Das ILK-Protokoll ermöglicht eine einfache Verwaltung der Diskussionen rund ums iwb und eine durchsuchbare Liste von Beschlüssen." />
 		<title>@ViewBag.Title &#8211; ILK-Protokoll</title>
+		
+		@if (ViewBag.ColorScheme == ColorScheme.RMV)
+		{
+			<link href="~/Content/rmvTheme.css" rel="stylesheet" />
+		}
+		else
+		{
+			<link href="~/Content/iwbTheme.css" rel="stylesheet" />
+		}
 		@Styles.Render("~/Content/css")
 		@Scripts.Render("~/bundles/modernizr")
 		@Scripts.Render("~/bundles/jquery")
