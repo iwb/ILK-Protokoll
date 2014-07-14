@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Data;
-using ILK_Protokoll.Areas.Administration.Controllers;
 using ILK_Protokoll.Areas.Administration.Models;
 
 namespace ILK_Protokoll.Models
@@ -51,6 +50,9 @@ namespace ILK_Protokoll.Models
 		[InverseProperty("Attendees")]
 		public virtual ICollection<SessionType> SessionTypes { get; set; }
 
+		[DisplayName("Farbschema")]
+		public ColorScheme ColorScheme { get; set; }
+
 		#region Equals() etc.
 
 		public bool Equals(User other)
@@ -80,5 +82,11 @@ namespace ILK_Protokoll.Models
 		}
 
 		#endregion
+	}
+
+	public enum ColorScheme
+	{
+		[Display(Name = "iwb Blau")] iwb,
+		[Display(Name = "RMV grün")] RMV
 	}
 }

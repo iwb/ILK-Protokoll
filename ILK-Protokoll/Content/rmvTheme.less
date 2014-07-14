@@ -1,0 +1,21 @@
+﻿// iwb Farben etc.
+@import "bootstrap/variables.less";
+@import "variables_rmv.less";
+@import "bootstrap/bootstrap.less";
+
+@import "layout.less";
+
+.iwblogo {
+	padding-left: 65px;
+	background-image: url("../img/iwbLogo_inv.png");
+	background-size: contain;
+	background-repeat: no-repeat;
+}
+
+/*IE-Hack*/
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+	/* IE10+ specific styles */
+	.iwblogo {
+		background-image: url("../img/iwbLogo_inv_small.png") !important;
+	}
+}

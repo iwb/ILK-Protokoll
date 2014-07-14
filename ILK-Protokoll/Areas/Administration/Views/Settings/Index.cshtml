@@ -1,0 +1,33 @@
+﻿@using ILK_Protokoll.Models
+@model User
+
+@{
+	ViewBag.Title = "Einstellungen";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<p>Diese Einstellungen sind Benutzerspezifisch, betreffen also nur Sie allein.</p>
+
+@using (Html.BeginForm("Save", "Settings", FormMethod.Post))
+{
+	@Html.AntiForgeryToken()
+
+	<div class="form-horizontal">
+		<div class="form-group">
+			@Html.LabelFor(model => model.ColorScheme, new { @class = "control-label col-md-2" })
+			<div class="col-md-2">
+				@Html.EnumDropDownListFor(model => model.ColorScheme, new { @class = "form-control" })
+				@Html.ValidationMessageFor(model => model.ColorScheme, "", new { @class = "text-danger" })
+			</div>
+		</div>
+
+		<div class="form-group">
+			<div class="col-md-offset-2 col-md-5">
+				<input type="submit" value="Speichern" class="btn btn-primary" />
+			</div>
+		</div>
+
+		@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+	</div>
+}

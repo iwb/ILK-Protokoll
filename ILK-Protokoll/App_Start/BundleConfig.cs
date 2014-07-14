@@ -28,7 +28,6 @@ namespace ILK_Protokoll
 				"~/Scripts/respond.js"));
 
 			bundles.Add(new StyleBundle("~/Content/css").Include(
-				"~/Content/iwbTheme.css",
 				"~/Content/themes/base/jquery.ui.core.css",
 				"~/Content/themes/base/jquery.ui.accordion.css",
 				"~/Content/themes/base/jquery.ui.autocomplete.css",

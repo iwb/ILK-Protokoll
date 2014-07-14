@@ -1,4 +1,5 @@
-﻿@using ILK_Protokoll.util
+﻿@using ILK_Protokoll.Models
+@using ILK_Protokoll.util
 <!DOCTYPE html>
 <html>
 	<head>
@@ -11,6 +12,15 @@
 		<meta http-equiv="pragma" content="no-cache" />
 		<meta http-equiv="expires" content="0" />
 		<title>@ViewBag.Title &#8211; ILK-Protokoll</title>
+
+		@if (ViewBag.ColorScheme == ColorScheme.RMV)
+		{
+			<link href="~/Content/rmvTheme.css" rel="stylesheet" />
+		}
+		else
+		{
+			<link href="~/Content/iwbTheme.css" rel="stylesheet" />
+		}
 		@Styles.Render("~/Content/css")
 		@Scripts.Render("~/bundles/modernizr")
 		@Scripts.Render("~/bundles/jquery")
@@ -25,14 +35,14 @@
 			<script type="text/javascript">
 				document.getElementById("javascript-warning").style.display = 'none';
 			</script>
-			
+
 			<div id="alerts">
 			</div>
 
 			@RenderBody()
 			@{ Html.RenderPartial("_Footer"); }
 		</div>
-	
+
 		@{ Html.RenderPartial("_GlobalScripts"); }
 		@RenderSection("Scripts", false)
 		@Html.RenderDelayed()

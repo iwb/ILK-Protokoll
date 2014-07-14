@@ -47,14 +47,6 @@ namespace ILK_Protokoll.Controllers
 			return Content(message);
 		}
 
-		protected override void Dispose(bool disposing)
-		{
-			if (disposing)
-				db.Dispose();
-
-			base.Dispose(disposing);
-		}
-
 		protected override void Initialize(RequestContext requestContext)
 		{
 			HttpContextBase Context = requestContext.HttpContext;
@@ -66,6 +58,20 @@ namespace ILK_Protokoll.Controllers
 			Context.Response.Headers["Expires"] = "0";
 
 			base.Initialize(requestContext);
+		}
+
+		protected override void OnActionExecuting(ActionExecutingContext filterContext)
+		{
+			base.OnActionExecuting(filterContext);
+			ViewBag.ColorScheme = GetCurrentUser().ColorScheme;
+		}
+
+		protected override void Dispose(bool disposing)
+		{
+			if (disposing)
+				db.Dispose();
+
+			base.Dispose(disposing);
 		}
 	}
 }
