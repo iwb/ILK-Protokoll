@@ -12,7 +12,10 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 		{
 			base.OnActionExecuting(filterContext);
 			if (GetSession() != null)
+			{
 				ViewBag.LastSession = GetSession().SessionType.LastDate;
+				ViewBag.CurrentSession = GetSession();
+			}
 		}
 
 		protected ActiveSession CreateNewSession(SessionType type)

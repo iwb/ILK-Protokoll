@@ -284,12 +284,12 @@ textarea {
   line-height: inherit;
 }
 a {
-  color: #001a4a;
+  color: #002364;
   text-decoration: none;
 }
 a:hover,
 a:focus {
-  color: #000000;
+  color: #000817;
   text-decoration: underline;
 }
 a:focus {
@@ -2281,7 +2281,7 @@ fieldset[disabled] .btn-danger.active {
   background-color: #ffffff;
 }
 .btn-link {
-  color: #001a4a;
+  color: #002364;
   font-weight: normal;
   cursor: pointer;
   border-radius: 0;
@@ -2302,7 +2302,7 @@ fieldset[disabled] .btn-link {
 }
 .btn-link:hover,
 .btn-link:focus {
-  color: #000000;
+  color: #000817;
   text-decoration: underline;
   background-color: transparent;
 }
@@ -3474,7 +3474,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .nav .open > a:hover,
 .nav .open > a:focus {
   background-color: #dddddd;
-  border-color: #001a4a;
+  border-color: #002364;
 }
 .nav .nav-divider {
   height: 1px;
@@ -4137,7 +4137,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   padding: 6px 12px;
   line-height: 1.42857143;
   text-decoration: none;
-  color: #001a4a;
+  color: #002364;
   background-color: #ffffff;
   border: 1px solid #dddddd;
   margin-left: -1px;
@@ -4157,7 +4157,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .pagination > li > span:hover,
 .pagination > li > a:focus,
 .pagination > li > span:focus {
-  color: #000000;
+  color: #000817;
   background-color: #dddddd;
   border-color: #dddddd;
 }
@@ -4352,7 +4352,7 @@ a.badge:focus {
 }
 a.list-group-item.active > .badge,
 .nav-pills > .active > a > .badge {
-  color: #001a4a;
+  color: #002364;
   background-color: #ffffff;
 }
 .nav-pills > li > a > .badge {
@@ -4412,7 +4412,7 @@ a.list-group-item.active > .badge,
 a.thumbnail:hover,
 a.thumbnail:focus,
 a.thumbnail.active {
-  border-color: #001a4a;
+  border-color: #002364;
 }
 .thumbnail .caption {
   padding: 9px;
@@ -5836,6 +5836,10 @@ textarea.form-control {
   }
 }
 .navbar-text {
+  margin-top: 20px;
+  margin-bottom: 15px;
+}
+p.navbar-text {
   margin-top: 10px;
   margin-bottom: 5px;
 }

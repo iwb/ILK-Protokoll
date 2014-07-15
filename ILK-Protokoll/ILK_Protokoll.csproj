@@ -391,8 +391,8 @@
     <Content Include="Content\rmvTheme.css.map">
       <DependentUpon>rmvTheme.css</DependentUpon>
     </Content>
-    <Content Include="Content\layout.less" />
-    <Content Include="Content\variables_rmv.less" />
+    <None Include="Content\layout.less" />
+    <None Include="Content\variables_rmv.less" />
     <None Include="Content\variables.less" />
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.1.js" />
