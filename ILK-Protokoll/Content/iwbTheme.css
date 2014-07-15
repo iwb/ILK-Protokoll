@@ -5801,6 +5801,9 @@ body {
 textarea.form-control {
   min-height: 120px;
 }
+input.check-box {
+  width: 34px;
+}
 .form-horizontal .static-text {
   margin-top: 0;
   margin-bottom: 0;

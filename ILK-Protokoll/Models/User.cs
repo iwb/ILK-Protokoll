@@ -87,6 +87,6 @@ namespace ILK_Protokoll.Models
 	public enum ColorScheme
 	{
 		[Display(Name = "iwb Blau")] iwb,
-		[Display(Name = "RMV grün")] RMV
+		[Display(Name = "RMV Grün")] RMV
 	}
 }

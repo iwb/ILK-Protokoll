@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Data.Entity;
 using System.Linq;
+using System.Net;
 using System.Web.Mvc;
 using ILK_Protokoll.Models;
 using ILK_Protokoll.ViewModels;
@@ -81,6 +83,38 @@ namespace ILK_Protokoll.Controllers
 				db.SaveChanges();
 				return RedirectToAction("Index", "Assignments");
 			}
+		}
+
+		// GET: Assignments/Edit/5
+		public ActionResult Edit(int? id)
+		{
+			if (id == null)
+				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+			Assignment assignment = db.Assignments.Find(id);
+
+			if (assignment == null)
+				return HttpNotFound();
+
+			ViewBag.UserList = new SelectList(db.GetUserOrdered(GetCurrentUser()), "ID", "ShortName");
+			return View(assignment);
+		}
+
+		// POST: Assignments/Edit/5
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public ActionResult Edit(
+			[Bind(Include = "ID,Type,Title,Description,TopicID,OwnerID,DueDate,ReminderSent,IsDone")] Assignment assignment)
+		{
+			if (!ModelState.IsValid)
+			{
+				ViewBag.UserList = new SelectList(db.GetUserOrdered(GetCurrentUser()), "ID", "ShortName");
+				return View(assignment);
+			}
+
+			db.Entry(assignment).State = EntityState.Modified;
+			db.SaveChanges();
+			return RedirectToAction("Index");
 		}
 	}
 }
