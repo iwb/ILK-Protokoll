@@ -392,6 +392,7 @@
       <DependentUpon>rmvTheme.css</DependentUpon>
     </Content>
     <None Include="Content\layout.less" />
+    <None Include="Content\variables_iwb.less" />
     <None Include="Content\variables_rmv.less" />
     <None Include="Content\variables.less" />
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />
