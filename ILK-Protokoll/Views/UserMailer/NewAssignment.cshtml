@@ -1,0 +1,40 @@
+@using ILK_Protokoll.Models
+@{
+	var user = (User)ViewBag.User;
+	var assignment = (Assignment)ViewBag.Assignment;
+	var name = string.Join(" ", user.LongName.Split(',').Reverse()).Trim();
+}
+Für dich wurde eine neue Aufgabe im ILK-Protokoll hinterlegt, deren Erledigung bis zum <b>@assignment.DueDate.ToString("d")</b> erfolgen sollte:
+
+<h3>@assignment.Title</h3>
+<div>
+	<dl class="dl-horizontal">
+		<dt>
+			Besitzer:
+		</dt>
+		<dd>
+			@assignment.Owner.LongName
+		</dd>
+
+		<dt>
+			Diskussion:
+		</dt>
+		<dd>
+			@assignment.Topic.Title
+		</dd>
+
+		<dt>
+			Typ:
+		</dt>
+		<dd>
+			@assignment.Type
+		</dd>
+
+		<dt>
+			Beschreibung:
+		</dt>
+		<dd>
+			@assignment.Description
+		</dd>
+	</dl>
+</div>
