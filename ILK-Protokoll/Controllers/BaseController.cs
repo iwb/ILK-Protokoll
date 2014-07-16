@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿using System.Net.Mail;
+using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using ILK_Protokoll.Areas.Administration.Controllers;
@@ -37,6 +38,38 @@ namespace ILK_Protokoll.Controllers
 				return db.ActiveSessions.Find(sessionID);
 			else
 				return null;
+		}
+
+		protected bool SendMail(string subject, string message)
+		{
+			return SendMail(subject, message, GetCurrentUser());
+		}
+
+		protected bool SendMail(string subject, string message, User recipient)
+		{
+			MailMessage mail = new MailMessage
+			{
+				From = new MailAddress("no-reply@iwb.tum.de", "ILK-Protokoll"),
+				Subject = subject,
+				Body = message,
+			};
+			mail.To.Add(new MailAddress(recipient.EmailAddress));
+
+			SmtpClient smtpClient = new SmtpClient("mail", 25)
+			{
+				UseDefaultCredentials = true,
+				DeliveryMethod = SmtpDeliveryMethod.Network,
+				EnableSsl = false
+			};
+			try
+			{
+				smtpClient.Send(mail);
+				return true;
+			}
+			catch (SmtpException)
+			{
+				return false;
+			}
 		}
 
 		protected ContentResult HTTPStatus(int statuscode, string message)
