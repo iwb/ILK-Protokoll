@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ILK_Protokoll.Areas.Session.Models.Lists
@@ -18,9 +19,13 @@ namespace ILK_Protokoll.Areas.Session.Models.Lists
 
 
 		[DisplayName("Beginn")]
+		[DataType(DataType.Date)]
+		[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm}", ApplyFormatInEditMode = true)]
 		public DateTime? Start { get; set; }
 
 		[DisplayName("Ende")]
+		[DataType(DataType.Date)]
+		[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm}", ApplyFormatInEditMode = true)]
 		public DateTime? End { get; set; }
 
 		public override string ToString()

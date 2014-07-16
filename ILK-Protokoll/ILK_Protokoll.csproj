@@ -199,6 +199,10 @@
     <Compile Include="Migrations\201407141619113_ColorScheme.Designer.cs">
       <DependentUpon>201407141619113_ColorScheme.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201407151339037_ListFK.cs" />
+    <Compile Include="Migrations\201407151339037_ListFK.Designer.cs">
+      <DependentUpon>201407151339037_ListFK.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Assignment.cs" />
     <Compile Include="Models\Attachment.cs" />
@@ -493,6 +497,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201407141619113_ColorScheme.resx">
       <DependentUpon>201407141619113_ColorScheme.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201407151339037_ListFK.resx">
+      <DependentUpon>201407151339037_ListFK.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
