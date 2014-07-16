@@ -45,7 +45,7 @@ namespace ILK_Protokoll.Controllers
 			return SendMail(subject, message, GetCurrentUser());
 		}
 
-		protected bool SendMail(string subject, string message, User recipient)
+		protected static bool SendMail(string subject, string message, User recipient)
 		{
 			MailMessage mail = new MailMessage
 			{
@@ -55,7 +55,7 @@ namespace ILK_Protokoll.Controllers
 			};
 			mail.To.Add(new MailAddress(recipient.EmailAddress));
 
-			SmtpClient smtpClient = new SmtpClient("mail", 25)
+			SmtpClient smtpClient = new SmtpClient("mailout.iwb.mw.tu-muenchen.de", 25)
 			{
 				UseDefaultCredentials = true,
 				DeliveryMethod = SmtpDeliveryMethod.Network,
