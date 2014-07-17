@@ -69,3 +69,14 @@
 		</dd>
 	</dl>
 </div>
+
+<div style="text-align: right;">
+	@if (Model.IsDone)
+	{
+		@Html.ActionLink("Aufgabe als offen markieren", "MarkAsOpen", new {id = Model.ID})
+	}
+	else
+	{
+		@Html.ActionLink("Aufgabe als erledigt markieren", "MarkAsDone", new { id = Model.ID })
+	}
+</div>
