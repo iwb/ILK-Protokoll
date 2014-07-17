@@ -4,7 +4,12 @@
 	var assignment = (Assignment)ViewBag.Assignment;
 	var name = string.Join(" ", user.LongName.Split(',').Reverse()).Trim();
 }
-Für dich wurde eine neue Aufgabe im ILK-Protokoll hinterlegt, deren Erledigung bis zum <b>@assignment.DueDate.ToString("d")</b> erfolgen sollte:
+<p>Für Sie wurde eine neue Aufgabe im ILK-Protokoll hinterlegt, deren Erledigung bis zum <b>@assignment.DueDate.ToString("d")</b> erfolgen sollte.</p>
+
+<a href="@Url.Action("Details", "Assignments", new { id = assignment.ID }, "http")">Detailseite</a><br />
+<p>
+	<a href="@Url.Action("MarkAsDone", "Assignments", new { id = assignment.ID }, "http")">Als erledigt kennzeichnen</a>
+</p>
 
 <h3>@assignment.Title</h3>
 <div>
@@ -13,14 +18,14 @@ Für dich wurde eine neue Aufgabe im ILK-Protokoll hinterlegt, deren Erledigung b
 			Besitzer:
 		</dt>
 		<dd>
-			@assignment.Owner.LongName
+			@name
 		</dd>
 
 		<dt>
 			Diskussion:
 		</dt>
 		<dd>
-			@assignment.Topic.Title
+			<a href="@Url.Action("Details", "Topics", new { id = assignment.Topic.ID }, "http")">@assignment.Topic.Title</a>
 		</dd>
 
 		<dt>

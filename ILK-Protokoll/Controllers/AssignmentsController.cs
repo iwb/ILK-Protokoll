@@ -3,6 +3,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using ILK_Protokoll.Mailers;
 using ILK_Protokoll.Models;
 using ILK_Protokoll.ViewModels;
 
@@ -53,6 +54,24 @@ namespace ILK_Protokoll.Controllers
 			return View(a);
 		}
 
+		public ActionResult MarkAsDone(int id)
+		{
+			var a = db.Assignments.Find(id);
+			a.IsDone = true;
+			db.SaveChanges();
+
+			return RedirectToAction("Details", new {id});
+		}
+
+		public ActionResult MarkAsOpen(int id)
+		{
+			var a = db.Assignments.Find(id);
+			a.IsDone = false;
+			db.SaveChanges();
+
+			return RedirectToAction("Details", new {id});
+		}
+
 		// GET: Assignments/Create
 		[HttpGet]
 		public ActionResult Create(int? topicID)
@@ -81,6 +100,19 @@ namespace ILK_Protokoll.Controllers
 			{
 				db.Assignments.Add(input);
 				db.SaveChanges();
+
+				var assignment = db.Assignments
+					.Include(a => a.Owner)
+					.Include(a => a.Topic)
+					.Single(a => a.ID == input.ID);
+
+				if (assignment.Type == AssignmentType.ToDo)
+				{
+					var mailer = new UserMailer();
+					var msg = mailer.NewAssignment(assignment);
+					msg.Send();
+				}
+
 				return RedirectToAction("Index", "Assignments");
 			}
 		}
