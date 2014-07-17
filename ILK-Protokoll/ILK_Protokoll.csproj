@@ -137,6 +137,7 @@
     <Compile Include="Areas\Session\Controllers\Lists\LExtensionsController.cs" />
     <Compile Include="Areas\Session\Controllers\Lists\LConferencesController.cs" />
     <Compile Include="Areas\Session\Controllers\Lists\LEventsController.cs" />
+    <Compile Include="Areas\Session\Controllers\Lists\LIlkMeetingsController.cs" />
     <Compile Include="Areas\Session\Controllers\Lists\LIlkDaysController.cs" />
     <Compile Include="Areas\Session\Controllers\Lists\ParentController.cs" />
     <Compile Include="Areas\Session\Controllers\MasterController.cs" />
@@ -344,6 +345,10 @@
     <Content Include="Areas\Session\Views\LIlkDays\_Edit.cshtml" />
     <Content Include="Areas\Session\Views\LIlkDays\_List.cshtml" />
     <Content Include="Areas\Session\Views\LIlkDays\_Row.cshtml" />
+    <Content Include="Areas\Session\Views\LIlkMeetings\_CreateForm.cshtml" />
+    <Content Include="Areas\Session\Views\LIlkMeetings\_Edit.cshtml" />
+    <Content Include="Areas\Session\Views\LIlkMeetings\_List.cshtml" />
+    <Content Include="Areas\Session\Views\LIlkMeetings\_Row.cshtml" />
     <None Include="Content\bootstrap\wells.less" />
     <None Include="Content\bootstrap\variables.less" />
     <None Include="Content\bootstrap\utilities.less" />

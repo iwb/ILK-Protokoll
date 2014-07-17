@@ -1,0 +1,57 @@
+﻿@model ILK_Protokoll.Areas.Session.Models.Lists.IlkMeeting
+
+<tr id="ilkMeeting_@Model.ID">
+	<td colspan="6">
+		@using (Ajax.BeginForm("_Edit", "LIlkMeetings", new { Area = "Session" }, new AjaxOptions
+	{
+		OnSuccess = "ReplaceRow('ilkMeeting', " + Model.ID + ", data);",
+		HttpMethod = "POST",
+	}, new { @class = "tableform" }))
+		{
+			@Html.AntiForgeryToken()
+			<div class="row">
+				<div class="col-sm-2">
+					<div class="form-inline">
+						<div class="form-group">
+							<input class="form-control text-box single-line" data-val="true" data-val-date="Das Feld &quot;Beginn&quot; muss eine Datumsangabe sein." data-val-required="Das Feld &quot;Beginn&quot; ist erforderlich." id="ilkMeetingEdit_Start_date" type="date" value="@Model.Start.ToString("yyyy-MM-dd")" style="width:155px;">
+						</div>
+						<div class="form-group">
+							<input class="form-control text-box single-line" data-val="true" data-val-date="Das Feld &quot;Beginn&quot; muss eine Zeitangabe sein." data-val-required="Das Feld &quot;Beginn&quot; ist erforderlich." id="ilkMeetingEdit_Start_time" type="time" value="@Model.Start.ToString("HH:mm")" style="width:100px;">
+						</div>
+					</div>
+					<input type="hidden" id="ilkMeetingEdit_StartDateTime" name="Start" value="@Model.Start.ToString("s")" />
+
+					<script type="text/javascript">
+				$('#ilkMeetingEdit_Start_date, #ilkMeetingEdit_Start_time').change(function () {
+					var dateparts = $('#ilkMeetingEdit_Start_date')[0].value.split('-');
+					var timeparts = $('#ilkMeetingEdit_Start_time')[0].value.split(':');
+					$('#ilkMeetingEdit_StartDateTime').val(new Date(dateparts[0], dateparts[1] - 1, dateparts[2], timeparts[0], timeparts[1]).toISOString());
+				});
+					</script>
+				</div>
+				<div class="col-sm-2">
+					@Html.EditorFor(model => model.Place, new { htmlAttributes = new { @class = "form-control" } })
+				</div>
+				<div class="col-sm-2">
+					@Html.DropDownListFor(m => m.SessionTypeID, (SelectList)ViewBag.SessionTypeList, "(bitte auswählen)", new { @class = "form-control" })
+				</div>
+				<div class="col-sm-2">
+					@Html.DropDownListFor(m => m.OrganizerID, (SelectList)ViewBag.UserList, new { @class = "form-control" })
+				</div>
+				<div class="col-sm-3">
+					@Html.EditorFor(model => model.Comments, new { htmlAttributes = new { @class = "form-control" } })
+				</div>
+				<div class="col-sm-1 actions">
+					@Html.HiddenFor(model => model.ID)
+					<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-check"></span></button>
+					<a data-ajax="true"
+						data-ajax-method="POST"
+						data-ajax-success="ReplaceRow('ilkMeeting', @Model.ID, data);"
+						href="@Url.Action("_FetchRow", "LIlkMeetings", new {Area = "Session", id = Model.ID})">
+						<span class="glyphicon glyphicon-remove" title="Bearbeitung abbrechen"></span>
+					</a>
+				</div>
+			</div>
+		}
+	</td>
+</tr>

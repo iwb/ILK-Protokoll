@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using ILK_Protokoll.Areas.Administration.Models;
 using ILK_Protokoll.Models;
+using ILK_Protokoll.util;
 
 namespace ILK_Protokoll.Areas.Session.Models.Lists
 {
@@ -13,8 +14,14 @@ namespace ILK_Protokoll.Areas.Session.Models.Lists
 	[Table("L_IlkMeeting")]
 	public class IlkMeeting : BaseItem
 	{
+		public IlkMeeting()
+		{
+			Start = DateTime.Today.AddHours(9);
+		}
+
 		[DisplayName("Beginn")]
 		[DataType(DataType.DateTime)]
+		[FutureDate]
 		public DateTime Start { get; set; }
 
 

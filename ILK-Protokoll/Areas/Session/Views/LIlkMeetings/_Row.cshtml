@@ -1,0 +1,36 @@
+﻿@model ILK_Protokoll.Areas.Session.Models.Lists.IlkMeeting
+@{
+	string trclass = Model.Created > ViewBag.LastSession ? "newlistitem" : null;
+}
+
+<tr class="@trclass" id="ilkMeeting_@Model.ID">
+	<td>
+		@Model.Start.ToString("g")
+	</td>
+	<td>
+		@Html.DisplayFor(model => model.Place)
+	</td>
+	<td>
+		@Html.DisplayFor(model => model.SessionType.Name)
+	</td>
+	<td>
+		@Html.DisplayFor(model => model.Organizer.ShortName)
+	</td>
+	<td>
+		@Html.DisplayFor(model => model.Comments)
+	</td>
+	<td class="actions">
+		<a data-ajax="true"
+			data-ajax-method="POST"
+			data-ajax-success="ReplaceRow('ilkMeeting', @Model.ID, data);"
+			href="@Url.Action("_BeginEdit", "LIlkMeetings", new {Area = "Session", id = Model.ID})"><span class="glyphicon glyphicon-edit" title="Ilk-Regeltermin bearbeiten"></span></a>
+
+		<a data-ajax="true"
+			data-ajax-method="POST"
+			data-ajax-confirm="Ilk-Regeltermin wirklich löschen?"
+			data-ajax-success="RemoveRow('ilkMeeting', @Model.ID);"
+			href="@Url.Action("_Delete", "LIlkMeetings", new {Area = "Session", id = Model.ID})">
+			<span class="glyphicon glyphicon-remove" title="Ilk-Regeltermin löschen"></span>
+		</a>
+	</td>
+</tr>
