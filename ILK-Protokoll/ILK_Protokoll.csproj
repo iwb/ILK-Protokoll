@@ -228,6 +228,7 @@
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\Vote.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\AssignmentEdit.cs" />
     <Compile Include="ViewModels\DashBoard.cs" />
     <Compile Include="ViewModels\FilteredAssignments.cs" />
     <Compile Include="ViewModels\TopicEdit.cs" />
@@ -478,6 +479,7 @@
     <Content Include="Views\UserMailer\_Layout.cshtml" />
     <Content Include="Views\UserMailer\Welcome.cshtml" />
     <Content Include="Views\UserMailer\NewAssignment.cshtml" />
+    <Content Include="Views\UserMailer\AssignmentReminder.cshtml" />
     <None Include="Web.Integration.config" />
     <None Include="Web.Testing.config" />
   </ItemGroup>

@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using ILK_Protokoll.Mailers;
 using ILK_Protokoll.Models;
 using ILK_Protokoll.ViewModels;
+using Mvc.Mailer;
 
 namespace ILK_Protokoll.Controllers
 {
@@ -72,14 +73,28 @@ namespace ILK_Protokoll.Controllers
 			return RedirectToAction("Details", new {id});
 		}
 
+		public ActionResult SendReminders()
+		{
+			DateTime cutoff = DateTime.Today.AddDays(7);
+			var upcoming = db.Assignments.Where(a => !a.IsDone && !a.ReminderSent && a.DueDate < cutoff).ToList();
+
+			var mailer = new UserMailer();
+			foreach (Assignment assignment in upcoming)
+			{
+				mailer.AssignmentReminder(assignment).Send();
+				assignment.ReminderSent = true;
+			}
+
+			db.SaveChanges();
+
+			return Content(string.Format("Es wurden {0} Erinnerungen verschickt.", upcoming.Count));
+		}
+
 		// GET: Assignments/Create
 		[HttpGet]
-		public ActionResult Create(int? topicID)
+		public ActionResult Create(int topicID)
 		{
-			var a = new Assignment();
-
-			if (topicID.HasValue)
-				a.Topic = db.Topics.Find(topicID.Value);
+			var a = new AssignmentEdit {TopicID = topicID};
 
 			ViewBag.UserList = new SelectList(db.GetUserOrdered(GetCurrentUser()), "ID", "ShortName");
 
@@ -89,7 +104,7 @@ namespace ILK_Protokoll.Controllers
 		// POST: Administration/SessionTypes/Create
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public ActionResult Create([Bind(Include = "Type,Title,Description,TopicID,OwnerID,DueDate,")] Assignment input)
+		public ActionResult Create([Bind] AssignmentEdit input)
 		{
 			if (!ModelState.IsValid)
 			{
@@ -98,18 +113,16 @@ namespace ILK_Protokoll.Controllers
 			}
 			else
 			{
-				db.Assignments.Add(input);
-				db.SaveChanges();
+				var assignment = db.Assignments.Create();
+				TryUpdateModel(assignment, new[] {"Type", "Title", "Description", "TopicID", "OwnerID", "DueDate"});
 
-				var assignment = db.Assignments
-					.Include(a => a.Owner)
-					.Include(a => a.Topic)
-					.Single(a => a.ID == input.ID);
+				db.Assignments.Add(assignment);
+				db.SaveChanges();
 
 				if (assignment.Type == AssignmentType.ToDo)
 				{
 					var mailer = new UserMailer();
-					var msg = mailer.NewAssignment(assignment);
+					MvcMailMessage msg = mailer.NewAssignment(assignment);
 					msg.Send();
 				}
 
@@ -129,21 +142,34 @@ namespace ILK_Protokoll.Controllers
 				return HttpNotFound();
 
 			ViewBag.UserList = new SelectList(db.GetUserOrdered(GetCurrentUser()), "ID", "ShortName");
-			return View(assignment);
+
+			var vm = new AssignmentEdit()
+			{
+				Description = assignment.Description,
+				DueDate = assignment.DueDate,
+				ID = assignment.ID,
+				OwnerID = assignment.OwnerID,
+				Title = assignment.Title,
+				TopicID = assignment.TopicID,
+				Type = assignment.Type
+			};
+
+			return View(vm);
 		}
 
 		// POST: Assignments/Edit/5
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public ActionResult Edit(
-			[Bind(Include = "ID,Type,Title,Description,TopicID,OwnerID,DueDate,ReminderSent,IsDone")] Assignment assignment)
+		public ActionResult Edit([Bind] AssignmentEdit input)
 		{
 			if (!ModelState.IsValid)
 			{
 				ViewBag.UserList = new SelectList(db.GetUserOrdered(GetCurrentUser()), "ID", "ShortName");
-				return View(assignment);
+				return View(input);
 			}
 
+			var assignment = db.Assignments.Find(input.ID);
+			TryUpdateModel(assignment, new[] {"Type", "Title", "Description", "TopicID", "OwnerID", "DueDate"});
 			db.Entry(assignment).State = EntityState.Modified;
 			db.SaveChanges();
 			return RedirectToAction("Index");

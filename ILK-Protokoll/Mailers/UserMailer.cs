@@ -21,15 +21,27 @@ namespace ILK_Protokoll.Mailers
 			});
 		}
 
-		public virtual MvcMailMessage NewAssignment(Assignment a)
+		public virtual MvcMailMessage NewAssignment(Assignment assignment)
 		{
-			ViewBag.User = a.Owner;
-			ViewBag.Assignment = a;
+			ViewBag.User = assignment.Owner;
+			ViewBag.Assignment = assignment;
 			return Populate(x =>
 			{
-				x.Subject = string.Format("Neue Aufgabe »{0}« im ILK-Protokoll", a.Title);
+				x.Subject = string.Format("Neue Aufgabe »{0}« im ILK-Protokoll", assignment.Title);
 				x.ViewName = "NewAssignment";
-				x.To.Add(a.Owner.EmailAddress);
+				x.To.Add(assignment.Owner.EmailAddress);
+			});
+		}
+
+		public MvcMailMessage AssignmentReminder(Assignment assignment)
+		{
+			ViewBag.User = assignment.Owner;
+			ViewBag.Assignment = assignment;
+			return Populate(x =>
+			{
+				x.Subject = string.Format("Die Aufgabe »{0}« wird bald fällig", assignment.Title);
+				x.ViewName = "AssignmentReminder";
+				x.To.Add(assignment.Owner.EmailAddress);
 			});
 		}
 	}
