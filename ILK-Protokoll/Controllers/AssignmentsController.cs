@@ -3,6 +3,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using ILK_Protokoll.DataLayer;
 using ILK_Protokoll.Mailers;
 using ILK_Protokoll.Models;
 using ILK_Protokoll.ViewModels;
@@ -73,7 +74,7 @@ namespace ILK_Protokoll.Controllers
 			return RedirectToAction("Details", new {id});
 		}
 
-		public ActionResult SendReminders()
+		public static string SendReminders(DataContext db)
 		{
 			DateTime cutoff = DateTime.Today.AddDays(7);
 			var upcoming = db.Assignments.Where(a => !a.IsDone && !a.ReminderSent && a.DueDate < cutoff).ToList();
@@ -87,7 +88,7 @@ namespace ILK_Protokoll.Controllers
 
 			db.SaveChanges();
 
-			return Content(string.Format("Es wurden {0} Erinnerungen verschickt.", upcoming.Count));
+			return string.Format("Es wurden {0} Erinnerungen verschickt.", upcoming.Count);
 		}
 
 		// GET: Assignments/Create
