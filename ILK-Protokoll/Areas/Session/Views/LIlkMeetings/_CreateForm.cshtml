@@ -3,7 +3,7 @@
 {
 	HttpMethod = "POST",
 	OnSuccess = "AddRow('ilkMeeting', data);",
-	OnFailure = "DisplayErrorMessage('#ilkMeeting_table', error + '\\n' + xhr.responseText);"
+	OnFailure = "DisplayErrorMessage('#ilkMeeting_table', '<br />' + xhr.responseText);"
 }, new { id = "ilkMeeting_form" }))
 {
 	@Html.AntiForgeryToken()

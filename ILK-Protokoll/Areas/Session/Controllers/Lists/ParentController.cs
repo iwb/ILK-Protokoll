@@ -41,7 +41,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 		{
 			if (!ModelState.IsValid)
 			{
-				StringBuilder msg = new StringBuilder("<br />");
+				StringBuilder msg = new StringBuilder();
 				foreach (var kvp in ModelState)
 					foreach (var error in kvp.Value.Errors)
 						msg.AppendFormat("{1} <br />", kvp.Key, error.ErrorMessage);

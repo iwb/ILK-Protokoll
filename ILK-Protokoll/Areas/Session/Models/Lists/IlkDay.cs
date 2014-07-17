@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using ILK_Protokoll.Areas.Administration.Models;
 using ILK_Protokoll.Models;
+using ILK_Protokoll.util;
 
 namespace ILK_Protokoll.Areas.Session.Models.Lists
 {
@@ -21,11 +22,13 @@ namespace ILK_Protokoll.Areas.Session.Models.Lists
 
 		[DisplayName("Beginn")]
 		[DataType(DataType.DateTime)]
+		[FutureDate(ErrorMessage = "Das Startdatum muss in der Zukunft liegen. ")]
 		[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm}", ApplyFormatInEditMode = true)]
 		public DateTime Start { get; set; }
 
 		[DisplayName("Ende")]
 		[DataType(DataType.DateTime)]
+		[FutureDate(ErrorMessage = "Das Enddatum muss in der Zukunft liegen. ")]
 		[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm}", ApplyFormatInEditMode = true)]
 		public DateTime End { get; set; }
 
