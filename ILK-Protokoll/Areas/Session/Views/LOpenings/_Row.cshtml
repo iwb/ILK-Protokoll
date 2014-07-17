@@ -1,0 +1,36 @@
+﻿@model ILK_Protokoll.Areas.Session.Models.Lists.Opening
+@{
+	string trclass = Model.Created > ViewBag.LastSession ? "newlistitem" : null;
+}
+
+<tr class="@trclass" id="opening_@Model.ID">
+	<td>
+		@Html.DisplayFor(model => model.Project)
+	</td>
+	<td>
+		@Model.Start.ToString("d")
+	</td>
+	<td>
+		@Html.DisplayFor(model => model.TG)
+	</td>
+	<td>
+		@Html.DisplayFor(model => model.Prof)
+	</td>
+	<td>
+		@Html.DisplayFor(model => model.Description)
+	</td>
+	<td class="actions">
+		<a data-ajax="true"
+			data-ajax-method="POST"
+			data-ajax-success="ReplaceRow('opening', @Model.ID, data);"
+			href="@Url.Action("_BeginEdit", "LOpenings", new {Area = "Session", id = Model.ID})"><span class="glyphicon glyphicon-edit" title="Vakante Stelle bearbeiten"></span></a>
+
+		<a data-ajax="true"
+			data-ajax-method="POST"
+			data-ajax-confirm="Vakante Stelle wirklich löschen?"
+			data-ajax-success="RemoveRow('opening', @Model.ID);"
+			href="@Url.Action("_Delete", "LOpenings", new {Area = "Session", id = Model.ID})">
+			<span class="glyphicon glyphicon-remove" title="Vakante Stelle löschen"></span>
+		</a>
+	</td>
+</tr>
