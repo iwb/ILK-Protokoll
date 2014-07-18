@@ -54,7 +54,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 
 			ViewBag.UserDict = session.SessionType.Attendees.ToDictionary(u => u, u => session.PresentUsers.Contains(u));
 
-			return View(GetSession());
+			return View(session);
 		}
 
 		[HttpPost]

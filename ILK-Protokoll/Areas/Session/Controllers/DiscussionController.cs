@@ -1,8 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
-using ILK_Protokoll.Models;
 
 namespace ILK_Protokoll.Areas.Session.Controllers
 {
@@ -18,14 +16,16 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 		public ActionResult Index()
 		{
 			var session = GetSession();
+			if (session == null)
+				return RedirectToAction("Index", "Master");
 
-			List<Topic> topics = db.Topics
+			var topics = db.Topics
 				.Include(t => t.SessionType)
 				.Include(t => t.TargetSessionType)
 				.Include(t => t.Owner)
 				.Include(t => t.Assignments)
 				.Include(t => t.Comments)
-				.Where(t => t.SessionTypeID == session.ID)
+				.Where(t => t.SessionTypeID == session.SessionType.ID)
 				.OrderByDescending(t => t.Priority)
 				.ThenByDescending(t => t.Created).ToList();
 
