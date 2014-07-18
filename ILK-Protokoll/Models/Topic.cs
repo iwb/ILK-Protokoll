@@ -97,6 +97,8 @@ namespace ILK_Protokoll.Models
 			get { return Decision == null; }
 		}
 
+		public TopicLock Lock { get; set; }
+
 		public void IncorporateUpdates(TopicEdit updates)
 		{
 			if (!IsEditable)
