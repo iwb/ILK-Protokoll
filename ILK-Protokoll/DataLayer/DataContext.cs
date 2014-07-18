@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
-using System.Data.Entity.Infrastructure.Annotations;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Linq;
 using ILK_Protokoll.Areas.Administration.Models;
@@ -44,11 +42,6 @@ namespace ILK_Protokoll.DataLayer
 		protected override void OnModelCreating(DbModelBuilder modelBuilder)
 		{
 			modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
-
-			modelBuilder
-				.Entity<TopicHistory>()
-				.Property(t => t.TopicID)
-				.HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute()));
 		}
 
 		/// <summary>

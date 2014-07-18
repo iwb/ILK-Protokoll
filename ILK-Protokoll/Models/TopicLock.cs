@@ -5,13 +5,16 @@ namespace ILK_Protokoll.Models
 {
 	public class TopicLock
 	{
-		public int ID { get; set; }
+		[Key]
+		public int TopicID { get; set; }
 
+		[Required]
 		public ActiveSession Session { get; set; }
 
 		[Required]
 		public Topic Topic { get; set; }
 
+		[Required]
 		public TopicAction Action { get; set; }
 	}
 

@@ -213,6 +213,14 @@
     <Compile Include="Migrations\201407181315513_Topiclock_added.Designer.cs">
       <DependentUpon>201407181315513_Topiclock_added.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201407181339289_requireManager.cs" />
+    <Compile Include="Migrations\201407181339289_requireManager.Designer.cs">
+      <DependentUpon>201407181339289_requireManager.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201407181347352_Topiclock_req.cs" />
+    <Compile Include="Migrations\201407181347352_Topiclock_req.Designer.cs">
+      <DependentUpon>201407181347352_Topiclock_req.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Assignment.cs" />
     <Compile Include="Models\Attachment.cs" />
@@ -527,6 +535,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201407181315513_Topiclock_added.resx">
       <DependentUpon>201407181315513_Topiclock_added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201407181339289_requireManager.resx">
+      <DependentUpon>201407181339289_requireManager.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201407181347352_Topiclock_req.resx">
+      <DependentUpon>201407181347352_Topiclock_req.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

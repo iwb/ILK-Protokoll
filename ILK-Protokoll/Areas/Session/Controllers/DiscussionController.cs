@@ -23,9 +23,8 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 				.Include(t => t.SessionType)
 				.Include(t => t.TargetSessionType)
 				.Include(t => t.Owner)
-				.Include(t => t.Assignments)
 				.Include(t => t.Comments)
-				.Where(t => t.SessionTypeID == session.SessionType.ID)
+				.Where(t => t.Lock.Session.ID == session.ID || t.SessionTypeID == session.SessionType.ID)
 				.OrderByDescending(t => t.Priority)
 				.ThenBy(t => t.Created).ToList();
 

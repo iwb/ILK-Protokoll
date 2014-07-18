@@ -24,7 +24,6 @@ namespace ILK_Protokoll.Controllers
 				.Include(t => t.Owner)
 				.Include(t => t.Votes)
 				.Include(t => t.Votes.Select(v => v.Voter))
-				.Include(t => t.Assignments)
 				.Include(t => t.Comments)
 				.Where(t => t.OwnerID == user.ID || t.Votes.Any(v => v.Voter.ID == user.ID))
 				.OrderByDescending(t => t.Priority)

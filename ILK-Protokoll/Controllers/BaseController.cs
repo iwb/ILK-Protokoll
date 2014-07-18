@@ -48,6 +48,8 @@ namespace ILK_Protokoll.Controllers
 
 			if (statuscode == 422)
 				Response.StatusDescription = "Unprocessable Entity";
+			else if (statuscode == 403)
+				Response.StatusDescription = "Forbidden";
 			else
 				Response.StatusDescription = "Internal Server Error";
 
