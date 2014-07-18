@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Web.Mvc;
 using ILK_Protokoll.Models;
 using ILK_Protokoll.util;
@@ -78,7 +80,24 @@ namespace ILK_Protokoll.Controllers
 				}
 
 				db.Topics.Add(t);
-				db.SaveChanges();
+
+				try
+				{
+					db.SaveChanges();
+				}
+				catch (DbEntityValidationException e)
+				{
+					StringBuilder msg = new StringBuilder();
+					foreach (var kvp in ModelState)
+						foreach (var error in kvp.Value.Errors)
+							msg.AppendFormat("{0}: {1} <br />", kvp.Key, error.ErrorMessage);
+
+					Response.Clear();
+					Response.StatusCode = 500;
+					Response.StatusDescription = "InternalServerError";
+					return Content(msg.ToString());
+				}
+
 				return RedirectToAction("Index");
 			}
 

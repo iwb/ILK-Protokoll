@@ -44,7 +44,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 				StringBuilder msg = new StringBuilder();
 				foreach (var kvp in ModelState)
 					foreach (var error in kvp.Value.Errors)
-						msg.AppendFormat("{1} <br />", kvp.Key, error.ErrorMessage);
+						msg.AppendFormat("{0}: {1} <br />", kvp.Key, error.ErrorMessage);
 
 				Response.Clear();
 				Response.StatusCode = 422;
