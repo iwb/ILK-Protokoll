@@ -6160,5 +6160,8 @@ dl {
   .iwblogo {
     background-image: url("../img/iwbLogo_inv_small.png") !important;
   }
+  input[type=date] {
+    padding: 0 12px;
+  }
 }
 /*# sourceMappingURL=iwbTheme.css.map */
