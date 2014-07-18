@@ -21,7 +21,9 @@ namespace ILK_Protokoll.Controllers
 		// GET: Topics
 		public ActionResult Index()
 		{
-			IQueryable<Topic> topics = db.Topics.Include(t => t.SessionType).Include(t => t.TargetSessionType);
+			IQueryable<Topic> topics = db.Topics
+				.Include(t => t.SessionType)
+				.Include(t => t.TargetSessionType);
 			return View(topics.ToList());
 		}
 
@@ -36,6 +38,7 @@ namespace ILK_Protokoll.Controllers
 				.Include(t => t.Assignments)
 				.Include(t => t.Attachments)
 				.Include(t => t.Creator)
+				.Include(t => t.Lock)
 				.Single(t => t.ID == id.Value);
 			if (topic == null)
 				return HttpNotFound();
@@ -108,9 +111,17 @@ namespace ILK_Protokoll.Controllers
 		{
 			if (id == null)
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
 			Topic topic = db.Topics.Find(id);
+
 			if (topic == null)
 				return HttpNotFound();
+			else
+			{
+				var auth = topic.IsEditableBy(GetCurrentUser(), GetSession());
+				if (!auth.IsAuthorized)
+					return HTTPStatus(403, auth.Reason);
+			}
 
 			TopicEdit viewmodel = TopicEdit.FromTopic(topic);
 			viewmodel.SessionTypeList = new SelectList(db.SessionTypes, "ID", "Name");
@@ -131,6 +142,10 @@ namespace ILK_Protokoll.Controllers
 			if (ModelState.IsValid)
 			{
 				Topic topic = db.Topics.Find(input.ID);
+
+				if (!topic.IsEditableBy(GetCurrentUser(), GetSession()).IsAuthorized)
+					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
 				db.TopicHistory.Add(TopicHistory.FromTopic(topic, GetCurrentUser().ID));
 
 				topic.IncorporateUpdates(input);

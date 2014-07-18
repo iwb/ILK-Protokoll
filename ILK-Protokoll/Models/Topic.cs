@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using ILK_Protokoll.Areas.Administration.Models;
+using ILK_Protokoll.Areas.Session.Models;
 using ILK_Protokoll.ViewModels;
 
 namespace ILK_Protokoll.Models
@@ -97,7 +98,37 @@ namespace ILK_Protokoll.Models
 			get { return Decision == null; }
 		}
 
+		public bool IsLocked
+		{
+			get { return Lock != null; }
+		}
+
 		public TopicLock Lock { get; set; }
+
+		public AuthResult IsEditableBy(User u, ActiveSession s)
+		{
+			if (!IsEditable)
+				return new AuthResult("Dieser Diskussionspunkt ist nicht bearbeitbar.");
+			else if (IsLocked)
+			{
+				if (!u.Equals(Lock.Session.Manager))
+					return new AuthResult("Dieser Diskussionspunkt ist gesperrt, und nur durch den Sitzungsleiter bearbeitbar.");
+			}
+			else
+			{
+				if (u.Equals(Owner))
+					return new AuthResult(true);
+
+				if (s == null)
+					return new AuthResult("Sie können diesen Diskussionspunkt nicht bearbeiten, da sie nicht der Besitzer sind.");
+				else if (s.SessionType.ID != SessionTypeID)
+				{
+					return
+						new AuthResult("Sie können diesen Diskussionspunkt nicht bearbeiten, da der Punkt nicht in ihre Sitzung fällt.");
+				}
+			}
+			return new AuthResult(true);
+		}
 
 		public void IncorporateUpdates(TopicEdit updates)
 		{
@@ -139,6 +170,23 @@ namespace ILK_Protokoll.Models
 		public int GetHashCode(Topic obj)
 		{
 			return obj.ID;
+		}
+	}
+
+	public struct AuthResult
+	{
+		public bool IsAuthorized;
+		public string Reason;
+
+		public AuthResult(string reason)
+		{
+			IsAuthorized = false;
+			Reason = reason;
+		}
+
+		public AuthResult(bool isAuthorized)
+		{
+			IsAuthorized = isAuthorized;
 		}
 	}
 }
