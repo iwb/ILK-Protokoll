@@ -1,4 +1,6 @@
-﻿using System.Data.Entity.Validation;
+﻿using System.Data.Entity;
+using System.Data.Entity.Validation;
+using System.Linq;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
@@ -39,6 +41,19 @@ namespace ILK_Protokoll.Controllers
 				return db.ActiveSessions.Find(sessionID);
 			else
 				return null;
+		}
+
+		public bool IsTopicLocked(int topicID)
+		{
+			return IsTopicLocked(db.Topics
+				.Include(t => t.Lock)
+				.Include(t => t.Lock.Session.Manager)
+				.Single(t => t.ID == topicID));
+		}
+
+		public bool IsTopicLocked(Topic t)
+		{
+			return t.Lock != null && !t.Lock.Session.Manager.Equals(GetCurrentUser());
 		}
 
 		protected ContentResult HTTPStatus(int statuscode, string message)
@@ -93,6 +108,7 @@ namespace ILK_Protokoll.Controllers
 		{
 			base.OnActionExecuting(filterContext);
 			ViewBag.ColorScheme = GetCurrentUser().ColorScheme;
+			ViewBag.CurrentUser = GetCurrentUser();
 		}
 
 		protected override void Dispose(bool disposing)

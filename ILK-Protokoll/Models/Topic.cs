@@ -98,18 +98,13 @@ namespace ILK_Protokoll.Models
 			get { return Decision == null; }
 		}
 
-		public bool IsLocked
-		{
-			get { return Lock != null; }
-		}
-
 		public TopicLock Lock { get; set; }
 
 		public AuthResult IsEditableBy(User u, ActiveSession s)
 		{
 			if (!IsEditable)
 				return new AuthResult("Dieser Diskussionspunkt ist nicht bearbeitbar.");
-			else if (IsLocked)
+			else if (Lock != null)
 			{
 				if (!u.Equals(Lock.Session.Manager))
 					return new AuthResult("Dieser Diskussionspunkt ist gesperrt, und nur durch den Sitzungsleiter bearbeitbar.");
@@ -187,6 +182,7 @@ namespace ILK_Protokoll.Models
 		public AuthResult(bool isAuthorized)
 		{
 			IsAuthorized = isAuthorized;
+			Reason = "";
 		}
 	}
 }

@@ -128,7 +128,14 @@
 		</div>
 	}
 	<div class="panel-footer">
-		@Html.ActionLink("Neue Aufgabe erstellen", "Create", "Assignments", new {topicID = Model.ID}, null)
+		@if (Model.Lock == null || Model.Lock.Session.Manager == ViewBag.CurrentUser)
+		{
+			@Html.ActionLink("Neue Aufgabe erstellen", "Create", "Assignments", new {topicID = Model.ID}, null)
+		}
+		else
+		{
+			@:Da das Thema gesperrt ist, können Sie zur Zeit keine Aufgaben hinzufügen.
+		}
 	</div>
 </div>
 

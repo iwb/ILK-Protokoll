@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
@@ -20,10 +21,14 @@ namespace ILK_Protokoll.Controllers
 			return PartialView("_CommentList", comments);
 		}
 
-		public PartialViewResult _CreateForm(int TopicID)
+		public ActionResult _CreateForm(int topicID)
 		{
-			var c = new Comment { TopicID = TopicID };
-			ViewBag.TopicID = TopicID;
+			var topic = db.Topics.Include(t => t.Lock).Single(t => t.ID == topicID);
+			if (IsTopicLocked(topicID))
+				return Content("Da das Thema gesperrt ist, können Sie zur Zeit keine Kommentare schreiben.");
+
+			var c = new Comment {TopicID = topicID};
+			ViewBag.TopicID = topicID;
 			return PartialView("_CreateForm", c);
 		}
 
