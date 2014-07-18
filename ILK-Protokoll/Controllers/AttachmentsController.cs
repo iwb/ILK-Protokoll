@@ -188,12 +188,8 @@ namespace ILK_Protokoll.Controllers
 			}
 			catch (DbEntityValidationException e)
 			{
-				string msg = "";
-				foreach (var validationResult in e.EntityValidationErrors)
-					foreach (var error in validationResult.ValidationErrors)
-						msg += error.ErrorMessage + "<br />";
-
-				return HTTPStatus(500, msg);
+				var message = ErrorMessageFromException(e);
+				return HTTPStatus(500, message);
 			}
 
 			return new HttpStatusCodeResult(HttpStatusCode.NoContent);
@@ -227,12 +223,8 @@ namespace ILK_Protokoll.Controllers
 			}
 			catch (DbEntityValidationException e)
 			{
-				string msg = "";
-				foreach (var validationResult in e.EntityValidationErrors)
-					foreach (var error in validationResult.ValidationErrors)
-						msg += error.ErrorMessage + "<br />";
-
-				return HTTPStatus(500, msg);
+				var message = ErrorMessageFromException(e);
+				return HTTPStatus(500, message);
 			}
 
 			return new HttpStatusCodeResult(HttpStatusCode.NoContent);

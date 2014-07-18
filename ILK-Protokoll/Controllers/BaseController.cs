@@ -1,4 +1,6 @@
-﻿using System.Web;
+﻿using System.Data.Entity.Validation;
+using System.Text;
+using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using ILK_Protokoll.Areas.Administration.Controllers;
@@ -43,8 +45,33 @@ namespace ILK_Protokoll.Controllers
 		{
 			Response.Clear();
 			Response.StatusCode = statuscode;
-			Response.StatusDescription = "Unprocessable Entity";
+
+			if (statuscode == 422)
+				Response.StatusDescription = "Unprocessable Entity";
+			else
+				Response.StatusDescription = "Internal Server Error";
+
 			return Content(message);
+		}
+
+		protected string ErrorMessageFromException(DbEntityValidationException ex)
+		{
+			StringBuilder msg = new StringBuilder();
+			foreach (var entity in ex.EntityValidationErrors)
+				foreach (var error in entity.ValidationErrors)
+					msg.AppendFormat("{0}: {1} <br />", error.PropertyName, error.ErrorMessage);
+
+			return msg.ToString();
+		}
+
+		protected string ErrorMessageFromModelState()
+		{
+			StringBuilder msg = new StringBuilder();
+			foreach (var kvp in ModelState)
+				foreach (var error in kvp.Value.Errors)
+					msg.AppendFormat("{0}: {1} <br />", kvp.Key, error.ErrorMessage);
+
+			return msg.ToString();
 		}
 
 		protected override void Initialize(RequestContext requestContext)

@@ -1,7 +1,6 @@
 ﻿using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Text;
 using System.Web.Mvc;
 using ILK_Protokoll.Areas.Session.Models.Lists;
 
@@ -41,15 +40,8 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 		{
 			if (!ModelState.IsValid)
 			{
-				StringBuilder msg = new StringBuilder();
-				foreach (var kvp in ModelState)
-					foreach (var error in kvp.Value.Errors)
-						msg.AppendFormat("{0}: {1} <br />", kvp.Key, error.ErrorMessage);
-
-				Response.Clear();
-				Response.StatusCode = 422;
-				Response.StatusDescription = "Unprocessable Entity";
-				return Content(msg.ToString());
+				var message = ErrorMessageFromModelState();
+				return HTTPStatus(422, message);
 			}
 
 			var row = _dbSet.Create();

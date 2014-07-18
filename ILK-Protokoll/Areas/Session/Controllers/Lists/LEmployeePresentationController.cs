@@ -77,8 +77,8 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 			}
 			catch (DbEntityValidationException e)
 			{
-				Response.Write(e.EntityValidationErrors.First().ValidationErrors.First().ErrorMessage);
-				return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
+				var msg = ErrorMessageFromException(e);
+				return HTTPStatus(500, msg);
 			}
 
 			ep.Attachments.Clear();
