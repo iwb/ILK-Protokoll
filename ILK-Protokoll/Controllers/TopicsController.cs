@@ -68,12 +68,16 @@ namespace ILK_Protokoll.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				var t = new Topic();
+				var t = new Topic
+				{
+					Creator = GetCurrentUser(),
+					SessionTypeID = input.SessionTypeID
+				};
 				t.IncorporateUpdates(input);
-				t.SessionTypeID = input.SessionTypeID;
+
 				foreach (User user in db.SessionTypes
 					.Include(st => st.Attendees)
-					.First(st => st.ID == input.SessionTypeID).Attendees)
+					.Single(st => st.ID == input.SessionTypeID).Attendees)
 				{
 					t.Votes.Add(new Vote(user, VoteKind.None));
 				}
