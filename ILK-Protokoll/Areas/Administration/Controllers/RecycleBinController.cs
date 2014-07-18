@@ -28,7 +28,7 @@ namespace ILK_Protokoll.Areas.Administration.Controllers
 
 		public ActionResult _Restore(int attachmentID)
 		{
-			var attachment = db.Attachments.Include(a => a.Uploader).First(a => a.ID == attachmentID);
+			var attachment = db.Attachments.Include(a => a.Uploader).Single(a => a.ID == attachmentID);
 
 			if (attachment.TopicID == null && attachment.EmployeePresentationID == null) // Verwaist
 				return HTTPStatus(422, "Wiederherstellungsziel ist nicht mehr vorhanden");

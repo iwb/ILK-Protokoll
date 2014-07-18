@@ -33,7 +33,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 			if (id == null)
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-			EmployeePresentation presentation = _dbSet.Include(ep => ep.Attachments).First(ep => ep.ID == id);
+			EmployeePresentation presentation = _dbSet.Include(ep => ep.Attachments).Single(ep => ep.ID == id);
 			if (presentation == null)
 				return HttpNotFound();
 

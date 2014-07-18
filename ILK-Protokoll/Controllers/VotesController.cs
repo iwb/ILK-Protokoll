@@ -28,7 +28,7 @@ namespace ILK_Protokoll.Controllers
 		public ActionResult _Register(int topicID, VoteKind vote, bool linkAllAuditors = false)
 		{
 			int cuid = GetCurrentUser().ID;
-			Vote dbvote = db.Votes.FirstOrDefault(v => v.Voter.ID == cuid && v.Topic.ID == topicID);
+			Vote dbvote = db.Votes.SingleOrDefault(v => v.Voter.ID == cuid && v.Topic.ID == topicID);
 
 			if (dbvote == null)
 				return new HttpStatusCodeResult(HttpStatusCode.Forbidden, "Es liegt keine Stimmberechtigung vor.");
@@ -41,11 +41,12 @@ namespace ILK_Protokoll.Controllers
 		public ActionResult _Register2(int topicID, int voterID, VoteKind vote, bool linkAllAuditors = false)
 		{
 			User voter = db.Users.Find(voterID);
-			db.Votes.First(v => v.Voter.ID == voter.ID && v.Topic.ID == topicID).Kind = vote;
+			db.Votes.Single(v => v.Voter.ID == voter.ID && v.Topic.ID == topicID).Kind = vote;
 
-			string message = string.Format("In Vertretung für {0} abgestimmt mit \"{1}\".", voter.ShortName, vote.GetDescription());
+			string message = string.Format("In Vertretung für {0} abgestimmt mit \"{1}\".", voter.ShortName,
+				vote.GetDescription());
 
-			db.Comments.Add(new Comment { Author = GetCurrentUser(), TopicID = topicID, Content = message });
+			db.Comments.Add(new Comment {Author = GetCurrentUser(), TopicID = topicID, Content = message});
 			db.SaveChanges();
 			return _List(db.Topics.Find(topicID), linkAllAuditors);
 		}

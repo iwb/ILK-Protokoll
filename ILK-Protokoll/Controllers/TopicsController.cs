@@ -36,7 +36,7 @@ namespace ILK_Protokoll.Controllers
 				.Include(t => t.Assignments)
 				.Include(t => t.Attachments)
 				.Include(t => t.Creator)
-				.First(t => t.ID == id.Value);
+				.Single(t => t.ID == id.Value);
 			if (topic == null)
 				return HttpNotFound();
 

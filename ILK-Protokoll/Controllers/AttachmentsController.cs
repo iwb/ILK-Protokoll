@@ -176,7 +176,7 @@ namespace ILK_Protokoll.Controllers
 		[HttpPost]
 		public ActionResult _Delete(int attachmentID)
 		{
-			Attachment attachment = db.Attachments.Include(a => a.Uploader).First(a => a.ID == attachmentID);
+			Attachment attachment = db.Attachments.Include(a => a.Uploader).Single(a => a.ID == attachmentID);
 
 			if (attachment.Deleted != null)
 				return HTTPStatus(422, "Das Objekt befindet sich bereits im Papierkorb.");
@@ -197,7 +197,7 @@ namespace ILK_Protokoll.Controllers
 
 		public ActionResult _PermanentDelete(int attachmentID)
 		{
-			Attachment attachment = db.Attachments.Include(a => a.Uploader).First(a => a.ID == attachmentID);
+			Attachment attachment = db.Attachments.Include(a => a.Uploader).Single(a => a.ID == attachmentID);
 
 			if (attachment.Deleted == null) // In den Papierkorb
 				return HTTPStatus(422, "Das Objekt befindet sich noch nicht im Papierkorb.");
