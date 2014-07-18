@@ -19,7 +19,9 @@ else
 <div class="row" id="searchresults">
 	@foreach (Topic t in Model)
 	{
-		Html.RenderPartial("~/Views/Topics/_Topic.cshtml", t);
+		<div class="col-lg-6 col-md-12">
+			@{ Html.RenderPartial("~/Views/Topics/_Topic.cshtml", t); }
+		</div>
 	}
 </div>
 

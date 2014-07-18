@@ -27,7 +27,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 				.Include(t => t.Comments)
 				.Where(t => t.SessionTypeID == session.SessionType.ID)
 				.OrderByDescending(t => t.Priority)
-				.ThenByDescending(t => t.Created).ToList();
+				.ThenBy(t => t.Created).ToList();
 
 			return View(topics);
 		}

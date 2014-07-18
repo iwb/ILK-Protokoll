@@ -13,7 +13,17 @@
 
 <h2>@ViewBag.Title</h2>
 
-@foreach (var topic in Model)
-{
-	Html.RenderPartial("~/Views/Topics/_Topic.cshtml", topic);
-}
+<div class="row">
+	@foreach (var topic in Model)
+	{
+		<div class="col-lg-6 col-md-12">
+			<div class="buttongroup" id="state_buttons_@topic.ID">
+				<a class="btn btn-hover-primary active">Wiedervorlage</a>
+				<a class="btn btn-hover-success">Beschluss</a>
+				<a class="btn btn-hover-warning">Kein Beschluss</a>
+				<a class="btn btn-hover-danger">Löschen</a>
+			</div>
+				@{ Html.RenderPartial("~/Views/Topics/_Topic.cshtml", topic); }
+		</div>
+	}
+</div>

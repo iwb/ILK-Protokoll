@@ -1,93 +1,91 @@
 ﻿@using ILK_Protokoll.Models
 @model ILK_Protokoll.Models.Topic
 
-<div class="col-lg-6">
-	<div class="panel panel-primary topic-panel">
-		<div class="panel-heading">
-			<div class="panel-title-right">
-				<p>
-					@{
-						switch (Model.Priority)
-						{
-							case Priority.Low:
-								@: <span class="label label-info">Niedrig</span>
-								break;
+<div class="panel panel-primary topic-panel">
+	<div class="panel-heading">
+		<div class="panel-title-right">
+			<p>
+				@{
+					switch (Model.Priority)
+					{
+						case Priority.Low:
+							@: <span class="label label-info">Niedrig</span>
+							break;
 
-							case Priority.Medium:
+						case Priority.Medium:
 							@: <span class="label label-warning">Mittel</span>
-								break;
+							break;
 
-							case Priority.High:
+						case Priority.High:
 							@: <span class="label label-danger">Wichtig</span>
-								break;
-						}
+							break;
 					}
-					<span class="usertile">@Model.Owner</span>
-				</p>
-				<p>Erstellt @Html.DisplayFor(model => model.Created)</p>
-			</div>
-			<h3 class="panel-title">@Html.ActionLink(Model.Title, "Details", "Topics", new { id = Model.ID, Area = "" }, null)  </h3>
-			<p class="panel-title">@Model.SessionType.Name</p>
+				}
+				<span class="usertile">@Model.Owner</span>
+			</p>
+			<p>Erstellt @Html.DisplayFor(model => model.Created)</p>
 		</div>
-		<div class="panel-body">
-			<div class="col-md-6">
-				<h6>@Html.DisplayNameFor(model => model.Description):</h6>
-				@Html.DisplayFor(model => model.Description, "String_Multiline")
-			</div>
-			<hr class="visible-xs visible-sm" />
-			<div class="col-md-6">
-				<h6>@Html.DisplayNameFor(model => model.Proposal):</h6>
-				@Html.DisplayFor(model => model.Proposal, "String_Multiline")
-			</div>
+		<h3 class="panel-title">@Html.ActionLink(Model.Title, "Details", "Topics", new {id = Model.ID, Area = ""}, null)  </h3>
+		<p class="panel-title">@Model.SessionType.Name</p>
+	</div>
+	<div class="panel-body">
+		<div class="col-md-6">
+			<h6>@Html.DisplayNameFor(model => model.Description):</h6>
+			@Html.DisplayFor(model => model.Description, "String_Multiline")
 		</div>
-		<div class="panel-separator" id="auditorlist_@Model.ID">
-			@Html.Action("_List", "Votes", new { topic = Model, Area = "" })
+		<hr class="visible-xs visible-sm" />
+		<div class="col-md-6">
+			<h6>@Html.DisplayNameFor(model => model.Proposal):</h6>
+			@Html.DisplayFor(model => model.Proposal, "String_Multiline")
 		</div>
+	</div>
+	<div class="panel-separator" id="auditorlist_@Model.ID">
+		@Html.Action("_List", "Votes", new {topic = Model, Area = ""})
+	</div>
 
-		@{
-			string classA = "collapsed";
-			string classDiv = "panel-collapse collapse";
+	@{
+		string classA = "collapsed";
+		string classDiv = "panel-collapse collapse";
 
-			if (Model.Comments.Count < 2) // Sektion ausklappen
-			{
-				classA = "";
-				classDiv = "panel-collapse collapse in";
-			}
+		if (Model.Comments.Count < 2) // Sektion ausklappen
+		{
+			classA = "";
+			classDiv = "panel-collapse collapse in";
 		}
-		<div class="panel panel-primary">
-			<div class="panel-heading panel-collapse-heading" style="position: relative;">
-				<h4 class="panel-title">
-					<a data-toggle="collapse" data-target="#comments_@Model.ID" class="@classA">
-						@if (@Model.Comments.Count == 0)
-						{
-							@:Keine Kommentare
-						}
-						else if (@Model.Comments.Count == 1)
-						{
-							@:Ein Kommentar
-						}
-						else
-						{
-							@Model.Comments.Count
-							@:Kommentare
-						}
-						<span class="divlink"></span>
-					</a>
-				</h4>
-			</div>
-			<div id="comments_@Model.ID" class="@classDiv">
-				@Html.Action("_List", "Comments", new { topic = Model, Area = "" })
-			</div>
+	}
+	<div class="panel panel-primary">
+		<div class="panel-heading panel-collapse-heading" style="position: relative;">
+			<h4 class="panel-title">
+				<a data-toggle="collapse" data-target="#comments_@Model.ID" class="@classA">
+					@if (@Model.Comments.Count == 0)
+					{
+						@:Keine Kommentare
+					}
+					else if (@Model.Comments.Count == 1)
+					{
+						@:Ein Kommentar
+					}
+					else
+					{
+						@Model.Comments.Count
+						@:Kommentare
+					}
+					<span class="divlink"></span>
+				</a>
+			</h4>
 		</div>
-		<div class="panel-footer">
-			@if (@Model.Attachments.Count == 0)
-			{
-				@:Keine Dateien vorhanden
-			}
-			else
-			{
-				@Html.Action("_List", "Attachments", new { entity = AttachmentContainer.Topic, id = Model.ID, makeList = true, Area = "" })
-			}
+		<div id="comments_@Model.ID" class="@classDiv">
+			@Html.Action("_List", "Comments", new {topic = Model, Area = ""})
 		</div>
+	</div>
+	<div class="panel-footer">
+		@if (@Model.Attachments.Count == 0)
+		{
+			@:Keine Dateien vorhanden
+		}
+		else
+		{
+			@Html.Action("_List", "Attachments", new {entity = AttachmentContainer.Topic, id = Model.ID, makeList = true, Area = ""})
+		}
 	</div>
 </div>

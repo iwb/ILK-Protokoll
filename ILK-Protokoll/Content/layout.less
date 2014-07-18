@@ -148,6 +148,11 @@ p.navbar-text {
 	background-color: @gray-light;
 }
 
+
+.panel > .panel-heading {
+	border-radius: 0;
+}
+
 .panel > .panel > .panel-heading {
 	border-radius: 0;
 }
@@ -422,8 +427,8 @@ p.panel-title {
 }
 
 th.headerSortUp, th.headerSortDown {
-    border-bottom-color: @brand-danger !important;
-	 padding-right: 0 !important;
+	border-bottom-color: @brand-danger !important;
+	padding-right: 0 !important;
 }
 
 th.headerSortUp:after {
@@ -458,10 +463,91 @@ dl {
 	background-color: lighten(@brand-success, 15%);
 }
 
-.text-deleted{
+.text-deleted {
 	white-space: pre-wrap;
 	text-decoration: line-through;
 	background-color: lighten(@brand-danger, 50%);
+}
+
+
+.button-hover-variant(@color; @background; @border) {
+	color: @btn-default-color;
+	background-color: @btn-default-bg;
+	border-color: @btn-default-border;
+
+	&:hover,
+	&:focus,
+	&:active,
+	&.active,
+	.open .dropdown-toggle& {
+		color: @color;
+		background-color: @background;
+		border-color: @border;
+	}
+
+	&.active:hover {
+		color: @color;
+		background-color: darken(@background, 8%);
+		border-color: darken(@border, 12%);
+	}
+
+	&:active,
+	&.active,
+	.open .dropdown-toggle& {
+		background-image: none;
+	}
+
+	&.disabled,
+	&[disabled],
+	fieldset[disabled] & {
+		&,
+		&:hover,
+		&:focus,
+		&:active,
+		&.active {
+			background-color: @background;
+			border-color: @border;
+		}
+	}
+
+	.badge {
+		color: @background;
+		background-color: @color;
+	}
+}
+
+
+// Hover color buttons
+.btn-hover-primary {
+  .button-hover-variant(@btn-primary-color; @btn-primary-bg; @btn-primary-border);
+}
+.btn-hover-success {
+  .button-hover-variant(@btn-success-color; @btn-success-bg; @btn-success-border);
+}
+// Info appears as blue-green
+.btn-hover-info {
+  .button-hover-variant(@btn-info-color; @btn-info-bg; @btn-info-border);
+}
+// Warning appears as orange
+.btn-hover-warning {
+  .button-hover-variant(@btn-warning-color; @btn-warning-bg; @btn-warning-border);
+}
+// Danger and error appear as red
+.btn-hover-danger {
+  .button-hover-variant(@btn-danger-color; @btn-danger-bg; @btn-danger-border);
+}
+
+.buttongroup {
+	padding: 5px 5px 5px+@border-radius-base 5px;
+	background-color: @gray-lighter;
+	margin-bottom: -@border-radius-base;
+	border:#000 1px solid;
+	border-top-left-radius: @border-radius-base+5px; 
+}
+
+.buttongroup + div {
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
 }
 
 /*IE-Hack*/
