@@ -15,9 +15,10 @@ function AddRow(list, data) {
 }
 
 function RefreshTables(list) {
+	var selector = 'table.table-sortable';
 	if (list) {
-		list += ' ';
+		selector = '#' + list + '_table';
 	}
-	$(list + 'table.table-sortable').trigger('update');
+	$(selector).trigger('update');
 	$("table.table-sortable time[rel=timeago]").timeago();
 }
