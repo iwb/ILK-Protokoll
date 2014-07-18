@@ -44,7 +44,7 @@ else
 						@Html.DisplayFor(modelItem => item.SessionType.Name)
 					</td>
 					<td>
-						@Html.DisplayFor(modelItem => item.Manager)
+						@Html.DisplayFor(modelItem => item.Manager.LongName)
 					</td>
 					<td>
 						@Html.DisplayFor(modelItem => item.PresentUsers, "IEnumerable_User")

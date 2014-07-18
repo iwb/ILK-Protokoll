@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
@@ -19,7 +20,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 		public ActionResult Index()
 		{
 			ViewBag.SessionTypes = new SelectList(db.SessionTypes, "ID", "Name");
-			return View(db.ActiveSessions.ToList());
+			return View(db.ActiveSessions.Include(session => session.Manager).ToList());
 		}
 
 		public ActionResult Create(int SessionTypeID)
