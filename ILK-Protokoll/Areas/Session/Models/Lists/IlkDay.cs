@@ -9,7 +9,7 @@ using ILK_Protokoll.util;
 namespace ILK_Protokoll.Areas.Session.Models.Lists
 {
 	/// <summary>
-	///    Klausur-Tage
+	///    ILK-Tage
 	/// </summary>
 	[Table("L_IlkDay")]
 	public class IlkDay : BaseItem
