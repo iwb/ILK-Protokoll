@@ -17,7 +17,7 @@ namespace ILK_Protokoll.Controllers
 			ViewBag.ownvote = topic.Votes.SingleOrDefault(v => v.Voter.Equals(GetCurrentUser()));
 			ViewBag.TopicID = topic.ID;
 			ViewBag.CurrentUser = GetCurrentUser();
-			ViewBag.LinkAllAuditors = linkAllAuditors;
+			ViewBag.LinkAllAuditors = linkAllAuditors && !IsTopicLocked(topic.ID);
 
 			IOrderedEnumerable<Vote> displayvotes = topic.Votes.Where(v => !v.Voter.Equals(GetCurrentUser()))
 				.OrderBy(v => v.Voter.ShortName, StringComparer.CurrentCultureIgnoreCase);
@@ -31,7 +31,7 @@ namespace ILK_Protokoll.Controllers
 			Vote dbvote = db.Votes.SingleOrDefault(v => v.Voter.ID == cuid && v.Topic.ID == topicID);
 
 			if (dbvote == null)
-				return new HttpStatusCodeResult(HttpStatusCode.Forbidden, "Es liegt keine Stimmberechtigung vor.");
+				return HTTPStatus(HttpStatusCode.Forbidden, "Es liegt keine Stimmberechtigung vor.");
 
 			dbvote.Kind = vote;
 			db.SaveChanges();
@@ -40,6 +40,9 @@ namespace ILK_Protokoll.Controllers
 
 		public ActionResult _Register2(int topicID, int voterID, VoteKind vote, bool linkAllAuditors = false)
 		{
+			if (IsTopicLocked(topicID))
+				return HTTPStatus(HttpStatusCode.Forbidden, "Das Thema ist gesperrt.");
+
 			User voter = db.Users.Find(voterID);
 			db.Votes.Single(v => v.Voter.ID == voter.ID && v.Topic.ID == topicID).Kind = vote;
 
