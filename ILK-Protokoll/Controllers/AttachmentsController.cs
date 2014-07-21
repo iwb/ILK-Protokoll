@@ -83,9 +83,12 @@ namespace ILK_Protokoll.Controllers
 				return PartialView("_AttachmentTable", files.ToList());
 		}
 
-		public PartialViewResult _UploadForm(AttachmentContainer entity, int id)
+		public ActionResult _UploadForm(AttachmentContainer entity, int id)
 		{
-			return PartialView("_UploadForm", Tuple.Create(entity, id));
+			if (entity == AttachmentContainer.Topic && IsTopicLocked(id))
+				return Content("Da das Thema gesperrt ist, können Sie keine Dateien hochladen.");
+			else
+				return PartialView("_UploadForm", Tuple.Create(entity, id));
 		}
 
 		[HttpPost]
@@ -93,10 +96,13 @@ namespace ILK_Protokoll.Controllers
 		public ActionResult _Upload(AttachmentContainer entity, int id)
 		{
 			if (Request.Files.Count == 0)
-				return new HttpStatusCodeResult(HttpStatusCode.NoContent, "Es wurden keine Dateien empfangen.");
+				return HTTPStatus(HttpStatusCode.OK, "Es wurden keine Dateien empfangen.");
 
 			if (id <= 0)
-				return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Die Dateien können keiner Diskussion zugeordnet werden.");
+				return HTTPStatus(HttpStatusCode.BadRequest, "Die Dateien können keinem Ziel zugeordnet werden.");
+
+			if (entity == AttachmentContainer.Topic && IsTopicLocked(id))
+				return HTTPStatus(HttpStatusCode.Forbidden, "Da das Thema gesperrt ist, können Sie keine Dateien hochladen.");
 
 			var statusMessage = new StringBuilder();
 			int successful = 0;
@@ -181,6 +187,9 @@ namespace ILK_Protokoll.Controllers
 			if (attachment.Deleted != null)
 				return HTTPStatus(422, "Das Objekt befindet sich bereits im Papierkorb.");
 
+			if (attachment.TopicID.HasValue && IsTopicLocked(attachment.TopicID.Value))
+				return HTTPStatus(HttpStatusCode.Forbidden, "Da das Thema gesperrt ist, können Sie keine Dateien bearbeiten.");
+
 			attachment.Deleted = DateTime.Now; // In den Papierkorb
 			try
 			{
@@ -201,6 +210,9 @@ namespace ILK_Protokoll.Controllers
 
 			if (attachment.Deleted == null) // In den Papierkorb
 				return HTTPStatus(422, "Das Objekt befindet sich noch nicht im Papierkorb.");
+
+			if (attachment.TopicID.HasValue && IsTopicLocked(attachment.TopicID.Value))
+				return HTTPStatus(HttpStatusCode.Forbidden, "Da das Thema gesperrt ist, können Sie keine Dateien bearbeiten.");
 
 			try
 			{
