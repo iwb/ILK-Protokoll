@@ -3,7 +3,6 @@ using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
-using EntityFramework.Extensions;
 using ILK_Protokoll.Areas.Session.Models.Lists;
 
 namespace ILK_Protokoll.Areas.Session.Controllers.Lists
