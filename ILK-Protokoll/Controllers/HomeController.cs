@@ -13,7 +13,7 @@ namespace ILK_Protokoll.Controllers
 			var user = GetCurrentUser();
 			var dash = new DashBoard();
 
-			var myAssignments = db.Assignments.Where(a => a.Owner.ID == user.ID).ToLookup(a => a.Type);
+			var myAssignments = db.Assignments.Where(a => a.Owner.ID == user.ID && !a.IsDone).ToLookup(a => a.Type);
 
 			dash.MyToDos = myAssignments[AssignmentType.ToDo];
 			dash.MyDuties = myAssignments[AssignmentType.Duty];

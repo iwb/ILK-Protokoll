@@ -86,7 +86,7 @@ namespace ILK_Protokoll.Controllers
 		public ActionResult _UploadForm(AttachmentContainer entity, int id)
 		{
 			if (entity == AttachmentContainer.Topic && IsTopicLocked(id))
-				return Content("Da das Thema gesperrt ist, können Sie keine Dateien hochladen.");
+				return Content("<div class=\"panel-footer\">Da das Thema gesperrt ist, können Sie keine Dateien hochladen.</div>");
 			else
 				return PartialView("_UploadForm", Tuple.Create(entity, id));
 		}
