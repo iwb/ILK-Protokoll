@@ -1,11 +1,12 @@
 ﻿using System;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ILK_Protokoll.Areas.Session.Models.Lists
 {
 	public class BaseItem
 	{
-		public BaseItem()
+		protected BaseItem()
 		{
 			Created = DateTime.Now;
 		}
@@ -14,5 +15,9 @@ namespace ILK_Protokoll.Areas.Session.Models.Lists
 
 		[DisplayName("Erstellt")]
 		public DateTime Created { get; set; }
+
+
+
 	}
+
 }

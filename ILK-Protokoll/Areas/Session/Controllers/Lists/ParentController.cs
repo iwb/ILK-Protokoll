@@ -1,17 +1,21 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using EntityFramework.Extensions;
 using ILK_Protokoll.Areas.Session.Models.Lists;
 
 namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 {
-// ReSharper disable Mvc.PartialViewNotResolved
+	// ReSharper disable Mvc.PartialViewNotResolved
 	public class ParentController<TModel> : SessionBaseController
 		where TModel : BaseItem, new()
 	{
 		protected DbSet<TModel> _dbSet;
 		private IQueryable<TModel> _entities;
+
+		private readonly TimeSpan EditDuration = TimeSpan.FromMinutes(5);
 
 		protected IQueryable<TModel> Entities
 		{
@@ -21,6 +25,9 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 
 		public virtual PartialViewResult _List()
 		{
+			var cutoff = DateTime.Now - EditDuration;
+			//_dbSet.Where(e => e.Lock.LockTime  < cutoff).Update(e => new TModel(){});
+
 			return PartialView(Entities.ToList());
 		}
 
@@ -45,7 +52,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 			}
 
 			var row = _dbSet.Create();
-			TryUpdateModel(row, "", null, new[] {"Created"});
+			TryUpdateModel(row, "", null, new[] { "Created" });
 			_dbSet.Add(row);
 			db.SaveChanges();
 			return _FetchRow(row.ID);
@@ -69,7 +76,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 
 			// Get the object from the database to enble lasy loading.
 			var row = Entities.Single(m => m.ID == input.ID);
-			TryUpdateModel(row, "", null, new[] {"Created"});
+			TryUpdateModel(row, "", null, new[] { "Created" });
 			db.SaveChanges();
 			return _FetchRow(input.ID);
 		}
@@ -91,5 +98,5 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 		}
 	}
 
-// ReSharper restore Mvc.PartialViewNotResolved
+	// ReSharper restore Mvc.PartialViewNotResolved
 }

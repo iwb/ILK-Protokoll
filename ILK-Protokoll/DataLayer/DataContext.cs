@@ -17,6 +17,7 @@ namespace ILK_Protokoll.DataLayer
 		public DataContext()
 			: base("DataContext")
 		{
+			Database.Log = s => System.Diagnostics.Debug.WriteLine(s);
 		}
 
 		public DbSet<ActiveSession> ActiveSessions { get; set; }
