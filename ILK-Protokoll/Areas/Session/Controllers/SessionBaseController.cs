@@ -52,6 +52,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 
 			Session["SessionID"] = session.ID;
 			session.Manager = GetCurrentUser();
+			db.SaveChanges();
 			return session;
 		}
 	}

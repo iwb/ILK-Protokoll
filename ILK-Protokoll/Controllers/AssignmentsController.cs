@@ -109,7 +109,7 @@ namespace ILK_Protokoll.Controllers
 		[ValidateAntiForgeryToken]
 		public ActionResult Create([Bind] AssignmentEdit input)
 		{
-			if (IsTopicLocked(input.ID))
+			if (IsTopicLocked(input.TopicID))
 				throw new TopicLockedException();
 			else if (!ModelState.IsValid)
 			{
