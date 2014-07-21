@@ -1,6 +1,8 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Data.Entity;
 using System.Data.Entity.Validation;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
@@ -51,7 +53,7 @@ namespace ILK_Protokoll.Controllers
 				.Single(t => t.ID == topicID));
 		}
 
-		public bool IsTopicLocked(Topic t)
+		private bool IsTopicLocked(Topic t)
 		{
 			return t.Lock != null && !t.Lock.Session.Manager.Equals(GetCurrentUser());
 		}
@@ -61,14 +63,19 @@ namespace ILK_Protokoll.Controllers
 			Response.Clear();
 			Response.StatusCode = statuscode;
 
-			if (statuscode == 422)
+			if (Enum.IsDefined(typeof(HttpStatusCode), statuscode))
+				Response.StatusDescription = ((HttpStatusCode)statuscode).ToString();
+			else if (statuscode == 422)
 				Response.StatusDescription = "Unprocessable Entity";
-			else if (statuscode == 403)
-				Response.StatusDescription = "Forbidden";
 			else
 				Response.StatusDescription = "Internal Server Error";
 
 			return Content(message);
+		}
+
+		protected ContentResult HTTPStatus(HttpStatusCode statuscode, string message)
+		{
+			return HTTPStatus((int)statuscode, message);
 		}
 
 		protected string ErrorMessageFromException(DbEntityValidationException ex)
