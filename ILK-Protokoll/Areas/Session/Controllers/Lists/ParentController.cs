@@ -38,7 +38,14 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 
 		public virtual PartialViewResult _FetchRow(int id)
 		{
-			return PartialView("_Row", Entities.Single(m => m.ID == id));
+			var row = Entities.Single(m => m.ID == id);
+			if (row.LockSessionID == GetSession().ID)
+			{
+				row.LockSessionID = null;
+				db.SaveChanges();
+			}
+				
+			return PartialView("_Row", row);
 		}
 
 		[HttpPost]
