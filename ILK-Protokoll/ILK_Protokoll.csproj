@@ -224,6 +224,10 @@
     <Compile Include="Migrations\201407181347352_Topiclock_req.Designer.cs">
       <DependentUpon>201407181347352_Topiclock_req.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201407211501588_Added_Listitem_Locks.cs" />
+    <Compile Include="Migrations\201407211501588_Added_Listitem_Locks.Designer.cs">
+      <DependentUpon>201407211501588_Added_Listitem_Locks.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Assignment.cs" />
     <Compile Include="Models\Attachment.cs" />
@@ -544,6 +548,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201407181347352_Topiclock_req.resx">
       <DependentUpon>201407181347352_Topiclock_req.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201407211501588_Added_Listitem_Locks.resx">
+      <DependentUpon>201407211501588_Added_Listitem_Locks.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

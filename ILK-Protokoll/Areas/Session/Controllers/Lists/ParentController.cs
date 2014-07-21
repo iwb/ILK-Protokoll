@@ -3,6 +3,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using EntityFramework.Extensions;
 using ILK_Protokoll.Areas.Session.Models.Lists;
 
 namespace ILK_Protokoll.Areas.Session.Controllers.Lists
@@ -25,7 +26,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 		public virtual PartialViewResult _List()
 		{
 			var cutoff = DateTime.Now - EditDuration;
-			//_dbSet.Where(e => e.Lock.LockTime  < cutoff).Update(e => new TModel(){});
+			_dbSet.Where(e => e.LockTime  < cutoff).Update(e => new TModel(){ LockSessionID = null });
 
 			return PartialView(Entities.ToList());
 		}
@@ -62,6 +63,12 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 			TModel ev = Entities.Single(m => m.ID == id);
 			if (ev == null)
 				return HttpNotFound();
+			else if (ev.LockSessionID.HasValue && ev.LockSessionID != GetSession().ID)
+				return HTTPStatus(HttpStatusCode.Conflict, "Der Listeneintrag ist gesperrt.");
+
+			ev.LockSessionID = GetSession().ID;
+			ev.LockTime = DateTime.Now;
+			db.SaveChanges();
 
 			return PartialView("_Edit", ev);
 		}
@@ -73,9 +80,15 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 			if (!ModelState.IsValid)
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-			// Get the object from the database to enble lasy loading.
+			// Get the object from the database to enable lazy loading.
 			var row = Entities.Single(m => m.ID == input.ID);
-			TryUpdateModel(row, "", null, new[] { "Created" });
+
+			if (row.LockSessionID == GetSession().ID)
+			{
+				TryUpdateModel(row, "", null, new[] {"Created"});
+				row.LockSessionID = null;
+			}
+
 			db.SaveChanges();
 			return _FetchRow(input.ID);
 		}
@@ -89,6 +102,8 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 			TModel ev = _dbSet.Find(id.Value);
 			if (ev == null)
 				return HttpNotFound();
+			else if (ev.LockSessionID != null)
+				return HTTPStatus(HttpStatusCode.Conflict, "Der Eintrag wird gerade bearbeitet!");
 
 			_dbSet.Remove(_dbSet.Find(id));
 			db.SaveChanges();

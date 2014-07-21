@@ -16,8 +16,15 @@ namespace ILK_Protokoll.Areas.Session.Models.Lists
 		[DisplayName("Erstellt")]
 		public DateTime Created { get; set; }
 
+		/// <summary>
+		/// Enthält den letzten Sperrzeitpunkt.
+		/// </summary>
+		public DateTime LockTime { get; set; }
 
-
+		/// <summary>
+		/// Enthält die ActiveSessionID, die diesen Einträgt gesperrt hält. NULL, wen kein Lock besteht.
+		/// </summary>
+		public int? LockSessionID { get; set; }
 	}
 
 }
