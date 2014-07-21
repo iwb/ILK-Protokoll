@@ -1,8 +1,16 @@
 ﻿@model HandleErrorInfo
-
 @{
 	ViewBag.Title = "Fehler";
 }
 
-<h1 class="text-danger">Fehler</h1>
-<h2 class="text-danger">Fehler bei der Verarbeitung Ihrer Anforderung.</h2>
+<h3 class="text-danger">Fehler: Ihre Anfrage konnte nicht bearbeitet werden.</h3>
+<dl class="dl-horizontal">
+	<dt>Controller:</dt>
+	<dd>@Model.ControllerName</dd>
+
+	<dt>Methode:</dt>
+	<dd>@Model.ActionName</dd>
+
+	<dt>Fehlermeldung:</dt>
+	<dd>@Model.Exception.Message</dd>
+</dl>
