@@ -31,20 +31,24 @@ namespace ILK_Protokoll.Controllers
 		public ActionResult Details(int? id)
 		{
 			if (id == null)
-				return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Für diesen Vorgang ist eine TopicID ist erforderlich.");
+				return HTTPStatus(400, "Für diesen Vorgang ist eine TopicID ist erforderlich.");
 
-			Topic topic = db.Topics
+			var topic = db.Topics
 				.Include(t => t.Votes)
 				.Include(t => t.Assignments)
 				.Include(t => t.Attachments)
 				.Include(t => t.Creator)
 				.Include(t => t.Lock)
+				.Include(t => t.Lock.Session.Manager)
 				.Single(t => t.ID == id.Value);
+
 			if (topic == null)
 				return HttpNotFound();
 
 			ViewBag.TopicID = id.Value;
 			ViewBag.TopicHistory = db.TopicHistory.Where(t => t.TopicID == id.Value).ToList();
+			ViewBag.IsEditable = topic.IsEditableBy(GetCurrentUser(), GetSession()).IsAuthorized;
+			topic.IsLocked = IsTopicLocked(id.Value);
 
 			return View(topic);
 		}
@@ -120,7 +124,7 @@ namespace ILK_Protokoll.Controllers
 			{
 				var auth = topic.IsEditableBy(GetCurrentUser(), GetSession());
 				if (!auth.IsAuthorized)
-					return HTTPStatus(403, auth.Reason);
+					throw new TopicLockedException(auth.Reason);
 			}
 
 			TopicEdit viewmodel = TopicEdit.FromTopic(topic);
@@ -143,8 +147,9 @@ namespace ILK_Protokoll.Controllers
 			{
 				Topic topic = db.Topics.Find(input.ID);
 
-				if (!topic.IsEditableBy(GetCurrentUser(), GetSession()).IsAuthorized)
-					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+				var auth = topic.IsEditableBy(GetCurrentUser(), GetSession());
+				if (!auth.IsAuthorized)
+					return HTTPStatus(HttpStatusCode.Forbidden, auth.Reason);
 
 				db.TopicHistory.Add(TopicHistory.FromTopic(topic, GetCurrentUser().ID));
 

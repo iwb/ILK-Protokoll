@@ -98,6 +98,9 @@ namespace ILK_Protokoll.Models
 			get { return Decision == null; }
 		}
 
+		[NotMapped] // Muss bei Bedarf durch den Controller gesetzt werden
+		public bool IsLocked { get; set; }
+
 		public TopicLock Lock { get; set; }
 
 		public AuthResult IsEditableBy(User u, ActiveSession s)
@@ -183,6 +186,19 @@ namespace ILK_Protokoll.Models
 		{
 			IsAuthorized = isAuthorized;
 			Reason = "";
+		}
+	}
+
+	public class TopicLockedException : Exception
+	{
+		public TopicLockedException()
+			: base("Das Thema ist gesperrt und kann daher nur durch den Sitzungsleiter bearbeitet werden.")
+		{
+		}
+
+		public TopicLockedException(string message)
+			: base(message)
+		{
 		}
 	}
 }

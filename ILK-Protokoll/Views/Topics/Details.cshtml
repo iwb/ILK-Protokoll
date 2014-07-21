@@ -19,7 +19,14 @@
 			<div class="panel-heading">
 				<div class="panel-title-right">
 					<p>
-						<a href="@Url.Action("Edit", new {id = Model.ID})"><i class="glyphicon glyphicon-edit"></i> Bearbeiten</a>
+						@if (ViewBag.IsEditable)
+						{
+							<a href="@Url.Action("Edit", new {id = Model.ID})"><i class="glyphicon glyphicon-edit"></i> Bearbeiten</a>
+						}
+						else if (Model.IsLocked)
+						{
+							<i class="glyphicon glyphicon-lock"></i> @:Gesperrt
+						}
 					</p>
 				</div>
 				<h3 class="panel-title">Stammdaten</h3>
@@ -128,13 +135,13 @@
 		</div>
 	}
 	<div class="panel-footer">
-		@if (Model.Lock == null || Model.Lock.Session.Manager == ViewBag.CurrentUser)
+		@if (Model.IsLocked)
 		{
-			@Html.ActionLink("Neue Aufgabe erstellen", "Create", "Assignments", new {topicID = Model.ID}, null)
+			@:Da das Thema gesperrt ist, können Sie zur Zeit keine Aufgaben erstellen.
 		}
 		else
 		{
-			@:Da das Thema gesperrt ist, können Sie zur Zeit keine Aufgaben hinzufügen.
+			@Html.ActionLink("Neue Aufgabe erstellen", "Create", "Assignments", new {topicID = Model.ID}, null)
 		}
 	</div>
 </div>
