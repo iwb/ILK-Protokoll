@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
@@ -23,7 +22,6 @@ namespace ILK_Protokoll.Controllers
 
 		public ActionResult _CreateForm(int topicID)
 		{
-			var topic = db.Topics.Include(t => t.Lock).Single(t => t.ID == topicID);
 			if (IsTopicLocked(topicID))
 				return Content("Da das Thema gesperrt ist, können Sie zur Zeit keine Kommentare schreiben.");
 
@@ -39,6 +37,9 @@ namespace ILK_Protokoll.Controllers
 		{
 			if (ModelState.IsValid && !string.IsNullOrWhiteSpace(comment.Content))
 			{
+				if (IsTopicLocked(comment.TopicID))
+					throw new TopicLockedException();
+
 				comment.Created = DateTime.Now;
 				comment.Author = GetCurrentUser();
 				db.Comments.Add(comment);
@@ -75,6 +76,8 @@ namespace ILK_Protokoll.Controllers
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest,
 					"Dieser Kommentar kann nicht gelöscht werden: Sie sind nicht der Autor des Kommentars.");
 			}
+			else if (IsTopicLocked(comment.TopicID))
+				throw new TopicLockedException();
 			else
 			{
 				db.Comments.Remove(comment);
