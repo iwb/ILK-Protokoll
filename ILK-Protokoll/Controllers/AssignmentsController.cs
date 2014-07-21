@@ -95,10 +95,12 @@ namespace ILK_Protokoll.Controllers
 		[HttpGet]
 		public ActionResult Create(int topicID)
 		{
+			if (IsTopicLocked(topicID))
+				throw new TopicLockedException();
+
 			var a = new AssignmentEdit {TopicID = topicID};
 
 			ViewBag.UserList = new SelectList(db.GetUserOrdered(GetCurrentUser()), "ID", "ShortName");
-
 			return View(a);
 		}
 
@@ -107,7 +109,9 @@ namespace ILK_Protokoll.Controllers
 		[ValidateAntiForgeryToken]
 		public ActionResult Create([Bind] AssignmentEdit input)
 		{
-			if (!ModelState.IsValid)
+			if (IsTopicLocked(input.ID))
+				throw new TopicLockedException();
+			else if (!ModelState.IsValid)
 			{
 				ViewBag.UserList = new SelectList(db.GetUserOrdered(GetCurrentUser()), "ID", "ShortName");
 				return View(input);
@@ -142,6 +146,9 @@ namespace ILK_Protokoll.Controllers
 			if (assignment == null)
 				return HttpNotFound();
 
+			if (IsTopicLocked(assignment.TopicID))
+				throw new TopicLockedException();
+
 			ViewBag.UserList = new SelectList(db.GetUserOrdered(GetCurrentUser()), "ID", "ShortName");
 
 			var vm = new AssignmentEdit()
@@ -170,6 +177,10 @@ namespace ILK_Protokoll.Controllers
 			}
 
 			var assignment = db.Assignments.Find(input.ID);
+
+			if (IsTopicLocked(assignment.TopicID))
+				throw new TopicLockedException();
+
 			TryUpdateModel(assignment, new[] {"Type", "Title", "Description", "TopicID", "OwnerID", "DueDate"});
 			db.Entry(assignment).State = EntityState.Modified;
 			db.SaveChanges();
