@@ -75,11 +75,10 @@ namespace ILK_Protokoll.util
 			return new MvcHtmlString(metadata.DisplayName);
 		}
 
-		public static string RenderViewAsString(ControllerContext controllerContext, string viewName, object model, string baseURL)
+		public static string RenderViewAsString(ControllerContext controllerContext, string viewName, object model)
 		{
 			// create a string writer to receive the HTML code
 			StringWriter stringWriter = new StringWriter();
-
 			// get the view to render
 			ViewEngineResult viewResult = ViewEngines.Engines.FindView(controllerContext, viewName, null);
 			// create a context to render a view based on a model
@@ -89,14 +88,12 @@ namespace ILK_Protokoll.util
 					  new ViewDataDictionary(model),
 					  new TempDataDictionary(),
 					  stringWriter);
-
-
-
+			
 			// render the view to a HTML code
 			viewResult.View.Render(viewContext, stringWriter);
 
 			var htmlstring = stringWriter.ToString();
-
+			var baseURL = controllerContext.HttpContext.Server.MapPath("~").Replace('\\', '/');
 			// return the HTML code
 			return Regex.Replace(htmlstring, "(src|href)(=\")/([\\w./_-]+)\"", "$1$2file:///" + baseURL + "$3\""); ;
 		}
@@ -110,6 +107,7 @@ namespace ILK_Protokoll.util
 				{
 					ProduceOutline = true,
 					DocumentTitle = "Sitzungsprotokoll",
+					DPI = 150,
 					Margins =
 					{
 						All = 1.5,
@@ -123,9 +121,10 @@ namespace ILK_Protokoll.util
 						HtmlText = sourceHTML,
 						WebSettings = 
 						{
-							EnableJavascript = false,
+							EnableJavascript = true,
 							PrintBackground = true,
-							PrintMediaType = false
+							PrintMediaType = false,
+							EnableIntelligentShrinking = false
 						}
 					}
 				}
