@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
+using TuesPechkin;
 
 namespace ILK_Protokoll.util
 {
@@ -71,6 +73,69 @@ namespace ILK_Protokoll.util
 				() => Activator.CreateInstance<TClass>(), typeof(TClass), name);
 
 			return new MvcHtmlString(metadata.DisplayName);
+		}
+
+		public static string RenderViewAsString(ControllerContext controllerContext, string viewName, object model, string baseURL)
+		{
+			// create a string writer to receive the HTML code
+			StringWriter stringWriter = new StringWriter();
+
+			// get the view to render
+			ViewEngineResult viewResult = ViewEngines.Engines.FindView(controllerContext, viewName, null);
+			// create a context to render a view based on a model
+			ViewContext viewContext = new ViewContext(
+					  controllerContext,
+					  viewResult.View,
+					  new ViewDataDictionary(model),
+					  new TempDataDictionary(),
+					  stringWriter);
+
+
+
+			// render the view to a HTML code
+			viewResult.View.Render(viewContext, stringWriter);
+
+			var htmlstring = stringWriter.ToString();
+
+			// return the HTML code
+			return Regex.Replace(htmlstring, "(src|href)(=\")/([\\w./_-]+)\"", "$1$2file:///" + baseURL + "$3\""); ;
+		}
+
+		public static byte[] ConvertHTMLToPDF(string sourceHTML)
+		{
+			// create a new document with your desired configuration
+			var document = new HtmlToPdfDocument
+			{
+				GlobalSettings =
+				{
+					ProduceOutline = true,
+					DocumentTitle = "Sitzungsprotokoll",
+					Margins =
+					{
+						All = 1.5,
+						Unit = Unit.Centimeters
+					}
+				},
+				Objects =
+				{
+					new ObjectSettings()
+					{
+						HtmlText = sourceHTML,
+						WebSettings = 
+						{
+							EnableJavascript = false,
+							PrintBackground = true,
+							PrintMediaType = false
+						}
+					}
+				}
+			};
+
+			// create converter
+			IPechkin converter = Factory.Create();
+
+			// convert document
+			return converter.Convert(document);
 		}
 	}
 }

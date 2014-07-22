@@ -90,6 +90,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 
 			ev.LockSessionID = GetSession().ID;
 			ev.LockTime = DateTime.Now;
+
 			try
 			{
 				db.SaveChanges();
