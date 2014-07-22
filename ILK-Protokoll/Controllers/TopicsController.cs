@@ -155,7 +155,6 @@ namespace ILK_Protokoll.Controllers
 
 				topic.IncorporateUpdates(input);
 				topic.TargetSessionTypeID = input.TargetSessionTypeID;
-				db.Entry(topic).State = EntityState.Modified;
 				db.SaveChanges();
 				return RedirectToAction("Details", new {Area = "", id = input.ID});
 			}

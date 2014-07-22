@@ -134,7 +134,6 @@ namespace ILK_Protokoll.Models
 				throw new InvalidOperationException("Diese Diskussion ist beendet und kann daher nicht bearbeitet werden.");
 
 			Description = updates.Description;
-			Owner = updates.Owner;
 			OwnerID = updates.OwnerID;
 			Priority = updates.Priority;
 			Proposal = updates.Proposal;
