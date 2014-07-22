@@ -44,7 +44,7 @@ namespace ILK_Protokoll.Models
 			{
 				TopicID = t.ID,
 				EditorID = editorID,
-			Title = t.Title,
+				Title = t.Title,
 				Description = t.Description,
 				Proposal = t.Proposal,
 				OwnerID = t.OwnerID,

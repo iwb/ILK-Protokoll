@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data.Entity;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
@@ -61,7 +62,16 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 			var row = _dbSet.Create();
 			TryUpdateModel(row, "", null, new[] { "Created" });
 			_dbSet.Add(row);
-			db.SaveChanges();
+
+			try
+			{
+				db.SaveChanges();
+			}
+			catch (DbEntityValidationException e)
+			{
+				var message = ErrorMessageFromException(e);
+				return HTTPStatus(500, message);
+			}
 			return _FetchRow(row.ID);
 		}
 
@@ -75,7 +85,15 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 
 			ev.LockSessionID = GetSession().ID;
 			ev.LockTime = DateTime.Now;
-			db.SaveChanges();
+			try
+			{
+				db.SaveChanges();
+			}
+			catch (DbEntityValidationException e)
+			{
+				var message = ErrorMessageFromException(e);
+				return HTTPStatus(500, message);
+			}
 
 			return PartialView("_Edit", ev);
 		}
@@ -96,7 +114,15 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 				row.LockSessionID = null;
 			}
 
-			db.SaveChanges();
+			try
+			{
+				db.SaveChanges();
+			}
+			catch (DbEntityValidationException e)
+			{
+				var message = ErrorMessageFromException(e);
+				return HTTPStatus(500, message);
+			}
 			return _FetchRow(input.ID);
 		}
 
@@ -113,7 +139,15 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 				return HTTPStatus(HttpStatusCode.Conflict, "Der Eintrag wird gerade bearbeitet!");
 
 			_dbSet.Remove(_dbSet.Find(id));
-			db.SaveChanges();
+			try
+			{
+				db.SaveChanges();
+			}
+			catch (DbEntityValidationException e)
+			{
+				var message = ErrorMessageFromException(e);
+				return HTTPStatus(500, message);
+			}
 
 			return new HttpStatusCodeResult(HttpStatusCode.NoContent);
 		}
