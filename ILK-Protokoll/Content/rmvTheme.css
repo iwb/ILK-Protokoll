@@ -6216,9 +6216,14 @@ input.check-box {
 }
 .iwblogo {
   padding-left: 65px;
-  background-image: url("../img/iwbLogo_inv.png");
   background-size: contain;
   background-repeat: no-repeat;
+}
+.navbar .iwblogo {
+  background-image: url("../img/iwbLogo.png");
+}
+.navbar-inverse .iwblogo {
+  background-image: url("../img/iwbLogo_inv.png");
 }
 @media (max-width: 767px) {
   .navbar-inverse .navbar-nav .open .dropdown-menu > li > a {
