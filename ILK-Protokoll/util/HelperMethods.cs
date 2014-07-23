@@ -83,19 +83,29 @@ namespace ILK_Protokoll.util
 			ViewEngineResult viewResult = ViewEngines.Engines.FindView(controllerContext, viewName, null);
 			// create a context to render a view based on a model
 			ViewContext viewContext = new ViewContext(
-					  controllerContext,
-					  viewResult.View,
-					  new ViewDataDictionary(model),
-					  new TempDataDictionary(),
-					  stringWriter);
-			
+				controllerContext,
+				viewResult.View,
+				new ViewDataDictionary(model),
+				new TempDataDictionary(),
+				stringWriter);
+
 			// render the view to a HTML code
 			viewResult.View.Render(viewContext, stringWriter);
 
 			var htmlstring = stringWriter.ToString();
-			var baseURL = controllerContext.HttpContext.Server.MapPath("~").Replace('\\', '/');
+			var localURL = controllerContext.HttpContext.Server.MapPath("~").Replace('\\', '/');
+
+			var Request = controllerContext.RequestContext.HttpContext.Request;
+			string baseURL = Request.Url.Scheme + "://" + Request.Url.Authority +
+			                 Request.ApplicationPath.TrimEnd('/') + "/";
+
+
+			htmlstring = Regex.Replace(htmlstring, "(img src|script src|link href)(=\")/([\\w./_-]+)\"",
+				"$1$2file:///" + localURL + "$3\"");
+			htmlstring = Regex.Replace(htmlstring, "(src|href)(=\")/([\\w./_-]+)\"", "$1$2" + baseURL + "$3\"");
+
 			// return the HTML code
-			return Regex.Replace(htmlstring, "(src|href)(=\")/([\\w./_-]+)\"", "$1$2file:///" + baseURL + "$3\""); ;
+			return htmlstring;
 		}
 
 		public static byte[] ConvertHTMLToPDF(string sourceHTML)
@@ -107,10 +117,12 @@ namespace ILK_Protokoll.util
 				{
 					ProduceOutline = true,
 					DocumentTitle = "Sitzungsprotokoll",
-					DPI = 150,
+					DPI = 600,
+					ImageDPI = 1200,
+					ImageQuality = 100,
 					Margins =
 					{
-						All = 1.5,
+						All = 1,
 						Unit = Unit.Centimeters
 					}
 				},
@@ -119,7 +131,7 @@ namespace ILK_Protokoll.util
 					new ObjectSettings()
 					{
 						HtmlText = sourceHTML,
-						WebSettings = 
+						WebSettings =
 						{
 							EnableJavascript = true,
 							PrintBackground = true,
