@@ -22,6 +22,9 @@ namespace ILK_Protokoll.Controllers
 
 		public ActionResult _CreateForm(int topicID)
 		{
+			if (IsTopicClosed(topicID))
+				return Content("");
+
 			if (IsTopicLocked(topicID))
 				return Content("Da das Thema gesperrt ist, können Sie zur Zeit keine Kommentare schreiben.");
 

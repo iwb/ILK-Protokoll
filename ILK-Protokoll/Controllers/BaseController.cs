@@ -45,6 +45,11 @@ namespace ILK_Protokoll.Controllers
 				return null;
 		}
 
+		public bool IsTopicClosed(int topicID)
+		{
+			return db.Topics.Include(t => t.Decision).Single(t => t.ID == topicID).IsClosed;
+		}
+
 		public bool IsTopicLocked(int topicID)
 		{
 			return IsTopicLocked(db.Topics
