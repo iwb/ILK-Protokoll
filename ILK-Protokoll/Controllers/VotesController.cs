@@ -27,6 +27,9 @@ namespace ILK_Protokoll.Controllers
 
 		public ActionResult _Register(int topicID, VoteKind vote, bool linkAllAuditors = false)
 		{
+			if (db.Topics.Find(topicID).IsReadOnly)
+				return HTTPStatus(HttpStatusCode.Forbidden, "Das Thema ist schreibgeschützt.");
+
 			int cuid = GetCurrentUser().ID;
 			Vote dbvote = db.Votes.SingleOrDefault(v => v.Voter.ID == cuid && v.Topic.ID == topicID);
 

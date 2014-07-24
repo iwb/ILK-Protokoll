@@ -45,11 +45,6 @@ namespace ILK_Protokoll.Controllers
 				return null;
 		}
 
-		public bool IsTopicClosed(int topicID)
-		{
-			return db.Topics.Include(t => t.Decision).Single(t => t.ID == topicID).IsClosed;
-		}
-
 		public bool IsTopicLocked(int topicID)
 		{
 			return IsTopicLocked(db.Topics
@@ -58,7 +53,7 @@ namespace ILK_Protokoll.Controllers
 				.Single(t => t.ID == topicID));
 		}
 
-		private bool IsTopicLocked(Topic t)
+		protected bool IsTopicLocked(Topic t)
 		{
 			return t.Lock != null && !t.Lock.Session.Manager.Equals(GetCurrentUser());
 		}

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
@@ -13,6 +14,7 @@ namespace ILK_Protokoll.Controllers
 		{
 			List<Comment> comments = topic.Comments.OrderBy(c => c.Created).ToList();
 			ViewBag.TopicID = topic.ID;
+			ViewBag.ShowCreateForm = !topic.IsReadOnly && !IsTopicLocked(topic);
 
 			Comment lastcomment = comments.LastOrDefault();
 			ViewBag.AllowDeletion = (lastcomment != null) && (lastcomment.Author.Equals(GetCurrentUser())) ? lastcomment.ID : -1;
@@ -22,12 +24,6 @@ namespace ILK_Protokoll.Controllers
 
 		public ActionResult _CreateForm(int topicID)
 		{
-			if (IsTopicClosed(topicID))
-				return Content("");
-
-			if (IsTopicLocked(topicID))
-				return Content("Da das Thema gesperrt ist, können Sie zur Zeit keine Kommentare schreiben.");
-
 			var c = new Comment {TopicID = topicID};
 			ViewBag.TopicID = topicID;
 			return PartialView("_CreateForm", c);
@@ -40,7 +36,12 @@ namespace ILK_Protokoll.Controllers
 		{
 			if (ModelState.IsValid && !string.IsNullOrWhiteSpace(comment.Content))
 			{
-				if (IsTopicLocked(comment.TopicID))
+				var topic = db.Topics
+					.Include(t => t.Lock)
+					.Include(t => t.Lock.Session.Manager)
+					.Single(t => t.ID == comment.TopicID);
+
+				if (topic.IsReadOnly || IsTopicLocked(topic))
 					throw new TopicLockedException();
 
 				comment.Created = DateTime.Now;
@@ -48,8 +49,7 @@ namespace ILK_Protokoll.Controllers
 				db.Comments.Add(comment);
 				db.SaveChanges();
 
-				Topic t = db.Topics.Find(comment.TopicID);
-				return _List(t);
+				return _List(topic);
 			}
 			else
 			{
