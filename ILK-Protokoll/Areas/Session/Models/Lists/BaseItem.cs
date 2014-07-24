@@ -9,6 +9,7 @@ namespace ILK_Protokoll.Areas.Session.Models.Lists
 		protected BaseItem()
 		{
 			Created = DateTime.Now;
+			LockTime = new DateTime(2000, 1, 1);
 		}
 
 		public int ID { get; set; }
