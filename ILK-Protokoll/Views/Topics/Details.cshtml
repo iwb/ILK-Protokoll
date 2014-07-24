@@ -19,13 +19,20 @@
 			<div class="panel-heading">
 				<div class="panel-title-right">
 					<p>
-						@if (ViewBag.IsEditable)
+						@if (Model.IsReadOnly)
 						{
-							<a href="@Url.Action("Edit", new {id = Model.ID})"><i class="glyphicon glyphicon-edit"></i> Bearbeiten</a>
+							<i class="glyphicon glyphicon-lock"></i> @:Schreibgeschützt
 						}
-						else if (Model.IsLocked)
+						else
 						{
-							<i class="glyphicon glyphicon-lock"></i> @:Gesperrt
+							if (Model.IsLocked)
+							{
+								<i class="glyphicon glyphicon-lock"></i> @:Gesperrt
+							}
+							if (ViewBag.IsEditable)
+							{
+								<a href="@Url.Action("Edit", new {id = Model.ID})"><i class="glyphicon glyphicon-edit"></i> Bearbeiten</a>
+							}
 						}
 					</p>
 				</div>
@@ -114,8 +121,17 @@
 	<div class="panel-heading">
 		<h3 class="panel-title">@Html.DisplayNameFor(model => model.Comments)</h3>
 	</div>
-	<div class="panel-body" id="comments_@Model.ID">
-		@Html.Action("_List", "Comments", Model)
+	<div id="comments_@Model.ID">
+		@if ((!Model.IsReadOnly && !Model.IsLocked ) || Model.Comments.Any())
+		{
+			@Html.Action("_List", "Comments", Model)
+		}
+		else
+		{
+			<div class="panel-body">
+				Es sind keine Kommentare vorhanden.
+			</div>
+		}
 	</div>
 </div>
 
@@ -141,7 +157,7 @@
 		}
 		else
 		{
-			@Html.ActionLink("Neue Aufgabe erstellen", "Create", "Assignments", new {topicID = Model.ID}, null)
+			@Html.ActionLink("Neue Aufgabe erstellen", "Create", "Assignments", new { topicID = Model.ID }, null)
 		}
 	</div>
 </div>
