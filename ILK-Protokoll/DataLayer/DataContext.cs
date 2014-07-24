@@ -33,7 +33,7 @@ namespace ILK_Protokoll.DataLayer
 		public DbSet<IlkMeeting> LIlkMeetings { get; set; }
 		public DbSet<ProfHoliday> LProfHolidays { get; set; }
 		public DbSet<Opening> LOpenings { get; set; }
-		public DbSet<Record> Records { get; set; }
+		public DbSet<SessionReport> SessionReports { get; set; }
 		public DbSet<SessionType> SessionTypes { get; set; }
 		public DbSet<Topic> Topics { get; set; }
 		public DbSet<TopicHistory> TopicHistory { get; set; }

@@ -38,14 +38,14 @@ namespace ILK_Protokoll.Controllers
 			{
 				return HttpNotFound();
 			}
-			return View(decision);
+			return null;
 		}
 
 		// GET: Decisions/Create
 		public ActionResult Create()
 		{
 			ViewBag.ID = new SelectList(db.Topics, "ID", "Title");
-			return View();
+			return null;
 		}
 
 		// POST: Decisions/Create
@@ -63,7 +63,7 @@ namespace ILK_Protokoll.Controllers
 			}
 
 			ViewBag.ID = new SelectList(db.Topics, "ID", "Title", decision.ID);
-			return View(decision);
+			return null;
 		}
 
 		// GET: Decisions/Edit/5
@@ -79,7 +79,7 @@ namespace ILK_Protokoll.Controllers
 				return HttpNotFound();
 			}
 			ViewBag.ID = new SelectList(db.Topics, "ID", "Title", decision.ID);
-			return View(decision);
+			return null;
 		}
 
 		// POST: Decisions/Edit/5
@@ -96,7 +96,7 @@ namespace ILK_Protokoll.Controllers
 				return RedirectToAction("Index");
 			}
 			ViewBag.ID = new SelectList(db.Topics, "ID", "Title", decision.ID);
-			return View(decision);
+			return null;
 		}
 
 		// GET: Decisions/Delete/5
@@ -111,7 +111,7 @@ namespace ILK_Protokoll.Controllers
 			{
 				return HttpNotFound();
 			}
-			return View(decision);
+			return null;
 		}
 
 		// POST: Decisions/Delete/5

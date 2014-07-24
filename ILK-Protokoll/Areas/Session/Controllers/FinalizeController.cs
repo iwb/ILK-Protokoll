@@ -36,5 +36,10 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 
 			return PartialView("_ReportSuccess", 3);
 		}
+
+		public ActionResult SessionReport()
+		{
+			return View(GetSession());
+		}
 	}
 }

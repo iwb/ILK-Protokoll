@@ -1,10 +1,9 @@
-﻿@model IEnumerable<ILK_Protokoll.Models.Record>
+﻿@model IEnumerable<ILK_Protokoll.Models.SessionReport>
 
 @{
 	ViewBag.Title = "Protokolle";
 }
 
-@Html.ActionLink("Hinzufügen", "Create", null, new { @class = "index-action btn btn-primary" })
 
 <h2>@ViewBag.Title</h2>
 
@@ -12,13 +11,13 @@
 	<thead>
 		<tr>
 			<th>
-				@Html.DisplayNameFor(model => model.TopicID)
+				@Html.DisplayNameFor(model => model.ID)
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.Name)
+				@Html.DisplayNameFor(model => model.Manager)
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.Created)
+				@Html.DisplayNameFor(model => model.Start)
 			</th>
 			<th></th>
 		</tr>
@@ -28,18 +27,16 @@
 		{
 			<tr>
 				<td>
-					@Html.DisplayFor(modelItem => item.TopicID)
+					@Html.DisplayFor(modelItem => item.id)
 				</td>
 				<td>
-					@Html.DisplayFor(modelItem => item.Name)
+					@Html.DisplayFor(modelItem => item.Manager)
 				</td>
 				<td>
-					@Html.DisplayFor(modelItem => item.Created)
+					@Html.DisplayFor(modelItem => item.Start)
 				</td>
 				<td>
-					@Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
 					@Html.ActionLink("Details", "Details", new { id = item.ID }) |
-					@Html.ActionLink("Delete", "Delete", new { id = item.ID })
 				</td>
 			</tr>
 		}

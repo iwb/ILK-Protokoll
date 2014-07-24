@@ -169,7 +169,7 @@
     <Compile Include="Controllers\CommentsController.cs" />
     <Compile Include="Controllers\DecisionsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\RecordsController.cs" />
+    <Compile Include="Controllers\SessionReportsController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Controllers\TopicsController.cs" />
     <Compile Include="Controllers\VotesController.cs" />
@@ -238,12 +238,16 @@
     <Compile Include="Migrations\201407240833014_Added_TopicReadonly.Designer.cs">
       <DependentUpon>201407240833014_Added_TopicReadonly.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201407241327195_Rename_sensibly.cs" />
+    <Compile Include="Migrations\201407241327195_Rename_sensibly.Designer.cs">
+      <DependentUpon>201407241327195_Rename_sensibly.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Assignment.cs" />
     <Compile Include="Models\Attachment.cs" />
     <Compile Include="Models\Comment.cs" />
     <Compile Include="Models\Decision.cs" />
-    <Compile Include="Models\Record.cs" />
+    <Compile Include="Models\SessionReport.cs" />
     <Compile Include="Models\TopicHistory.cs" />
     <Compile Include="Models\TopicLock.cs" />
     <Compile Include="util\DelayedRenderExtensions.cs" />
@@ -601,6 +605,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201407240833014_Added_TopicReadonly.resx">
       <DependentUpon>201407240833014_Added_TopicReadonly.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201407241327195_Rename_sensibly.resx">
+      <DependentUpon>201407241327195_Rename_sensibly.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -24,7 +24,7 @@
 }
 
 
-@Ajax.ActionLink("Wiedervorlage", "_ChangeState", "Discussion", new { id = Model.TopicID, state = TopicAction.None }, new AjaxOptions()
+@Ajax.ActionLink("Wiedervorlage", "_ChangeState", new { id = Model.TopicID, state = TopicAction.None }, new AjaxOptions()
 {
 	HttpMethod = "POST",
 	InsertionMode = InsertionMode.Replace,
