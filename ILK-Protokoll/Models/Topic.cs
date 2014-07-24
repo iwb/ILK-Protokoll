@@ -92,11 +92,8 @@ namespace ILK_Protokoll.Models
 		[Required]
 		public DateTime ValidFrom { get; set; }
 
-		[NotMapped]
-		public bool IsClosed
-		{
-			get { return Decision != null; }
-		}
+		[Display(Name = "Schreibschutz")]
+		public bool IsReadOnly { get; set; }
 
 		[NotMapped] // Muss bei Bedarf durch den Controller gesetzt werden
 		public bool IsLocked { get; set; }
@@ -105,7 +102,7 @@ namespace ILK_Protokoll.Models
 
 		public AuthResult IsEditableBy(User u, ActiveSession s)
 		{
-			if (IsClosed)
+			if (IsReadOnly)
 				return new AuthResult("Dieser Diskussionspunkt ist nicht bearbeitbar.");
 			else if (Lock != null)
 			{
@@ -130,7 +127,7 @@ namespace ILK_Protokoll.Models
 
 		public void IncorporateUpdates(TopicEdit updates)
 		{
-			if (IsClosed)
+			if (IsReadOnly)
 				throw new InvalidOperationException("Diese Diskussion ist beendet und kann daher nicht bearbeitet werden.");
 
 			Description = updates.Description;
@@ -143,7 +140,7 @@ namespace ILK_Protokoll.Models
 
 		public void IncorporateHistory(TopicHistory history)
 		{
-			if (IsClosed)
+			if (IsReadOnly)
 				throw new InvalidOperationException("Diese Diskussion ist beendet und kann daher nicht bearbeitet werden.");
 			// ReSharper disable DoNotCallOverridableMethodsInConstructor
 			Description = history.Description;
