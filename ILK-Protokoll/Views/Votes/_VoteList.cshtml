@@ -40,8 +40,9 @@
 		data-ajax-method="POST"
 		data-ajax-mode="replace"
 		data-ajax-update="#auditorlist_@ViewBag.TopicID"
-		data-ajax-failure="DisplayErrorMessage('#auditorlist_@ViewBag.TopicID', 'Die Stimme konnte nicht verarbeitet werden.');"
-		class="votelink">@GetVoteIcon(vk)</a>
+		data-ajax-failure="DisplayErrorMessage('#auditorlist_@ViewBag.TopicID', 'Die Stimme konnte nicht verarbeitet werden. &lt;br /&gt;' + xhr.responseText);"
+		class="votelink">@GetVoteIcon(vk)
+	</a>
 }
 @* Für Abstimmen in Vertretung *@
 @helper GetVoteLink2(User voter, VoteKind vk)
