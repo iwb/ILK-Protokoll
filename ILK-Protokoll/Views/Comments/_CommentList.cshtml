@@ -1,11 +1,16 @@
 ﻿@using ILK_Protokoll.Models
 @model IEnumerable<ILK_Protokoll.Models.Comment>
 
-<div class="panel-body">
-	@foreach (Comment comment in Model)
-	{
-		Html.RenderPartial("~/Views/Comments/_Comment.cshtml", comment);
-	}
-
-	@Html.Action("_CreateForm", "Comments", new {ViewBag.TopicID})
-</div>
+@if (ViewBag.ShowCreateForm || Model.Any())
+{
+	<div class="panel-body">
+		@foreach (Comment comment in Model)
+		{
+			Html.RenderPartial("~/Views/Comments/_Comment.cshtml", comment);
+		}
+		@if (ViewBag.ShowCreateForm)
+		{
+			@Html.Action("_CreateForm", "Comments", new {ViewBag.TopicID})
+		}
+	</div>
+}
