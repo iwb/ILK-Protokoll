@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System.Net;
+using System.Web.Mvc;
 using ILK_Protokoll.Areas.Session.Models;
 using ILK_Protokoll.Areas.Session.ViewModels;
 using ILK_Protokoll.Controllers;
@@ -6,7 +7,7 @@ using ILK_Protokoll.util;
 
 namespace ILK_Protokoll.Areas.Session.Controllers
 {
-	public class FinalizeController : BaseController
+	public class FinalizeController : SessionBaseController
 	{
 		protected override void OnActionExecuting(ActionExecutingContext filterContext)
 		{
@@ -20,23 +21,20 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 		{
 			ActiveSession session = GetSession();
 			if (session == null)
-				return RedirectToAction("Index", "Master");
+				session = ResumeSession(4);
 
 			return View();
 		}
 
 		[HttpPost]
-		[ActionName("Index")]
 		[ValidateAntiForgeryToken]
-		public ActionResult Confirmed()
+		public ActionResult GenerateReport()
 		{
-			var vm = new ReportViewModel { Title = "Testprotokoll" + GetSession().ID };
-
-			string html = HelperMethods.RenderViewAsString(ControllerContext, "SessionReport", vm);
+			string html = HelperMethods.RenderViewAsString(ControllerContext, "SessionReport", GetSession());
 			byte[] pdfcontent = HelperMethods.ConvertHTMLToPDF(html);
-			System.IO.File.WriteAllBytes(@"C:\temp\mails\repor.pdf", pdfcontent);
+			System.IO.File.WriteAllBytes(@"C:\temp\mails\report.pdf", pdfcontent);
 
-			return View();
+			return PartialView("_ReportSuccess", 3);
 		}
 	}
 }

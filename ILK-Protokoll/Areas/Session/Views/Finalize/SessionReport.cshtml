@@ -1,13 +1,53 @@
-﻿@model ILK_Protokoll.Areas.Session.ViewModels.ReportViewModel
+﻿@model ILK_Protokoll.Areas.Session.Models.ActiveSession
 @{
-	Layout = "../Shared/_Layout.cshtml";
+	Layout = null;
+	ViewBag.Title = "Sitzungsprotokoll";
 }
 
-	<div class="panel panel-primary">
-		<div class="panel-heading">
-			<h4>Kundenliste</h4>
-		</div>
-		<div class="panel-body">
-			@Model.Title
+<!DOCTYPE html>
+<html>
+<head>
+	<title>@ViewBag.Title</title>
+
+	<link href="/Content/iwbTheme.css" rel="stylesheet" />
+
+	<script src="/Scripts/jquery-2.1.1.js"></script>
+	<script src="/Scripts/bootstrap.js"></script>
+	<script src="/Scripts/respond.js"></script>
+</head>
+<body style="width:750px;">
+	<div class="navbar navbar-default navbar-fixed-top" id="main-navbar">
+		<div class="container">
+			<div class="navbar-text" style="float:right;">
+				@DateTime.Now.ToLongDateString()
+			</div>
+			<div class="navbar-header">
+				<p class="navbar-brand iwblogo">@ViewBag.Title</p>
+			</div>
 		</div>
 	</div>
+	<div class="container body-content">
+		<br />
+		
+		
+
+		<div class="row">
+			<div class="col-xs-12">
+				@{
+					//Model.Topic.IsLocked = true;
+					//Html.RenderPartial("~/Views/Topics/_Topic.cshtml", Model.Topic);
+				}
+			</div>
+		</div>
+		<hr style="clear: both;" />
+		<footer>
+			<p>&copy; 2014 &#8211; <i>iwb</i>, Technische Universität München</p>
+
+			<p>
+				Version 0.0<br />
+				Build 0
+			</p>
+		</footer>
+	</div>
+</body>
+</html>

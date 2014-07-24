@@ -9,12 +9,53 @@
 
 <h2>@ViewBag.Title</h2>
 
-@using (Html.BeginForm("Index", "Finalize", FormMethod.Post))
+@using (Ajax.BeginForm("GenerateReport", "Finalize", new AjaxOptions()
+{
+	HttpMethod = "POST",
+	InsertionMode = InsertionMode.Replace,
+	UpdateTargetId = "responseMessage",
+	OnBegin = "beginReportProgress();",
+	OnSuccess = "displayReportSuccess();",
+	OnFailure = "displayReportFail(xhr.responseText)",
+}))
 {
 	@Html.AntiForgeryToken()
+
 	<div class="form-group">
 		@Html.ActionLink("Zurück", "Index", "Discussion", null, new { @class = "btn btn-lg btn-default" })
 
 		<input type="submit" value="Sitzung beenden" class="btn btn-lg btn-danger" />
 	</div>
 }
+
+<div class="row">
+	<div class="col-sm-5" id="report_progress" style="display:none;">
+		<h3>Protokoll wird generiert ...</h3>
+		<div class="progress progress-striped active">
+			<div class="progress-bar" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" style="width: 30%"></div>
+		</div>
+	</div>
+</div>
+<div id="responseMessage">
+</div>
+
+
+<script type="text/javascript">
+
+	function beginReportProgress() {
+		$('#report_progress').show(400);
+	}
+
+	function displayReportSuccess() {
+		$('#report_progress .progress-bar').css("width", "100%");
+		$('#report_progress .progress').removeClass('active');
+		$('#report_progress .progress-bar').addClass("progress-bar-success");
+	}
+
+	function displayReportFail(message) {
+		$('#report_progress .progress').removeClass('active');
+		$('#report_progress .progress-bar').addClass("progress-bar-danger");
+		$('#responseMessage').text(message);
+	}
+
+</script>
