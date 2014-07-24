@@ -1,0 +1,10 @@
+﻿@model int
+
+<div class="row">
+	<div class="col-sm-5" id="report_done">
+		<p>Die Protokollerstellung ist abgeschlossen, die Sitzung wurde beendet.</p>
+		@Html.ActionLink("Zum Dashboard", "Index", "Home", new { Area = "" }, new { @class = "btn btn-primary" })
+		&nbsp;&nbsp;
+		@Html.ActionLink("Protokoll öffnen", "Details", "Records", new { Area = "", id = Model }, new { id = "", @class = "btn btn-primary" })
+	</div>
+</div>
