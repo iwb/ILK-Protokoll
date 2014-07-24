@@ -1,4 +1,4 @@
-﻿@model ILK_Protokoll.Areas.Session.Models.ActiveSession
+﻿@model ILK_Protokoll.Models.SessionReport
 @{
 	Layout = null;
 	ViewBag.Title = "Sitzungsprotokoll";
@@ -24,12 +24,24 @@
 			<div class="navbar-header">
 				<p class="navbar-brand iwblogo">@ViewBag.Title</p>
 			</div>
+			<h3 class="navbar-text" style="float: none; text-align: center;">
+				@Model.SessionType.Name
+			</h3>
 		</div>
 	</div>
 	<div class="container body-content">
 		<br />
 		
 		
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<h4>Stamdaten</h4>
+			</div>
+			<div class="panel-body">
+				
+			</div>
+		</div>
+
 
 		<div class="row">
 			<div class="col-xs-12">
