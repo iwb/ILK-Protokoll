@@ -1,30 +1,28 @@
-﻿@model ILK_Protokoll.Areas.Session.Models.Lists.%%CLASSNAME%%
-@using (Ajax.BeginForm("_Create", "L%%CLASSNAME%%s", new {Area = "Session"}, new AjaxOptions
+﻿@model ILK_Protokoll.Areas.Session.Models.Lists.ProfHoliday
+@using (Ajax.BeginForm("_Create", "LProfHolidays", new { Area = "Session" }, new AjaxOptions
 {
 	HttpMethod = "POST",
-	OnSuccess = "AddRow('%%classname%%', data);",
-	OnFailure = "DisplayErrorMessage('#%%classname%%_table', '<br />' + xhr.responseText);"
-}, new {id = "%%classname%%_form"}))
+	OnSuccess = "AddRow('profHoliday', data);",
+	OnFailure = "DisplayErrorMessage('#profHoliday_table', '<br />' + xhr.responseText);"
+}, new { id = "profHoliday_form" }))
 {
 	@Html.AntiForgeryToken()
-	<tr id="%%classname%%_createform">
+	<tr id="profHoliday_createform">
 		<td>
-			@Html.EditorFor(model => model.StartDate, new {htmlAttributes = new {@class = "form-control"}})
+			@Html.EnumDropDownListFor(model => model.Professor, new { @class = "form-control" })
 		</td>
 		<td>
-			@Html.EditorFor(model => model.EndDate, new {htmlAttributes = new {@class = "form-control"}})
+			@Html.EditorFor(model => model.Occasion, new { htmlAttributes = new { @class = "form-control" } })
 		</td>
 		<td>
-			@Html.EditorFor(model => model.Time, new {htmlAttributes = new {@class = "form-control"}})
-		</td>
-		<td>
-			@Html.EditorFor(model => model.Place, new {htmlAttributes = new {@class = "form-control"}})
-		</td>
-		<td>
-			@Html.EditorFor(model => model.Description, new {htmlAttributes = new {@class = "form-control"}})
-		</td>
-		<td>
-			@Html.EditorFor(model => model.Organizer, new {htmlAttributes = new {@class = "form-control"}})
+			<div class="row">
+				<div class="col-sm-6">
+					@Html.EditorFor(model => model.Start, new { htmlAttributes = new { @class = "form-control" } })
+				</div>
+				<div class="col-sm-6">
+					@Html.EditorFor(model => model.End, new { htmlAttributes = new { @class = "form-control" } })
+				</div>
+			</div>
 		</td>
 		<td>
 			<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-check"></span></button>

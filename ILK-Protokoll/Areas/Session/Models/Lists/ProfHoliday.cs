@@ -20,21 +20,13 @@ namespace ILK_Protokoll.Areas.Session.Models.Lists
 
 		[DisplayName("Beginn")]
 		[DataType(DataType.Date)]
-		[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm}", ApplyFormatInEditMode = true)]
+		[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
 		public DateTime? Start { get; set; }
 
 		[DisplayName("Ende")]
 		[DataType(DataType.Date)]
-		[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm}", ApplyFormatInEditMode = true)]
+		[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
 		public DateTime? End { get; set; }
-
-		public override string ToString()
-		{
-			if (Start == null || End == null)
-				return "Kein Urlaub";
-			else
-				return string.Format("{0:} bis {1}", Start.Value, End.Value);
-		}
 	}
 
 	public enum Prof

@@ -1,40 +1,39 @@
-﻿@model ILK_Protokoll.Areas.Session.Models.Lists.%%CLASSNAME%%
+﻿@model ILK_Protokoll.Areas.Session.Models.Lists.ProfHoliday
 
-<tr id="%%classname%%_@Model.ID">
-	<td colspan="10">
-		@using (Ajax.BeginForm("_Edit", "L%%CLASSNAME%%s", new { Area = "Session" }, new AjaxOptions
+<tr id="profHoliday_@Model.ID">
+	<td colspan="4">
+		@using (Ajax.BeginForm("_Edit", "LProfHolidays", new { Area = "Session" }, new AjaxOptions
 	{
-		OnSuccess = "ReplaceRow('%%classname%%', " + Model.ID + ", data);",
+		OnSuccess = "ReplaceRow('profHoliday', " + Model.ID + ", data);",
 		HttpMethod = "POST",
 	}, new { @class = "tableform" }))
 		{
 			@Html.AntiForgeryToken()
 			<div class="row">
-				<div class="col-sm-2">
-					@Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
+				<div class="col-sm-3">
+					@Html.EditorFor(model => model.Professor, new { htmlAttributes = new { @class = "form-control" } })
 				</div>
-				<div class="col-sm-2">
-					@Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
+				<div class="col-sm-3">
+					@Html.EditorFor(model => model.Occasion, new { htmlAttributes = new { @class = "form-control" } })
 				</div>
-				<div class="col-sm-1">
-					@Html.EditorFor(model => model.Time, new { htmlAttributes = new { @class = "form-control" } })
+
+				<div class="col-sm-5">
+					<div class="col-sm-6">
+						@Html.EditorFor(model => model.Start, new { htmlAttributes = new { @class = "form-control" } })
+					</div>
+					<div class="col-sm-6">
+						@Html.EditorFor(model => model.End, new { htmlAttributes = new { @class = "form-control" } })
+					</div>
 				</div>
-				<div class="col-sm-1">
-					@Html.EditorFor(model => model.Place, new { htmlAttributes = new { @class = "form-control" } })
-				</div>
-				<div class="col-sm-4">
-					@Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
-				</div>
-				<div class="col-sm-1">
-					@Html.EditorFor(model => model.Organizer, new { htmlAttributes = new { @class = "form-control" } })
-				</div>
+
+
 				<div class="col-sm-1 actions">
 					@Html.HiddenFor(model => model.ID)
 					<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-check"></span></button>
 					<a data-ajax="true"
 						data-ajax-method="POST"
-						data-ajax-success="ReplaceRow('%%classname%%', @Model.ID, data);"
-						href="@Url.Action("_FetchRow", "L%%CLASSNAME%%s", new {Area = "Session", id = Model.ID})">
+						data-ajax-success="ReplaceRow('profHoliday', @Model.ID, data);"
+						href="@Url.Action("_FetchRow", "LProfHolidays", new {Area = "Session", id = Model.ID})">
 						<span class="glyphicon glyphicon-remove" title="Bearbeitung abbrechen"></span>
 					</a>
 				</div>

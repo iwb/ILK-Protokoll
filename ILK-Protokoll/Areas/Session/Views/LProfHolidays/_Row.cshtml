@@ -1,39 +1,37 @@
-﻿@model ILK_Protokoll.Areas.Session.Models.Lists.%%CLASSNAME%%
+﻿@model ILK_Protokoll.Areas.Session.Models.Lists.ProfHoliday
 @{
 	string trclass = Model.Created > ViewBag.LastSession ? "newlistitem" : null;
 }
 
-<tr class="@trclass" id="%%classname%%_@Model.ID">
+<tr class="@trclass" id="profHoliday_@Model.ID">
 	<td>
-		@Model.StartDate.ToString("d")
+		@Html.DisplayFor(model => model.Professor)
 	</td>
 	<td>
-		@Model.EndDate.ToString("d")
+		@Html.DisplayFor(model => model.Occasion)
 	</td>
 	<td>
-		@Html.DisplayFor(model => model.Time)
-	</td>
-	<td>
-		@Html.DisplayFor(model => model.Place)
-	</td>
-	<td>
-		@Html.DisplayFor(model => model.Description)
-	</td>
-	<td>
-		@Html.DisplayFor(model => model.Organizer)
+		@if (Model.Start == null || Model.End == null)
+		{
+			@:Kein Urlaub
+		}
+		else
+		{
+			@: @Model.Start.Value.ToString("d") bis @Model.End.Value.ToString("d")
+		}
 	</td>
 	<td class="actions">
 		<a data-ajax="true"
 			data-ajax-method="POST"
-			data-ajax-success="ReplaceRow('%%classname%%', @Model.ID, data);"
-			href="@Url.Action("_BeginEdit", "L%%CLASSNAME%%s", new {Area = "Session", id = Model.ID})"><span class="glyphicon glyphicon-edit" title="%%Name%% bearbeiten"></span></a>
+			data-ajax-success="ReplaceRow('profHoliday', @Model.ID, data);"
+			href="@Url.Action("_BeginEdit", "LProfHolidays", new {Area = "Session", id = Model.ID})"><span class="glyphicon glyphicon-edit" title="Urlaubseintrag bearbeiten"></span></a>
 
 		<a data-ajax="true"
 			data-ajax-method="POST"
-			data-ajax-confirm="%%Name%% wirklich löschen?"
-			data-ajax-success="RemoveRow('%%classname%%', @Model.ID);"
-			href="@Url.Action("_Delete", "L%%CLASSNAME%%s", new {Area = "Session", id = Model.ID})">
-			<span class="glyphicon glyphicon-remove" title="%%Name%% löschen"></span>
+			data-ajax-confirm="Urlaubseintrag wirklich löschen?"
+			data-ajax-success="RemoveRow('profHoliday', @Model.ID);"
+			href="@Url.Action("_Delete", "LProfHolidays", new {Area = "Session", id = Model.ID})">
+			<span class="glyphicon glyphicon-remove" title="Urlaubseintrag löschen"></span>
 		</a>
 	</td>
 </tr>
