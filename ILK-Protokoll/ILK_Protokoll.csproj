@@ -385,6 +385,7 @@
     <Content Include="Content\bootstrap\alerts.less" />
     <Content Include="Areas\Session\Views\Finalize\SessionReport.cshtml" />
     <Content Include="Areas\Session\Views\Finalize\_ReportSuccess.cshtml" />
+    <Content Include="Areas\Session\Views\Discussion\_StateButtons.cshtml" />
     <None Include="Content\bootstrap\bootstrap.less" />
     <Content Include="Content\iwbTheme.less" />
     <Content Include="Areas\Administration\Views\web.config" />

@@ -1,0 +1,53 @@
+﻿@using ILK_Protokoll.Models
+@using ILK_Protokoll.util
+@model ILK_Protokoll.Models.TopicLock
+@{
+	var classes = new string[4];
+
+	switch (Model.Action)
+	{
+		case TopicAction.None:
+			classes[0] = " active";
+			break;
+		case TopicAction.Decide:
+			classes[1] = " active";
+			break;
+		case TopicAction.Close:
+			classes[2] = " active";
+			break;
+		case TopicAction.Delete:
+			classes[3] = " active";
+			break;
+		default:
+			throw new ArgumentOutOfRangeException();
+	}
+}
+
+
+@Ajax.ActionLink("Wiedervorlage", "_ChangeState", "Discussion", new { id = Model.TopicID, state = TopicAction.None }, new AjaxOptions()
+{
+	HttpMethod = "POST",
+	InsertionMode = InsertionMode.Replace,
+	UpdateTargetId = "state_buttons_" + Model.TopicID
+}, new { @class = "btn btn-hover-primary" + classes[0] })
+
+@Ajax.ActionLink("Beschluss", "_ChangeState", new { id = Model.TopicID, state = TopicAction.Decide }, new AjaxOptions()
+{
+	HttpMethod = "POST",
+	InsertionMode = InsertionMode.Replace,
+	UpdateTargetId = "state_buttons_" + Model.TopicID
+}, new { @class = "btn btn-hover-success" + classes[1] })
+
+@Ajax.ActionLink("Kein Beschluss", "_ChangeState", new { id = Model.TopicID, state = TopicAction.Close }, new AjaxOptions()
+{
+	HttpMethod = "POST",
+	InsertionMode = InsertionMode.Replace,
+	UpdateTargetId = "state_buttons_" + Model.TopicID
+}, new { @class = "btn btn-hover-warning" + classes[2] })
+
+@Ajax.ActionLink("Löschen", "_ChangeState", new { id = Model.TopicID, state = TopicAction.Delete }, new AjaxOptions()
+{
+	HttpMethod = "POST",
+	InsertionMode = InsertionMode.Replace,
+	UpdateTargetId = "state_buttons_" + Model.TopicID
+}, new { @class = "btn btn-hover-danger" + classes[3] })

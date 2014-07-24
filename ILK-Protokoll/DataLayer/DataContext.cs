@@ -37,6 +37,7 @@ namespace ILK_Protokoll.DataLayer
 		public DbSet<SessionType> SessionTypes { get; set; }
 		public DbSet<Topic> Topics { get; set; }
 		public DbSet<TopicHistory> TopicHistory { get; set; }
+		public DbSet<TopicLock> TopicLocks { get; set; }
 		public DbSet<User> Users { get; set; }
 		public DbSet<Vote> Votes { get; set; }
 

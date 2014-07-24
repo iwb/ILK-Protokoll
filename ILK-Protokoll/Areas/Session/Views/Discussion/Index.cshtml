@@ -1,9 +1,11 @@
-﻿@using ILK_Protokoll.Models
+﻿@using ILK_Protokoll.Areas.Session.Models
+@using ILK_Protokoll.Models
 @model ICollection<Topic>
 
 
 @{
 	ViewBag.Title = "Diskussion";
+	var session = (ActiveSession)ViewBag.CurrentSession;
 }
 
 <div class="index-action">
@@ -17,13 +19,13 @@
 	@foreach (var topic in Model)
 	{
 		<div class="col-lg-6 col-md-12">
-			<div class="buttongroup" id="state_buttons_@topic.ID">
-				<a class="btn btn-hover-primary active">Wiedervorlage</a>
-				<a class="btn btn-hover-success">Beschluss</a>
-				<a class="btn btn-hover-warning">Kein Beschluss</a>
-				<a class="btn btn-hover-danger">Löschen</a>
-			</div>
-				@{ Html.RenderPartial("~/Views/Topics/_Topic.cshtml", topic); }
+			@if (topic.IsLocked)
+			{
+				<div class="buttongroup" id="state_buttons_@topic.ID">
+					@{ Html.RenderPartial("_StateButtons", topic.Lock); }
+				</div>
+			}
+			@{ Html.RenderPartial("~/Views/Topics/_Topic.cshtml", topic); }
 		</div>
 	}
 </div>
