@@ -3,6 +3,7 @@ using System.Web.Mvc;
 using ILK_Protokoll.Areas.Session.Models;
 using ILK_Protokoll.Areas.Session.ViewModels;
 using ILK_Protokoll.Controllers;
+using ILK_Protokoll.Models;
 using ILK_Protokoll.util;
 
 namespace ILK_Protokoll.Areas.Session.Controllers
@@ -30,16 +31,20 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 		[ValidateAntiForgeryToken]
 		public ActionResult GenerateReport()
 		{
-			string html = HelperMethods.RenderViewAsString(ControllerContext, "SessionReport", GetSession());
+			var report = SessionReport.FromActiveSession(GetSession());
+
+			string html = HelperMethods.RenderViewAsString(ControllerContext, "SessionReport", report);
 			byte[] pdfcontent = HelperMethods.ConvertHTMLToPDF(html);
 			System.IO.File.WriteAllBytes(@"C:\temp\mails\report.pdf", pdfcontent);
 
 			return PartialView("_ReportSuccess", 3);
 		}
 
-		public ActionResult SessionReport()
+		public ActionResult ShowReport()
 		{
-			return View(GetSession());
+			var report = SessionReport.FromActiveSession(GetSession());
+
+			return View("SessionReport", report);
 		}
 	}
 }

@@ -31,24 +31,45 @@
 	</div>
 	<div class="container body-content">
 		<br />
-		
-		
+		<br />
+		<br />
+		<br />
+
 		<div class="panel panel-primary">
 			<div class="panel-heading">
 				<h4>Stamdaten</h4>
 			</div>
 			<div class="panel-body">
-				
+				<dl class="dl-horizontal" style="line-height: 40px;">
+					<dt>@Html.DisplayNameFor(model => model.PresentUsers)</dt>
+					<dd>
+						@{
+							var users = Model.SessionType.Attendees.ToDictionary(u => u, u => Model.PresentUsers.Contains(u));
+						}
+						@Html.DisplayFor(m => users, "Dictionary_User_bool")
+					</dd>
+
+					<dt>@Html.DisplayNameFor(model => model.AdditionalAttendees)</dt>
+					<dd>@Html.DisplayFor(model => model.AdditionalAttendees)</dd>
+
+
+					<dt>@Html.DisplayNameFor(model => model.Notes)</dt>
+					<dd>@Html.DisplayFor(model => model.Notes, "String_Multiline")</dd>
+
+					<dt>@Html.DisplayNameFor(model => model.Start)</dt>
+					<dd>@Model.Start.ToString("f")</dd>
+
+					<dt>@Html.DisplayNameFor(model => model.End)</dt>
+					<dd>@Model.End.ToString("f")</dd>
+				</dl>
+
 			</div>
 		</div>
 
 
 		<div class="row">
 			<div class="col-xs-12">
-				@{
-					//Model.Topic.IsLocked = true;
-					//Html.RenderPartial("~/Views/Topics/_Topic.cshtml", Model.Topic);
-				}
+
 			</div>
 		</div>
 		<hr style="clear: both;" />
