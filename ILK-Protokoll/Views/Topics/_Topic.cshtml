@@ -47,7 +47,7 @@
 		string classA = "collapsed";
 		string classDiv = "panel-collapse collapse";
 
-		if (Model.Comments.Count < 2) // Sektion ausklappen
+		if (Model.Comments.Count < 2 || Model.IsReadOnly) // Sektion ausklappen
 		{
 			classA = "";
 			classDiv = "panel-collapse collapse in";

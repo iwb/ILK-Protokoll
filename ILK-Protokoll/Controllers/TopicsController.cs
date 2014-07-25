@@ -23,7 +23,8 @@ namespace ILK_Protokoll.Controllers
 		{
 			IQueryable<Topic> topics = db.Topics
 				.Include(t => t.SessionType)
-				.Include(t => t.TargetSessionType);
+				.Include(t => t.TargetSessionType)
+				.Where(t => !t.IsReadOnly);
 			return View(topics.ToList());
 		}
 

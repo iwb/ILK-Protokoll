@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using EntityFramework.Extensions;
 using ILK_Protokoll.Areas.Administration.Models;
 using ILK_Protokoll.Areas.Session.Models;
 using ILK_Protokoll.Controllers;
@@ -23,6 +25,13 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 		protected ActiveSession CreateNewSession(SessionType type)
 		{
 			var session = db.ActiveSessions.Add(new ActiveSession(type) {Manager = GetCurrentUser()});
+
+			foreach (var t in db.Topics.Where(t => t.TargetSessionTypeID == session.ID))
+			{
+				t.SessionTypeID = session.ID;
+				t.TargetSessionTypeID = null;
+			}
+			db.SaveChanges();
 
 			var topics = db.Topics
 				.Where(t => t.SessionTypeID == session.SessionType.ID && t.TargetSessionTypeID == null)

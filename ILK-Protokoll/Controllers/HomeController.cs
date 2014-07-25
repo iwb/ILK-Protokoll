@@ -22,9 +22,7 @@ namespace ILK_Protokoll.Controllers
 				.Include(t => t.SessionType)
 				.Include(t => t.TargetSessionType)
 				.Include(t => t.Owner)
-				.Include(t => t.Votes)
-				.Include(t => t.Votes.Select(v => v.Voter))
-				.Include(t => t.Comments)
+				.Where(t => !t.IsReadOnly)
 				.Where(t => t.OwnerID == user.ID || t.Votes.Any(v => v.Voter.ID == user.ID))
 				.OrderByDescending(t => t.Priority)
 				.ThenByDescending(t => t.Created).ToList();
