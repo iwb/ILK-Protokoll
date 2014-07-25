@@ -1,4 +1,5 @@
-﻿@model IEnumerable<ILK_Protokoll.Models.Decision>
+﻿@using ILK_Protokoll.util
+@model IEnumerable<ILK_Protokoll.Models.Decision>
 
 @{
 	ViewBag.Title = "Beschlüsse";
@@ -12,10 +13,13 @@
 	<thead>
 		<tr>
 			<th>
-				@Html.DisplayNameFor(model => model.OriginTopic.Title)
+				@Html.DisplayNameFor(model => model.OriginTopic)
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.Name)
+				@Html.DisplayNameFor(model => model.Type)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Text)
 			</th>
 			<th></th>
 		</tr>
@@ -28,12 +32,13 @@
 					@Html.DisplayFor(modelItem => item.OriginTopic.Title)
 				</td>
 				<td>
-					@Html.DisplayFor(modelItem => item.Name)
+					@item.Type.DisplayName()
 				</td>
 				<td>
-					@Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
-					@Html.ActionLink("Details", "Details", new { id = item.ID }) |
-					@Html.ActionLink("Delete", "Delete", new { id = item.ID })
+					@Html.DisplayFor(modelItem => item.Text)
+				</td>
+				<td>
+					@Html.ActionLink("Details", "Details", new { id = item.ID })
 				</td>
 			</tr>
 		}
