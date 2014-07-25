@@ -53,6 +53,9 @@ namespace ILK_Protokoll.Areas.Session.Models
 		[Required]
 		public DateTime Start { get; set; }
 
+		[NotMapped]
+		public DateTime End { get; set; }
+
 		public virtual ICollection<TopicLock> LockedTopics { get; set; }
 	}
 }

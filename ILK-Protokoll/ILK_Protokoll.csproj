@@ -243,6 +243,14 @@
     <Compile Include="Migrations\201407241327195_Rename_sensibly.Designer.cs">
       <DependentUpon>201407241327195_Rename_sensibly.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201407250710146_decisionProps.cs" />
+    <Compile Include="Migrations\201407250710146_decisionProps.Designer.cs">
+      <DependentUpon>201407250710146_decisionProps.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201407250748158_decisionAmended.cs" />
+    <Compile Include="Migrations\201407250748158_decisionAmended.Designer.cs">
+      <DependentUpon>201407250748158_decisionAmended.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Assignment.cs" />
     <Compile Include="Models\Attachment.cs" />
@@ -613,6 +621,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201407241327195_Rename_sensibly.resx">
       <DependentUpon>201407241327195_Rename_sensibly.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201407250710146_decisionProps.resx">
+      <DependentUpon>201407250710146_decisionProps.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201407250748158_decisionAmended.resx">
+      <DependentUpon>201407250748158_decisionAmended.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

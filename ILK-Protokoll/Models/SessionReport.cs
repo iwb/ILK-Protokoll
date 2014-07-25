@@ -25,7 +25,8 @@ namespace ILK_Protokoll.Models
 				AdditionalAttendees = a.AdditionalAttendees,
 				Notes = a.Notes,
 				Start = a.Start,
-				End = DateTime.Now
+				End = a.End,
+				Decisions = new List<Decision>()
 			};
 		}
 
@@ -57,6 +58,9 @@ namespace ILK_Protokoll.Models
 		[DisplayName("Ende")]
 		[Required]
 		public DateTime End { get; set; }
+
+		[DisplayName("Bearbeitete Themen")]
+		public virtual ICollection<Decision> Decisions { get; set; }
 
 		[NotMapped]
 		public string URL
