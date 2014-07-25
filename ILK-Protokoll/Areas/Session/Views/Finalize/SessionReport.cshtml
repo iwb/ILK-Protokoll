@@ -65,13 +65,17 @@
 
 			</div>
 		</div>
-
-
-		<div class="row">
-			<div class="col-xs-12">
-
+		
+		@foreach (var tlock in Model.LockedTopics)
+		{
+			<div style="page-break-before: always">
+				<div class="buttongroup" id="state_buttons_@tlock.Topic.ID">
+					@{ Html.RenderPartial("_StateButtons", tlock); }
+				</div>
+				@{ Html.RenderPartial("~/Views/Topics/_Topic.cshtml", tlock.Topic); }
 			</div>
-		</div>
+		}
+
 		<hr style="clear: both;" />
 		<footer>
 			<p>&copy; 2014 &#8211; <i>iwb</i>, Technische Universität München</p>

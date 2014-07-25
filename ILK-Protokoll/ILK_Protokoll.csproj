@@ -398,7 +398,7 @@
     <Content Include="Content\bootstrap\alerts.less" />
     <Content Include="Areas\Session\Views\Finalize\SessionReport.cshtml" />
     <Content Include="Areas\Session\Views\Finalize\_ReportSuccess.cshtml" />
-    <Content Include="Areas\Session\Views\Discussion\_StateButtons.cshtml" />
+    <Content Include="Areas\Session\Views\Shared\_StateButtons.cshtml" />
     <Content Include="Areas\Session\Views\LProfHolidays\_CreateForm.cshtml" />
     <Content Include="Areas\Session\Views\LProfHolidays\_Edit.cshtml" />
     <Content Include="Areas\Session\Views\LProfHolidays\_List.cshtml" />
