@@ -140,7 +140,7 @@ namespace ILK_Protokoll.Controllers
 					mailer.SendNewAssignment(assignment);
 				}
 
-				return RedirectToAction("Index", "Assignments");
+				return RedirectToAction("Details", "Topics", new { id = input.TopicID });
 			}
 		}
 
