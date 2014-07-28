@@ -159,9 +159,23 @@ namespace ILK_Protokoll.Controllers
 				db.TopicHistory.Add(TopicHistory.FromTopic(topic, GetCurrentUser().ID));
 
 				topic.IncorporateUpdates(input);
-				topic.TargetSessionTypeID = input.TargetSessionTypeID;
+				topic.TargetSessionTypeID = input.TargetSessionTypeID == topic.SessionTypeID ? 0 : input.TargetSessionTypeID;
+
+				if (topic.TargetSessionTypeID > 0)
+				{
+					var voters = new HashSet<int>(topic.Votes.Select(v => v.Voter.ID));
+
+					foreach (User user in db.SessionTypes
+						.Include(st => st.Attendees)
+						.Single(st => st.ID == input.TargetSessionTypeID)
+						.Attendees.Where(user => !voters.Contains(user.ID)))
+					{
+						topic.Votes.Add(new Vote(user, VoteKind.None));
+					}
+				}
+
 				db.SaveChanges();
-				return RedirectToAction("Details", new {Area = "", id = input.ID});
+				return RedirectToAction("Details", new { Area = "", id = input.ID });
 			}
 			Topic t = db.Topics.Find(input.ID);
 			input.SessionType = t.SessionType;
