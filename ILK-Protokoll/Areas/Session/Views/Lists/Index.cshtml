@@ -11,7 +11,7 @@
 
 @if (ViewBag.LastSession != null)
 {
-	<p>Die letzte Sitzung dieses Typs wude am @ViewBag.LastSession durchgeführt.</p>
+	<p>Die letzte Sitzung dieses Typs wurde am @(((DateTime)ViewBag.LastSession).ToString("g")) durchgeführt.</p>
 }
 else
 {

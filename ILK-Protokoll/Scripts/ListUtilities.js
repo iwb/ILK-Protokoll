@@ -1,6 +1,7 @@
 ﻿function ReplaceRow(list, rowId, data) {
 	$('#' + list + '_' + rowId).replaceWith(data);
 	RefreshTables(list);
+	enableDatePicker();
 }
 
 function RemoveRow(list, rowId) {
