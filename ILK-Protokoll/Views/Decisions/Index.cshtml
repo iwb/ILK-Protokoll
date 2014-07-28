@@ -11,10 +11,13 @@
 	<thead>
 		<tr>
 			<th>
-				@Html.DisplayNameFor(model => model.OriginTopic)
+				@Html.DisplayNameFor(model => model.Type)
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.Type)
+				Beschlussdatum
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.OriginTopic)
 			</th>
 			<th>
 				@Html.DisplayNameFor(model => model.Text)
@@ -27,10 +30,13 @@
 		{
 			<tr>
 				<td>
-					@Html.DisplayFor(modelItem => item.OriginTopic.Title)
+					@item.Type.DisplayName()
 				</td>
 				<td>
-					@item.Type.DisplayName()
+					@Html.DisplayFor(modelItem => item.Report.End)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.OriginTopic.Title)
 				</td>
 				<td>
 					@item.Text.Shorten(200)

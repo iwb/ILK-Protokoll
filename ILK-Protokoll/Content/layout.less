@@ -216,27 +216,31 @@ a[data-toggle]:hover {
 .userlist > li .glyphicon-ok-sign,
 .userlist > li .glyphicon-ok,
 .votelink > .glyphicon-ok-sign {
-	color: #98C556;
+	color: @brand-success;
 }
 
 .userlist > li .glyphicon-question-sign, .votelink > .glyphicon-question-sign {
-	color: #D48625;
+	color: @brand-warning;
 }
 
 .userlist > li .glyphicon-remove-sign,
 .userlist > li .glyphicon-remove,
 .votelink > .glyphicon-remove-sign {
-	color: #AF0331;
+	color: @brand-danger;
 }
 
 .userlist > li .glyphicon-record, .votelink > .glyphicon-record {
-	color: #001A4A;
+	color: @brand-primary;
 }
 
 .votelink {
 	display: inline-block;
 	margin: 3px 4px 0;
 	font-size: 18px;
+}
+
+.comment-panel{
+	background-color: @gray-light;
 }
 
 .comment-panel-group {
@@ -259,7 +263,7 @@ a[data-toggle]:hover {
 }
 
 .comment-panel-group .comment-author {
-	background-color: #001A4A;
+	background-color: @brand-primary;
 	display: table-cell;
 	height: 100%;
 	color: #FFF;
@@ -561,7 +565,7 @@ dl {
 /*IE-Hack*/
 @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
 	/* IE10+ specific styles */
-	.iwblogo {
+	.navbar-inverse .iwblogo {
 		background-image: url("../img/iwbLogo_inv_small.png") !important;
 	}
 

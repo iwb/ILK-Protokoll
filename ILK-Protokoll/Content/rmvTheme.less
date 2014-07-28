@@ -6,17 +6,14 @@
 
 @import "layout.less";
 
-.iwblogo {
-	padding-left: 65px;
-	background-image: url("../img/rmvLogo.png");
-	background-size: contain;
-	background-repeat: no-repeat;
+.navbar-inverse .iwblogo, .navbar .iwblogo {
+	background-image: url("../img/rmvLogo.png") !important;
 }
 
 /*IE-Hack*/
 @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
 	/* IE10+ specific styles */
-	.iwblogo {
+	.navbar-inverse .iwblogo, .navbar .iwblogo {
 		background-image: url("../img/rmvLogo_small.png") !important;
 	}
 }

@@ -6340,25 +6340,28 @@ a[data-toggle]:hover {
 .userlist > li .glyphicon-ok-sign,
 .userlist > li .glyphicon-ok,
 .votelink > .glyphicon-ok-sign {
-  color: #98C556;
+  color: #98c556;
 }
 .userlist > li .glyphicon-question-sign,
 .votelink > .glyphicon-question-sign {
-  color: #D48625;
+  color: #d48625;
 }
 .userlist > li .glyphicon-remove-sign,
 .userlist > li .glyphicon-remove,
 .votelink > .glyphicon-remove-sign {
-  color: #AF0331;
+  color: #af0331;
 }
 .userlist > li .glyphicon-record,
 .votelink > .glyphicon-record {
-  color: #001A4A;
+  color: #009474;
 }
 .votelink {
   display: inline-block;
   margin: 3px 4px 0;
   font-size: 18px;
+}
+.comment-panel {
+  background-color: #9bc7be;
 }
 .comment-panel-group {
   white-space: nowrap;
@@ -6376,7 +6379,7 @@ a[data-toggle]:hover {
   border-bottom-right-radius: 4px;
 }
 .comment-panel-group .comment-author {
-  background-color: #001A4A;
+  background-color: #009474;
   display: table-cell;
   height: 100%;
   color: #FFF;
@@ -6798,23 +6801,22 @@ fieldset[disabled] .btn-hover-danger.active {
 /*IE-Hack*/
 @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
   /* IE10+ specific styles */
-  .iwblogo {
+  .navbar-inverse .iwblogo {
     background-image: url("../img/iwbLogo_inv_small.png") !important;
   }
   input[type=date] {
     padding: 0 12px;
   }
 }
-.iwblogo {
-  padding-left: 65px;
-  background-image: url("../img/rmvLogo.png");
-  background-size: contain;
-  background-repeat: no-repeat;
+.navbar-inverse .iwblogo,
+.navbar .iwblogo {
+  background-image: url("../img/rmvLogo.png") !important;
 }
 /*IE-Hack*/
 @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
   /* IE10+ specific styles */
-  .iwblogo {
+  .navbar-inverse .iwblogo,
+  .navbar .iwblogo {
     background-image: url("../img/rmvLogo_small.png") !important;
   }
 }

@@ -22,7 +22,10 @@ namespace ILK_Protokoll.Controllers
 		// GET: Decisions
 		public ActionResult Index()
 		{
-			var decisions = db.Decisions.Include(d => d.OriginTopic);
+			var decisions = db.Decisions
+				.Include(d => d.OriginTopic)
+				.Include(d => d.Report);
+
 			return View(decisions.ToList());
 		}
 
