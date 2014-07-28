@@ -9,7 +9,7 @@
 	@Html.AntiForgeryToken()
 	<tr id="Holiday_createform">
 		<td>
-			@Html.DropDownListFor(m => m.UserPerson, (SelectList)ViewBag.UserList, new { @class = "form-control" })
+			@Html.DropDownListFor(m => m.PersonID, (SelectList)ViewBag.UserList, new { @class = "form-control" })
 		</td>
 		<td>
 			@Html.EditorFor(model => model.Occasion, new { htmlAttributes = new { @class = "form-control" } })
