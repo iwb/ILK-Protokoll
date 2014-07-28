@@ -6,27 +6,27 @@
 	{
 		OnSuccess = "ReplaceRow('employeePresentation', " + Model.ID + ", data);",
 		HttpMethod = "POST",
-	}, new { @class = "tableform" }))
+	}, new { @class = "tableform", id = "emp_" + Model.ID + "_editform" }))
 		{
 			@Html.AntiForgeryToken()
 			<div class="row">
 				<div class="col-sm-2">
-					@Html.EditorFor(model => model.Employee,new { htmlAttributes = new { @class = "form-control" } })
+					@Html.EditorFor(model => model.Employee, new { htmlAttributes = new { @class = "form-control", id = "emp_" + Model.ID + "emp" } })
 				</div>
 				<div class="col-sm-2">
-					@Html.DropDownListFor(m => m.IlkID, (SelectList)ViewBag.UserList, new { @class = "form-control" })
+					@Html.DropDownListFor(m => m.IlkID, (SelectList)ViewBag.UserList, new { @class = "form-control", id = "emp_" + Model.ID + "ilk" })
 				</div>
 				<div class="col-sm-2">
-					@Html.EnumDropDownListFor(model => model.Prof, new { @class = "form-control" })
+					@Html.EnumDropDownListFor(model => model.Prof, new { @class = "form-control", id = "emp_" + Model.ID + "prof" })
 				</div>
 				<div class="col-sm-2">
-					@Html.EditorFor(model => model.LastPresentation, new { htmlAttributes = new { @class = "form-control" } })
+					@Html.EditorFor(model => model.LastPresentation, new { htmlAttributes = new { @class = "form-control", id = "emp_" + Model.ID + "last" } })
 				</div>
 				<div class="col-sm-2">
 
 				</div>
 				<div class="col-sm-1">
-					@Html.EditorFor(model => model.Selected, new { htmlAttributes = new { @class = "form-control" } })
+					@Html.EditorFor(model => model.Selected, new { htmlAttributes = new { @class = "form-control", id = "emp_" + Model.ID + "sel" } })
 				</div>
 				<div class="col-sm-1 actions">
 					@Html.HiddenFor(model => model.ID)

@@ -9,22 +9,10 @@
 	@Html.AntiForgeryToken()
 	<tr id="%%classname%%_createform">
 		<td>
-			@Html.EditorFor(model => model.StartDate, new {htmlAttributes = new {@class = "form-control"}})
+			@Html.EditorFor(model => model.StartDate, new {htmlAttributes = new {@class = "form-control", id = "%%_create_"}})
 		</td>
 		<td>
-			@Html.EditorFor(model => model.EndDate, new {htmlAttributes = new {@class = "form-control"}})
-		</td>
-		<td>
-			@Html.EditorFor(model => model.Time, new {htmlAttributes = new {@class = "form-control"}})
-		</td>
-		<td>
-			@Html.EditorFor(model => model.Place, new {htmlAttributes = new {@class = "form-control"}})
-		</td>
-		<td>
-			@Html.EditorFor(model => model.Description, new {htmlAttributes = new {@class = "form-control"}})
-		</td>
-		<td>
-			@Html.EditorFor(model => model.Organizer, new {htmlAttributes = new {@class = "form-control"}})
+			@Html.EditorFor(model => model.Organizer, new {htmlAttributes = new {@class = "form-control", id = "%%_create_"}})
 		</td>
 		<td>
 			<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-check"></span></button>

@@ -9,19 +9,19 @@
 	@Html.AntiForgeryToken()
 	<tr id="extension_createform">
 		<td>
-			@Html.EditorFor(model => model.Employee, new {htmlAttributes = new {@class = "form-control"}})
+			@Html.EditorFor(model => model.Employee, new { htmlAttributes = new { @class = "form-control", id = "ext_create_emp" } })
 		</td>
 		<td>
-			@Html.EditorFor(model => model.EndDate, new {htmlAttributes = new {@class = "form-control"}})
+			@Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control", id = "ext_create_end" } })
 		</td>
 		<td>
-			@Html.EditorFor(model => model.ExtensionNumber, new {htmlAttributes = new {@class = "form-control"}})
+			@Html.EditorFor(model => model.ExtensionNumber, new { htmlAttributes = new { @class = "form-control", id = "ext_create_ext" } })
 		</td>
 		<td>
-			@Html.EditorFor(model => model.Comment, new {htmlAttributes = new {@class = "form-control"}})
+			@Html.EditorFor(model => model.Comment, new { htmlAttributes = new { @class = "form-control", id = "ext_create_comm" } })
 		</td>
 		<td>
-			@Html.EditorFor(model => model.Approved, new {htmlAttributes = new {@class = "form-control"}})
+			@Html.EditorFor(model => model.Approved, new { htmlAttributes = new { @class = "form-control", id = "ext_create_app" } })
 		</td>
 		<td>
 			<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-check"></span></button>

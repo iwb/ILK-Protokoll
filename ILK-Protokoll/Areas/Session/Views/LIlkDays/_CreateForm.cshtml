@@ -42,19 +42,19 @@
 			</div>
 		</td>
 		<td>
-			@Html.EditorFor(model => model.Place, new { htmlAttributes = new { @class = "form-control" } })
+			@Html.EditorFor(model => model.Place, new { htmlAttributes = new { @class = "form-control", id = "ilkd_create_place" } })
 		</td>
 		<td>
-			@Html.DropDownListFor(m => m.SessionTypeID, (SelectList)ViewBag.SessionTypeList, "(bitte auswählen)", new { @class = "form-control" })
+			@Html.DropDownListFor(m => m.SessionTypeID, (SelectList)ViewBag.SessionTypeList, "(bitte auswählen)", new { @class = "form-control", id = "ilkd_create_st" })
 		</td>
 		<td>
-			@Html.EditorFor(model => model.Topics, new { htmlAttributes = new { @class = "form-control" } })
+			@Html.EditorFor(model => model.Topics, new { htmlAttributes = new { @class = "form-control", id = "ilkd_create_top" } })
 		</td>
 		<td>
-			@Html.DropDownListFor(m => m.OrganizerID, (SelectList)ViewBag.UserList, new { @class = "form-control" })
+			@Html.DropDownListFor(m => m.OrganizerID, (SelectList)ViewBag.UserList, new { @class = "form-control", id = "ilkd_create_orga" })
 		</td>
 		<td>
-			@Html.EditorFor(model => model.Participants, new { htmlAttributes = new { @class = "form-control" } })
+			@Html.EditorFor(model => model.Participants, new { htmlAttributes = new { @class = "form-control", id = "ilkd_create_part" } })
 		</td>
 		<td>
 			<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-check"></span></button>

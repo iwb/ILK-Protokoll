@@ -9,19 +9,19 @@
 	@Html.AntiForgeryToken()
 	<tr id="opening_createform">
 		<td>
-			@Html.EditorFor(model => model.Project, new {htmlAttributes = new {@class = "form-control"}})
+			@Html.EditorFor(model => model.Project, new { htmlAttributes = new { @class = "form-control", id = "open_create_proj" } })
 		</td>
 		<td>
-			@Html.EditorFor(model => model.Start, new {htmlAttributes = new {@class = "form-control"}})
+			@Html.EditorFor(model => model.Start, new { htmlAttributes = new { @class = "form-control", id = "open_create_start" } })
 		</td>
 		<td>
-			@Html.EditorFor(model => model.TG, new {htmlAttributes = new {@class = "form-control"}})
+			@Html.EditorFor(model => model.TG, new { htmlAttributes = new { @class = "form-control", id = "open_create_tg" } })
 		</td>
 		<td>
-			@Html.EnumDropDownListFor(model => model.Prof, new {@class = "form-control"})
+			@Html.EnumDropDownListFor(model => model.Prof, new { @class = "form-control", id = "open_create_prof" })
 		</td>
 		<td>
-			@Html.EditorFor(model => model.Description, new {htmlAttributes = new {@class = "form-control"}})
+			@Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", id = "open_create_desc" } })
 		</td>
 		<td>
 			<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-check"></span></button>

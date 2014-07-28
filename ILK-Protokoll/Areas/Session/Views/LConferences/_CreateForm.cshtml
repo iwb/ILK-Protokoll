@@ -7,27 +7,27 @@
 }, new {id = "conference_form"}))
 {
 	@Html.AntiForgeryToken()
-	<tr id="event_createform">
+	<tr id="conference_createform">
 		<td>
-			@Html.EditorFor(model => model.StartDate, new {htmlAttributes = new {@class = "form-control"}})
+			@Html.EditorFor(model => model.StartDate, new {htmlAttributes = new {@class = "form-control", id = "conf_create_start"}})
 		</td>
 		<td>
-			@Html.EditorFor(model => model.EndDate, new {htmlAttributes = new {@class = "form-control"}})
+			@Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control", id = "conf_create_end" } })
 		</td>
 		<td>
-			@Html.EditorFor(model => model.Description, new {htmlAttributes = new {@class = "form-control"}})
+			@Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", id = "conf_create_descr" } })
 		</td>
 		<td>
-			@Html.DropDownListFor(m => m.IlkID, (SelectList)ViewBag.UserList, new { @class = "form-control" })
+			@Html.DropDownListFor(m => m.IlkID, (SelectList)ViewBag.UserList, new { @class = "form-control", id = "conf_create_ilk" })
 		</td>
 		<td>
-			@Html.EditorFor(model => model.Employee, new { htmlAttributes = new { @class = "form-control" } })
+			@Html.EditorFor(model => model.Employee, new { htmlAttributes = new { @class = "form-control", id = "conf_create_emp" } })
 		</td>
 		<td>
-			@Html.EditorFor(model => model.Funding, new { htmlAttributes = new { @class = "form-control" } })
+			@Html.EditorFor(model => model.Funding, new { htmlAttributes = new { @class = "form-control", id = "conf_create_fund" } })
 		</td>
 		<td>
-			@Html.EditorFor(model => model.Approved, new { htmlAttributes = new { @class = "form-control" } })
+			@Html.EditorFor(model => model.Approved, new { htmlAttributes = new { @class = "form-control", id = "conf_create_app" } })
 		</td>
 		<td>
 			<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-check"></span></button>

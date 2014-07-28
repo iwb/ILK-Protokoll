@@ -6,29 +6,29 @@
 	{
 		OnSuccess = "ReplaceRow('event', " + Model.ID + ", data);",
 		HttpMethod = "POST",
-	}, new { @class = "tableform" }))
+	}, new { @class = "tableform", id = "evt_" + Model.ID + "_editform" }))
 		{
 			@Html.AntiForgeryToken()
 			<div class="row">
 				<div class="col-sm-2">
 					@Html.EditorFor(model => model.StartDate,
-					new { htmlAttributes = new { @class = "form-control" } }
+				  new { htmlAttributes = new { @class = "form-control", id = "evt_" + Model.ID + "start" } }
 					)
 				</div>
 				<div class="col-sm-2">
-					@Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
+					@Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control", id = "evt_" + Model.ID + "end" } })
 				</div>
 				<div class="col-sm-1">
-					@Html.EditorFor(model => model.Time, new { htmlAttributes = new { @class = "form-control" } })
+					@Html.EditorFor(model => model.Time, new { htmlAttributes = new { @class = "form-control", id = "evt_" + Model.ID + "time" } })
 				</div>
 				<div class="col-sm-1">
-					@Html.EditorFor(model => model.Place, new { htmlAttributes = new { @class = "form-control" } })
+					@Html.EditorFor(model => model.Place, new { htmlAttributes = new { @class = "form-control", id = "evt_" + Model.ID + "place" } })
 				</div>
 				<div class="col-sm-4">
-					@Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+					@Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", id = "evt_" + Model.ID + "desc" } })
 				</div>
 				<div class="col-sm-1">
-					@Html.EditorFor(model => model.Organizer, new { htmlAttributes = new { @class = "form-control" } })
+					@Html.EditorFor(model => model.Organizer, new { htmlAttributes = new { @class = "form-control", id = "evt_" + Model.ID + "orga" } })
 				</div>
 				<div class="col-sm-1" class="actions">
 					@Html.HiddenFor(model => model.ID)
