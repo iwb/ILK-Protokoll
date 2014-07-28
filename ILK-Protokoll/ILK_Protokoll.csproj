@@ -253,6 +253,10 @@
     <Compile Include="Migrations\201407250748158_decisionAmended.Designer.cs">
       <DependentUpon>201407250748158_decisionAmended.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201407281116360_removeFutureDate.cs" />
+    <Compile Include="Migrations\201407281116360_removeFutureDate.Designer.cs">
+      <DependentUpon>201407281116360_removeFutureDate.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Assignment.cs" />
     <Compile Include="Models\Attachment.cs" />
@@ -630,6 +634,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201407250748158_decisionAmended.resx">
       <DependentUpon>201407250748158_decisionAmended.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201407281116360_removeFutureDate.resx">
+      <DependentUpon>201407281116360_removeFutureDate.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -16,6 +16,7 @@ namespace ILK_Protokoll.Areas.Session.Models.Lists
 			EndDate = DateTime.Today.AddYears(2);
 		}
 
+		[Required]
 		[DisplayName("Mitarbeiter")]
 		public string Employee { get; set; }
 
@@ -28,6 +29,7 @@ namespace ILK_Protokoll.Areas.Session.Models.Lists
 		[Range(1, 3)]
 		public int ExtensionNumber { get; set; }
 
+		[Required]
 		[DisplayName("Kommentar")]
 		public string Comment { get; set; }
 

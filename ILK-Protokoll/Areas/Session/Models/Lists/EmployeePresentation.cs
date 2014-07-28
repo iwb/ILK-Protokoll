@@ -19,6 +19,7 @@ namespace ILK_Protokoll.Areas.Session.Models.Lists
 			Attachments = new List<Attachment>();
 		}
 
+		[Required]
 		[DisplayName("Mitarbeiter")]
 		public string Employee { get; set; }
 

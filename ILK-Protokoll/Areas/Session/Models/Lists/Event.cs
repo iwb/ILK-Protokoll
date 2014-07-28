@@ -20,13 +20,11 @@ namespace ILK_Protokoll.Areas.Session.Models.Lists
 
 		[DisplayName("Von")]
 		[DataType(DataType.Date)]
-		[FutureDate(ErrorMessage = "Das Startdatum muss in der Zukunft liegen. ")]
 		[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
 		public DateTime StartDate { get; set; }
 
 		[DisplayName("Bis")]
 		[DataType(DataType.Date)]
-		[FutureDate(ErrorMessage = "Das Enddatum muss in der Zukunft liegen. ")]
 		[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
 		public DateTime EndDate { get; set; }
 
@@ -36,9 +34,11 @@ namespace ILK_Protokoll.Areas.Session.Models.Lists
 		[DisplayName("Ort")]
 		public string Place { get; set; }
 
+		[Required]
 		[DisplayName("Verant.")]
 		public string Organizer { get; set; }
 
+		[Required]
 		[DisplayName("Besucher / Thema")]
 		public string Description { get; set; }
 	}

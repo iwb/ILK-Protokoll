@@ -21,14 +21,13 @@ namespace ILK_Protokoll.Areas.Session.Models.Lists
 
 		[DisplayName("Beginn")]
 		[DataType(DataType.DateTime)]
-		[FutureDate]
 		public DateTime Start { get; set; }
 
 
+		[Required]
 		[DisplayName("Ort")]
 		public string Place { get; set; }
-
-
+		
 		[DisplayName("Sitzungstyp")]
 		public virtual SessionType SessionType { get; set; }
 

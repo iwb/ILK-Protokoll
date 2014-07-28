@@ -17,20 +17,22 @@ namespace ILK_Protokoll.Areas.Session.Models.Lists
 			Start = DateTime.Today;
 		}
 
+		[Required]
 		[DisplayName("Projekt")]
 		public string Project { get; set; }
 
 		[DisplayName("Beginn")]
 		[DataType(DataType.Date)]
-		[FutureDate]
 		[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
 		public DateTime Start { get; set; }
 
+		[Required]
 		public string TG { get; set; }
 
 		[DisplayName("Prof.")]
 		public Prof Prof { get; set; }
 
+		[Required]
 		[DisplayName("Beschreibung / Profil")]
 		public string Description { get; set; }
 	}

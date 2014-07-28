@@ -14,6 +14,7 @@ namespace ILK_Protokoll.Areas.Session.Models.Lists
 		[DisplayName("Professor")]
 		public Prof Professor { get; set; }
 
+		[Required]
 		[DisplayName("Anlass")]
 		public string Occasion { get; set; }
 

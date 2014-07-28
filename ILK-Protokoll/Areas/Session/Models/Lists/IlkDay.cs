@@ -22,13 +22,11 @@ namespace ILK_Protokoll.Areas.Session.Models.Lists
 
 		[DisplayName("Beginn")]
 		[DataType(DataType.DateTime)]
-		[FutureDate(ErrorMessage = "Das Startdatum muss in der Zukunft liegen. ")]
 		[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm}", ApplyFormatInEditMode = true)]
 		public DateTime Start { get; set; }
 
 		[DisplayName("Ende")]
 		[DataType(DataType.DateTime)]
-		[FutureDate(ErrorMessage = "Das Enddatum muss in der Zukunft liegen. ")]
 		[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm}", ApplyFormatInEditMode = true)]
 		public DateTime End { get; set; }
 
@@ -47,9 +45,11 @@ namespace ILK_Protokoll.Areas.Session.Models.Lists
 		[ForeignKey("Organizer")]
 		public int OrganizerID { get; set; }
 
+		[Required]
 		[DisplayName("Themen")]
 		public string Topics { get; set; }
 
+		[Required]
 		[DisplayName("Teilnehmer")]
 		public string Participants { get; set; }
 	}
