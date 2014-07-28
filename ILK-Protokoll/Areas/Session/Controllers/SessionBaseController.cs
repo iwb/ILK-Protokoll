@@ -34,6 +34,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 			db.SaveChanges();
 
 			var topics = db.Topics
+				.Where(t => t.Decision == null && !t.IsReadOnly)
 				.Where(t => t.SessionTypeID == session.SessionType.ID && t.TargetSessionTypeID == null)
 				.ToList();
 

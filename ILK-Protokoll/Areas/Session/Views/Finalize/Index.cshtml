@@ -22,7 +22,7 @@
 	@Html.AntiForgeryToken()
 
 	<div class="form-group">
-		@Html.ActionLink("Zurück", "Index", "Discussion", null, new { @class = "btn btn-lg btn-default" })
+		@Html.ActionLink("Zurück", "Index", "Discussion", null, new { @class = "btn btn-lg btn-default", id="startGenerationButton" })
 
 		<input type="submit" value="Sitzung beenden" class="btn btn-lg btn-danger" />
 	</div>
@@ -50,6 +50,7 @@
 		$('#report_progress .progress-bar').css("width", "100%");
 		$('#report_progress .progress').removeClass('active');
 		$('#report_progress .progress-bar').addClass("progress-bar-success");
+		$('#startGenerationButton').attr("disabled", true);
 	}
 
 	function displayReportFail(message) {

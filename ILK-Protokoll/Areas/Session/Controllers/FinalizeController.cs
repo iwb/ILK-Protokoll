@@ -41,12 +41,15 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 				.Include(tl => tl.Topic)
 				.ToList();
 
+			session.SessionType.LastDate = session.End;
+
 			foreach (TopicLock tl in session.LockedTopics)
 				tl.Topic.IsReadOnly = true;
 
+			SessionReport report = SessionReport.FromActiveSession(session);
+			report = db.SessionReports.Add(report);
 			db.SaveChanges();
 
-			SessionReport report = SessionReport.FromActiveSession(session);
 
 			string html = HelperMethods.RenderViewAsString(ControllerContext, "SessionReport", session);
 			byte[] pdfcontent = HelperMethods.ConvertHTMLToPDF(html);
@@ -94,7 +97,6 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 				db.TopicLocks.Remove(t.Lock);
 			}
 			db.ActiveSessions.Remove(session);
-			db.SessionReports.Add(report);
 
 			try
 			{
