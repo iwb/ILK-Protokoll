@@ -74,21 +74,31 @@ namespace ILK_Protokoll.Controllers
 			return RedirectToAction("Details", new {id});
 		}
 
-		public static string SendReminders(DataContext db)
+		/// <summary>
+		/// Verschickt Erinnerungen für Aufgaben, die bald fällig werden, oder überfällig sind.
+		/// </summary>
+		/// <param name="db">Ein Datenbankkontext</param>
+		/// <returns>Anzahl der E-maisl, die verschickt wurden.</returns>
+		public static int SendReminders(DataContext db)
 		{
-			DateTime cutoff = DateTime.Today.AddDays(7);
-			var upcoming = db.Assignments.Where(a => !a.IsDone && !a.ReminderSent && a.DueDate < cutoff).ToList();
-
+			/* Gespeichert wird in der Datenbank ja nur der Datumsanteil. Eine Aufgabe, die am Donnerstag fällig wird, enthält hier also Do, 0:00 als Zeitangabe.
+			 * Tatsächlich fällig wird sie allerdings erst am Donnerstag um 24:00. Damit erklärt sich der eine Tag Unterschied in den cutoff-Daten. */
 			var mailer = new UserMailer();
-			foreach (Assignment assignment in upcoming)
+			var cutoff = DateTime.Now.AddDays(6);
+			var due = db.Assignments.Where(a => !a.IsDone && !a.ReminderSent && a.DueDate < cutoff).ToList();
+			foreach (var a in due)
 			{
-				mailer.AssignmentReminder(assignment).Send();
-				assignment.ReminderSent = true;
+				mailer.SendAssignmentReminder(a);
+				a.ReminderSent = true;
 			}
-
 			db.SaveChanges();
 
-			return string.Format("Es wurden {0} Erinnerungen verschickt.", upcoming.Count);
+			cutoff = DateTime.Now.AddDays(-1);
+			var overdue = db.Assignments.Where(a => !a.IsDone && a.DueDate < cutoff).ToList();
+			foreach (var a in overdue)
+				mailer.SendAssignmentOverdue(a);
+			
+			return due.Count + overdue.Count;
 		}
 
 		// GET: Assignments/Create
@@ -127,8 +137,7 @@ namespace ILK_Protokoll.Controllers
 				if (assignment.Type == AssignmentType.ToDo)
 				{
 					var mailer = new UserMailer();
-					MvcMailMessage msg = mailer.NewAssignment(assignment);
-					msg.Send();
+					mailer.SendNewAssignment(assignment);
 				}
 
 				return RedirectToAction("Index", "Assignments");

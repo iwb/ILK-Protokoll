@@ -566,6 +566,7 @@
     <Content Include="Views\UserMailer\Welcome.cshtml" />
     <Content Include="Views\UserMailer\NewAssignment.cshtml" />
     <Content Include="Views\UserMailer\AssignmentReminder.cshtml" />
+    <Content Include="Views\UserMailer\AssignmentOverdue.cshtml" />
     <None Include="Web.Integration.config" />
     <None Include="Web.Testing.config" />
   </ItemGroup>

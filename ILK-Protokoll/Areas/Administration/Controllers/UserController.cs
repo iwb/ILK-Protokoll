@@ -112,6 +112,9 @@ namespace ILK_Protokoll.Areas.Administration.Controllers
 			string fullName = userPrincipal.Identity.Name;
 			string shortName = fullName.Split('\\').Last();
 
+			if (string.IsNullOrEmpty(fullName))
+				return new User() {ID = 0, ShortName = "xx", LongName = "Anonymous User"};
+
 			using (var context = new PrincipalContext(ContextType.Domain, DomainName))
 			using (UserPrincipal aduser = UserPrincipal.FindByIdentity(context, IdentityType.SamAccountName, fullName))
 			{
