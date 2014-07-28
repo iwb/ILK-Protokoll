@@ -1,11 +1,11 @@
-﻿@model ILK_Protokoll.Areas.Session.Models.Lists.ProfHoliday
+﻿@model ILK_Protokoll.Areas.Session.Models.Lists.Holiday
 @{
 	string trclass = Model.Created > ViewBag.LastSession ? "newlistitem" : null;
 }
 
-<tr class="@trclass" id="profHoliday_@Model.ID">
+<tr class="@trclass" id="Holiday_@Model.ID">
 	<td>
-		@Html.DisplayFor(model => model.Professor)
+		@Html.DisplayFor(model => model.Person.LongName)
 	</td>
 	<td>
 		@Html.DisplayFor(model => model.Occasion)
@@ -23,14 +23,14 @@
 	<td class="actions">
 		<a data-ajax="true"
 			data-ajax-method="POST"
-			data-ajax-success="ReplaceRow('profHoliday', @Model.ID, data);"
-			href="@Url.Action("_BeginEdit", "LProfHolidays", new {Area = "Session", id = Model.ID})"><span class="glyphicon glyphicon-edit" title="Urlaubseintrag bearbeiten"></span></a>
+			data-ajax-success="ReplaceRow('Holiday', @Model.ID, data);"
+			href="@Url.Action("_BeginEdit", "LHolidays", new {Area = "Session", id = Model.ID})"><span class="glyphicon glyphicon-edit" title="Urlaubseintrag bearbeiten"></span></a>
 
 		<a data-ajax="true"
 			data-ajax-method="POST"
 			data-ajax-confirm="Urlaubseintrag wirklich löschen?"
-			data-ajax-success="RemoveRow('profHoliday', @Model.ID);"
-			href="@Url.Action("_Delete", "LProfHolidays", new {Area = "Session", id = Model.ID})">
+			data-ajax-success="RemoveRow('Holiday', @Model.ID);"
+			href="@Url.Action("_Delete", "LHolidays", new {Area = "Session", id = Model.ID})">
 			<span class="glyphicon glyphicon-remove" title="Urlaubseintrag löschen"></span>
 		</a>
 	</td>

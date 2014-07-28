@@ -1,17 +1,17 @@
-﻿@model ILK_Protokoll.Areas.Session.Models.Lists.ProfHoliday
+﻿@model ILK_Protokoll.Areas.Session.Models.Lists.Holiday
 
-<tr id="profHoliday_@Model.ID">
+<tr id="Holiday_@Model.ID">
 	<td colspan="4">
-		@using (Ajax.BeginForm("_Edit", "LProfHolidays", new { Area = "Session" }, new AjaxOptions
+		@using (Ajax.BeginForm("_Edit", "LHolidays", new { Area = "Session" }, new AjaxOptions
 	{
-		OnSuccess = "ReplaceRow('profHoliday', " + Model.ID + ", data);",
+		OnSuccess = "ReplaceRow('Holiday', " + Model.ID + ", data);",
 		HttpMethod = "POST",
 	}, new { @class = "tableform" }))
 		{
 			@Html.AntiForgeryToken()
 			<div class="row">
 				<div class="col-sm-3">
-					@Html.EditorFor(model => model.Professor, new { htmlAttributes = new { @class = "form-control" } })
+					@Html.DropDownListFor(m => m.Person, (SelectList)ViewBag.UserList, new { @class = "form-control" })
 				</div>
 				<div class="col-sm-3">
 					@Html.EditorFor(model => model.Occasion, new { htmlAttributes = new { @class = "form-control" } })
@@ -32,8 +32,8 @@
 					<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-check"></span></button>
 					<a data-ajax="true"
 						data-ajax-method="POST"
-						data-ajax-success="ReplaceRow('profHoliday', @Model.ID, data);"
-						href="@Url.Action("_FetchRow", "LProfHolidays", new {Area = "Session", id = Model.ID})">
+						data-ajax-success="ReplaceRow('Holiday', @Model.ID, data);"
+						href="@Url.Action("_FetchRow", "LHolidays", new {Area = "Session", id = Model.ID})">
 						<span class="glyphicon glyphicon-remove" title="Bearbeitung abbrechen"></span>
 					</a>
 				</div>

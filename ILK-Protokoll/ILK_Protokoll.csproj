@@ -143,7 +143,7 @@
     <Compile Include="Areas\Session\Controllers\FinalizeController.cs" />
     <Compile Include="Areas\Session\Controllers\ListsController.cs" />
     <Compile Include="Areas\Session\Controllers\Lists\LEmployeePresentationController.cs" />
-    <Compile Include="Areas\Session\Controllers\Lists\LProfHolidaysController.cs" />
+    <Compile Include="Areas\Session\Controllers\Lists\LHolidaysController.cs" />
     <Compile Include="Areas\Session\Controllers\Lists\LOpeningsController.cs" />
     <Compile Include="Areas\Session\Controllers\Lists\LExtensionsController.cs" />
     <Compile Include="Areas\Session\Controllers\Lists\LConferencesController.cs" />
@@ -160,9 +160,10 @@
     <Compile Include="Areas\Session\Models\Lists\IlkMeeting.cs" />
     <Compile Include="Areas\Session\Models\Lists\Conference.cs" />
     <Compile Include="Areas\Session\Models\Lists\EmployeePresentation.cs" />
-    <Compile Include="Areas\Session\Models\Lists\ProfHoliday.cs" />
+    <Compile Include="Areas\Session\Models\Lists\Holiday.cs" />
     <Compile Include="Areas\Session\Models\Lists\Opening.cs" />
     <Compile Include="Areas\Session\Models\Lists\Extension.cs" />
+    <Compile Include="Areas\Session\Models\Lists\Prof.cs" />
     <Compile Include="Areas\Session\SessionAreaRegistration.cs" />
     <Compile Include="Areas\Session\ViewModels\ReportViewModel.cs" />
     <Compile Include="Controllers\AssignmentsController.cs" />
@@ -405,10 +406,10 @@
     <Content Include="Areas\Session\Views\Finalize\SessionReport.cshtml" />
     <Content Include="Areas\Session\Views\Finalize\_ReportSuccess.cshtml" />
     <Content Include="Areas\Session\Views\Shared\_StateButtons.cshtml" />
-    <Content Include="Areas\Session\Views\LProfHolidays\_CreateForm.cshtml" />
-    <Content Include="Areas\Session\Views\LProfHolidays\_Edit.cshtml" />
-    <Content Include="Areas\Session\Views\LProfHolidays\_List.cshtml" />
-    <Content Include="Areas\Session\Views\LProfHolidays\_Row.cshtml" />
+    <Content Include="Areas\Session\Views\LHolidays\_CreateForm.cshtml" />
+    <Content Include="Areas\Session\Views\LHolidays\_Edit.cshtml" />
+    <Content Include="Areas\Session\Views\LHolidays\_List.cshtml" />
+    <Content Include="Areas\Session\Views\LHolidays\_Row.cshtml" />
     <None Include="Content\bootstrap\bootstrap.less" />
     <Content Include="Content\iwbTheme.less" />
     <Content Include="Areas\Administration\Views\web.config" />

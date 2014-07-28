@@ -31,7 +31,7 @@ namespace ILK_Protokoll.DataLayer
 		public DbSet<Extension> LExtensions { get; set; }
 		public DbSet<IlkDay> LIlkDays { get; set; }
 		public DbSet<IlkMeeting> LIlkMeetings { get; set; }
-		public DbSet<ProfHoliday> LProfHolidays { get; set; }
+		public DbSet<Holiday> LHolidays { get; set; }
 		public DbSet<Opening> LOpenings { get; set; }
 		public DbSet<SessionReport> SessionReports { get; set; }
 		public DbSet<SessionType> SessionTypes { get; set; }

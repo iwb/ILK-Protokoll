@@ -2,17 +2,18 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using ILK_Protokoll.Models;
 
 namespace ILK_Protokoll.Areas.Session.Models.Lists
 {
 	/// <summary>
-	///    Professorenurlaub
+	///    ILK-Urlaub
 	/// </summary>
-	[Table("L_ProfHoliday")]
-	public class ProfHoliday : BaseItem
+	[Table("L_Holiday")]
+	public class Holiday : BaseItem
 	{
-		[DisplayName("Professor")]
-		public Prof Professor { get; set; }
+		[DisplayName("Person")]
+		public User Person { get; set; }
 
 		[Required]
 		[DisplayName("Anlass")]
@@ -28,11 +29,5 @@ namespace ILK_Protokoll.Areas.Session.Models.Lists
 		[DataType(DataType.Date)]
 		[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
 		public DateTime? End { get; set; }
-	}
-
-	public enum Prof
-	{
-		Zäh,
-		Reinhart
 	}
 }

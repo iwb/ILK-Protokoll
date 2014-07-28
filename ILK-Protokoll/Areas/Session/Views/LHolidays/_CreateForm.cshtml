@@ -1,15 +1,15 @@
-﻿@model ILK_Protokoll.Areas.Session.Models.Lists.ProfHoliday
-@using (Ajax.BeginForm("_Create", "LProfHolidays", new { Area = "Session" }, new AjaxOptions
+﻿@model ILK_Protokoll.Areas.Session.Models.Lists.Holiday
+@using (Ajax.BeginForm("_Create", "LHolidays", new { Area = "Session" }, new AjaxOptions
 {
 	HttpMethod = "POST",
-	OnSuccess = "AddRow('profHoliday', data);",
-	OnFailure = "DisplayErrorMessage('#profHoliday_table', '<br />' + xhr.responseText);"
-}, new { id = "profHoliday_form" }))
+	OnSuccess = "AddRow('Holiday', data);",
+	OnFailure = "DisplayErrorMessage('#Holiday_table', '<br />' + xhr.responseText);"
+}, new { id = "Holiday_form" }))
 {
 	@Html.AntiForgeryToken()
-	<tr id="profHoliday_createform">
+	<tr id="Holiday_createform">
 		<td>
-			@Html.EnumDropDownListFor(model => model.Professor, new { @class = "form-control" })
+			@Html.DropDownListFor(m => m.UserPerson, (SelectList)ViewBag.UserList, new { @class = "form-control" })
 		</td>
 		<td>
 			@Html.EditorFor(model => model.Occasion, new { htmlAttributes = new { @class = "form-control" } })
