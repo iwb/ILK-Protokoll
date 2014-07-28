@@ -13,6 +13,7 @@ namespace ILK_Protokoll.Areas.Session.Models.Lists
 	public class Holiday : BaseItem
 	{
 		[DisplayName("Person")]
+		[Required]
 		public User Person { get; set; }
 
 		[Required]
