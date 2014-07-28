@@ -29,7 +29,7 @@ namespace ILK_Protokoll.Controllers
 		}
 
 		// GET: Topics/Details/5
-		public ActionResult Details(int? id)
+		public ActionResult Details(int? id, bool reporting = false)
 		{
 			if (id == null)
 				return HTTPStatus(400, "Für diesen Vorgang ist eine TopicID ist erforderlich.");
@@ -47,11 +47,15 @@ namespace ILK_Protokoll.Controllers
 				return HttpNotFound();
 
 			ViewBag.TopicID = id.Value;
-			ViewBag.TopicHistory = db.TopicHistory.Where(t => t.TopicID == id.Value).ToList();
+			ViewBag.TopicHistoryCount = db.TopicHistory.Count(t => t.TopicID == id.Value);
 			ViewBag.IsEditable = topic.IsEditableBy(GetCurrentUser(), GetSession()).IsAuthorized;
+			ViewBag.Reporting = reporting;
 			topic.IsLocked = IsTopicLocked(id.Value);
 
-			return View(topic);
+			if (reporting)
+				return PartialView(topic);
+			else
+				return View(topic);
 		}
 
 		// GET: Topics/Create

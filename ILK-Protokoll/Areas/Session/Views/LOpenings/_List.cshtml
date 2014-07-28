@@ -31,8 +31,12 @@
 		}
 	</tbody>
 	<tfoot>
-		@Html.Action("_CreateForm", "LOpenings")
+		@if (!ViewBag.Reporting)
+		{
+			@Html.Action("_CreateForm", "LOpenings")
+		}
 	</tfoot>
+
 </table>
 
 @using (Html.Delayed(null, "List_Utilities"))

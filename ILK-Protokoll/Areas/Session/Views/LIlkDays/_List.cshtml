@@ -34,7 +34,10 @@
 		}
 	</tbody>
 	<tfoot>
-		@Html.Action("_CreateForm", "LIlkDays")
+		@if (!ViewBag.Reporting)
+		{
+			@Html.Action("_CreateForm", "LIlkDays")
+		}
 	</tfoot>
 </table>
 

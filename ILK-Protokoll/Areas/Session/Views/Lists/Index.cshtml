@@ -11,14 +11,13 @@
 
 @if (ViewBag.LastSession != null)
 {
-	<p>Letzte Sitzung am @ViewBag.LastSession</p>
+	<p>Die letzte Sitzung dieses Typs wude am @ViewBag.LastSession durchgeführt.</p>
 }
 else
 {
-	<p>Diese Sitzung wird das erste Mal durchgeführt.</p>
+	<p>Eine Sitzung dieses Typs wird zum ersten Mal durchgeführt.</p>
 }
 		
-
 @Html.Action("_List", "LEvents", new {Area = "Session"})
 <hr />
 @Html.Action("_List", "LConferences", new {Area = "Session"})

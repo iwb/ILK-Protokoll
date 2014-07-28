@@ -63,9 +63,15 @@ namespace ILK_Protokoll.Models
 		public virtual ICollection<Decision> Decisions { get; set; }
 
 		[NotMapped]
+		public string FileName
+		{
+			get { return string.Format("Sessionreport_{0}_{1}.pdf", Start.Year, ID); }
+		}
+
+		[NotMapped]
 		public string URL
 		{
-			get { return string.Format(@"\\02mucilk\Reports\Sessionreport_{0}_{1}.pdf", Start.Year, ID); }
+			get { return @"\\02mucilk\Reports\" + FileName; }
 		}
 	}
 }

@@ -66,13 +66,32 @@
 			</div>
 		</div>
 		
+		<h4>Listen</h4>
+		@Html.Action("_List", "LEvents", new { Area = "Session", reporting = true })
+		<hr />
+		@Html.Action("_List", "LConferences", new { Area = "Session", reporting = true })
+		<hr />
+		@Html.Action("_List", "LExtensions", new { Area = "Session", reporting = true })
+		<hr />
+		@Html.Action("_List", "LEmployeePresentations", new { Area = "Session", reporting = true })
+		<hr />
+		@Html.Action("_List", "LIlkDays", new { Area = "Session", reporting = true })
+		<hr />
+		@Html.Action("_List", "LIlkMeetings", new { Area = "Session", reporting = true })
+		<hr />
+		@Html.Action("_List", "LOpenings", new { Area = "Session", reporting = true })
+		<hr />
+		@Html.Action("_List", "LProfHolidays", new { Area = "Session", reporting = true })
+
 		@foreach (var tlock in Model.LockedTopics)
 		{
 			<div style="page-break-before: always">
 				<div class="buttongroup" id="state_buttons_@tlock.Topic.ID">
 					@{ Html.RenderPartial("_StateButtons", tlock); }
 				</div>
-				@{ Html.RenderPartial("~/Views/Topics/_Topic.cshtml", tlock.Topic); }
+				<div>
+					@Html.Action("Details", "Topics", new { Area = "", id = tlock.TopicID, reporting = true })
+				</div>
 			</div>
 		}
 
@@ -87,4 +106,5 @@
 		</footer>
 	</div>
 </body>
+
 </html>

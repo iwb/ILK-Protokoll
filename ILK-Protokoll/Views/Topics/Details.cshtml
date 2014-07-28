@@ -4,15 +4,16 @@
 
 @{
 	ViewBag.Title = "Details (" + Model.Title + ")";
-	var history = (ICollection<TopicHistory>)ViewBag.TopicHistory;
+
+	var pagebreak = ViewBag.Reporting ? "page-break-after: always;" : null;
 }
 
-<h3>@ViewBag.Title</h3>
-
-@Html.ActionLink("Zurück zum Index", "Index")
-
-<hr />
-
+@if (!ViewBag.Reporting)
+{
+	<h3>@ViewBag.Title</h3>
+	@Html.ActionLink("Zurück zum Index", "Index")
+	<hr />
+}
 <div class="row">
 	<div class="col-md-12">
 		<div class="panel panel-primary">
@@ -21,13 +22,15 @@
 					<p>
 						@if (Model.IsReadOnly)
 						{
-							<i class="glyphicon glyphicon-lock"></i> @:Schreibgeschützt
+							<i class="glyphicon glyphicon-lock"></i>
+							@:Schreibgeschützt
 						}
 						else
 						{
 							if (Model.IsLocked)
 							{
-								<i class="glyphicon glyphicon-lock"></i> @:Gesperrt
+								<i class="glyphicon glyphicon-lock"></i>
+								@:Gesperrt
 							}
 							if (ViewBag.IsEditable)
 							{
@@ -67,13 +70,13 @@
 					<dt>@Html.DisplayNameFor(model => model.Created)</dt>
 					<dd>@Html.DisplayFor(model => model.Created)</dd>
 
-					@if (history.Count > 0)
+					@if (ViewBag.TopicHistoryCount > 0)
 					{
 						<dt>@Html.DisplayNameFor(model => model.ValidFrom)</dt>
 						<dd>
-							@Html.DisplayFor(model => model.ValidFrom) (Insgesamt @history.Count Mal geändert)
+							@Html.DisplayFor(model => model.ValidFrom) (Insgesamt @ViewBag.TopicHistoryCount Mal geändert)
 							<br />
-							<a href="@Url.Action("ViewHistory", "Topics", new { id = Model.ID })">
+							<a href="@Url.Action("ViewHistory", "Topics", new {id = Model.ID})">
 								Versionsverlauf anzeigen
 							</a>
 						</dd>
@@ -113,16 +116,16 @@
 		<h3 class="panel-title">@Html.DisplayNameFor(model => model.Votes)</h3>
 	</div>
 	<div class="panel-body" id="auditorlist_@Model.ID">
-		@Html.Action("_List", "Votes", new { topic = Model, linkAllAuditors = true })
+		@Html.Action("_List", "Votes", new {topic = Model, linkAllAuditors = true})
 	</div>
 </div>
 
-<div class="panel panel-primary" style="background-color: #B7BCD6">
+<div class="panel panel-primary" style="background-color: #B7BCD6; @pagebreak">
 	<div class="panel-heading">
 		<h3 class="panel-title">@Html.DisplayNameFor(model => model.Comments)</h3>
 	</div>
 	<div id="comments_@Model.ID">
-		@if ((!Model.IsReadOnly && !Model.IsLocked ) || Model.Comments.Any())
+		@if ((!Model.IsReadOnly && !Model.IsLocked) || Model.Comments.Any())
 		{
 			@Html.Action("_List", "Comments", Model)
 		}
@@ -155,9 +158,9 @@
 		{
 			@:Da das Thema gesperrt ist, können Sie zur Zeit keine Aufgaben erstellen.
 		}
-		else
+		else if (!ViewBag.Reporting)
 		{
-			@Html.ActionLink("Neue Aufgabe erstellen", "Create", "Assignments", new { topicID = Model.ID }, null)
+			@Html.ActionLink("Neue Aufgabe erstellen", "Create", "Assignments", new {topicID = Model.ID}, null)
 		}
 	</div>
 </div>
@@ -175,9 +178,12 @@
 			}
 			else
 			{
-				@Html.Action("_List", "Attachments", new { entity = AttachmentContainer.Topic, id = Model.ID })
+				@Html.Action("_List", "Attachments", new {entity = AttachmentContainer.Topic, id = Model.ID})
 			}
-			@Html.Action("_UploadForm", "Attachments", new { entity = AttachmentContainer.Topic, id = Model.ID })
+			@if (!ViewBag.Reporting)
+			{
+				@Html.Action("_UploadForm", "Attachments", new {entity = AttachmentContainer.Topic, id = Model.ID})
+			}
 		</div>
 	</div>
 </div>

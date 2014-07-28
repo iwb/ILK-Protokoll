@@ -37,7 +37,10 @@
 		}
 	</tbody>
 	<tfoot>
-		@Html.Action("_CreateForm", "LConferences")
+		@if (!ViewBag.Reporting)
+		{
+			@Html.Action("_CreateForm", "LConferences")
+		}
 	</tfoot>
 </table>
 

@@ -24,7 +24,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 			set { _entities = value; }
 		}
 
-		public virtual PartialViewResult _List()
+		public virtual PartialViewResult _List(bool reporting = false)
 		{
 			var cutoff = DateTime.Now - EditDuration;
 			var thisSession = GetSession().ID;
@@ -34,6 +34,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 			// Und die eigenen Locks entfernen
 			_dbSet.Where(e => e.LockSessionID == thisSession).Update(e => new TModel() { LockSessionID = null });
 
+			ViewBag.Reporting = reporting;
 			return PartialView(Entities.ToList());
 		}
 

@@ -24,8 +24,11 @@
 			Html.RenderPartial("_Row", item);
 		}
 	</tbody>
-	<tfoot>
+<tfoot>
+	@if (!ViewBag.Reporting)
+	{
 		@Html.Action("_CreateForm", "LProfHolidays")
+	}
 	</tfoot>
 </table>
 

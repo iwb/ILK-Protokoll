@@ -46,11 +46,12 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 
 			db.SaveChanges();
 
+			SessionReport report = SessionReport.FromActiveSession(session);
+
 			string html = HelperMethods.RenderViewAsString(ControllerContext, "SessionReport", session);
 			byte[] pdfcontent = HelperMethods.ConvertHTMLToPDF(html);
-			System.IO.File.WriteAllBytes(@"C:\temp\mails\report.pdf", pdfcontent);
 
-			SessionReport report = SessionReport.FromActiveSession(session);
+			System.IO.File.WriteAllBytes(@"C:\ILK-Protokoll_Reports\" + report.FileName, pdfcontent);
 
 			List<Topic> topics = db.Topics
 				.Include(t => t.SessionType)
@@ -94,6 +95,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 			}
 			db.ActiveSessions.Remove(session);
 			db.SessionReports.Add(report);
+
 			try
 			{
 				db.SaveChanges();
