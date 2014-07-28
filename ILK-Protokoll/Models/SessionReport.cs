@@ -67,5 +67,7 @@ namespace ILK_Protokoll.Models
 		{
 			get { return string.Format("Sessionreport_{0}_{1}.pdf", Start.Year, ID); }
 		}
+
+		public const string Directory = @"C:\ILK-Protokoll_Reports\";
 	}
 }

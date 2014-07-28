@@ -55,7 +55,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 			string html = HelperMethods.RenderViewAsString(ControllerContext, "SessionReport", session);
 			byte[] pdfcontent = HelperMethods.ConvertHTMLToPDF(html);
 
-			System.IO.File.WriteAllBytes(@"C:\ILK-Protokoll_Reports\" + report.FileName, pdfcontent);
+			System.IO.File.WriteAllBytes(SessionReport.Directory + report.FileName, pdfcontent);
 
 			List<Topic> topics = db.Topics
 				.Include(t => t.SessionType)

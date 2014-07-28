@@ -14,6 +14,11 @@
 	<script src="/Scripts/jquery-2.1.1.js"></script>
 	<script src="/Scripts/bootstrap.js"></script>
 	<script src="/Scripts/respond.js"></script>
+	<style type="text/css">
+		div.panel {
+			page-break-inside: avoid;
+		}
+	</style>
 </head>
 <body style="width:750px;">
 	<div class="navbar navbar-default navbar-fixed-top" id="main-navbar">
@@ -65,7 +70,7 @@
 
 			</div>
 		</div>
-		
+
 		@Html.Action("_List", "LEvents", new { Area = "Session", reporting = true })
 		<hr />
 		@Html.Action("_List", "LConferences", new { Area = "Session", reporting = true })

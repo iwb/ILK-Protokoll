@@ -4,8 +4,6 @@
 
 @{
 	ViewBag.Title = "Details (" + Model.Title + ")";
-
-	var pagebreak = ViewBag.Reporting ? "page-break-before: always;" : null;
 }
 
 @if (!ViewBag.Reporting)
@@ -42,46 +40,53 @@
 				<h3 class="panel-title">Stammdaten</h3>
 			</div>
 			<div class="panel-body">
-				<dl class="dl-horizontal">
-					<dt>@Html.DisplayNameFor(model => model.ID)</dt>
-					<dd>@Html.DisplayFor(model => model.ID)</dd>
+				<b>@Html.DisplayNameFor(model => model.Title):</b>
+				<p>@Html.DisplayFor(model => model.Title)</p>
 
-					<dt>@Html.DisplayNameFor(model => model.Title)</dt>
-					<dd>@Html.DisplayFor(model => model.Title)</dd>
+				<div class="row">
+					<div class="col-xs-4">
+						<dl class="dl-horizontal">
+							<dt>@Html.DisplayNameFor(model => model.SessionTypeID)</dt>
+							<dd>@Html.DisplayFor(model => model.SessionType.Name)</dd>
 
-					<dt>@Html.DisplayNameFor(model => model.SessionTypeID)</dt>
-					<dd>@Html.DisplayFor(model => model.SessionType.Name)</dd>
+							@if (Model.TargetSessionTypeID != null)
+							{
+								<dt>@Html.DisplayNameFor(model => model.TargetSessionTypeID)</dt>
+								<dd>@Html.DisplayFor(model => model.TargetSessionType.Name)</dd>
+							}
 
-					@if (Model.TargetSessionTypeID != null)
-					{
-						<dt>@Html.DisplayNameFor(model => model.TargetSessionTypeID)</dt>
-						<dd>@Html.DisplayFor(model => model.TargetSessionType.Name)</dd>
-					}
+							<dt>@Html.DisplayNameFor(model => model.OwnerID)</dt>
+							<dd>@Html.DisplayFor(model => model.Owner.ShortName)</dd>
 
-					<dt>@Html.DisplayNameFor(model => model.OwnerID)</dt>
-					<dd>@Html.DisplayFor(model => model.Owner.ShortName)</dd>
+							<dt>@Html.DisplayNameFor(model => model.Priority)</dt>
+							<dd>@Model.Priority.DisplayName()</dd>
+						</dl>
+					</div>
+					<div class="col-xs-6">
+						<dl class="dl-horizontal">
+							<dt>@Html.DisplayNameFor(model => model.ID)</dt>
+							<dd>@Html.DisplayFor(model => model.ID)</dd>
 
-					<dt>@Html.DisplayNameFor(model => model.Priority)</dt>
-					<dd>@Model.Priority.DisplayName()</dd>
 
-					<dt>@Html.DisplayNameFor(model => model.Creator)</dt>
-					<dd>@Html.DisplayFor(model => model.Creator.LongName)</dd>
+							<dt>@Html.DisplayNameFor(model => model.Creator)</dt>
+							<dd>@Html.DisplayFor(model => model.Creator.LongName)</dd>
 
-					<dt>@Html.DisplayNameFor(model => model.Created)</dt>
-					<dd>@Html.DisplayFor(model => model.Created)</dd>
-
-					@if (ViewBag.TopicHistoryCount > 0)
-					{
-						<dt>@Html.DisplayNameFor(model => model.ValidFrom)</dt>
-						<dd>
-							@Html.DisplayFor(model => model.ValidFrom) (Insgesamt @ViewBag.TopicHistoryCount Mal geändert)
-							<br />
-							<a href="@Url.Action("ViewHistory", "Topics", new {id = Model.ID})">
-								Versionsverlauf anzeigen
-							</a>
-						</dd>
-					}
-				</dl>
+							<dt>@Html.DisplayNameFor(model => model.Created)</dt>
+							<dd>@Html.DisplayFor(model => model.Created)</dd>
+							@if (ViewBag.TopicHistoryCount > 0)
+							{
+								<dt>@Html.DisplayNameFor(model => model.ValidFrom)</dt>
+								<dd>
+									@Html.DisplayFor(model => model.ValidFrom) (Insgesamt @ViewBag.TopicHistoryCount Mal geändert)
+									<br />
+									<a href="@Url.Action("ViewHistory", "Topics", new {id = Model.ID})">
+										Versionsverlauf anzeigen
+									</a>
+								</dd>
+							}
+						</dl>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -116,11 +121,11 @@
 		<h3 class="panel-title">@Html.DisplayNameFor(model => model.Votes)</h3>
 	</div>
 	<div class="panel-body" id="auditorlist_@Model.ID">
-		@Html.Action("_List", "Votes", new {topic = Model, linkAllAuditors = true})
+		@Html.Action("_List", "Votes", new { topic = Model, linkAllAuditors = true })
 	</div>
 </div>
 
-<div class="panel panel-primary" style="background-color: #B7BCD6; @pagebreak">
+<div class="panel panel-primary" style="background-color: #B7BCD6;">
 	<div class="panel-heading">
 		<h3 class="panel-title">@Html.DisplayNameFor(model => model.Comments)</h3>
 	</div>
@@ -153,16 +158,19 @@
 			Diese Diskussion enthält keine Aufgaben.
 		</div>
 	}
-	<div class="panel-footer">
-		@if (Model.IsLocked)
-		{
-			@:Da das Thema gesperrt ist, können Sie zur Zeit keine Aufgaben erstellen.
-		}
-		else if (!ViewBag.Reporting)
-		{
-			@Html.ActionLink("Neue Aufgabe erstellen", "Create", "Assignments", new {topicID = Model.ID}, null)
-		}
-	</div>
+	@if (!Model.IsReadOnly)
+	{
+		<div class="panel-footer">
+			@if (Model.IsLocked)
+			{
+				@:Da das Thema gesperrt ist, können Sie zur Zeit keine Aufgaben erstellen.
+			}
+			else if (!ViewBag.Reporting)
+			{
+				@Html.ActionLink("Neue Aufgabe erstellen", "Create", "Assignments", new { topicID = Model.ID }, null)
+			}
+		</div>
+	}
 </div>
 
 
@@ -178,11 +186,11 @@
 			}
 			else
 			{
-				@Html.Action("_List", "Attachments", new {entity = AttachmentContainer.Topic, id = Model.ID})
+				@Html.Action("_List", "Attachments", new { entity = AttachmentContainer.Topic, id = Model.ID })
 			}
-			@if (!ViewBag.Reporting)
+			@if (!ViewBag.Reporting && !Model.IsReadOnly)
 			{
-				@Html.Action("_UploadForm", "Attachments", new {entity = AttachmentContainer.Topic, id = Model.ID})
+				@Html.Action("_UploadForm", "Attachments", new { entity = AttachmentContainer.Topic, id = Model.ID })
 			}
 		</div>
 	</div>

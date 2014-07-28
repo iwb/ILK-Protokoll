@@ -14,6 +14,9 @@
 				@Html.DisplayNameFor(model => model.ID)
 			</th>
 			<th>
+				@Html.DisplayNameFor(model => model.SessionType)
+			</th>
+			<th>
 				@Html.DisplayNameFor(model => model.Manager)
 			</th>
 			<th>
@@ -30,13 +33,16 @@
 					@Html.DisplayFor(modelItem => item.ID)
 				</td>
 				<td>
+					@Html.DisplayFor(modelItem => item.SessionType.Name)
+				</td>
+				<td>
 					@Html.DisplayFor(modelItem => item.Manager.LongName)
 				</td>
 				<td>
 					@Html.DisplayFor(modelItem => item.End)
 				</td>
 				<td>
-					@Html.ActionLink("Details", "Details", new { id = item.ID })
+					@Html.ActionLink("PDF", "Details", new { id = item.ID })
 				</td>
 			</tr>
 		}
