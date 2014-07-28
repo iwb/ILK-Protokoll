@@ -26,9 +26,9 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 		{
 			var session = db.ActiveSessions.Add(new ActiveSession(type) {Manager = GetCurrentUser()});
 
-			foreach (var t in db.Topics.Where(t => t.TargetSessionTypeID == session.ID))
+			foreach (var t in db.Topics.Where(t => t.TargetSessionTypeID == type.ID))
 			{
-				t.SessionTypeID = session.ID;
+				t.SessionTypeID = type.ID;
 				t.TargetSessionTypeID = null;
 			}
 			db.SaveChanges();

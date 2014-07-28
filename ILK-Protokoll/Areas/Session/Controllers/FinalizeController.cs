@@ -112,7 +112,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 				return HTTPStatus(HttpStatusCode.InternalServerError, ex.Message);
 			}
 
-			return PartialView("_ReportSuccess", 3);
+			return PartialView("_ReportSuccess", report.ID);
 		}
 
 		public ActionResult ShowReport()

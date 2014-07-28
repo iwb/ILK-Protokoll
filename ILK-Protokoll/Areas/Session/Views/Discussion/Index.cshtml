@@ -19,12 +19,16 @@
 	@foreach (var topic in Model)
 	{
 		<div class="col-lg-6 col-md-12">
-			@if (topic.IsLocked)
-			{
-				<div class="buttongroup" id="state_buttons_@topic.ID">
-					@{ Html.RenderPartial("_StateButtons", topic.Lock); }
-				</div>
-			}
+			<div class="buttongroup" id="state_buttons_@topic.ID">
+				@if (topic.IsLocked)
+				{
+					Html.RenderPartial("_StateButtons", topic.Lock);
+				}
+				else
+				{
+					@:Dieser Punkt wird momentan in die Sitzung &quot;@topic.TargetSessionType.Name&quot; verschoben. In dieser Sitzung kann er daher nicht beschlossen werden.
+				}
+			</div>
 			@{ Html.RenderPartial("~/Views/Topics/_Topic.cshtml", topic); }
 		</div>
 	}
