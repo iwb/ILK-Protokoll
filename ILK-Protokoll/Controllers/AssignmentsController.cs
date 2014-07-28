@@ -100,7 +100,7 @@ namespace ILK_Protokoll.Controllers
 			
 			return due.Count + overdue.Count;
 		}
-
+		
 		// GET: Assignments/Create
 		[HttpGet]
 		public ActionResult Create(int topicID)

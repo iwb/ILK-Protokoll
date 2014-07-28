@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using ILK_Protokoll.Areas.Session.Models;
+using ILK_Protokoll.Mailers;
 using ILK_Protokoll.Models;
 using ILK_Protokoll.util;
 
@@ -59,9 +60,11 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 			List<Topic> topics = db.Topics
 				.Include(t => t.SessionType)
 				.Include(t => t.Lock)
+				.Include(t => t.Assignments)
 				.Where(t => t.Lock.Session.ID == session.ID)
 				.ToList();
 
+			var mailer = new UserMailer();
 			foreach (Topic t in topics)
 			{
 				switch (t.Lock.Action)
@@ -77,6 +80,8 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 							Text = t.Proposal,
 							Type = DecisionType.Resolution
 						};
+						foreach ( var duty in t.Assignments.Where(a => a.Type == AssignmentType.Duty))
+							mailer.SendNewAssignment(duty);
 						break;
 					case TopicAction.Close:
 						t.Decision = new Decision
