@@ -10,6 +10,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
+using ILK_Protokoll.DataLayer;
 using ILK_Protokoll.Models;
 
 namespace ILK_Protokoll.Controllers
@@ -45,7 +46,12 @@ namespace ILK_Protokoll.Controllers
 
 		public string GetVirtualPath(int attachmentID)
 		{
-			string userAgent = Request.UserAgent;
+			return GetVirtualPath(attachmentID, Request, db, Url);
+		}
+
+		public static string GetVirtualPath(int attachmentID, HttpRequestBase request, DataContext db, UrlHelper url)
+		{
+			string userAgent = request.UserAgent;
 			bool isInternetExplorer = !string.IsNullOrEmpty(userAgent) && userAgent.Contains("Trident");
 			if (Environment.MachineName == "02MUCILK" && isInternetExplorer)
 			{
@@ -55,7 +61,7 @@ namespace ILK_Protokoll.Controllers
 					return "file://02mucilk/Uploads/" + a.FileName;
 			}
 
-			return Url.Action("Download", new {id = attachmentID});
+			return url.Content(VirtualPath + attachmentID);
 		}
 
 		// GET: Attachments

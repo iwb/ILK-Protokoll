@@ -42,5 +42,8 @@ namespace ILK_Protokoll.Areas.Session.Models.Lists
 
 		[DisplayName("Vorgemerkt")]
 		public bool Selected { get; set; }
+
+		[NotMapped]
+		public string FileURL { get; set; }
 	}
 }

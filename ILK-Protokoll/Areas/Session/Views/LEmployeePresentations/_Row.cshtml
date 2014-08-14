@@ -17,7 +17,17 @@
 		@Model.LastPresentation.ToString("d")
 	</td>
 	<td>
-		@Model.Attachments.Count(a => a.Deleted == null)
+		@{
+			var count = Model.Attachments.Count(a => a.Deleted == null);
+			if (count > 0)
+			{
+				<a href="@Model.FileURL">@count</a>
+			}
+			else
+			{
+				@:0	
+			}
+		}
 	</td>
 	<td>
 		@Html.DisplayFor(model => model.Selected)

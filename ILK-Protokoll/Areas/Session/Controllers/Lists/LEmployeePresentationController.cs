@@ -4,7 +4,9 @@ using System.Data.Entity.Validation;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using EntityFramework.Extensions;
 using ILK_Protokoll.Areas.Session.Models.Lists;
+using ILK_Protokoll.Controllers;
 
 namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 {
@@ -14,6 +16,26 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 		{
 			_dbSet = db.LEmployeePresentations;
 			Entities = _dbSet.Include(ep => ep.Attachments).OrderByDescending(x => x.Selected).ThenBy(x => x.LastPresentation);
+		}
+
+		public override PartialViewResult _List(bool reporting = false)
+		{
+			var cutoff = DateTime.Now - EditDuration;
+			var thisSession = GetSession().ID;
+
+			// Locks entfernen, die zu alt sind
+			_dbSet.Where(e => e.LockTime < cutoff).Update(e => new EmployeePresentation() { LockSessionID = null });
+			// Und die eigenen Locks entfernen
+			_dbSet.Where(e => e.LockSessionID == thisSession).Update(e => new EmployeePresentation() { LockSessionID = null });
+
+			ViewBag.Reporting = reporting;
+			var items = Entities.ToList();
+			foreach (var emp in items)
+			{
+				if (emp.Attachments.Count(a => a.Deleted == null) > 0)
+					emp.FileURL = AttachmentsController.GetVirtualPath(emp.Attachments.Where(a => a.Deleted == null).OrderByDescending(a => a.Created).First().ID, Request, db, Url);
+			}
+			return PartialView(items);
 		}
 
 		public override PartialViewResult _CreateForm()

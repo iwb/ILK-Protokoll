@@ -16,7 +16,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 		protected DbSet<TModel> _dbSet;
 		private IQueryable<TModel> _entities;
 
-		private readonly TimeSpan EditDuration = TimeSpan.FromMinutes(5);
+		protected readonly TimeSpan EditDuration = TimeSpan.FromMinutes(5);
 
 		protected IQueryable<TModel> Entities
 		{
