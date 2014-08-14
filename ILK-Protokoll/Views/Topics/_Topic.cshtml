@@ -49,14 +49,14 @@
 
 		if (Model.Comments.Count < 2 || Model.IsReadOnly) // Sektion ausklappen
 		{
-			classA = "";
+			classA = null;
 			classDiv = "panel-collapse collapse in";
 		}
 	}
 	<div class="panel panel-primary">
 		<div class="panel-heading panel-collapse-heading" style="position: relative;">
 			<h4 class="panel-title">
-				<a data-toggle="collapse" data-target="#comments_@Model.ID" class="@classA">
+				<a onclick="$('#comments_@Model.ID').toggle('fast', function() { msnry.layout(); });" class="@classA">
 					@if (@Model.Comments.Count == 0)
 					{
 						@:Keine Kommentare

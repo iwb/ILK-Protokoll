@@ -1,4 +1,5 @@
 ﻿@using ILK_Protokoll.Models
+@using ILK_Protokoll.util
 @model ILK_Protokoll.ViewModels.DashBoard
 
 @{
@@ -47,7 +48,7 @@
 </div>
 <hr />
 <h2>Diskussionspunkte</h2>
-<div class="row">
+<div class="row" id="topicsContainer">
 	@foreach (Topic t in Model.MyTopics)
 	{
 		<div class="col-lg-6 col-md-12">
@@ -55,3 +56,13 @@
 		</div>
 	}
 </div>
+
+@using (Html.Delayed(null, "Masonry_Tiles"))
+{
+	<script type="text/javascript">
+		var msnry = new Masonry('#topicsContainer', {
+			itemSelector: '.col-lg-6',
+			resizeable: true,
+		});
+	</script>
+}
