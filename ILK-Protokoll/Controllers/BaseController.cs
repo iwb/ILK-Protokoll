@@ -93,7 +93,7 @@ namespace ILK_Protokoll.Controllers
 			StringBuilder msg = new StringBuilder();
 			foreach (var kvp in ModelState)
 				foreach (var error in kvp.Value.Errors)
-					msg.AppendFormat("{0}: {1} <br />", kvp.Key, error.ErrorMessage);
+					msg.AppendFormat("{0} <br />", error.ErrorMessage);
 
 			return msg.ToString();
 		}
