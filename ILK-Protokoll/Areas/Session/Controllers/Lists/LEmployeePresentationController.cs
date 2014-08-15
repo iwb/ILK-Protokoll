@@ -44,7 +44,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 			return base._BeginEdit(id);
 		}
 
-		public ActionResult Edit(int? id)
+		public ActionResult Edit(int? id, string returnURL = null)
 		{
 			if (id == null)
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -54,20 +54,25 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 				return HttpNotFound();
 
 			ViewBag.UserList = new SelectList(db.GetUserOrdered(GetCurrentUser()), "ID", "ShortName");
+			ViewBag.ReturnURL = returnURL ?? Url.Action("Index", "Lists", new {Area = "Session"});
 			return View(presentation);
 		}
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public virtual ActionResult Edit([Bind(Exclude = "Created")] EmployeePresentation input)
+		public virtual ActionResult Edit([Bind(Exclude = "Created")] EmployeePresentation input, string returnURL = null)
 		{
 			if (ModelState.IsValid)
 			{
 				db.Entry(input).State = EntityState.Modified;
 				db.SaveChanges();
-				return RedirectToAction("Index", "Lists", new {Area = "Session"});
+				if (returnURL == null)
+					return RedirectToAction("Index", "Lists", new {Area = "Session"});
+				else
+					return Redirect(returnURL);
 			}
 			ViewBag.UserList = new SelectList(db.GetUserOrdered(GetCurrentUser()), "ID", "ShortName");
+			ViewBag.ReturnURL = returnURL ?? Url.Action("Index", "Lists", new { Area = "Session" });
 			return View(input);
 		}
 

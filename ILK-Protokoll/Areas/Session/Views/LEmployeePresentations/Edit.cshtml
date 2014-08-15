@@ -15,6 +15,7 @@
 		<hr />
 		@Html.ValidationSummary(true, "", new {@class = "text-danger"})
 		@Html.HiddenFor(model => model.ID)
+		<input type="hidden" name="returnURL" value="@ViewBag.ReturnURL" />
 
 		<div class="form-group">
 			@Html.LabelFor(model => model.Employee, new {@class = "control-label col-md-2"})
@@ -86,7 +87,7 @@
 </div>
 
 <div>
-	@Html.ActionLink("Zurück", "Index", "Lists", new {Area = "Session"}, null)
+	<a href="@ViewBag.ReturnURL">Zurück</a>
 </div>
 
 @section Scripts {
