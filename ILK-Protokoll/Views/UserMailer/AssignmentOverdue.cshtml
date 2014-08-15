@@ -4,7 +4,7 @@
 	var assignment = (Assignment)ViewBag.Assignment;
 	var name = string.Join(" ", user.LongName.Split(',').Reverse()).Trim();
 }
-<p>Eine ihrer Aufgaben ist seit dem <b>@Html.DisplayFor(model => assignment.DueDate.ToString("d"))</b> überfällig.</p>
+<p>Eine ihrer Aufgaben ist seit dem <b>@assignment.DueDate.ToString("d")</b> überfällig.</p>
 
 <a href="@Url.Action("Details", "Assignments", new { id = assignment.ID }, "http")">Detailseite</a><br />
 <p>
