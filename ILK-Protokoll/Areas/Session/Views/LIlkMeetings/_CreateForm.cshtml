@@ -1,46 +1,55 @@
 ﻿@model ILK_Protokoll.Areas.Session.Models.Lists.IlkMeeting
-@using (Ajax.BeginForm("_Create", "LIlkMeetings", new { Area = "Session" }, new AjaxOptions
-{
-	HttpMethod = "POST",
-	OnSuccess = "AddRow('ilkMeeting', data);",
-	OnFailure = "DisplayErrorMessage('#ilkMeeting_table', '<br />' + xhr.responseText);"
-}, new { id = "ilkMeeting_form" }))
-{
-	@Html.AntiForgeryToken()
-	<tr id="ilkMeeting_createform">
-		<td>
-			<div class="form-inline">
-				<div class="form-group">
-					<input class="form-control text-box single-line" data-val="true" data-val-date="Das Feld &quot;Beginn&quot; muss eine Datumsangabe sein." data-val-required="Das Feld &quot;Beginn&quot; ist erforderlich." id="ilkMeetingCreation_Start_date" type="date" value="@Model.Start.ToString("yyyy-MM-dd")" style="width:155px;">
+
+<tr id="ilkMeeting_createform">
+	<td colspan="6">
+		@using (Ajax.BeginForm("_Create", "LIlkMeetings", new {Area = "Session"}, new AjaxOptions
+		{
+			HttpMethod = "POST",
+			OnSuccess = "AddRow('ilkMeeting', data);",
+			OnFailure = "DisplayErrorMessage('#ilkMeeting_table', '<br />' + xhr.responseText);"
+		}, new {@class = "tableform", id = "ilkMeeting_form"}))
+		{
+			@Html.AntiForgeryToken()
+			<div class="row">
+				<div class="col-sm-2">
+					<div class="form-inline">
+						<div class="form-group">
+							<input class="form-control text-box single-line" data-val="true" data-val-date="Das Feld &quot;Beginn&quot; muss eine Datumsangabe sein." data-val-required="Das Feld &quot;Beginn&quot; ist erforderlich." id="ilkMeetingCreation_Start_date" name="ilkMeetingCreation_Start_date" type="date" value="@Model.Start.ToString("yyyy-MM-dd")" style="width: 155px;">
+						</div>
+						<div class="form-group">
+							<input class="form-control text-box single-line" data-val="true" data-val-date="Das Feld &quot;Beginn&quot; muss eine Zeitangabe sein." data-val-required="Das Feld &quot;Beginn&quot; ist erforderlich." id="ilkMeetingCreation_Start_time" name="ilkMeetingCreation_Start_time" type="time" value="@Model.Start.ToString("HH:mm")" style="width: 100px;">
+						</div>
+					</div>
+					<input type="hidden" id="ilkMeetingCreation_StartDateTime" name="Start" value="@Model.Start.ToString("s")" />
+
+					<script type="text/javascript">
+						$('#ilkMeetingCreation_Start_date, #ilkMeetingCreation_Start_time').change(function() {
+							var dateparts = $('#ilkMeetingCreation_Start_date')[0].value.split('-');
+							if (dateparts.length == 1) {
+								dateparts = dateparts[0].split('.').reverse();
+							}
+							var timeparts = $('#ilkMeetingCreation_Start_time')[0].value.split(':');
+							$('#ilkMeetingCreation_StartDateTime').val(new Date(dateparts[0], dateparts[1] - 1, dateparts[2], timeparts[0], timeparts[1]).toISOString());
+						});
+					</script>
 				</div>
-				<div class="form-group">
-					<input class="form-control text-box single-line" data-val="true" data-val-date="Das Feld &quot;Beginn&quot; muss eine Zeitangabe sein." data-val-required="Das Feld &quot;Beginn&quot; ist erforderlich." id="ilkMeetingCreation_Start_time" type="time" value="@Model.Start.ToString("HH:mm")" style="width:100px;">
+				<div class="col-sm-2">
+					@Html.EditorFor(model => model.Place, new {htmlAttributes = new {@class = "form-control", id = "ilkm_create_place"}})
+				</div>
+				<div class="col-sm-2">
+					@Html.DropDownListFor(m => m.SessionTypeID, (SelectList)ViewBag.SessionTypeList, "(bitte auswählen)", new {@class = "form-control", id = "ilkm_create_st"})
+				</div>
+				<div class="col-sm-2">
+					@Html.DropDownListFor(m => m.OrganizerID, (SelectList)ViewBag.UserList, new {@class = "form-control", id = "ilkm_create_orga"})
+				</div>
+				<div class="col-sm-3">
+					@Html.EditorFor(model => model.Comments, new {htmlAttributes = new {@class = "form-control", id = "ilkm_create_comm"}})
+				</div>
+				<div class="col-sm-1">
+					<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-check"></span></button>
 				</div>
 			</div>
-			<input type="hidden" id="ilkMeetingCreation_StartDateTime" name="Start" value="@Model.Start.ToString("s")" />
+		}
+	</td>
 
-			<script type="text/javascript">
-				$('#ilkMeetingCreation_Start_date, #ilkMeetingCreation_Start_time').change(function () {
-					var dateparts = $('#ilkMeetingCreation_Start_date')[0].value.split('-');
-					var timeparts = $('#ilkMeetingCreation_Start_time')[0].value.split(':');
-					$('#ilkMeetingCreation_StartDateTime').val(new Date(dateparts[0], dateparts[1] - 1, dateparts[2], timeparts[0], timeparts[1]).toISOString());
-				});
-			</script>
-		</td>
-		<td>
-			@Html.EditorFor(model => model.Place, new { htmlAttributes = new { @class = "form-control", id = "ilkm_create_place" } })
-		</td>
-		<td>
-			@Html.DropDownListFor(m => m.SessionTypeID, (SelectList)ViewBag.SessionTypeList, "(bitte auswählen)", new { @class = "form-control", id = "ilkm_create_st" })
-		</td>
-		<td>
-			@Html.DropDownListFor(m => m.OrganizerID, (SelectList)ViewBag.UserList, new { @class = "form-control", id = "ilkm_create_orga" })
-		</td>
-		<td>
-			@Html.EditorFor(model => model.Comments, new { htmlAttributes = new { @class = "form-control", id = "ilkm_create_comm" } })
-		</td>
-		<td>
-			<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-check"></span></button>
-		</td>
-	</tr>
-}
+</tr>

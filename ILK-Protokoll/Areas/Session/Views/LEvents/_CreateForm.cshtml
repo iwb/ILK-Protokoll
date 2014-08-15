@@ -1,4 +1,5 @@
 ﻿@model ILK_Protokoll.Areas.Session.Models.Lists.Event
+
 <tr id="event_createform">
 	<td colspan="7">
 		@using (Ajax.BeginForm("_Create", "LEvents", new {Area = "Session"}, new AjaxOptions
@@ -6,7 +7,7 @@
 			HttpMethod = "POST",
 			OnSuccess = "AddRow('event', data);",
 			OnFailure = "DisplayErrorMessage('#event_table', '<br />' + xhr.responseText);"
-		}, new { @class = "tableform", id = "event_form" }))
+		}, new {@class = "tableform", id = "event_form"}))
 		{
 			@Html.AntiForgeryToken()
 			<div class="row">

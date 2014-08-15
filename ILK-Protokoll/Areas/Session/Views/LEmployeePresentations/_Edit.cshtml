@@ -2,39 +2,39 @@
 
 <tr id="employeePresentation_@Model.ID">
 	<td colspan="7">
-		@using (Ajax.BeginForm("_Edit", "LEmployeePresentations", new { Area = "Session" }, new AjaxOptions
-	{
-		OnSuccess = "ReplaceRow('employeePresentation', " + Model.ID + ", data);",
-		HttpMethod = "POST",
-	}, new { @class = "tableform", id = "emp_" + Model.ID + "_editform" }))
+		@using (Ajax.BeginForm("_Edit", "LEmployeePresentations", new {Area = "Session"}, new AjaxOptions
+		{
+			OnSuccess = "ReplaceRow('employeePresentation', " + Model.ID + ", data);",
+			HttpMethod = "POST",
+		}, new {@class = "tableform", id = "emp_" + Model.ID + "_editform"}))
 		{
 			@Html.AntiForgeryToken()
 			<div class="row">
 				<div class="col-sm-2">
-					@Html.EditorFor(model => model.Employee, new { htmlAttributes = new { @class = "form-control", id = "emp_" + Model.ID + "emp" } })
+					@Html.EditorFor(model => model.Employee, new {htmlAttributes = new {@class = "form-control", id = "emp_" + Model.ID + "emp"}})
 				</div>
 				<div class="col-sm-2">
-					@Html.DropDownListFor(m => m.IlkID, (SelectList)ViewBag.UserList, new { @class = "form-control", id = "emp_" + Model.ID + "ilk" })
+					@Html.DropDownListFor(m => m.IlkID, (SelectList)ViewBag.UserList, new {@class = "form-control", id = "emp_" + Model.ID + "ilk"})
 				</div>
 				<div class="col-sm-2">
-					@Html.EnumDropDownListFor(model => model.Prof, new { @class = "form-control", id = "emp_" + Model.ID + "prof" })
+					@Html.EnumDropDownListFor(model => model.Prof, new {@class = "form-control", id = "emp_" + Model.ID + "prof"})
 				</div>
 				<div class="col-sm-2">
-					@Html.EditorFor(model => model.LastPresentation, new { htmlAttributes = new { @class = "form-control", id = "emp_" + Model.ID + "last" } })
+					@Html.EditorFor(model => model.LastPresentation, new {htmlAttributes = new {@class = "form-control", id = "emp_" + Model.ID + "last"}})
 				</div>
 				<div class="col-sm-2">
 
 				</div>
 				<div class="col-sm-1">
-					@Html.EditorFor(model => model.Selected, new { htmlAttributes = new { @class = "form-control", id = "emp_" + Model.ID + "sel" } })
+					@Html.EditorFor(model => model.Selected, new {htmlAttributes = new {@class = "form-control", id = "emp_" + Model.ID + "sel"}})
 				</div>
 				<div class="col-sm-1 actions">
 					@Html.HiddenFor(model => model.ID)
 					<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-check"></span></button>
 					<a data-ajax="true"
-						data-ajax-method="POST"
-						data-ajax-success="ReplaceRow('employeePresentation', @Model.ID, data);"
-						href="@Url.Action("_FetchRow", "LEmployeePresentations", new {Area = "Session", id = Model.ID})">
+					   data-ajax-method="POST"
+					   data-ajax-success="ReplaceRow('employeePresentation', @Model.ID, data);"
+					   href="@Url.Action("_FetchRow", "LEmployeePresentations", new {Area = "Session", id = Model.ID})">
 						<span class="glyphicon glyphicon-remove" title="Bearbeitung abbrechen"></span>
 					</a>
 				</div>

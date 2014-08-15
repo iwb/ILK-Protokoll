@@ -1,33 +1,38 @@
 ﻿@model ILK_Protokoll.Areas.Session.Models.Lists.EmployeePresentation
-@using (Ajax.BeginForm("_Create", "LEmployeePresentations", new { Area = "Session" }, new AjaxOptions
-{
-	HttpMethod = "POST",
-	OnSuccess = "AddRow('employeePresentation', data);",
-	OnFailure = "DisplayErrorMessage('#employeePresentation_table', '<br />' + xhr.responseText);"
-}, new { id = "employeePresentation_form" }))
-{
-	@Html.AntiForgeryToken()
-	<tr id="employeePresentation_createform">
-		<td>
-			@Html.EditorFor(model => model.Employee, new { htmlAttributes = new { @class = "form-control", id = "emp_create_emp" } })
-		</td>
-		<td>
-			@Html.DropDownListFor(m => m.IlkID, (SelectList)ViewBag.UserList, new { @class = "form-control", id = "emp_create_ilk" })
-		</td>
-		<td>
-			@Html.EnumDropDownListFor(model => model.Prof, new { @class = "form-control", id = "emp_create_prof" })
-		</td>
-		<td>
-			@Html.EditorFor(model => model.LastPresentation, new { htmlAttributes = new { @class = "form-control", id = "emp_create_last" } })
-		</td>
-		<td>
-		@* Dateianhänge *@
-		</td>
-		<td>
-			@Html.EditorFor(model => model.Selected, new { htmlAttributes = new { @class = "form-control", id = "emp_create_sel" } })
-		</td>
-		<td>
-			<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-check"></span></button>
-		</td>
-	</tr>
-}
+
+<tr id="employeePresentation_createform">
+	<td colspan="7">
+		@using (Ajax.BeginForm("_Create", "LEmployeePresentations", new {Area = "Session"}, new AjaxOptions
+		{
+			HttpMethod = "POST",
+			OnSuccess = "AddRow('employeePresentation', data);",
+			OnFailure = "DisplayErrorMessage('#employeePresentation_table', '<br />' + xhr.responseText);"
+		}, new {@class = "tableform", id = "employeePresentation_form"}))
+		{
+			@Html.AntiForgeryToken()
+			<div class="row">
+				<div class="col-sm-2">
+					@Html.EditorFor(model => model.Employee, new {htmlAttributes = new {@class = "form-control", id = "emp_create_emp"}})
+				</div>
+				<div class="col-sm-2">
+					@Html.DropDownListFor(m => m.IlkID, (SelectList)ViewBag.UserList, new {@class = "form-control", id = "emp_create_ilk"})
+				</div>
+				<div class="col-sm-2">
+					@Html.EnumDropDownListFor(model => model.Prof, new {@class = "form-control", id = "emp_create_prof"})
+				</div>
+				<div class="col-sm-2">
+					@Html.EditorFor(model => model.LastPresentation, new {htmlAttributes = new {@class = "form-control", id = "emp_create_last"}})
+				</div>
+				<div class="col-sm-2">
+					@* Dateianhänge *@
+				</div>
+				<div class="col-sm-1">
+					@Html.EditorFor(model => model.Selected, new {htmlAttributes = new {@class = "form-control", id = "emp_create_sel"}})
+				</div>
+				<div class="col-sm-1">
+					<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-check"></span></button>
+				</div>
+			</div>
+		}
+	</td>
+</tr>

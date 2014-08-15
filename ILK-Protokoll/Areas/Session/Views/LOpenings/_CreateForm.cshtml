@@ -1,30 +1,35 @@
 ﻿@model ILK_Protokoll.Areas.Session.Models.Lists.Opening
-@using (Ajax.BeginForm("_Create", "LOpenings", new {Area = "Session"}, new AjaxOptions
-{
-	HttpMethod = "POST",
-	OnSuccess = "AddRow('opening', data);",
-	OnFailure = "DisplayErrorMessage('#opening_table', '<br />' + xhr.responseText);"
-}, new {id = "opening_form"}))
-{
-	@Html.AntiForgeryToken()
-	<tr id="opening_createform">
-		<td>
-			@Html.EditorFor(model => model.Project, new { htmlAttributes = new { @class = "form-control", id = "open_create_proj" } })
-		</td>
-		<td>
-			@Html.EditorFor(model => model.Start, new { htmlAttributes = new { @class = "form-control", id = "open_create_start" } })
-		</td>
-		<td>
-			@Html.EditorFor(model => model.TG, new { htmlAttributes = new { @class = "form-control", id = "open_create_tg" } })
-		</td>
-		<td>
-			@Html.EnumDropDownListFor(model => model.Prof, new { @class = "form-control", id = "open_create_prof" })
-		</td>
-		<td>
-			@Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", id = "open_create_desc" } })
-		</td>
-		<td>
-			<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-check"></span></button>
-		</td>
-	</tr>
-}
+
+<tr id="opening_createform">
+	<td colspan="6">
+		@using (Ajax.BeginForm("_Create", "LOpenings", new {Area = "Session"}, new AjaxOptions
+		{
+			HttpMethod = "POST",
+			OnSuccess = "AddRow('opening', data);",
+			OnFailure = "DisplayErrorMessage('#opening_table', '<br />' + xhr.responseText);"
+		}, new {@class = "tableform", id = "opening_form"}))
+		{
+			@Html.AntiForgeryToken()
+			<div class="row">
+				<div class="col-sm-2">
+					@Html.EditorFor(model => model.Project, new {htmlAttributes = new {@class = "form-control", id = "open_create_proj"}})
+				</div>
+				<div class="col-sm-2">
+					@Html.EditorFor(model => model.Start, new {htmlAttributes = new {@class = "form-control", id = "open_create_start"}})
+				</div>
+				<div class="col-sm-1">
+					@Html.EditorFor(model => model.TG, new {htmlAttributes = new {@class = "form-control", id = "open_create_tg"}})
+				</div>
+				<div class="col-sm-2">
+					@Html.EnumDropDownListFor(model => model.Prof, new {@class = "form-control", id = "open_create_prof"})
+				</div>
+				<div class="col-sm-4">
+					@Html.EditorFor(model => model.Description, new {htmlAttributes = new {@class = "form-control", id = "open_create_desc"}})
+				</div>
+				<div class="col-sm-1">
+					<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-check"></span></button>
+				</div>
+			</div>
+		}
+	</td>
+</tr>

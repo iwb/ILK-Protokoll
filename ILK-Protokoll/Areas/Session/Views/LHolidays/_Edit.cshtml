@@ -2,38 +2,37 @@
 
 <tr id="Holiday_@Model.ID">
 	<td colspan="4">
-		@using (Ajax.BeginForm("_Edit", "LHolidays", new { Area = "Session" }, new AjaxOptions
-	{
-		OnSuccess = "ReplaceRow('Holiday', " + Model.ID + ", data);",
-		HttpMethod = "POST",
-	}, new { @class = "tableform", id = "holi_" + Model.ID + "_editform" }))
+		@using (Ajax.BeginForm("_Edit", "LHolidays", new {Area = "Session"}, new AjaxOptions
+		{
+			OnSuccess = "ReplaceRow('Holiday', " + Model.ID + ", data);",
+			HttpMethod = "POST",
+		}, new {@class = "tableform", id = "holi_" + Model.ID + "_editform"}))
 		{
 			@Html.AntiForgeryToken()
 			<div class="row">
 				<div class="col-sm-3">
-					@Html.DropDownListFor(m => m.PersonID, (SelectList)ViewBag.UserList, new { @class = "form-control", id = "holi_" + Model.ID + "pers" })
+					@Html.DropDownListFor(m => m.PersonID, (SelectList)ViewBag.UserList, new {@class = "form-control", id = "holi_" + Model.ID + "pers"})
 				</div>
 				<div class="col-sm-3">
-					@Html.EditorFor(model => model.Occasion, new { htmlAttributes = new { @class = "form-control", id = "holi_" + Model.ID + "occ" } })
+					@Html.EditorFor(model => model.Occasion, new {htmlAttributes = new {@class = "form-control", id = "holi_" + Model.ID + "occ"}})
 				</div>
 
 				<div class="col-sm-5">
 					<div class="col-sm-6">
-						@Html.EditorFor(model => model.Start, new { htmlAttributes = new { @class = "form-control", id = "holi_" + Model.ID + "start" } })
+						@Html.EditorFor(model => model.Start, new {htmlAttributes = new {@class = "form-control", id = "holi_" + Model.ID + "start"}})
 					</div>
 					<div class="col-sm-6">
-						@Html.EditorFor(model => model.End, new { htmlAttributes = new { @class = "form-control", id = "holi_" + Model.ID + "end" } })
+						@Html.EditorFor(model => model.End, new {htmlAttributes = new {@class = "form-control", id = "holi_" + Model.ID + "end"}})
 					</div>
 				</div>
-
 
 				<div class="col-sm-1 actions">
 					@Html.HiddenFor(model => model.ID)
 					<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-check"></span></button>
 					<a data-ajax="true"
-						data-ajax-method="POST"
-						data-ajax-success="ReplaceRow('Holiday', @Model.ID, data);"
-						href="@Url.Action("_FetchRow", "LHolidays", new {Area = "Session", id = Model.ID})">
+					   data-ajax-method="POST"
+					   data-ajax-success="ReplaceRow('Holiday', @Model.ID, data);"
+					   href="@Url.Action("_FetchRow", "LHolidays", new {Area = "Session", id = Model.ID})">
 						<span class="glyphicon glyphicon-remove" title="Bearbeitung abbrechen"></span>
 					</a>
 				</div>

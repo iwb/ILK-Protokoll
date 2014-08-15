@@ -1,31 +1,36 @@
 ﻿@model ILK_Protokoll.Areas.Session.Models.Lists.Holiday
-@using (Ajax.BeginForm("_Create", "LHolidays", new { Area = "Session" }, new AjaxOptions
-{
-	HttpMethod = "POST",
-	OnSuccess = "AddRow('Holiday', data);",
-	OnFailure = "DisplayErrorMessage('#Holiday_table', '<br />' + xhr.responseText);"
-}, new { id = "Holiday_form" }))
-{
-	@Html.AntiForgeryToken()
-	<tr id="Holiday_createform">
-		<td>
-			@Html.DropDownListFor(m => m.PersonID, (SelectList)ViewBag.UserList, new { @class = "form-control", id = "holi_create_pers" })
-		</td>
-		<td>
-			@Html.EditorFor(model => model.Occasion, new { htmlAttributes = new { @class = "form-control", id = "holi_create_occ" } })
-		</td>
-		<td>
+
+<tr id="Holiday_createform">
+	<td colspan="4">
+		@using (Ajax.BeginForm("_Create", "LHolidays", new {Area = "Session"}, new AjaxOptions
+		{
+			HttpMethod = "POST",
+			OnSuccess = "AddRow('Holiday', data);",
+			OnFailure = "DisplayErrorMessage('#Holiday_table', '<br />' + xhr.responseText);"
+		}, new {@class = "tableform", id = "Holiday_form"}))
+		{
+			@Html.AntiForgeryToken()
 			<div class="row">
-				<div class="col-sm-6">
-					@Html.EditorFor(model => model.Start, new { htmlAttributes = new { @class = "form-control", id = "holi_create_start" } })
+				<div class="col-sm-3">
+					@Html.DropDownListFor(m => m.PersonID, (SelectList)ViewBag.UserList, new {@class = "form-control", id = "holi_create_pers"})
 				</div>
-				<div class="col-sm-6">
-					@Html.EditorFor(model => model.End, new { htmlAttributes = new { @class = "form-control", id = "holi_create_end" } })
+				<div class="col-sm-3">
+					@Html.EditorFor(model => model.Occasion, new {htmlAttributes = new {@class = "form-control", id = "holi_create_occ"}})
+				</div>
+				<div class="col-sm-5">
+					<div class="row">
+						<div class="col-sm-6">
+							@Html.EditorFor(model => model.Start, new {htmlAttributes = new {@class = "form-control", id = "holi_create_start"}})
+						</div>
+						<div class="col-sm-6">
+							@Html.EditorFor(model => model.End, new {htmlAttributes = new {@class = "form-control", id = "holi_create_end"}})
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-1">
+					<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-check"></span></button>
 				</div>
 			</div>
-		</td>
-		<td>
-			<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-check"></span></button>
-		</td>
-	</tr>
-}
+		}
+	</td>
+</tr>
