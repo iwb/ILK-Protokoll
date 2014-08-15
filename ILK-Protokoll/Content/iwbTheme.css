@@ -6807,5 +6807,8 @@ fieldset[disabled] .btn-hover-danger.active {
   input[type=date] {
     padding: 0 12px;
   }
+  input[type=time] {
+    padding: 0 12px;
+  }
 }
 /*# sourceMappingURL=iwbTheme.css.map */
