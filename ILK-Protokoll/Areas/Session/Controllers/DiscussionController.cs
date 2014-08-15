@@ -31,7 +31,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 				.Include(t => t.Comments)
 				.Include(t => t.Lock)
 				.Where(t => t.Decision == null && !t.IsReadOnly)
-				.Where(t => t.Lock.Session.ID == session.ID || t.SessionTypeID == session.SessionType.ID)
+				.Where(t => t.Lock.Session.ID == session.ID || (t.SessionTypeID == session.SessionType.ID && t.Created < session.Start))
 				.OrderByDescending(t => t.Priority)
 				.ThenBy(t => t.Created).ToList();
 

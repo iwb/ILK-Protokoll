@@ -24,28 +24,28 @@
 }
 
 
-@Ajax.ActionLink("Wiedervorlage", "_ChangeState", new { id = Model.TopicID, state = TopicAction.None }, new AjaxOptions()
+@Ajax.ActionLink("Wiedervorlage", "_ChangeState", "Discussion", new { id = Model.TopicID, state = TopicAction.None }, new AjaxOptions()
 {
 	HttpMethod = "POST",
 	InsertionMode = InsertionMode.Replace,
 	UpdateTargetId = "state_buttons_" + Model.TopicID
 }, new { @class = "btn btn-hover-primary" + classes[0] })
 
-@Ajax.ActionLink("Beschluss", "_ChangeState", new { id = Model.TopicID, state = TopicAction.Decide }, new AjaxOptions()
+@Ajax.ActionLink("Beschluss", "_ChangeState", "Discussion", new { id = Model.TopicID, state = TopicAction.Decide }, new AjaxOptions()
 {
 	HttpMethod = "POST",
 	InsertionMode = InsertionMode.Replace,
 	UpdateTargetId = "state_buttons_" + Model.TopicID
 }, new { @class = "btn btn-hover-success" + classes[1] })
 
-@Ajax.ActionLink("Kein Beschluss", "_ChangeState", new { id = Model.TopicID, state = TopicAction.Close }, new AjaxOptions()
+@Ajax.ActionLink("Kein Beschluss", "_ChangeState", "Discussion", new { id = Model.TopicID, state = TopicAction.Close }, new AjaxOptions()
 {
 	HttpMethod = "POST",
 	InsertionMode = InsertionMode.Replace,
 	UpdateTargetId = "state_buttons_" + Model.TopicID
 }, new { @class = "btn btn-hover-warning" + classes[2] })
 
-@Ajax.ActionLink("Löschen", "_ChangeState", new { id = Model.TopicID, state = TopicAction.Delete }, new AjaxOptions()
+@Ajax.ActionLink("Löschen", "_ChangeState", "Discussion", new { id = Model.TopicID, state = TopicAction.Delete }, new AjaxOptions()
 {
 	HttpMethod = "POST",
 	InsertionMode = InsertionMode.Replace,
