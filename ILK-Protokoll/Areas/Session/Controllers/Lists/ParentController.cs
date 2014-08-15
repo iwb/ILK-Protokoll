@@ -13,10 +13,9 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 	public class ParentController<TModel> : SessionBaseController
 		where TModel : BaseItem, new()
 	{
+		protected readonly TimeSpan EditDuration = TimeSpan.FromMinutes(5);
 		protected DbSet<TModel> _dbSet;
 		private IQueryable<TModel> _entities;
-
-		protected readonly TimeSpan EditDuration = TimeSpan.FromMinutes(5);
 
 		protected IQueryable<TModel> Entities
 		{
@@ -26,16 +25,24 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 
 		public virtual PartialViewResult _List(bool reporting = false)
 		{
-			var cutoff = DateTime.Now - EditDuration;
-			var thisSession = GetSession().ID;
-
-			// Locks entfernen, die zu alt sind
-			_dbSet.Where(e => e.LockTime < cutoff).Update(e => new TModel() { LockSessionID = null });
-			// Und die eigenen Locks entfernen
-			_dbSet.Where(e => e.LockSessionID == thisSession).Update(e => new TModel() { LockSessionID = null });
+			CleanupLocks();
 
 			ViewBag.Reporting = reporting;
 			return PartialView(Entities.ToList());
+		}
+
+		protected void CleanupLocks()
+		{
+			var thisSession = GetSession();
+
+			if (thisSession == null)
+				return;
+
+			var cutoff = DateTime.Now - EditDuration;
+			// Locks entfernen, die zu alt sind
+			_dbSet.Where(e => e.LockTime < cutoff).Update(e => new TModel() {LockSessionID = null});
+			// Und die eigenen Locks entfernen
+			_dbSet.Where(e => e.LockSessionID == thisSession.ID).Update(e => new TModel() {LockSessionID = null});
 		}
 
 		public virtual PartialViewResult _CreateForm()
@@ -51,7 +58,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 				row.LockSessionID = null;
 				db.SaveChanges();
 			}
-				
+
 			return PartialView("_Row", row);
 		}
 
@@ -66,7 +73,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 			}
 
 			var row = _dbSet.Create();
-			TryUpdateModel(row, "", null, new[] { "Created" });
+			TryUpdateModel(row, "", null, new[] {"Created"});
 			_dbSet.Add(row);
 
 			try

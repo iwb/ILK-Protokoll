@@ -1,17 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 
 namespace ILK_Protokoll.Controllers
 {
-    public class ViewListsController : Controller
-    {
-        // GET: Lists
-        public ActionResult Index()
-        {
-            return View();
-        }
-    }
+	public class ViewListsController : Controller
+	{
+		protected override void OnActionExecuting(ActionExecutingContext filterContext)
+		{
+			base.OnActionExecuting(filterContext);
+			ViewBag.ViewListsStyle = "active";
+		}
+
+		// GET: Lists
+		public ActionResult Index()
+		{
+			return View();
+		}
+	}
 }
