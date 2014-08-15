@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace ILK_Protokoll.Controllers
 {
-    public class ListsController : Controller
+    public class ViewListsController : Controller
     {
         // GET: Lists
         public ActionResult Index()

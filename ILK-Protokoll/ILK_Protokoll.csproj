@@ -129,7 +129,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Session\Views\SessionBase\" />
-    <Folder Include="Views\Lists\" />
     <Folder Include="Views\ScheduledTasks\" />
   </ItemGroup>
   <ItemGroup>
@@ -174,7 +173,7 @@
     <Compile Include="Controllers\CommentsController.cs" />
     <Compile Include="Controllers\DecisionsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\ListsController.cs" />
+    <Compile Include="Controllers\ViewListsController.cs" />
     <Compile Include="Controllers\ScheduledTasksController.cs" />
     <Compile Include="Controllers\SessionReportsController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
@@ -588,6 +587,7 @@
     <Content Include="Views\UserMailer\NewAssignment.cshtml" />
     <Content Include="Views\UserMailer\AssignmentReminder.cshtml" />
     <Content Include="Views\UserMailer\AssignmentOverdue.cshtml" />
+    <Content Include="Views\ViewLists\Index.cshtml" />
     <None Include="Web.Integration.config" />
     <None Include="Web.Testing.config" />
   </ItemGroup>
