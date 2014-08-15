@@ -52,6 +52,12 @@ namespace ILK_Protokoll.Areas.Administration.Controllers
 		[ValidateAntiForgeryToken]
 		public ActionResult Create([Bind(Include = "ID,Name")] SessionType sessionType, IEnumerable<int> Attendees)
 		{
+			if (Attendees == null)
+			{
+				ModelState.AddModelError("Attendees", "Es müssen Stammteilnehmer ausgewählt werden!");
+				Attendees = new List<int>();
+			}
+
 			if (ModelState.IsValid)
 			{
 				foreach (int userid in Attendees)

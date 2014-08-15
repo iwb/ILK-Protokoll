@@ -266,6 +266,10 @@
     <Compile Include="Migrations\201407281458152_holidayForUsers2.Designer.cs">
       <DependentUpon>201407281458152_holidayForUsers2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201408150907292_ST_active_added.cs" />
+    <Compile Include="Migrations\201408150907292_ST_active_added.Designer.cs">
+      <DependentUpon>201408150907292_ST_active_added.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Assignment.cs" />
     <Compile Include="Models\Attachment.cs" />
@@ -653,6 +657,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201407281458152_holidayForUsers2.resx">
       <DependentUpon>201407281458152_holidayForUsers2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201408150907292_ST_active_added.resx">
+      <DependentUpon>201408150907292_ST_active_added.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
