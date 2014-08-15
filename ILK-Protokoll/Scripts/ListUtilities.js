@@ -13,6 +13,7 @@ function AddRow(list, data) {
 	$('#' + list + '_tbody').append(data);
 	$('#' + list + '_tbody + tfoot form')[0].reset();
 	RefreshTables(list);
+	enableDatePicker();
 }
 
 function RefreshTables(list) {

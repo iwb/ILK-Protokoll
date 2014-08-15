@@ -36,25 +36,39 @@
 	function enableDatePicker() {
 		if (!Modernizr.inputtypes.date) {
 			$.datepicker.setDefaults($.datepicker.regional["de"]);
-			$('input[type=date]').datepicker({
-				dateFormat: "yy-mm-dd",
-				showOtherMonths: true,
-				selectOtherMonths: true,
-				numberOfMonths: 2,
-				showWeek: true,
-				firstDay: 1,
-				monthNames: [
-					'Januar', 'Februar', 'M&auml;rz', 'April', 'Mai', 'Juni',
-					'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'
-				],
-				monthNamesShort: [
-					'Jan', 'Feb', 'M&auml;r', 'Apr', 'Mai', 'Jun',
-					'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'
-				],
-				dayNames: ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'],
-				dayNamesShort: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
-				dayNamesMin: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
-				weekHeader: 'KW',
+
+			var datefields = $('input[type=date]:not(.hasDatepicker)');
+
+			datefields.each(function () {
+				var realname = this.name;
+				this.name = this.name + "_disp";
+				$(this).after('<input type="hidden" name="' + realname + '" value="' + this.value + '" />');
+				var dateObj = new Date(this.value);
+				var formattedDate = dateObj.getDate() + "." + (dateObj.getMonth()+1) + "." + dateObj.getFullYear();
+				this.value = formattedDate;
+
+				$(this).datepicker({
+					dateFormat: "dd.mm.yy",
+					altField: "input[name=" + realname + "]",
+					altFormat: "yy-mm-dd",
+					showOtherMonths: true,
+					selectOtherMonths: true,
+					numberOfMonths: 2,
+					showWeek: true,
+					firstDay: 1,
+					monthNames: [
+						'Januar', 'Februar', 'M&auml;rz', 'April', 'Mai', 'Juni',
+						'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'
+					],
+					monthNamesShort: [
+						'Jan', 'Feb', 'M&auml;r', 'Apr', 'Mai', 'Jun',
+						'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'
+					],
+					dayNames: ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'],
+					dayNamesShort: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
+					dayNamesMin: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
+					weekHeader: 'KW',
+				});
 			});
 		}
 	}
