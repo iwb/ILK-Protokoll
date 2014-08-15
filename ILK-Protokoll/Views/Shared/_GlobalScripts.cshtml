@@ -33,24 +33,25 @@
 
 	// Datepicker für Internet Explorer und Firefox
 	// Diese unterstützen leider noch nicht <input type="date" />
-	function enableDatePicker() {
+	function enableDatePicker(selector) {
 		if (!Modernizr.inputtypes.date) {
 			$.datepicker.setDefaults($.datepicker.regional["de"]);
 
-			var datefields = $('input[type=date]:not(.hasDatepicker)');
+			if (!selector)
+				selector = 'input[type=date]:not(.hasDatepicker)';
+			var datefields = $(selector);
 
-			datefields.each(function () {
+			datefields.each(function() {
 				var realname = this.name;
 				this.name = this.name + "_disp";
 				$(this).after('<input type="hidden" name="' + realname + '" value="' + this.value + '" />');
-				var dateObj = new Date(this.value);
-				var formattedDate = dateObj.getDate() + "." + (dateObj.getMonth()+1) + "." + dateObj.getFullYear();
-				this.value = formattedDate;
+				reformatDateField(this);
 
 				$(this).datepicker({
 					dateFormat: "dd.mm.yy",
 					altField: "input[name=" + realname + "]",
 					altFormat: "yy-mm-dd",
+					constrainInput: false,
 					showOtherMonths: true,
 					selectOtherMonths: true,
 					numberOfMonths: 2,
@@ -68,8 +69,29 @@
 					dayNamesShort: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
 					dayNamesMin: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
 					weekHeader: 'KW',
+
+					onClose: function (dateText, inst) {
+						if (dateText == '') {
+							$(inst.settings["altField"]).val(dateText);
+						}
+					}
 				});
 			});
+		}
+	}
+
+	function reformatDateField(field) {
+		var initialValue = field.value;
+		var dateObj = new Date(initialValue);
+
+		var formattedDate = "tt.mm.jjjj";
+		if (!isNaN(dateObj.getDate())) {
+			formattedDate = dateObj.getDate() + "." + (dateObj.getMonth() + 1) + "." + dateObj.getFullYear();
+		}
+
+		field.value = formattedDate;
+		if (field.name.indexOf(field.nextElementSibling.name) == 0) {
+			field.nextElementSibling.value = initialValue;
 		}
 	}
 
