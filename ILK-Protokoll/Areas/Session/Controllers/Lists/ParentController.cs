@@ -53,7 +53,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 		public virtual PartialViewResult _FetchRow(int id)
 		{
 			var row = Entities.Single(m => m.ID == id);
-			if (row.LockSessionID == GetSession().ID)
+			if (GetSession() != null && row.LockSessionID == GetSession().ID) // ggf. lock entfernen
 			{
 				row.LockSessionID = null;
 				db.SaveChanges();
@@ -96,19 +96,21 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 			else if (ev.LockSessionID.HasValue && ev.LockSessionID != GetSession().ID)
 				return HTTPStatus(HttpStatusCode.Conflict, "Der Listeneintrag ist gesperrt.");
 
-			ev.LockSessionID = GetSession().ID;
-			ev.LockTime = DateTime.Now;
-
-			try
+			if (GetSession() != null)
 			{
-				db.SaveChanges();
-			}
-			catch (DbEntityValidationException e)
-			{
-				var message = ErrorMessageFromException(e);
-				return HTTPStatus(500, message);
-			}
+				ev.LockSessionID = GetSession().ID; // Lock erzeugen
+				ev.LockTime = DateTime.Now;
 
+				try
+				{
+					db.SaveChanges();
+				}
+				catch (DbEntityValidationException e)
+				{
+					var message = ErrorMessageFromException(e);
+					return HTTPStatus(500, message);
+				}
+			}
 			return PartialView("_Edit", ev);
 		}
 
@@ -122,11 +124,11 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 			// Get the object from the database to enable lazy loading.
 			var row = Entities.Single(m => m.ID == input.ID);
 
-			if (row.LockSessionID == GetSession().ID)
-			{
-				TryUpdateModel(row, "", null, new[] {"Created"});
-				row.LockSessionID = null;
-			}
+			if (row.LockSessionID != null && (GetSession() == null || row.LockSessionID != GetSession().ID))
+				return HTTPStatus(409, "Der Datensatz ist momentan gesperrt.");
+			
+			TryUpdateModel(row, "", null, new[] {"Created"});
+			row.LockSessionID = null;
 
 			try
 			{
