@@ -27,7 +27,7 @@ namespace ILK_Protokoll.Models
 
 	public enum DecisionType
 	{
-		[Display( Name = "Beendet")]
+		[Display( Name = "Archiviert")]
 		Closed,
 		[Display( Name = "Beschlossen")]
 		Resolution
