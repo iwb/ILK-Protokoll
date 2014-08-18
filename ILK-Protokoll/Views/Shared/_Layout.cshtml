@@ -43,8 +43,8 @@
 			@{ Html.RenderPartial("_Footer"); }
 		</div>
 
-		@{ Html.RenderPartial("_GlobalScripts"); }
 		@RenderSection("Scripts", false)
+		@{ Html.RenderPartial("_GlobalScripts"); }
 		@Html.RenderDelayed()
 	</body>
 </html>

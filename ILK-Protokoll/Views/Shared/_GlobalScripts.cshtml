@@ -39,17 +39,23 @@
 
 			if (!selector)
 				selector = 'input[type=date]:not(.hasDatepicker)';
+
 			var datefields = $(selector);
 
 			datefields.each(function() {
-				var realname = this.name;
-				this.name = this.name + "_disp";
-				$(this).after('<input type="hidden" name="' + realname + '" value="' + this.value + '" />');
-				reformatDateField(this);
 
+				var clone = $(this).clone();
+				clone.insertAfter(this);
+				clone.hide();
+
+				/* Rename the original field, used to contain the display value */
+				$(this).attr('id', $(this).attr('id') + '_display');
+				$(this).attr('name', $(this).attr('name') + '_display');
+
+				
 				$(this).datepicker({
 					dateFormat: "dd.mm.yy",
-					altField: "input[name=" + realname + "]",
+					altField: "#" + clone.attr("id"),
 					altFormat: "yy-mm-dd",
 					constrainInput: false,
 					showOtherMonths: true,
@@ -76,26 +82,27 @@
 						}
 					}
 				});
+
+				/* Finally, parse the value and change it to the display format */
+				if ($(this).attr('value')) {
+					var date = $.datepicker.parseDate("yy-mm-dd", $(this).attr('value'));
+					$(this).attr('value', $.datepicker.formatDate("dd.mm.yy", date));
+				}
 			});
 		}
 	}
 
-	function reformatDateField(field) {
-		var initialValue = field.value;
-		var dateObj = new Date(initialValue);
-
-		var formattedDate = "tt.mm.jjjj";
-		if (!isNaN(dateObj.getDate())) {
-			formattedDate = dateObj.getDate() + "." + (dateObj.getMonth() + 1) + "." + dateObj.getFullYear();
-		}
-
-		field.value = formattedDate;
-		if (field.name.indexOf(field.nextElementSibling.name) == 0) {
-			field.nextElementSibling.value = initialValue;
-		}
-	}
-
 	enableDatePicker();
+
+	jQuery.validator.methods.date = function(value, element) {
+		 if (value) {
+			  try {
+				  $.datepicker.parseDate('dd.mm.yy', value);
+			  } catch (ex) {
+				   return false;
+			  }
+		 } return true;
+	};
 
 	function DisplayErrorMessage(id, text) {
 		if (id) {
