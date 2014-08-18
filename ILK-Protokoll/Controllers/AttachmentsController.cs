@@ -22,7 +22,6 @@ namespace ILK_Protokoll.Controllers
 
 		private static readonly HashSet<string> OfficeExtensions = new HashSet<string>
 		{
-			"pdf",
 			"doc",
 			"docm",
 			"docx",
