@@ -1,0 +1,43 @@
+﻿@using ILK_Protokoll.util
+@model IEnumerable<ILK_Protokoll.Models.Decision>
+<table class="table table-striped table-hover table-sortable">
+	<thead>
+		<tr>
+			<th>
+				@Html.DisplayNameFor(model => model.Type)
+			</th>
+			<th>
+				Beschlussdatum
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.OriginTopic)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Text)
+			</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model)
+		{
+			<tr>
+				<td>
+					@item.Type.DisplayName()
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Report.End)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.OriginTopic.Title)
+				</td>
+				<td>
+					@item.Text.Shorten(200)
+				</td>
+				<td>
+					@Html.ActionLink("Diskussion", "Details", "Topics", new { id = item.OriginTopic.ID }, null)
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>
