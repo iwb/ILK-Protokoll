@@ -7,7 +7,6 @@ using ILK_Protokoll.DataLayer;
 using ILK_Protokoll.Mailers;
 using ILK_Protokoll.Models;
 using ILK_Protokoll.ViewModels;
-using Mvc.Mailer;
 
 namespace ILK_Protokoll.Controllers
 {
@@ -75,7 +74,7 @@ namespace ILK_Protokoll.Controllers
 		}
 
 		/// <summary>
-		/// Verschickt Erinnerungen für Aufgaben, die bald fällig werden, oder überfällig sind.
+		///    Verschickt Erinnerungen für Aufgaben, die bald fällig werden, oder überfällig sind.
 		/// </summary>
 		/// <param name="db">Ein Datenbankkontext</param>
 		/// <returns>Anzahl der E-maisl, die verschickt wurden.</returns>
@@ -97,10 +96,10 @@ namespace ILK_Protokoll.Controllers
 			var overdue = db.Assignments.Where(a => !a.IsDone && a.DueDate < cutoff).ToList();
 			foreach (var a in overdue)
 				mailer.SendAssignmentOverdue(a);
-			
+
 			return due.Count + overdue.Count;
 		}
-		
+
 		// GET: Assignments/Create
 		[HttpGet]
 		public ActionResult Create(int topicID)
@@ -140,7 +139,7 @@ namespace ILK_Protokoll.Controllers
 					mailer.SendNewAssignment(assignment);
 				}
 
-				return RedirectToAction("Details", "Topics", new { id = input.TopicID });
+				return RedirectToAction("Details", "Topics", new {id = input.TopicID});
 			}
 		}
 
