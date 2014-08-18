@@ -5,7 +5,7 @@ namespace ILK_Protokoll.Mailers
 {
 	public class UserMailer : MailerBase
 	{
-		private readonly string FQDN = "http://" + System.Net.Dns.GetHostName() + "iwb.mw.tu-muenchen.de"; 
+		private readonly string FQDN = "http://" + System.Net.Dns.GetHostName() + ".iwb.mw.tu-muenchen.de"; 
 
 		public UserMailer()
 		{
