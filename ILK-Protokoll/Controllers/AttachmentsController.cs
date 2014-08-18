@@ -110,6 +110,9 @@ namespace ILK_Protokoll.Controllers
 			if (entity == AttachmentContainer.Topic && IsTopicLocked(id))
 				return HTTPStatus(HttpStatusCode.Forbidden, "Da das Thema gesperrt ist, können Sie keine Dateien hochladen.");
 
+			if (entity == AttachmentContainer.Topic && db.Topics.Find(id).IsReadOnly)
+				return HTTPStatus(HttpStatusCode.Forbidden, "Da das Thema schreibgeschützt ist, können Sie keine Dateien bearbeiten.");
+
 			var statusMessage = new StringBuilder();
 			int successful = 0;
 
@@ -196,6 +199,9 @@ namespace ILK_Protokoll.Controllers
 			if (attachment.TopicID.HasValue && IsTopicLocked(attachment.TopicID.Value))
 				return HTTPStatus(HttpStatusCode.Forbidden, "Da das Thema gesperrt ist, können Sie keine Dateien bearbeiten.");
 
+			if (attachment.TopicID.HasValue && attachment.Topic.IsReadOnly)
+				return HTTPStatus(HttpStatusCode.Forbidden, "Da das Thema schreibgeschützt ist, können Sie keine Dateien bearbeiten.");
+
 			attachment.Deleted = DateTime.Now; // In den Papierkorb
 			try
 			{
@@ -219,6 +225,9 @@ namespace ILK_Protokoll.Controllers
 
 			if (attachment.TopicID.HasValue && IsTopicLocked(attachment.TopicID.Value))
 				return HTTPStatus(HttpStatusCode.Forbidden, "Da das Thema gesperrt ist, können Sie keine Dateien bearbeiten.");
+
+			if (attachment.TopicID.HasValue && attachment.Topic.IsReadOnly)
+				return HTTPStatus(HttpStatusCode.Forbidden, "Da das Thema schreibgeschützt ist, können Sie keine Dateien bearbeiten.");
 
 			try
 			{
