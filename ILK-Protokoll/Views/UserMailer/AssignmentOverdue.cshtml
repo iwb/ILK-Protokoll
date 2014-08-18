@@ -6,9 +6,9 @@
 }
 <p>Eine ihrer Aufgaben ist seit dem <b>@assignment.DueDate.ToString("d")</b> überfällig.</p>
 
-<a href="@Url.Action("Details", "Assignments", new { id = assignment.ID }, "http")">Detailseite</a><br />
+<a href="@ViewBag.Host@Url.Action("Details", "Assignments" , new { id=assignment.ID })">Detailseite</a><br />
 <p>
-	<a href="@Url.Action("MarkAsDone", "Assignments", new { id = assignment.ID }, "http")">Als erledigt kennzeichnen</a>
+	<a href="@ViewBag.Host@Url.Action("MarkAsDone", "Assignments", new { id = assignment.ID })">Als erledigt kennzeichnen</a>
 </p>
 
 <h3>@assignment.Title</h3>
@@ -25,7 +25,7 @@
 			Diskussion:
 		</dt>
 		<dd>
-			<a href="@Url.Action("Details", "Topics", new { id = assignment.Topic.ID }, "http")">@assignment.Topic.Title</a>
+			<a href="@ViewBag.Host@Url.Action("Details", "Topics", new { id = assignment.Topic.ID })">@assignment.Topic.Title</a>
 		</dd>
 
 		<dt>

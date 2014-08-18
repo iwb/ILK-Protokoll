@@ -5,14 +5,18 @@ namespace ILK_Protokoll.Mailers
 {
 	public class UserMailer : MailerBase
 	{
+		private const string FQDN = @"http://02mucilk.iwb.mw.tu-muenchen.de"; 
+
 		public UserMailer()
 		{
+// ReSharper disable once DoNotCallOverridableMethodsInConstructor
 			MasterName = "_Layout";
 		}
 
 		public virtual MvcMailMessage Welcome(User u)
 		{
 			ViewBag.User = u;
+			ViewBag.Host = FQDN;
 			return Populate(x =>
 			{
 				x.Subject = "Wilkommen beim ILK-Protokoll";
@@ -25,6 +29,7 @@ namespace ILK_Protokoll.Mailers
 		{
 			ViewBag.User = assignment.Owner;
 			ViewBag.Assignment = assignment;
+			ViewBag.Host = FQDN;
 			var mail = Populate(x =>
 			{
 				x.Subject = string.Format("Neue Aufgabe »{0}« im ILK-Protokoll", assignment.Title);
@@ -38,6 +43,7 @@ namespace ILK_Protokoll.Mailers
 		{
 			ViewBag.User = assignment.Owner;
 			ViewBag.Assignment = assignment;
+			ViewBag.Host = FQDN;
 			var mail = Populate(x =>
 			{
 				x.Subject = string.Format("Die Aufgabe »{0}« wird bald fällig", assignment.Title);
@@ -51,6 +57,7 @@ namespace ILK_Protokoll.Mailers
 		{
 			ViewBag.User = assignment.Owner;
 			ViewBag.Assignment = assignment;
+			ViewBag.Host = FQDN;
 			var mail = Populate(x =>
 			{
 				x.Subject = string.Format("Die Aufgabe »{0}« ist überfällig!", assignment.Title);
