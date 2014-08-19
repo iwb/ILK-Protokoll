@@ -296,6 +296,7 @@
     <Compile Include="ViewModels\DashBoard.cs" />
     <Compile Include="ViewModels\FilteredDecisions.cs" />
     <Compile Include="ViewModels\FilteredAssignments.cs" />
+    <Compile Include="ViewModels\FilteredTopics.cs" />
     <Compile Include="ViewModels\TopicEdit.cs" />
     <Compile Include="ViewModels\TopicHistoryViewModel.cs" />
   </ItemGroup>
@@ -590,6 +591,7 @@
     <Content Include="Views\UserMailer\AssignmentOverdue.cshtml" />
     <Content Include="Views\ViewLists\Index.cshtml" />
     <Content Include="Views\Decisions\_DetailedTable.cshtml" />
+    <Content Include="Views\Topics\_DetailedTable.cshtml" />
     <None Include="Web.Integration.config" />
     <None Include="Web.Testing.config" />
   </ItemGroup>

@@ -1,0 +1,71 @@
+﻿@using ILK_Protokoll.Models
+@using ILK_Protokoll.util
+@model IEnumerable<ILK_Protokoll.Models.Topic>
+
+<div class="faketable container">
+	<div class="faketable-header row hidden-sm hidden-xs">
+		<div class="col-md-1">
+			@Html.DisplayNameFor(model => model.SessionTypeID)
+		</div>
+		<div class="col-md-2">
+			@Html.DisplayNameFor(model => model.Title)
+		</div>
+		<div class="col-md-6">
+			@Html.DisplayNameFor(model => model.Description)
+		</div>
+		<div class="col-md-3">
+			<div class="row">
+				<div class="col-xs-4">
+					@Html.DisplayNameFor(model => model.Priority)
+				</div>
+				<div class="col-xs-4">
+					@Html.DisplayNameFor(model => model.Created)
+				</div>
+				<div class="col-xs-4">
+					@Html.DisplayNameFor(model => model.ValidFrom)
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="faketable-body">
+		@foreach (Topic item in Model)
+		{
+			<div class="row" style="position: relative;">
+				<a href="@Url.Action("Details", new {id = item.ID})"><span class="divlink"></span></a>
+				<div class="col-md-1">
+					<h6 class="visible-xs visible-sm">@Html.DisplayNameFor(model => model.SessionTypeID)</h6>
+					@Html.DisplayFor(modelItem => item.SessionType.Name)
+					@if (item.TargetSessionTypeID != null)
+					{
+						@:&#42;
+					}
+				</div>
+				<div class="col-md-2">
+					<h6 class="visible-xs visible-sm">@Html.DisplayNameFor(model => model.Title)</h6>
+					@item.Title.Shorten(60)
+				</div>
+				<div class="col-md-6">
+					<h6 class="visible-xs visible-sm">@Html.DisplayNameFor(model => model.Description)</h6>
+					@item.Description.Shorten(150)
+				</div>
+				<div class="col-md-3">
+					<div class="row">
+						<div class="col-xs-4">
+							<h6 class="visible-xs visible-sm">@Html.DisplayNameFor(model => model.Priority)</h6>
+							@item.Priority.DisplayName()
+						</div>
+						<div class="col-xs-4">
+							<h6 class="visible-xs visible-sm">@Html.DisplayNameFor(model => model.Created)</h6>
+							@Html.DisplayFor(modelItem => item.Created)
+						</div>
+						<div class="col-xs-4">
+							<h6 class="visible-xs visible-sm">@Html.DisplayNameFor(model => model.ValidFrom)</h6>
+							@Html.DisplayFor(modelItem => item.ValidFrom)
+						</div>
+					</div>
+				</div>
+			</div>
+		}
+	</div>
+</div>

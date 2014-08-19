@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Validation;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
@@ -19,13 +21,87 @@ namespace ILK_Protokoll.Controllers
 		}
 
 		// GET: Topics
-		public ActionResult Index()
+		public ActionResult Index(FilteredTopics filter)
 		{
 			IQueryable<Topic> topics = db.Topics
 				.Include(t => t.SessionType)
-				.Include(t => t.TargetSessionType)
-				.Where(t => !t.IsReadOnly);
-			return View(topics.ToList());
+				.Include(t => t.TargetSessionType);
+
+			if (!filter.ShowReadonly)
+				topics = topics.Where(t => !t.IsReadOnly);
+
+			if (filter.ShowPriority >= 0)
+				topics = topics.Where(t => t.Priority == (Priority)filter.ShowPriority);
+
+			if (filter.SessionTypeID > 0)
+				topics = topics.Where(t => t.SessionTypeID == filter.SessionTypeID);
+
+			if (filter.Timespan != 0)
+			{
+				if (filter.Timespan > 0) // Nur die letzten x Tage anzeigen
+				{
+					var cutoff = DateTime.Today.AddDays(-filter.Timespan);
+					topics = topics.Where(t => t.Created >= cutoff);
+				}
+				else // Alles VOR den letzten x Tagen anzeigen
+				{
+					var cutoff = DateTime.Today.AddDays(filter.Timespan);
+					topics = topics.Where(t => t.Created < cutoff);
+				}
+			}
+			filter.PriorityList = PriorityChoices(filter.ShowPriority);
+			filter.SessionTypeList = db.SessionTypes
+				.Where(st => st.Active)
+				.Select(st => new SelectListItem() {Text = st.Name, Value = st.ID.ToString()});
+
+			filter.TimespanList = TimespanChoices(filter.Timespan);
+			filter.Topics = topics.ToList();
+
+			return View(filter);
+		}
+
+		private static IEnumerable<SelectListItem> PriorityChoices(int preselect)
+		{
+			var placeholder = new SelectListItem
+			{
+				Text = "(Alle Prioritäten)",
+				Value = "-1",
+				Selected = preselect < 0
+			}.ToEnumerable();
+
+			var items = ((Priority[])Enum.GetValues(typeof(Priority)))
+				.Select(p => new SelectListItem
+				{
+					Text = p.DisplayName(),
+					Value = ((int)p).ToString()
+				});
+
+			return placeholder.Concat(items);
+		}
+
+		private static IEnumerable<SelectListItem> TimespanChoices(int preselect)
+		{
+			return new []
+			{
+				new SelectListItem
+				{
+					Text = "14 Tage",
+					Value = "14",
+					Selected = preselect == 14
+				},
+				new SelectListItem
+				{
+					Text = "30 Tage",
+					Value = "30",
+					Selected = preselect == 30
+				},
+				new SelectListItem
+				{
+					Text = "Älter als 30 Tage",
+					Value = "-30",
+					Selected = preselect == -30
+				},
+			};
 		}
 
 		// GET: Topics/Details/5
@@ -175,7 +251,7 @@ namespace ILK_Protokoll.Controllers
 				}
 
 				db.SaveChanges();
-				return RedirectToAction("Details", new { Area = "", id = input.ID });
+				return RedirectToAction("Details", new {Area = "", id = input.ID});
 			}
 			Topic t = db.Topics.Find(input.ID);
 			input.SessionType = t.SessionType;
