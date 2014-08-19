@@ -21,6 +21,19 @@ namespace ILK_Protokoll.Controllers
 
 		protected User _CurrentUser;
 
+		protected override void OnActionExecuting(ActionExecutingContext filterContext)
+		{
+			base.OnActionExecuting(filterContext);
+			ViewBag.ColorScheme = GetCurrentUser().ColorScheme;
+			ViewBag.CurrentUser = GetCurrentUser();
+
+			ViewBag.CurrentSession = GetSession();
+			if (GetSession() != null)
+			{
+				ViewBag.LastSession = GetSession().SessionType.LastDate;
+			}
+		}
+
 		protected User GetCurrentUser()
 		{
 			if (_CurrentUser == null)
@@ -42,7 +55,12 @@ namespace ILK_Protokoll.Controllers
 		{
 			var sessionID = (int?)Session["SessionID"];
 			if (sessionID.HasValue && sessionID > 0)
-				return db.ActiveSessions.Find(sessionID);
+			{
+				var s = db.ActiveSessions.Find(sessionID);
+				if (s == null)
+					Session["SessionID"] = null;
+				return s;
+			}
 			else
 				return null;
 		}
@@ -111,13 +129,6 @@ namespace ILK_Protokoll.Controllers
 			Context.Response.Headers["Expires"] = "0";
 
 			base.Initialize(requestContext);
-		}
-
-		protected override void OnActionExecuting(ActionExecutingContext filterContext)
-		{
-			base.OnActionExecuting(filterContext);
-			ViewBag.ColorScheme = GetCurrentUser().ColorScheme;
-			ViewBag.CurrentUser = GetCurrentUser();
 		}
 
 		protected override void Dispose(bool disposing)

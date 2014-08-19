@@ -37,6 +37,12 @@
 			</script>
 
 			<div id="alerts">
+				@if (ViewBag.CurrentSession != null)
+				{
+					<div class="alert alert-info" role="alert">
+						Sie leiten momentan eine Sitzung. Sie können jederzeit @Html.ActionLink("in den Sitzungsmodus zurückkehren.", "Edit", "Master", new {Area = "Session"}, new {@class = "alert-link"})
+					</div>
+				}
 			</div>
 
 			@RenderBody()

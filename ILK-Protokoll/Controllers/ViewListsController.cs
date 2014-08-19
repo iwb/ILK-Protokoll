@@ -2,7 +2,7 @@
 
 namespace ILK_Protokoll.Controllers
 {
-	public class ViewListsController : Controller
+	public class ViewListsController : BaseController
 	{
 		protected override void OnActionExecuting(ActionExecutingContext filterContext)
 		{

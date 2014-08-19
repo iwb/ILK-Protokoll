@@ -12,16 +12,6 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 {
 	public class SessionBaseController : BaseController
 	{
-		protected override void OnActionExecuting(ActionExecutingContext filterContext)
-		{
-			base.OnActionExecuting(filterContext);
-			if (GetSession() != null)
-			{
-				ViewBag.LastSession = GetSession().SessionType.LastDate;
-				ViewBag.CurrentSession = GetSession();
-			}
-		}
-
 		protected ActiveSession CreateNewSession(SessionType type)
 		{
 			var session = db.ActiveSessions.Add(new ActiveSession(type) {Manager = GetCurrentUser()});

@@ -36,6 +36,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 		public ActionResult GenerateReport()
 		{
 			ActiveSession session = GetSession();
+			session.Manager = GetCurrentUser();
 			session.End = DateTime.Now;
 			session.LockedTopics = db.TopicLocks
 				.Include(tl => tl.Session)
@@ -102,6 +103,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 				db.TopicLocks.Remove(t.Lock);
 			}
 			db.ActiveSessions.Remove(session);
+			Session.Remove("SessionID");
 
 			try
 			{
