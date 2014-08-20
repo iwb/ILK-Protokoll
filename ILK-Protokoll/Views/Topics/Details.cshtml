@@ -116,6 +116,28 @@
 	</div>
 </div>
 
+@if (Model.Decision != null)
+{
+	string classname = "panel-primary";
+	if (Model.Decision.Type == DecisionType.Closed)
+	{
+		classname = "panel-warning";
+	}
+	else if (Model.Decision.Type == DecisionType.Resolution)
+	{
+		classname = "panel-success";
+	}
+	
+	<div class="panel @classname">
+		<div class="panel-heading">
+			<h3 class="panel-title">@Model.Decision.Type.DisplayName()</h3>
+		</div>
+		<div class="panel-body" id="auditorlist_@Model.ID">
+			@Html.ActionLink("Sitzungsprotokoll", "Details", "SessionReports", new {id = Model.Decision.Report.ID}, new {target = "pdfreport"}) vom @Model.Decision.Report.End.ToString("d")
+		</div>
+	</div>
+}
+
 <div class="panel panel-primary" style="background-color: #DDD">
 	<div class="panel-heading">
 		<h3 class="panel-title">@Html.DisplayNameFor(model => model.Votes)</h3>

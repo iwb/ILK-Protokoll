@@ -244,6 +244,18 @@
 @list-group-link-heading-color: #333;
 
 
+// Panels
+@state-warning-bg: lighten(@brand-warning, 20%);
+
+@panel-warning-text:             lighten(@brand-warning, 50%);
+@panel-warning-heading-bg:       @brand-warning;
+@panel-warning-border:           darken(spin(@panel-warning-heading-bg, -10), 5%);
+
+@panel-success-text:             lighten(@brand-success, 50%);
+@panel-success-heading-bg:       darken(@brand-success, 15%);
+@panel-success-border:           darken(spin(@panel-success-heading-bg, -10), 5%);
+
+
 // My Variables
 @screen-lg-min: 1600px;
 @container-large-desktop:      ((1540px + @grid-gutter-width));

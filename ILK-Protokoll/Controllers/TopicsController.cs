@@ -115,6 +115,8 @@ namespace ILK_Protokoll.Controllers
 				.Include(t => t.Assignments)
 				.Include(t => t.Attachments)
 				.Include(t => t.Creator)
+				.Include(t => t.Decision)
+				.Include(t => t.Decision.Report)
 				.Include(t => t.Lock)
 				.Include(t => t.Lock.Session.Manager)
 				.Single(t => t.ID == id.Value);

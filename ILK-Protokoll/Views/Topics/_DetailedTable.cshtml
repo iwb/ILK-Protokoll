@@ -43,6 +43,10 @@
 				</div>
 				<div class="col-md-2">
 					<h6 class="visible-xs visible-sm">@Html.DisplayNameFor(model => model.Title)</h6>
+					@if (item.IsReadOnly)
+					{
+						<i class="glyphicon glyphicon-lock"></i>
+					}
 					@item.Title.Shorten(60)
 				</div>
 				<div class="col-md-6">

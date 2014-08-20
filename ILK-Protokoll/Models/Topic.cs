@@ -66,7 +66,7 @@ namespace ILK_Protokoll.Models
 		[Display(Name = "Aufgaben")]
 		public virtual ICollection<Assignment> Assignments { get; set; }
 
-		[Display(Name = "Beschluss")]
+		[Display(Name = "Entscheidung")]
 		public virtual Decision Decision { get; set; }
 
 		[Display(Name = "Priorität")]
