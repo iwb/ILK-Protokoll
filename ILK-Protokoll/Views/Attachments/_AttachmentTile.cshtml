@@ -8,7 +8,7 @@
 	}
 
 	string fileurl = ((AttachmentsController)ViewContext.Controller).GetVirtualPath(Model.ID);
-}<a href="@fileurl" class="btn btn-default">
-	 <img src="~/img/fileicons/@(iconname).png" height="16" />
-	 @Model.DisplayName
- </a>
+}<a href="@fileurl" target="_blank" class="btn btn-default">
+	<img src="~/img/fileicons/@(iconname).png" height="16" />
+	@Model.DisplayName
+</a>

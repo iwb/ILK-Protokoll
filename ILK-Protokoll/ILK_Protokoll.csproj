@@ -592,6 +592,8 @@
     <Content Include="Views\ViewLists\Index.cshtml" />
     <Content Include="Views\Decisions\_DetailedTable.cshtml" />
     <Content Include="Views\Topics\_DetailedTable.cshtml" />
+    <Content Include="Views\Attachments\_NameEditor.cshtml" />
+    <Content Include="Views\Attachments\_NameDisplay.cshtml" />
     <None Include="Web.Integration.config" />
     <None Include="Web.Testing.config" />
   </ItemGroup>

@@ -12,6 +12,7 @@ using System.Web;
 using System.Web.Mvc;
 using ILK_Protokoll.DataLayer;
 using ILK_Protokoll.Models;
+using Microsoft.SqlServer.Server;
 
 namespace ILK_Protokoll.Controllers
 {
@@ -267,7 +268,36 @@ namespace ILK_Protokoll.Controllers
 			};
 			Response.AppendHeader("Content-Disposition", cd.ToString());
 
-			return File(Path.Combine(Serverpath, a.FileName), MimeMapping.GetMimeMapping(a.DisplayName));
+			return File(Path.Combine(Serverpath, a.FileName), MimeMapping.GetMimeMapping(a.FileName));
+		}
+
+		public ActionResult _BeginEdit(int attachmentID)
+		{
+			var a = db.Attachments.Find(attachmentID);
+			if (a.Topic.IsReadOnly)
+				return HTTPStatus(HttpStatusCode.Forbidden, "Das Thema ist gschreibgeschützt!");
+			return PartialView("_NameEditor", a);
+		}
+
+		public PartialViewResult _FetchDisplayName(int attachmentID)
+		{
+			var a = db.Attachments.Find(attachmentID);
+			return PartialView("_NameDisplay", Tuple.Create(GetVirtualPath(attachmentID), a.DisplayName));
+		}
+
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public ActionResult _SubmitEdit(int id, string displayName)
+		{
+			var a = db.Attachments.Find(id);
+
+			if (a.Topic.IsReadOnly)
+				return HTTPStatus(HttpStatusCode.Forbidden, "Das Thema ist gschreibgeschützt!");
+
+			displayName = Path.ChangeExtension(displayName, Path.GetExtension(a.FileName));
+			a.DisplayName = displayName;
+			db.SaveChanges();
+			return PartialView("_NameDisplay", Tuple.Create(GetVirtualPath(id), a.DisplayName));
 		}
 	}
 }

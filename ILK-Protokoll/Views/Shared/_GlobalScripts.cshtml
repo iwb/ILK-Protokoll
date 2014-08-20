@@ -52,7 +52,7 @@
 				$(this).attr('id', $(this).attr('id') + '_display');
 				$(this).attr('name', $(this).attr('name') + '_display');
 
-				
+
 				$(this).datepicker({
 					dateFormat: "dd.mm.yy",
 					altField: "#" + clone.attr("id"),
@@ -76,7 +76,7 @@
 					dayNamesMin: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
 					weekHeader: 'KW',
 
-					onClose: function (dateText, inst) {
+					onClose: function(dateText, inst) {
 						if (dateText == '') {
 							$(inst.settings["altField"]).val(dateText);
 						}
@@ -94,15 +94,18 @@
 
 	enableDatePicker();
 
-	jQuery.validator.methods.date = function(value, element) {
-		 if (value) {
-			  try {
-				  $.datepicker.parseDate('dd.mm.yy', value);
-			  } catch (ex) {
-				   return false;
-			  }
-		 } return true;
-	};
+	if (jQuery.validator) {
+		jQuery.validator.methods.date = function(value, element) {
+			if (value) {
+				try {
+					$.datepicker.parseDate('dd.mm.yy', value);
+				} catch (ex) {
+					return false;
+				}
+			}
+			return true;
+		};
+	}
 
 	function DisplayErrorMessage(id, text) {
 		if (id) {

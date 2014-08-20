@@ -1,4 +1,5 @@
 ﻿@using ILK_Protokoll.Controllers
+@using ILK_Protokoll.util
 @model ILK_Protokoll.Models.Attachment
 
 @{
@@ -16,14 +17,16 @@
 			<img src="~/img/fileicons/@(iconname).png" height="32" />
 		</a>
 	</td>
-	<td>
-		<a href="@fileurl">@Model.DisplayName</a>
+	<td id="attachmentName_@Model.ID">
+		@{
+			Html.RenderPartial("_NameDisplay", Tuple.Create(fileurl, Model.DisplayName));
+		}
 	</td>
 	<td>@Html.DisplayFor(model => model.FileSize)</td>
 	<td>@Model.Uploader.ShortName</td>
 	<td>@Html.DisplayFor(model => model.Created)</td>
 	<td class="actions">
-		<a href="#"><span class="glyphicon glyphicon-edit" title="Name bearbeiten"></span></a>
+		<a data-ajax="true" data-ajax-method="POST" data-ajax-mode="replace" data-ajax-update="#attachmentName_@Model.ID" href="@Url.Action("_BeginEdit", new {attachmentID = Model.ID})"><span class="glyphicon glyphicon-edit" title="Name bearbeiten"></span></a>
 		&nbsp;
 		<a data-ajax="true" data-ajax-method="POST" data-ajax-success="removeAttachment('#attachment_@Model.ID');"
 		   href="@Url.Action("_Delete", new {attachmentID = Model.ID})">
