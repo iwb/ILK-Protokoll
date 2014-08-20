@@ -14,42 +14,52 @@
 		@using (Html.BeginForm("Index", "Assignments", FormMethod.Get))
 		{
 			<div class="form-inline">
-				<div class="col-xs-3">
-					<div class="form-group">
-						@Html.EditorFor(model => model.ShowToDos)
-						@Html.LabelFor(model => model.ShowToDos)
+				<div class="col-sm-3">
+					<div class="row">
+						<div class="form-group">
+							@Html.EditorFor(model => model.ShowToDos)
+							@Html.LabelFor(model => model.ShowToDos)
+						</div>
 					</div>
-					<br />
-					<div class="form-group">
-						@Html.EditorFor(model => model.ShowDuties)
-						@Html.LabelFor(model => model.ShowDuties)
-					</div>
-				</div>
-				<div class="col-xs-3">
-					<div class="form-group">
-						@Html.EditorFor(model => model.ShowPast)
-						@Html.LabelFor(model => model.ShowPast)
-					</div>
-					<br />
-					<div class="form-group">
-						@Html.EditorFor(model => model.ShowFuture)
-						@Html.LabelFor(model => model.ShowFuture)
+					<div class="row">
+						<div class="form-group">
+							@Html.EditorFor(model => model.ShowDuties)
+							@Html.LabelFor(model => model.ShowDuties)
+						</div>
 					</div>
 				</div>
-				<div class="col-xs-3">
-					<div class="form-group">
-						@Html.EditorFor(model => model.ShowDone)
-						@Html.LabelFor(model => model.ShowDone)
+				<div class="col-sm-3">
+					<div class="row">
+						<div class="form-group">
+							@Html.EditorFor(model => model.ShowPast)
+							@Html.LabelFor(model => model.ShowPast)
+						</div>
 					</div>
-					<br />
-					<div class="form-group">
-						@Html.DropDownListFor(m => m.UserID, Model.UserList, "(Alle Benutzer)", new {@class = "form-control"})
+					<div class="row">
+						<div class="form-group">
+							@Html.EditorFor(model => model.ShowFuture)
+							@Html.LabelFor(model => model.ShowFuture)
+						</div>
 					</div>
 				</div>
-				<div class="col-xs-3">
-					<br />
-					<div class="form-group">
-						<input type="submit" value="Filtern" class="btn btn-primary" />
+				<div class="col-sm-3">
+					<div class="row">
+						<div class="form-group">
+							@Html.EditorFor(model => model.ShowDone)
+							@Html.LabelFor(model => model.ShowDone)
+						</div>
+					</div>
+					<div class="row">
+						<div class="form-group">
+							@Html.DropDownListFor(m => m.UserID, Model.UserList, "(Alle Benutzer)", new {@class = "form-control"})
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-3">
+					<div class="row">
+						<div class="form-group">
+							<input type="submit" value="Filtern" class="btn btn-primary" />
+						</div>
 					</div>
 				</div>
 			</div>

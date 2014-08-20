@@ -1,12 +1,10 @@
-﻿@using ILK_Protokoll.Models
-@using ILK_Protokoll.util
-@model ILK_Protokoll.ViewModels.FilteredTopics
+﻿@model ILK_Protokoll.ViewModels.FilteredTopics
 
 @{
 	ViewBag.Title = "Übersicht";
 }
 
-@Html.ActionLink("Neue Diskussion", "Create", null, new { @class = "index-action btn btn-primary" })
+@Html.ActionLink("Neue Diskussion", "Create", null, new {@class = "index-action btn btn-primary"})
 <h2>@ViewBag.Title</h2>
 
 
@@ -15,31 +13,37 @@
 		<h4 class="panel-title">Filter</h4>
 	</div>
 	<div class="panel-body">
-		@using (Html.BeginForm("Index", "Topics", FormMethod.Get))
+		@using (Html.BeginForm("Index", "Topics", FormMethod.Get, new {@class = "form-inline"}))
 		{
-			<div class="form-inline">
-				<div class="col-xs-4">
+			<div class="col-sm-4">
+				<div class="row">
 					<div class="form-group">
 						@Html.EditorFor(model => model.ShowReadonly)
 						@Html.LabelFor(model => model.ShowReadonly)
 					</div>
-					<br />
+				</div>
+				<div class="row">
 					<div class="form-group">
-						@Html.DropDownListFor(model => model.ShowPriority, Model.PriorityList, new { @class = "form-control" })
+						@Html.DropDownListFor(model => model.ShowPriority, Model.PriorityList, new {@class = "form-control"})
 					</div>
 				</div>
+			</div>
 
-				<div class="col-xs-4">
+			<div class="col-sm-4">
+				<div class="row">
 					<div class="form-group">
-						@Html.DropDownListFor(model => model.SessionTypeID, Model.SessionTypeList, "(Alle Sitzungstypen)", new { @class = "form-control", style = "min-width: 200px;" })
-					</div><br />
-					<div class="form-group">
-						@Html.DropDownListFor(model => model.Timespan, Model.TimespanList, "(Zeitraum beliebig)", new { @class = "form-control", style = "min-width: 200px;" })
+						@Html.DropDownListFor(model => model.SessionTypeID, Model.SessionTypeList, "(Alle Sitzungstypen)", new {@class = "form-control", style = "min-width:200px;"})
 					</div>
 				</div>
+				<div class="row">
+					<div class="form-group">
+						@Html.DropDownListFor(model => model.Timespan, Model.TimespanList, "(Zeitraum beliebig)", new {@class = "form-control", style = "min-width:200px;"})
+					</div>
+				</div>
+			</div>
 
-				<div class="col-xs-3">
-					<br />
+			<div class="col-sm-4">
+				<div class="row">
 					<div class="form-group">
 						<input type="submit" value="Filtern" class="btn btn-primary" />
 					</div>
