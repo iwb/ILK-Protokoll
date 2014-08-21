@@ -43,7 +43,8 @@ namespace ILK_Protokoll
 				"~/Content/themes/base/jquery.ui.spinner.css",
 				"~/Content/themes/base/jquery.ui.tabs.css",
 				"~/Content/themes/base/jquery.ui.tooltip.css",
-				"~/Content/themes/base/jquery.ui.theme.css"));
+				"~/Content/themes/base/jquery.ui.theme.css",
+				"~/Content/other/jquery.rtResponsiveTables.css"));
 
 			// Festlegen von EnableOptimizations auf false für Debugzwecke. Weitere Informationen
 			// finden Sie unter http://go.microsoft.com/fwlink/?LinkId=301862

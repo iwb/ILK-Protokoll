@@ -317,6 +317,7 @@
     <Content Include="Content\images\ui-icons_888888_256x240.png" />
     <Content Include="Content\images\ui-icons_AF0331_256x240.png" />
     <Content Include="Content\images\ui-icons_DDD_256x240.png" />
+    <Content Include="Content\other\jquery.rtResponsiveTables.css" />
     <Content Include="Content\rmvTheme.css">
       <DependentUpon>rmvTheme.less</DependentUpon>
     </Content>
@@ -522,6 +523,7 @@
     <Content Include="Scripts\jquery-ui-1.10.4.js" />
     <Content Include="Scripts\jquery.form.js" />
     <Content Include="Scripts\jquery.highlight.js" />
+    <Content Include="Scripts\jquery.rtResponsiveTables.js" />
     <Content Include="Scripts\jquery.tablesorter.js" />
     <Content Include="Scripts\jquery.timeago.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />

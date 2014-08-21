@@ -1,0 +1,32 @@
+@charset "UTF-8";
+/* CSS Document */
+
+/* Force table to not be like tables anymore */
+table.rt-responsive-table.rt-vertical-table, table.rt-responsive-table.rt-vertical-table thead, table.rt-responsive-table.rt-vertical-table tbody, table.rt-responsive-table.rt-vertical-table th, table.rt-responsive-table.rt-vertical-table td, table.rt-responsive-table.rt-vertical-table tr { 
+	display: block;
+	overflow: hidden;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	/* BELOW THREE STATEMENTS NEEDED FOR IE9 AND BELOW */
+	float:left;
+	clear:left;
+	width: 100%;
+}
+
+table.rt-responsive-table.rt-vertical-table tr {
+	 border: 1px solid #AAA;
+}
+
+table.rt-responsive-table.rt-vertical-table tbody tr:first-child{
+	border-top: none;
+}
+table.rt-responsive-table.rt-vertical-table thead tr:last-child {
+	border-bottom: none;
+}
+
+table.rt-responsive-table.rt-vertical-table td { 
+	/* Behave  like a "row" */
+	border: none;
+	border-bottom: 1px solid #eee;
+}
