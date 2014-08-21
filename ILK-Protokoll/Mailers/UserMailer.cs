@@ -13,16 +13,17 @@ namespace ILK_Protokoll.Mailers
 			MasterName = "_Layout";
 		}
 
-		public virtual MvcMailMessage Welcome(User u)
+		public virtual void SendWelcome(User u)
 		{
 			ViewBag.User = u;
 			ViewBag.Host = FQDN;
-			return Populate(x =>
+			var mail = Populate(x =>
 			{
 				x.Subject = "Wilkommen beim ILK-Protokoll";
 				x.ViewName = "Welcome";
 				x.To.Add(u.EmailAddress);
 			});
+			mail.SendAsync();
 		}
 
 		public virtual void SendNewAssignment(Assignment assignment)

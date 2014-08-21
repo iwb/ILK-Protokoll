@@ -9,6 +9,7 @@ using System.Security.Principal;
 using System.Web.Mvc;
 using ILK_Protokoll.Controllers;
 using ILK_Protokoll.DataLayer;
+using ILK_Protokoll.Mailers;
 using ILK_Protokoll.Models;
 
 namespace ILK_Protokoll.Areas.Administration.Controllers
@@ -173,7 +174,7 @@ namespace ILK_Protokoll.Areas.Administration.Controllers
 
 		private static User CreateUserFromADUser(UserPrincipal aduser)
 		{
-			return new User
+			var u = new User
 			{
 				Guid = aduser.Guid ?? Guid.Empty,
 				ShortName = aduser.SamAccountName,
@@ -181,6 +182,8 @@ namespace ILK_Protokoll.Areas.Administration.Controllers
 				EmailAddress = aduser.EmailAddress,
 				IsActive = true
 			};
+			new UserMailer().SendWelcome(u);
+			return u;
 		}
 	}
 }
