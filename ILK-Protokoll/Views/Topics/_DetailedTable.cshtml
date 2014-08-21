@@ -5,6 +5,8 @@
 <table class="table table-striped table-hover table-sortable" id="topicsTable">
 	<thead>
 		<tr>
+			<th>
+			</th>
 			<th class="col-sm-1">
 				@Html.DisplayNameFor(model => model.SessionTypeID)
 			</th>
@@ -28,7 +30,13 @@
 	<tbody>
 		@foreach (Topic item in Model)
 		{
-			<tr style="position: relative;">
+			<tr>
+				<td>
+					@if (item.IsReadOnly)
+					{
+						<span class="sr-only">Gesperrt</span><i class="glyphicon glyphicon-lock"></i>
+					}
+				</td>
 				<td>
 					<h6 class="visible-xs">@Html.DisplayNameFor(model => model.SessionTypeID)</h6>
 					@Html.DisplayFor(modelItem => item.SessionType.Name)
@@ -39,10 +47,6 @@
 				</td>
 				<td>
 					<h6 class="visible-xs">@Html.DisplayNameFor(model => model.Title)</h6>
-					@if (item.IsReadOnly)
-					{
-						<i class="glyphicon glyphicon-lock"></i>
-					}
 					<a href="@Url.Action("Details", new {id = item.ID})">@item.Title.Shorten(60)</a>
 				</td>
 				<td>
