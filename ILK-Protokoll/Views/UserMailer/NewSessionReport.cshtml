@@ -6,7 +6,7 @@
 }
 <p>Soeben wurde eine Sitzung des Typs &raquo;@report.SessionType.Name&laquo; beendet.</p>
 
-<a href="@ViewBag.Host@Url.Action("Details", "SessionReports", new { id = report.ID })">Sitzungsprotokoll zum Download</a><br />
+<a href="@ViewBag.Host@Url.Action("Details", "SessionReports", new { id = report.ID, Area = "" })">Sitzungsprotokoll zum Download</a><br />
 
 
 <h3>Folgende Themen wurden diskutiert:</h3>
@@ -42,7 +42,7 @@
 					@item.Topic.Created.ToString("d")
 				</td>
 				<td>
-					item.Action.DisplayName()
+					@item.Action.DisplayName()
 				</td>
 			</tr>
 		}

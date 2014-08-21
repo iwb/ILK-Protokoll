@@ -11,7 +11,7 @@ namespace ILK_Protokoll.Mailers
 		public UserMailer()
 		{
 // ReSharper disable once DoNotCallOverridableMethodsInConstructor
-			MasterName = "_Layout";
+			MasterName = "~/Views/UserMailer/_Layout.cshtml";
 		}
 
 		public virtual void SendWelcome(User u)

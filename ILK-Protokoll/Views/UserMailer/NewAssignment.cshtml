@@ -1,4 +1,5 @@
 @using ILK_Protokoll.Models
+@using ILK_Protokoll.util
 @{
 	var user = (User)ViewBag.User;
 	var assignment = (Assignment)ViewBag.Assignment;
@@ -6,9 +7,9 @@
 }
 <p>Für Sie wurde eine neue Aufgabe im ILK-Protokoll hinterlegt, deren Erledigung bis zum <b>@assignment.DueDate.ToString("d")</b> erfolgen sollte.</p>
 
-<a href="@ViewBag.Host@Url.Action("Details", "Assignments", new { id = assignment.ID })">Detailseite</a><br />
+<a href="@ViewBag.Host@Url.Action("Details", "Assignments", new { id = assignment.ID, Area = "" })">Detailseite</a><br />
 <p>
-	<a href="@ViewBag.Host@Url.Action("MarkAsDone", "Assignments", new { id = assignment.ID })">Als erledigt kennzeichnen</a>
+	<a href="@ViewBag.Host@Url.Action("MarkAsDone", "Assignments", new { id = assignment.ID, Area = "" })">Als erledigt kennzeichnen</a>
 </p>
 
 <h3>@assignment.Title</h3>
@@ -25,14 +26,14 @@
 			Diskussion:
 		</dt>
 		<dd>
-			<a href="@ViewBag.Host@Url.Action("Details", "Topics", new { id = assignment.Topic.ID })">@assignment.Topic.Title</a>
+			<a href="@ViewBag.Host@Url.Action("Details", "Topics", new { id = assignment.Topic.ID, Area = "" })">@assignment.Topic.Title</a>
 		</dd>
 
 		<dt>
 			Typ:
 		</dt>
 		<dd>
-			@assignment.Type
+			@assignment.Type.DisplayName()
 		</dd>
 
 		<dt>

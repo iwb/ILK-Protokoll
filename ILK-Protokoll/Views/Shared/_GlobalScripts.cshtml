@@ -97,6 +97,13 @@
 	if (jQuery.validator) {
 		jQuery.validator.methods.date = function(value, element) {
 			if (value) {
+				var isUS = /\d{1,2}\/\d{1,2}\/\d{2,4}/.test(s);
+				var isDE = /\d{1,2}[.\-]\d{1,2}[.\-]\d{2,4}/.test(s);
+				var isISO = /\d{2,4}-\d{1,2}-\d{1,2}/.test(s);
+
+				if (isUS || isDE || isISO)
+					return true;
+
 				try {
 					$.datepicker.parseDate('dd.mm.yy', value);
 				} catch (ex) {
