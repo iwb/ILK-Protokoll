@@ -66,6 +66,16 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 				.ToList();
 
 			var mailer = new UserMailer();
+
+			try
+			{
+				mailer.SendSessionReport(session, report);
+			}
+			catch (Exception ex)
+			{
+				return HTTPStatus(HttpStatusCode.InternalServerError, "Fehler beim mailen: " + ex.Message);
+			}
+
 			foreach (Topic t in topics)
 			{
 				switch (t.Lock.Action)

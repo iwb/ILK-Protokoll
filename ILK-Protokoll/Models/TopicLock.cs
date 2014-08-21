@@ -20,9 +20,13 @@ namespace ILK_Protokoll.Models
 
 	public enum TopicAction
 	{
+		[Display(Name = "Wiedervorlage")]
 		None,
+		[Display(Name = "Beschluss")]
 		Decide,
+		[Display(Name = "Archiviert")]
 		Close,
+		[Display(Name = "Löschen")]
 		Delete
 	}
 }
