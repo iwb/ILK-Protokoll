@@ -195,15 +195,19 @@
 
 
 // Form States
+
+@state-warning-bg: lighten(@brand-warning, 20%);
 @state-warning-text: #c09853;
-@state-warning-bg: #fcf8e3;
 @state-warning-border: darken(spin(@state-warning-bg, -10), 3%);
+
+@state-danger-bg: mix(@brand-danger, #DDD, 40%);
 @state-danger-text: darken(@brand-danger, 5%);
-@state-danger-bg: #f2dede;
 @state-danger-border: darken(spin(@state-danger-bg, -10), 3%);
+
 @state-success-text: darken(@brand-success, 30%);
 @state-success-bg: #dff0d8;
 @state-success-border: darken(spin(@state-success-bg, -10), 5%);
+
 @state-info-text: @brand-primary;
 @state-info-bg: #d9edf7;
 @state-info-border: darken(spin(@state-info-bg, -10), 7%);
@@ -245,8 +249,6 @@
 
 
 // Panels
-@state-warning-bg: lighten(@brand-warning, 20%);
-
 @panel-warning-text:             lighten(@brand-warning, 50%);
 @panel-warning-heading-bg:       @brand-warning;
 @panel-warning-border:           darken(spin(@panel-warning-heading-bg, -10), 5%);
