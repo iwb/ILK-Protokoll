@@ -365,6 +365,8 @@
     <Content Include="img\fileicons\xlsx.png" />
     <Content Include="img\fileicons\xltx.png" />
     <Content Include="img\iwbLogo_inv_small.png" />
+    <Content Include="img\rmvLogo.png" />
+    <Content Include="img\rmvLogo_small.png" />
     <Content Include="Models.cd" />
     <Content Include="img\iwbLogo.png" />
     <Content Include="img\iwbLogo_inv.png" />

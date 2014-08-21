@@ -38,7 +38,7 @@ namespace ILK_Protokoll.Mailers
 				x.ViewName = "NewAssignment";
 				x.To.Add(assignment.Owner.EmailAddress);
 			});
-			mail.Send();
+			mail.SendAsync();
 		}
 
 		public void SendAssignmentReminder(Assignment assignment)
