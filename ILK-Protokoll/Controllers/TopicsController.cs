@@ -250,6 +250,9 @@ namespace ILK_Protokoll.Controllers
 					{
 						topic.Votes.Add(new Vote(user, VoteKind.None));
 					}
+					
+					if (topic.Lock != null)
+						topic.Lock.Action = TopicAction.None;
 				}
 
 				db.SaveChanges();

@@ -55,10 +55,17 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 			if (tlock.Session.ID != session.ID)
 				return HTTPStatus(HttpStatusCode.Forbidden, "Falsche Sitzung.");
 
-			// Den Beschluss verhindern, fass noch offene Aufgaben vorliegen
+			// Den Beschluss verhindern, falls noch offene Aufgaben vorliegen
 			if (state == TopicAction.Decide && tlock.Topic.Assignments.Any(a => a.Type == AssignmentType.ToDo && !a.IsDone))
 			{
 				tlock.Message = "Es liegen noch offene ToDo-Aufgaben vor. Dieses Thema kann daher nicht beschlossen werden.";
+				return PartialView("_StateButtons", tlock);
+			}
+
+			// Den Beschluss verhindern, falls der Punkt verschoben wird
+			if (state != TopicAction.None && tlock.Topic.TargetSessionTypeID != null)
+			{
+				tlock.Message = "Der Punkt ist zum Verschieben vorgemerkt und darf daher nicht behandelt werden.";
 				return PartialView("_StateButtons", tlock);
 			}
 
