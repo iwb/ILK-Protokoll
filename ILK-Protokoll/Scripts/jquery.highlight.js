@@ -18,7 +18,7 @@ jQuery.fn.highlight = function (pat) {
 	function innerHighlight(node, pat) {
 		var skip = 0;
 		if (node.nodeType == 3) {
-			var pos = node.data.toUpperCase().indexOf(pat);
+			var pos = node.data.toLocaleLowerCase().indexOf(pat);
 			if (pos >= 0) {
 				var spannode = document.createElement('span');
 				spannode.className = 'highlight';
@@ -40,7 +40,7 @@ jQuery.fn.highlight = function (pat) {
 	}
 
 	return this.length && pat && pat.length ? this.each(function () {
-		innerHighlight(this, pat.toUpperCase());
+		innerHighlight(this, pat.toLocaleLowerCase());
 	}) : this;
 };
 
