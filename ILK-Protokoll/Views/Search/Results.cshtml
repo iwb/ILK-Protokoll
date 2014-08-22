@@ -1,4 +1,5 @@
-﻿@model ICollection<ILK_Protokoll.ViewModels.SearchResult>
+﻿@using ILK_Protokoll.util
+@model ICollection<ILK_Protokoll.ViewModels.SearchResult>
 
 @{
 	ViewBag.Title = "Suchergebnisse";
@@ -14,20 +15,27 @@ else
 {
 	<h4>Ihre Suche nach &quot;@ViewBag.SearchTerm&quot; hat @Model.Count Ergebnisse ergeben.</h4>
 }
-<b>@ViewBag.SearchPattern</b>
+
 <div class="row" id="searchresults">
 	@foreach (var result in Model)
 	{
 		<div class="col-lg-6 col-md-12">
 			<div class="panel panel-default">
 				<div class="panel-heading" style="position: relative;">
+					<div class="panel-title-right">
+						@if (result.Timestamp.HasValue)
+						{
+							<span class="pull-right">
+								@result.Timestamp.Value.ToString("d")
+							</span>
+						}
+					</div>
 					<h3 class="panel-title">
 						<a href="@result.ActionURL"><span class="divlink"></span></a>
 						@result.EntityType: @result.Title
 					</h3>
 				</div>
 				<div class="panel-body">
-					<h6>Score: @result.Score</h6>
 					@foreach (var hit in result.Hits)
 					{
 						string classname = null;
@@ -46,10 +54,16 @@ else
 	}
 </div>
 
-<script type="text/javascript">
-	var terms = "@(ViewBag.SearchTerm)".split(" ");
 
-	$.each(terms, function(index, term) {
-		$('#searchresults').highlight(term);
-	});
-</script>
+@using (Html.Delayed(null, "Masonry_Tiles"))
+{
+	<script type="text/javascript">
+		var regex = /@(ViewBag.SearchPattern)/i;
+		$('#searchresults').highlight(regex);
+
+		var msnry = new Masonry('#searchresults', {
+			itemSelector: '.col-lg-6',
+			resizeable: true,
+		});
+	</script>
+}

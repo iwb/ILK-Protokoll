@@ -37,7 +37,7 @@
 			{
 				visual = "warning";
 			}
-			else if (item.DueDate < DateTime.Now)
+			else if (item.DueDate < DateTime.Now && !item.IsDone)
 			{
 				visual = "danger";
 			}

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using ILK_Protokoll.Models;
+using ILK_Protokoll.util;
 using ILK_Protokoll.ViewModels;
 
 namespace ILK_Protokoll.Controllers
@@ -17,18 +18,18 @@ namespace ILK_Protokoll.Controllers
 			if (string.IsNullOrWhiteSpace(searchterm))
 				return RedirectToAction("Search");
 
-			var words = searchterm.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Select(Regex.Escape);
+			var words = Regex.Split(searchterm, @"\s+").Select(Regex.Escape);
 
 			var searchpattern = @"\b(" + words.Aggregate((a, b) => a + "|" + b) + ")";
 			var regex = new Regex(searchpattern, RegexOptions.IgnoreCase);
-
-
+			
 			var results = new List<SearchResult>();
 
 			SearchTopics(regex, results);
 			SearchComments(regex, results);
 			SearchAssignments(regex, results);
 			SearchDecisions(regex, results);
+			SearchLists(regex, results);
 
 			ViewBag.SearchTerm = searchterm;
 			ViewBag.SearchPattern = searchpattern;
@@ -133,7 +134,7 @@ namespace ILK_Protokoll.Controllers
 				{
 					resultlist.Add(new SearchResult("Aufgabentext", assignment.Description)
 					{
-						Score = ScoreMult(9, m.Count),
+						Score = ScoreMult(7, m.Count),
 						EntityType = "Aufgabe",
 						Title = assignment.Description,
 						ActionURL = Url.Action("Details", "Assignments", new { id = assignment.ID }),
@@ -151,7 +152,7 @@ namespace ILK_Protokoll.Controllers
 				var sr = new SearchResult
 				{
 					Score = decision.Type == DecisionType.Resolution ? 0 : -11,
-					EntityType = "Entscheidung",
+					EntityType = decision.Type.DisplayName(),
 					Title = decision.OriginTopic.Title,
 					ActionURL = Url.Action("Details", "Topics", new { id = decision.OriginTopic.ID }),
 					Timestamp = decision.Report.End
@@ -171,13 +172,11 @@ namespace ILK_Protokoll.Controllers
 				m = pattern.Matches(decision.Text);
 				if (m.Count > 0)
 				{
-					resultlist.Add(new SearchResult("Beschlusstext", decision.Text)
+					sr.Score += 9;
+					sr.Hits.Add(new Hit
 					{
-						Score = ScoreMult(9, m.Count),
-						EntityType = "Beschluss",
-						Title = decision.OriginTopic.Title,
-						ActionURL = Url.Action("Details", "Topics", new { id = decision.OriginTopic.ID }),
-						Timestamp = decision.Report.End
+						Property = "Beschlusstext",
+						Text = decision.Text
 					});
 				}
 
@@ -189,7 +188,103 @@ namespace ILK_Protokoll.Controllers
 			}
 		}
 
-		private float ScoreMult(int baseScore, int count)
+		private void SearchLists(Regex pattern, ICollection<SearchResult> resultlist)
+		{
+			foreach (var item in db.LEvents)
+			{
+				var m = pattern.Matches(item.Description);
+				if (m.Count > 0)
+				{
+					resultlist.Add(new SearchResult(item.Description)
+					{
+						Score = 7,
+						EntityType = "Listeneintrag",
+						Title = "Termin",
+						ActionURL = Url.Content("~/ViewLists#event_table"),
+						Timestamp = item.Created
+					});
+					continue;
+				}
+				m = pattern.Matches(item.Place);
+				if (m.Count > 0)
+				{
+					resultlist.Add(new SearchResult(item.Place)
+					{
+						Score = 5,
+						EntityType = "Listeneintrag",
+						Title = "Termin",
+						ActionURL = Url.Content("~/ViewLists#event_table"),
+						Timestamp = item.Created
+					});
+				}
+			}
+
+			foreach (var item in db.LConferences)
+			{
+				var m = pattern.Matches(item.Description);
+				if (m.Count > 0)
+				{
+					resultlist.Add(new SearchResult(item.Description)
+					{
+						Score = 7,
+						EntityType = "Listeneintrag",
+						Title = "Auslandskonferenz",
+						ActionURL = Url.Content("~/ViewLists#conference_table"),
+						Timestamp = item.Created
+					});
+				}
+			}
+			
+			foreach (var item in db.LIlkDays)
+			{
+				var m = pattern.Matches(item.Topics);
+				if (m.Count > 0)
+				{
+					resultlist.Add(new SearchResult(item.Topics)
+					{
+						Score = 7,
+						EntityType = "Listeneintrag",
+						Title = "ILK-Tag",
+						ActionURL = Url.Content("~/ViewLists#ilkDay_table"),
+						Timestamp = item.Created
+					});
+				}
+			}
+
+			foreach (var item in db.LIlkMeetings)
+			{
+				var m = pattern.Matches(item.Comments);
+				if (m.Count > 0)
+				{
+					resultlist.Add(new SearchResult(item.Comments)
+					{
+						Score = 7,
+						EntityType = "Listeneintrag",
+						Title = "ILK-Regeltermin",
+						ActionURL = Url.Content("~/ViewLists#ilkMeeting_table"),
+						Timestamp = item.Created
+					});
+				}
+			}
+
+			foreach (var item in db.LOpenings)
+			{
+				var m = pattern.Matches(item.Description);
+				if (m.Count > 0)
+				{
+					resultlist.Add(new SearchResult(item.Description)
+					{
+						Score = 6.5f,
+						EntityType = "Listeneintrag",
+						Title = "Vakante Stelle",
+						ActionURL = Url.Content("~/ViewLists#opening_table"),
+						Timestamp = item.Created
+					});
+				}
+			}
+		}
+
+		private static float ScoreMult(int baseScore, int count)
 		{
 			if (baseScore == 0 || count == 0)
 				return 0;

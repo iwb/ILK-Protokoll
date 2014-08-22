@@ -14,16 +14,21 @@ Johann Burkard
 
 */
 
-jQuery.fn.highlight = function (pat) {
-	function innerHighlight(node, pat) {
+jQuery.fn.highlight = function (regexpattern) {
+	function innerHighlight(node, regex) {
 		var skip = 0;
 		if (node.nodeType == 3) {
-			var pos = node.data.toLocaleLowerCase().indexOf(pat);
-			if (pos >= 0) {
+			var regexmatch = node.data.match(regex);
+
+			console.log(node.data);
+			console.log(regexmatch);
+
+			if (regexmatch && regexmatch.index >= 0) {
+				var pos = regexmatch.index;
 				var spannode = document.createElement('span');
 				spannode.className = 'highlight';
 				var middlebit = node.splitText(pos);
-				var endbit = middlebit.splitText(pat.length);
+				middlebit.splitText(regexmatch[0].length);
 				var middleclone = middlebit.cloneNode(true);
 				spannode.appendChild(document.createTextNode("\u200A")); // Hairspace
 				spannode.appendChild(middleclone);
@@ -33,14 +38,14 @@ jQuery.fn.highlight = function (pat) {
 			}
 		} else if (node.nodeType == 1 && node.childNodes && !/(script|style)/i.test(node.tagName)) {
 			for (var i = 0; i < node.childNodes.length; ++i) {
-				i += innerHighlight(node.childNodes[i], pat);
+				i += innerHighlight(node.childNodes[i], regex);
 			}
 		}
 		return skip;
 	}
 
-	return this.length && pat && pat.length ? this.each(function () {
-		innerHighlight(this, pat.toLocaleLowerCase());
+	return this.length && regexpattern ? this.each(function () {
+		innerHighlight(this, regexpattern);
 	}) : this;
 };
 
