@@ -56,9 +56,15 @@ namespace ILK_Protokoll.util
 
 		public static string Shorten(this string str, int maxLength)
 		{
-			var stripped = Regex.Replace(str, @"\s+", " ");
+			var stripped = Regex.Replace(str.Trim(), @"\s+", " ");
 			if (stripped.Length > maxLength)
-				return stripped.Substring(0, maxLength - 1) + "…";
+			{
+				var lastspace = stripped.LastIndexOf(' ', maxLength - 1, 12);
+				if (lastspace >= 0)
+					return stripped.Substring(0, lastspace) + "…";
+				else
+					return stripped.Substring(0, maxLength - 1) + "…";
+			}
 			else
 				return stripped;
 		}
