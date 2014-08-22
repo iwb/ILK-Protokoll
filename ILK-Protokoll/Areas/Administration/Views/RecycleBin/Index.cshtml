@@ -21,7 +21,7 @@ else
 		<thead>
 			<tr>
 				<th>
-					@Html.DisplayNameFor(model => model.TopicID)
+					Ort
 				</th>
 				<th>
 					@Html.DisplayNameFor(model => model.Deleted)
@@ -43,8 +43,17 @@ else
 			{
 				<tr id="attachment_@item.ID">
 					<td>
-						@Html.DisplayFor(modelItem => item.Topic.Title)
-					</td>
+						@if (item.TopicID != null)
+						{
+							<h6>@Html.DisplayNameFor(model => model.TopicID)</h6>
+							@Html.ActionLink(item.Topic.Title, "Details", "Topics", new { Area = "", id = item.TopicID }, null)
+						}
+						else if (item.EmployeePresentationID != null)
+						{
+							<h6>@Html.DisplayNameFor(model => model.EmployeePresentationID)</h6>
+							@Html.ActionLink(item.EmployeePresentation.ToString(), "Edit", "LEmployeePresentations", new { Area = "Session", id = item.EmployeePresentationID }, null)
+						}
+						</td>
 					<td>
 						@Html.DisplayFor(modelItem => item.Deleted)
 					</td>
@@ -58,7 +67,7 @@ else
 						@Html.DisplayFor(modelItem => item.FileSize)
 					</td>
 					<td>
-						@if (item.TopicID != null || item.EmployeePresentationID != null)
+						@if ((item.TopicID != null) && !item.Topic.IsReadOnly || item.EmployeePresentationID != null)
 						{
 							@Ajax.ActionLink("Wiederherstellen", "_Restore", "RecycleBin",
 								new {attachmentID = item.ID},

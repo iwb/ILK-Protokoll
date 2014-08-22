@@ -22,12 +22,13 @@ namespace ILK_Protokoll.Controllers
 
 			var searchpattern = @"\b(" + words.Aggregate((a, b) => a + "|" + b) + ")";
 			var regex = new Regex(searchpattern, RegexOptions.IgnoreCase);
-			
+
 			var results = new List<SearchResult>();
 
 			SearchTopics(regex, results);
 			SearchComments(regex, results);
 			SearchAssignments(regex, results);
+			SearchAttachments(regex, results);
 			SearchDecisions(regex, results);
 			SearchLists(regex, results);
 
@@ -46,7 +47,7 @@ namespace ILK_Protokoll.Controllers
 					Score = topic.IsReadOnly ? -5 : 0,
 					EntityType = "Diskussion",
 					Title = topic.Title,
-					ActionURL = Url.Action("Details", "Topics", new { id = topic.ID }),
+					ActionURL = Url.Action("Details", "Topics", new {id = topic.ID}),
 					Timestamp = topic.Created
 				};
 
@@ -91,8 +92,8 @@ namespace ILK_Protokoll.Controllers
 		private void SearchComments(Regex pattern, ICollection<SearchResult> resultlist)
 		{
 			var query = from c in db.Comments
-							join t in db.Topics on c.TopicID equals t.ID
-							select new { topicID = t.ID, Text = c.Content, t.Title, c.Created };
+				join t in db.Topics on c.TopicID equals t.ID
+				select new {topicID = t.ID, Text = c.Content, t.Title, c.Created};
 
 			foreach (var comment in query)
 			{
@@ -104,7 +105,7 @@ namespace ILK_Protokoll.Controllers
 						Score = ScoreMult(2, m.Count),
 						EntityType = "Kommentar",
 						Title = comment.Title,
-						ActionURL = Url.Action("Details", "Topics", new { id = comment.topicID }),
+						ActionURL = Url.Action("Details", "Topics", new {id = comment.topicID}),
 						Timestamp = comment.Created
 					});
 				}
@@ -123,7 +124,7 @@ namespace ILK_Protokoll.Controllers
 						Score = ScoreMult(9, m.Count),
 						EntityType = "Aufgabe",
 						Title = assignment.Title,
-						ActionURL = Url.Action("Details", "Assignments", new { id = assignment.ID }),
+						ActionURL = Url.Action("Details", "Assignments", new {id = assignment.ID}),
 						Timestamp = assignment.DueDate
 					});
 					continue;
@@ -137,11 +138,29 @@ namespace ILK_Protokoll.Controllers
 						Score = ScoreMult(7, m.Count),
 						EntityType = "Aufgabe",
 						Title = assignment.Description,
-						ActionURL = Url.Action("Details", "Assignments", new { id = assignment.ID }),
+						ActionURL = Url.Action("Details", "Assignments", new {id = assignment.ID}),
 						Timestamp = assignment.DueDate
 					});
 				}
+			}
+		}
 
+		private void SearchAttachments(Regex pattern, ICollection<SearchResult> resultlist)
+		{
+			foreach (var attachment in db.Attachments)
+			{
+				var m = pattern.Matches(attachment.DisplayName);
+				if (m.Count > 0)
+				{
+					resultlist.Add(new SearchResult("Dateiname", attachment.DisplayName)
+					{
+						Score = ScoreMult(9, m.Count),
+						EntityType = "Datei",
+						Title = attachment.DisplayName,
+						ActionURL = Url.Action("Details", "Attachments", new {id = attachment.ID}),
+						Timestamp = attachment.Created
+					});
+				}
 			}
 		}
 
@@ -154,7 +173,7 @@ namespace ILK_Protokoll.Controllers
 					Score = decision.Type == DecisionType.Resolution ? 0 : -11,
 					EntityType = decision.Type.DisplayName(),
 					Title = decision.OriginTopic.Title,
-					ActionURL = Url.Action("Details", "Topics", new { id = decision.OriginTopic.ID }),
+					ActionURL = Url.Action("Details", "Topics", new {id = decision.OriginTopic.ID}),
 					Timestamp = decision.Report.End
 				};
 
@@ -234,7 +253,7 @@ namespace ILK_Protokoll.Controllers
 					});
 				}
 			}
-			
+
 			foreach (var item in db.LIlkDays)
 			{
 				var m = pattern.Matches(item.Topics);

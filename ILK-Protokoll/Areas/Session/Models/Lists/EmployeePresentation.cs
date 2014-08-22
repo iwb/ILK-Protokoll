@@ -45,5 +45,10 @@ namespace ILK_Protokoll.Areas.Session.Models.Lists
 
 		[NotMapped]
 		public string FileURL { get; set; }
+
+		public override string ToString()
+		{
+			return string.Format("Mitarbeiter: {0}, ILK: {1}, Prof: {2}", Employee, Ilk, Prof);
+		}
 	}
 }

@@ -271,10 +271,18 @@ namespace ILK_Protokoll.Controllers
 			return File(Path.Combine(Serverpath, a.FileName), MimeMapping.GetMimeMapping(a.FileName));
 		}
 
+		public ActionResult Details(int id)
+		{
+			Attachment a = db.Attachments.Find(id);
+			if (a == null)
+				return HTTPStatus(HttpStatusCode.NotFound, "Datei nicht gefunden");
+			return View(a);
+		}
+
 		public ActionResult _BeginEdit(int attachmentID)
 		{
 			var a = db.Attachments.Find(attachmentID);
-			if (a.Topic.IsReadOnly)
+			if (a.Topic != null && a.Topic.IsReadOnly)
 				return HTTPStatus(HttpStatusCode.Forbidden, "Das Thema ist gschreibgeschützt!");
 			return PartialView("_NameEditor", a);
 		}
@@ -291,7 +299,7 @@ namespace ILK_Protokoll.Controllers
 		{
 			var a = db.Attachments.Find(id);
 
-			if (a.Topic.IsReadOnly)
+			if (a.Topic != null && a.Topic.IsReadOnly)
 				return HTTPStatus(HttpStatusCode.Forbidden, "Das Thema ist gschreibgeschützt!");
 
 			displayName = Path.ChangeExtension(displayName, Path.GetExtension(a.FileName));

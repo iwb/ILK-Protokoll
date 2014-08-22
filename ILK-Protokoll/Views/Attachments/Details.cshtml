@@ -1,0 +1,71 @@
+﻿@model ILK_Protokoll.Models.Attachment
+@{
+	ViewBag.Title = "Details (" + Model.DisplayName + ")";
+}
+
+<h3>@ViewBag.Title</h3>
+<hr />
+<div>
+	@if (Model.Deleted != null)
+	{
+		<div class="alert alert-info">
+			Diese Datei befindet sich im @Html.ActionLink("Papierkorb", "Index", "RecycleBin", new {Area = "Administration"}, new {@class = "alert-link"}).
+		</div>
+	}
+	<dl class="dl-horizontal">
+		@if (Model.TopicID != null)
+		{
+			<dt>
+				@Html.DisplayNameFor(model => model.TopicID)
+			</dt>
+			<dd>
+				@Html.ActionLink(Model.Topic.Title, "Details", "Topics", new {Area = "", id = Model.TopicID}, null)
+			</dd>
+		}
+		@if (Model.EmployeePresentationID != null)
+		{
+			<dt>
+				@Html.DisplayNameFor(model => model.EmployeePresentationID)
+			</dt>
+			<dd>
+				@{
+					string url = Request.Url != null ? Request.Url.PathAndQuery : null;
+				}
+				@Html.ActionLink(Model.EmployeePresentation.ToString(), "Edit", "LEmployeePresentations", new {Area = "Session", id = Model.EmployeePresentationID, returnURL = url}, null)
+			</dd>
+		}
+
+		<dt>
+			@Html.DisplayNameFor(model => model.DisplayName)
+		</dt>
+		<dd>
+			@Html.DisplayFor(model => model.DisplayName)
+		</dd>
+
+		<dt>
+			@Html.DisplayNameFor(model => model.Created)
+		</dt>
+		<dd>
+			@Html.DisplayFor(model => model.Created)
+		</dd>
+
+		@if (Model.Deleted != null)
+		{
+			<dt>
+				@Html.DisplayNameFor(model => model.Deleted)
+			</dt>
+			<dd>
+				@Html.DisplayFor(model => model.Created)
+			</dd>
+		}
+
+		<dt>
+			@Html.DisplayNameFor(model => model.FileSize)
+		</dt>
+		<dd>
+			@Html.DisplayFor(model => model.FileSize)
+		</dd>
+	</dl>
+	<br />
+	@Html.ActionLink("Download", "Download", "Attachments", new {id = Model.ID}, new {@class = "btn btn-primary col-sm-offset-2", target="_blank"})
+</div>

@@ -33,6 +33,9 @@ namespace ILK_Protokoll.Areas.Administration.Controllers
 			if (attachment.TopicID == null && attachment.EmployeePresentationID == null) // Verwaist
 				return HTTPStatus(422, "Wiederherstellungsziel ist nicht mehr vorhanden");
 
+			if (attachment.TopicID != null && attachment.Topic.IsReadOnly)
+				return HTTPStatus(422, "Wiederherstellungsziel ist schreibgeschützt");
+
 			attachment.Deleted = null;
 
 			try
