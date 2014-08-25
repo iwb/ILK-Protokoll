@@ -53,6 +53,9 @@ namespace ILK_Protokoll.Models
 		[DisplayName("Farbschema")]
 		public ColorScheme ColorScheme { get; set; }
 
+		[Display(Name = "Push-Benachrichtigungen")]
+		public virtual ICollection<PushNotification> PushNotifications { get; set; }
+
 		#region Equals() etc.
 
 		public bool Equals(User other)

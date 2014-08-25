@@ -111,9 +111,7 @@ namespace ILK_Protokoll.Controllers
 				return HTTPStatus(400, "Für diesen Vorgang ist eine TopicID ist erforderlich.");
 
 			var topic = db.Topics
-				.Include(t => t.Votes)
 				.Include(t => t.Assignments)
-				.Include(t => t.Attachments)
 				.Include(t => t.Creator)
 				.Include(t => t.Decision)
 				.Include(t => t.Decision.Report)

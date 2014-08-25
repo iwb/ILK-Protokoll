@@ -1,0 +1,23 @@
+﻿@using ILK_Protokoll.Models
+@using ILK_Protokoll.util
+@model IDictionary<User, bool>
+
+@using (Ajax.BeginForm("_RegisterPushTargets", null, new AjaxOptions
+{
+	HttpMethod = "POST",
+	UpdateTargetId = "PushListEditor",
+	InsertionMode = InsertionMode.ReplaceWith,
+	OnFailure = "DisplayErrorMessage('#PushListEditor', '<br />' + xhr.responseText);"
+		
+}, new {id = "PushListEditor"}))
+{
+	int topicID = ViewBag.TopicID;
+	@Html.HiddenFor(m => topicID)
+	@Html.EditorFor(m => m, "Dictionary_User_bool")
+}
+
+<script type="text/javascript">
+	$('#PushListEditor input').change(function () {
+		$('#PushListEditor').submit();
+	});
+</script>

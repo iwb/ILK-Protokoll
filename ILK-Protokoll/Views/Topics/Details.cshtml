@@ -127,7 +127,7 @@
 	{
 		classname = "panel-success";
 	}
-	
+
 	<div class="panel @classname">
 		<div class="panel-heading">
 			<h3 class="panel-title">@Model.Decision.Type.DisplayName()</h3>
@@ -138,12 +138,21 @@
 	</div>
 }
 
+<div class="panel panel-primary">
+	<div class="panel-heading">
+		<h3 class="panel-title">@Html.DisplayNameFor(model => model.PushTargets)</h3>
+	</div>
+	<div class="panel-body" id="pushlist_@Model.ID">
+		@Html.Action("_EditListTopic", "Push", new {topic = Model})
+	</div>
+</div>
+
 <div class="panel panel-primary" style="background-color: #DDD">
 	<div class="panel-heading">
 		<h3 class="panel-title">@Html.DisplayNameFor(model => model.Votes)</h3>
 	</div>
 	<div class="panel-body" id="auditorlist_@Model.ID">
-		@Html.Action("_List", "Votes", new { topic = Model, linkAllAuditors = true })
+		@Html.Action("_List", "Votes", new {topic = Model, linkAllAuditors = true})
 	</div>
 </div>
 
@@ -189,7 +198,7 @@
 			}
 			else if (!ViewBag.Reporting)
 			{
-				@Html.ActionLink("Neue Aufgabe erstellen", "Create", "Assignments", new { topicID = Model.ID }, null)
+				@Html.ActionLink("Neue Aufgabe erstellen", "Create", "Assignments", new {topicID = Model.ID}, null)
 			}
 		</div>
 	}
@@ -208,11 +217,11 @@
 			}
 			else
 			{
-				@Html.Action("_List", "Attachments", new { entity = AttachmentContainer.Topic, id = Model.ID })
+				@Html.Action("_List", "Attachments", new {entity = AttachmentContainer.Topic, id = Model.ID})
 			}
 			@if (!ViewBag.Reporting && !Model.IsReadOnly)
 			{
-				@Html.Action("_UploadForm", "Attachments", new { entity = AttachmentContainer.Topic, id = Model.ID })
+				@Html.Action("_UploadForm", "Attachments", new {entity = AttachmentContainer.Topic, id = Model.ID})
 			}
 		</div>
 	</div>

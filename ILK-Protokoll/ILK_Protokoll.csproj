@@ -173,6 +173,7 @@
     <Compile Include="Controllers\CommentsController.cs" />
     <Compile Include="Controllers\DecisionsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\PushController.cs" />
     <Compile Include="Controllers\ViewListsController.cs" />
     <Compile Include="Controllers\ScheduledTasksController.cs" />
     <Compile Include="Controllers\SessionReportsController.cs" />
@@ -272,11 +273,16 @@
     <Compile Include="Migrations\201408150907292_ST_active_added.Designer.cs">
       <DependentUpon>201408150907292_ST_active_added.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201408251222297_topic_Push_added.cs" />
+    <Compile Include="Migrations\201408251222297_topic_Push_added.Designer.cs">
+      <DependentUpon>201408251222297_topic_Push_added.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Assignment.cs" />
     <Compile Include="Models\Attachment.cs" />
     <Compile Include="Models\Comment.cs" />
     <Compile Include="Models\Decision.cs" />
+    <Compile Include="Models\PushNotification.cs" />
     <Compile Include="Models\SessionReport.cs" />
     <Compile Include="Models\TopicHistory.cs" />
     <Compile Include="Models\TopicLock.cs" />
@@ -597,6 +603,7 @@
     <Content Include="Views\Attachments\_NameDisplay.cshtml" />
     <Content Include="Views\UserMailer\NewSessionReport.cshtml" />
     <Content Include="Views\Attachments\Details.cshtml" />
+    <Content Include="Views\Push\_EditListTopic.cshtml" />
     <None Include="Web.Integration.config" />
     <None Include="Web.Testing.config" />
   </ItemGroup>
@@ -672,6 +679,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201408150907292_ST_active_added.resx">
       <DependentUpon>201408150907292_ST_active_added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201408251222297_topic_Push_added.resx">
+      <DependentUpon>201408251222297_topic_Push_added.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

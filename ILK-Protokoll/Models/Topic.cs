@@ -63,6 +63,9 @@ namespace ILK_Protokoll.Models
 		[Display(Name = "Stimmen")]
 		public virtual ICollection<Vote> Votes { get; set; }
 
+		[Display(Name = "Zur Kentnisnahme pushen an")]
+		public virtual ICollection<PushNotification> PushTargets { get; set; }
+
 		[Display(Name = "Aufgaben")]
 		public virtual ICollection<Assignment> Assignments { get; set; }
 
