@@ -69,7 +69,7 @@
 <div class="row" id="topicsContainer">
 	@foreach (Topic t in Model.MyTopics)
 	{
-		<div class="col-lg-6 col-md-12">
+		<div class="col-lg-6 col-md-12 masonry-item">
 			@{ Html.RenderPartial("~/Views/Topics/_Topic.cshtml", t); }
 		</div>
 	}
@@ -79,7 +79,7 @@
 {
 	<script type="text/javascript">
 		var msnry = new Masonry('#topicsContainer', {
-			itemSelector: '.col-lg-6',
+			itemSelector: '.masonry-item',
 			resizeable: true,
 		});
 	</script>

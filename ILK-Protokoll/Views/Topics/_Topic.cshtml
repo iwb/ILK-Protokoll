@@ -1,4 +1,5 @@
 ﻿@using ILK_Protokoll.Models
+@using ILK_Protokoll.util
 @model ILK_Protokoll.Models.Topic
 
 <div class="panel panel-primary topic-panel">
@@ -56,7 +57,7 @@
 	<div class="panel panel-primary">
 		<div class="panel-heading panel-collapse-heading" style="position: relative;">
 			<h4 class="panel-title">
-				<a onclick="$('#comments_@Model.ID').toggle('fast', function() { if(typeof msnry !== 'undefined') { msnry.layout(); } });" class="@classA">
+				<a onclick="toggleComments(this, '#comments_@Model.ID')" class="@classA">
 					@if (@Model.Comments.Count == 0)
 					{
 						@:Keine Kommentare
@@ -89,3 +90,23 @@
 		}
 	</div>
 </div>
+
+@using (Html.Delayed(null, "CollapseComments"))
+{
+	<script type="text/javascript">
+		function toggleComments(sender, selector) {
+
+			if ($(sender).hasClass("collapsed")) { // Ausklappen
+				$(selector).show(); // Workaround, damit sich die GUI-Elemente nicht während der Animation überlappen
+				msnry.layout();
+				$(selector).hide();
+
+				$(selector).slideDown(400, "easeOutQuad", function () { if (typeof msnry !== 'undefined') { msnry.layout(); } });
+				$(sender).removeClass("collapsed");
+			} else { // Einklappen
+				$(selector).slideUp(400, "easeOutQuad", function () { if (typeof msnry !== 'undefined') { msnry.layout(); } });
+				$(sender).addClass("collapsed");
+			}
+		}
+	</script>
+}
