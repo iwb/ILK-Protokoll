@@ -154,6 +154,17 @@
 	</div>
 }
 
+
+<div class="panel panel-primary" style="background-color: #DDD">
+	<div class="panel-heading">
+		<h3 class="panel-title">@Html.DisplayNameFor(model => model.Votes)</h3>
+	</div>
+	<div class="panel-body" id="auditorlist_@Model.ID">
+		@Html.Action("_List", "Votes", new { topic = Model, linkAllAuditors = true })
+	</div>
+</div>
+
+
 @if (hasDecision)
 {
 	<div class="panel panel-primary">
@@ -176,16 +187,6 @@ else
 		</div>
 	</div>
 }
-
-
-<div class="panel panel-primary" style="background-color: #DDD">
-	<div class="panel-heading">
-		<h3 class="panel-title">@Html.DisplayNameFor(model => model.Votes)</h3>
-	</div>
-	<div class="panel-body" id="auditorlist_@Model.ID">
-		@Html.Action("_List", "Votes", new { topic = Model, linkAllAuditors = true })
-	</div>
-</div>
 
 <div class="panel panel-primary comment-panel">
 	<div class="panel-heading">
