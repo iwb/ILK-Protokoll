@@ -92,8 +92,13 @@
 	</div>
 </div>
 
+@{
+	bool hasDecision = Model.Decision != null;
+	string descClass = hasDecision ? "col-md-12" : "col-md-6";
+}
+
 <div class="row">
-	<div class="col-md-6">
+	<div class="@descClass">
 		<div class="panel panel-primary">
 			<div class="panel-heading">
 				<h3 class="panel-title">@Html.DisplayNameFor(model => model.Description)</h3>
@@ -103,20 +108,24 @@
 			</div>
 		</div>
 	</div>
-
-	<div class="col-md-6">
-		<div class="panel panel-primary">
-			<div class="panel-heading">
-				<h3 class="panel-title">@Html.DisplayNameFor(model => model.Proposal)</h3>
-			</div>
-			<div class="panel-body">
-				@Html.DisplayFor(model => model.Proposal, "String_Multiline")
+	@if (!hasDecision)
+	{
+		<div class="col-md-6">
+			<div class="panel panel-primary">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+						@Html.DisplayNameFor(model => model.Proposal)
+					</h3>
+				</div>
+				<div class="panel-body">
+					@Html.DisplayFor(model => model.Proposal, "String_Multiline")
+				</div>
 			</div>
 		</div>
-	</div>
+	}
 </div>
 
-@if (Model.Decision != null)
+@if (hasDecision)
 {
 	string classname = "panel-primary";
 	if (Model.Decision.Type == DecisionType.Closed)
@@ -132,8 +141,15 @@
 		<div class="panel-heading">
 			<h3 class="panel-title">@Model.Decision.Type.DisplayName()</h3>
 		</div>
-		<div class="panel-body" id="auditorlist_@Model.ID">
-			@Html.ActionLink("Sitzungsprotokoll", "Details", "SessionReports", new {id = Model.Decision.Report.ID}, new {target = "pdfreport"}) vom @Model.Decision.Report.End.ToString("d")
+		<div class="panel-body">
+			@Html.DisplayFor(model => model.Decision.Text, "String_Multiline")
+		</div>
+		<div class="panel-footer">
+			@Html.ActionLink("Sitzungsprotokoll vom " + Model.Decision.Report.End.ToString("d"),
+			"Details",
+			"SessionReports",
+			new { id = Model.Decision.Report.ID },
+			new { target = "pdfreport" })
 		</div>
 	</div>
 }
@@ -143,7 +159,7 @@
 		<h3 class="panel-title">@Html.DisplayNameFor(model => model.PushTargets)</h3>
 	</div>
 	<div class="panel-body" id="pushlist_@Model.ID">
-		@Html.Action("_EditListTopic", "Push", new {topic = Model})
+		@Html.Action("_EditListTopic", "Push", new { topic = Model })
 	</div>
 </div>
 
@@ -152,7 +168,7 @@
 		<h3 class="panel-title">@Html.DisplayNameFor(model => model.Votes)</h3>
 	</div>
 	<div class="panel-body" id="auditorlist_@Model.ID">
-		@Html.Action("_List", "Votes", new {topic = Model, linkAllAuditors = true})
+		@Html.Action("_List", "Votes", new { topic = Model, linkAllAuditors = true })
 	</div>
 </div>
 
@@ -198,7 +214,7 @@
 			}
 			else if (!ViewBag.Reporting)
 			{
-				@Html.ActionLink("Neue Aufgabe erstellen", "Create", "Assignments", new {topicID = Model.ID}, null)
+				@Html.ActionLink("Neue Aufgabe erstellen", "Create", "Assignments", new { topicID = Model.ID }, null)
 			}
 		</div>
 	}
@@ -217,11 +233,11 @@
 			}
 			else
 			{
-				@Html.Action("_List", "Attachments", new {entity = AttachmentContainer.Topic, id = Model.ID})
+				@Html.Action("_List", "Attachments", new { entity = AttachmentContainer.Topic, id = Model.ID })
 			}
 			@if (!ViewBag.Reporting && !Model.IsReadOnly)
 			{
-				@Html.Action("_UploadForm", "Attachments", new {entity = AttachmentContainer.Topic, id = Model.ID})
+				@Html.Action("_UploadForm", "Attachments", new { entity = AttachmentContainer.Topic, id = Model.ID })
 			}
 		</div>
 	</div>
