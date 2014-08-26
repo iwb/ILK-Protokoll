@@ -56,7 +56,7 @@
 	<div class="panel panel-primary">
 		<div class="panel-heading panel-collapse-heading" style="position: relative;">
 			<h4 class="panel-title">
-				<a onclick="$('#comments_@Model.ID').toggle('fast', function() { msnry.layout(); });" class="@classA">
+				<a onclick="$('#comments_@Model.ID').toggle('fast', function() { if(typeof msnry !== 'undefined') { msnry.layout(); } });" class="@classA">
 					@if (@Model.Comments.Count == 0)
 					{
 						@:Keine Kommentare
