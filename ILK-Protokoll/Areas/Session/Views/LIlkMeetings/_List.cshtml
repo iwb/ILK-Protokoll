@@ -1,42 +1,52 @@
 ﻿@using ILK_Protokoll.util
 @model IEnumerable<ILK_Protokoll.Areas.Session.Models.Lists.IlkMeeting>
 
-<h3>ILK-Regeltermine</h3>
-
-<table id="ilkMeeting_table" class="table table-striped table-hover table-sortable">
-	<thead>
-		<tr>
-			<th class="col-sm-2">
-				@Html.DisplayNameFor(model => model.Start)
-			</th>
-			<th class="col-sm-2">
-				@Html.DisplayNameFor(model => model.Place)
-			</th>
-			<th class="col-sm-2">
-				@Html.DisplayNameFor(model => model.SessionType)
-			</th>
-			<th class="col-sm-2">
-				@Html.DisplayNameFor(model => model.Organizer)
-			</th>
-			<th class="col-sm-3">
-				@Html.DisplayNameFor(model => model.Comments)
-			</th>
-			<th class="col-sm-1"></th>
-		</tr>
-	</thead>
-	<tbody id="ilkMeeting_tbody">
-		@foreach (var item in Model)
-		{
-			Html.RenderPartial("_Row", item);
-		}
-	</tbody>
-	<tfoot>
-		@if (!ViewBag.Reporting)
-		{
-			@Html.Action("_CreateForm", "LIlkMeetings")
-		}
-	</tfoot>
-</table>
+<div class="panel panel-primary">
+	<div class="panel-heading panel-collapse-heading" style="position: relative;">
+		<h3 class="panel-title">
+			<a data-toggle="collapse" data-target="#ilkMeeting_table_container">
+				ILK-Regeltermine
+				<span class="divlink"></span>
+			</a>
+		</h3>
+	</div>
+	<div class="panel-collapse collapse in" id="ilkMeeting_table_container">
+		<table id="ilkMeeting_table" class="table table-striped table-hover table-sortable">
+			<thead>
+				<tr>
+					<th class="col-sm-2">
+						@Html.DisplayNameFor(model => model.Start)
+					</th>
+					<th class="col-sm-2">
+						@Html.DisplayNameFor(model => model.Place)
+					</th>
+					<th class="col-sm-2">
+						@Html.DisplayNameFor(model => model.SessionType)
+					</th>
+					<th class="col-sm-2">
+						@Html.DisplayNameFor(model => model.Organizer)
+					</th>
+					<th class="col-sm-3">
+						@Html.DisplayNameFor(model => model.Comments)
+					</th>
+					<th class="col-sm-1"></th>
+				</tr>
+			</thead>
+			<tbody id="ilkMeeting_tbody">
+				@foreach (var item in Model)
+				{
+					Html.RenderPartial("_Row", item);
+				}
+			</tbody>
+			<tfoot>
+				@if (!ViewBag.Reporting)
+				{
+					@Html.Action("_CreateForm", "LIlkMeetings")
+				}
+			</tfoot>
+		</table>
+	</div>
+</div>
 
 @using (Html.Delayed(null, "List_Utilities"))
 {

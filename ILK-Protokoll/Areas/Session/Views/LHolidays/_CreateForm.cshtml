@@ -6,7 +6,7 @@
 		{
 			HttpMethod = "POST",
 			OnSuccess = "AddRow('Holiday', data);",
-			OnFailure = "DisplayErrorMessage('#Holiday_table', '<br />' + xhr.responseText);"
+			OnFailure = "DisplayErrorMessage('#Holiday_form', '<br />' + xhr.responseText);"
 		}, new {@class = "tableform", id = "Holiday_form"}))
 		{
 			@Html.AntiForgeryToken()

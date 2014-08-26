@@ -6,7 +6,7 @@
 		{
 			HttpMethod = "POST",
 			OnSuccess = "AddRow('ilkMeeting', data);",
-			OnFailure = "DisplayErrorMessage('#ilkMeeting_table', '<br />' + xhr.responseText);"
+			OnFailure = "DisplayErrorMessage('#ilkMeeting_form', '<br />' + xhr.responseText);"
 		}, new {@class = "tableform", id = "ilkMeeting_form"}))
 		{
 			@Html.AntiForgeryToken()

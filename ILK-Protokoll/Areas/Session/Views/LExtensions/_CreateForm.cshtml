@@ -6,7 +6,7 @@
 		{
 			HttpMethod = "POST",
 			OnSuccess = "AddRow('extension', data);",
-			OnFailure = "DisplayErrorMessage('#extension_table', '<br />' + xhr.responseText);"
+			OnFailure = "DisplayErrorMessage('#extension_form', '<br />' + xhr.responseText);"
 		}, new {@class = "tableform", id = "extension_form"}))
 		{
 			@Html.AntiForgeryToken()
