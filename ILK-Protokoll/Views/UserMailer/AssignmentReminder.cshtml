@@ -1,4 +1,5 @@
 @using ILK_Protokoll.Models
+@using ILK_Protokoll.util
 @{
 	var user = (User)ViewBag.User;
 	var assignment = (Assignment)ViewBag.Assignment;
@@ -39,7 +40,7 @@
 			Typ:
 		</dt>
 		<dd>
-			@assignment.Type
+			@assignment.Type.DisplayName()
 		</dd>
 
 		<dt>
