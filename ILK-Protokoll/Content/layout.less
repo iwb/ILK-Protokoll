@@ -68,11 +68,11 @@ input.check-box {
 	background-repeat: no-repeat;
 }
 
-.navbar .iwblogo {	
+.navbar .iwblogo {
 	background-image: url("../img/iwbLogo.png");
 }
 
-.navbar-inverse .iwblogo {	
+.navbar-inverse .iwblogo {
 	background-image: url("../img/iwbLogo_inv.png");
 }
 
@@ -239,7 +239,7 @@ a:hover {
 	font-size: 18px;
 }
 
-.comment-panel{
+.comment-panel {
 	background-color: @gray-light;
 }
 
@@ -530,22 +530,23 @@ dl {
 
 // Hover color buttons
 .btn-hover-primary {
-  .button-hover-variant(@btn-primary-color; @btn-primary-bg; @btn-primary-border);
+	.button-hover-variant(@btn-primary-color; @btn-primary-bg; @btn-primary-border);
 }
+
 .btn-hover-success {
-  .button-hover-variant(@btn-success-color; @btn-success-bg; @btn-success-border);
+	.button-hover-variant(@btn-success-color; @btn-success-bg; @btn-success-border);
 }
 // Info appears as blue-green
 .btn-hover-info {
-  .button-hover-variant(@btn-info-color; @btn-info-bg; @btn-info-border);
+	.button-hover-variant(@btn-info-color; @btn-info-bg; @btn-info-border);
 }
 // Warning appears as orange
 .btn-hover-warning {
-  .button-hover-variant(@btn-warning-color; @btn-warning-bg; @btn-warning-border);
+	.button-hover-variant(@btn-warning-color; @btn-warning-bg; @btn-warning-border);
 }
 // Danger and error appear as red
 .btn-hover-danger {
-  .button-hover-variant(@btn-danger-color; @btn-danger-bg; @btn-danger-border);
+	.button-hover-variant(@btn-danger-color; @btn-danger-bg; @btn-danger-border);
 }
 
 .buttongroup {
@@ -553,13 +554,18 @@ dl {
 	background-color: @gray-lighter;
 	margin-bottom: -@border-radius-base;
 	margin-top: 35px;
-	border:#000 1px solid;
-	border-top-left-radius: @border-radius-base+5px; 
+	border: #000 1px solid;
+	border-top-left-radius: @border-radius-base+5px;
 }
 
 .buttongroup + div {
 	border-top-left-radius: 0;
 	border-top-right-radius: 0;
+}
+
+.alert {
+	margin-bottom: @line-height-computed / 2;
+	margin-top: @line-height-computed / 2;
 }
 
 /*IE-Hack*/
@@ -572,7 +578,8 @@ dl {
 	input[type=date] {
 		padding: 0 @padding-base-horizontal;
 	}
+
 	input[type=time] {
-    padding: 0 @padding-base-horizontal;
-  }
+		padding: 0 @padding-base-horizontal;
+	}
 }

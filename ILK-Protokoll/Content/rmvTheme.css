@@ -6797,6 +6797,10 @@ fieldset[disabled] .btn-hover-danger.active {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
+.alert {
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
 /*IE-Hack*/
 @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
   /* IE10+ specific styles */
