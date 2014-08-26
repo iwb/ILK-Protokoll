@@ -6798,7 +6798,7 @@ fieldset[disabled] .btn-hover-danger.active {
   border-top-right-radius: 0;
 }
 .alert {
-  margin-bottom: 10px;
+  margin-bottom: 0;
   margin-top: 10px;
 }
 /*IE-Hack*/
