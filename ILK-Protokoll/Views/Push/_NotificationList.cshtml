@@ -17,7 +17,7 @@
 		@foreach (var item in Model)
 		{
 			<tr id="notification_@item.ID">
-				<td style="position: relative;">
+				<td>
 					@Html.ActionLink(item.Topic.Title.Shorten(80), "Details", "Topics", new {id = item.TopicID}, null)
 				</td>
 				<td class="shorten">
