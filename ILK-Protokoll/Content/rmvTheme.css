@@ -1157,10 +1157,10 @@ a.text-info:hover {
   color: #00614c;
 }
 .text-warning {
-  color: #c09853;
+  color: #be7821;
 }
 a.text-warning:hover {
-  color: #a47e3c;
+  color: #935d1a;
 }
 .text-danger {
   color: #96032a;
@@ -1176,10 +1176,10 @@ a.bg-primary:hover {
   background-color: #00614c;
 }
 .bg-success {
-  background-color: #dff0d8;
+  background-color: #cce2ab;
 }
 a.bg-success:hover {
-  background-color: #c1e2b3;
+  background-color: #b4d585;
 }
 .bg-info {
   background-color: #d9edf7;
@@ -2156,14 +2156,14 @@ table th[class*="col-"] {
 .table > thead > tr.success > th,
 .table > tbody > tr.success > th,
 .table > tfoot > tr.success > th {
-  background-color: #dff0d8;
+  background-color: #cce2ab;
 }
 .table-hover > tbody > tr > td.success:hover,
 .table-hover > tbody > tr > th.success:hover,
 .table-hover > tbody > tr.success:hover > td,
 .table-hover > tbody > tr:hover > .success,
 .table-hover > tbody > tr.success:hover > th {
-  background-color: #d0e9c6;
+  background-color: #c0db98;
 }
 .table > thead > tr > td.info,
 .table > tbody > tr > td.info,
@@ -2554,7 +2554,7 @@ select[multiple].input-lg {
 .has-success .input-group-addon {
   color: #476121;
   border-color: #476121;
-  background-color: #dff0d8;
+  background-color: #cce2ab;
 }
 .has-success .form-control-feedback {
   color: #476121;
@@ -2565,25 +2565,25 @@ select[multiple].input-lg {
 .has-warning .checkbox,
 .has-warning .radio-inline,
 .has-warning .checkbox-inline {
-  color: #c09853;
+  color: #be7821;
 }
 .has-warning .form-control {
-  border-color: #c09853;
+  border-color: #be7821;
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
 }
 .has-warning .form-control:focus {
-  border-color: #a47e3c;
-  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #dbc59e;
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #dbc59e;
+  border-color: #935d1a;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #e4aa62;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #e4aa62;
 }
 .has-warning .input-group-addon {
-  color: #c09853;
-  border-color: #c09853;
+  color: #be7821;
+  border-color: #be7821;
   background-color: #e7b678;
 }
 .has-warning .form-control-feedback {
-  color: #c09853;
+  color: #be7821;
 }
 .has-error .help-block,
 .has-error .control-label,
@@ -4619,12 +4619,12 @@ a.thumbnail.active {
   color: inherit;
 }
 .alert-success {
-  background-color: #dff0d8;
-  border-color: #d6e9c6;
+  background-color: #cce2ab;
+  border-color: #cbdb98;
   color: #476121;
 }
 .alert-success hr {
-  border-top-color: #c9e2b3;
+  border-top-color: #c2d585;
 }
 .alert-success .alert-link {
   color: #2b3b14;
@@ -4643,13 +4643,13 @@ a.thumbnail.active {
 .alert-warning {
   background-color: #e7b678;
   border-color: #e59a6b;
-  color: #c09853;
+  color: #be7821;
 }
 .alert-warning hr {
   border-top-color: #e18b55;
 }
 .alert-warning .alert-link {
-  color: #a47e3c;
+  color: #935d1a;
 }
 .alert-danger {
   background-color: #df9aad;
@@ -4867,7 +4867,7 @@ a.list-group-item:focus {
 }
 .list-group-item-success {
   color: #476121;
-  background-color: #dff0d8;
+  background-color: #cce2ab;
 }
 a.list-group-item-success {
   color: #476121;
@@ -4878,7 +4878,7 @@ a.list-group-item-success .list-group-item-heading {
 a.list-group-item-success:hover,
 a.list-group-item-success:focus {
   color: #476121;
-  background-color: #d0e9c6;
+  background-color: #c0db98;
 }
 a.list-group-item-success.active,
 a.list-group-item-success.active:hover,
@@ -4910,26 +4910,26 @@ a.list-group-item-info.active:focus {
   border-color: #009474;
 }
 .list-group-item-warning {
-  color: #c09853;
+  color: #be7821;
   background-color: #e7b678;
 }
 a.list-group-item-warning {
-  color: #c09853;
+  color: #be7821;
 }
 a.list-group-item-warning .list-group-item-heading {
   color: inherit;
 }
 a.list-group-item-warning:hover,
 a.list-group-item-warning:focus {
-  color: #c09853;
+  color: #be7821;
   background-color: #e4aa62;
 }
 a.list-group-item-warning.active,
 a.list-group-item-warning.active:hover,
 a.list-group-item-warning.active:focus {
   color: #fff;
-  background-color: #c09853;
-  border-color: #c09853;
+  background-color: #be7821;
+  border-color: #be7821;
 }
 .list-group-item-danger {
   color: #96032a;
@@ -6339,7 +6339,7 @@ a:hover {
 .userlist > li .glyphicon-ok-sign,
 .userlist > li .glyphicon-ok,
 .votelink > .glyphicon-ok-sign {
-  color: #98c556;
+  color: #719a35;
 }
 .userlist > li .glyphicon-question-sign,
 .votelink > .glyphicon-question-sign {
