@@ -154,14 +154,29 @@
 	</div>
 }
 
-<div class="panel panel-primary">
-	<div class="panel-heading">
-		<h3 class="panel-title">@Html.DisplayNameFor(model => model.PushTargets)</h3>
+@if (hasDecision)
+{
+	<div class="panel panel-primary">
+		<div class="panel-heading">
+			<h3 class="panel-title">Gelesene Push-Benachrichtigungen</h3>
+		</div>
+		<div class="panel-body" id="pushlist_@Model.ID">
+			@Html.Action("_DisplayListTopic", "Push", new { topic = Model })
+		</div>
 	</div>
-	<div class="panel-body" id="pushlist_@Model.ID">
-		@Html.Action("_EditListTopic", "Push", new { topic = Model })
+}
+else
+{
+	<div class="panel panel-primary">
+		<div class="panel-heading">
+			<h3 class="panel-title">@Html.DisplayNameFor(model => model.PushTargets)</h3>
+		</div>
+		<div class="panel-body" id="pushlist_@Model.ID">
+			@Html.Action("_EditListTopic", "Push", new { topic = Model })
+		</div>
 	</div>
-</div>
+}
+
 
 <div class="panel panel-primary" style="background-color: #DDD">
 	<div class="panel-heading">

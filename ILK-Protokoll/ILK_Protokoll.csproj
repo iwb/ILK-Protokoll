@@ -605,6 +605,7 @@
     <Content Include="Views\Attachments\Details.cshtml" />
     <Content Include="Views\Push\_EditListTopic.cshtml" />
     <Content Include="Views\Push\_NotificationList.cshtml" />
+    <Content Include="Views\Push\_DisplayListTopic.cshtml" />
     <None Include="Web.Integration.config" />
     <None Include="Web.Testing.config" />
   </ItemGroup>
