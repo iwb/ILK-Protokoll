@@ -1,0 +1,51 @@
+﻿@using ILK_Protokoll.util
+@model IEnumerable<ILK_Protokoll.Models.PushNotification>
+			 
+<table class="table table-striped table-hover table-sortable">
+	<thead>
+		<tr>
+			<th class="col-xs-3">
+				@Html.DisplayNameFor(model => model.Topic)
+			</th>
+			<th class="col-xs-8">
+				@Html.DisplayNameFor(model => model.Topic.Decision.Text)
+			</th>
+			<th class="col-xs-1"></th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model)
+		{
+			<tr id="notification_@item.ID">
+				<td>
+					@Html.ActionLink(item.Topic.Title.Shorten(80), "Details", "Topics", new {id = item.TopicID}, null)
+				</td>
+				<td>
+					@item.Topic.Decision.Text.Shorten(240)
+				</td>
+				<td>
+					@Ajax.ActionLink("Bestätigen",
+					"_ConfirmRead",
+					"Push",
+					new { id = item.ID },
+					new AjaxOptions { HttpMethod = "POST", OnSuccess = "removeNotification('#notification_" + item.ID + "');" },
+				 new { @class = "btn btn-success", title = "Die Nachricht wird als gelesen markiert." })
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>
+
+@using (Html.Delayed())
+{
+	<script type="text/javascript">
+		function removeNotification(element) {
+			if ($(element).siblings().length == 0) {
+				$(element).parent().parent().replaceWith("<div class=\"panel-body\">Es sind keine Push-Benachrichtigungen vorhanden.</div>"); // Remove the whole table
+			} else {
+				$(element).remove();
+				$("table.table-sortable").trigger("update");
+			}
+		}
+	</script>
+}

@@ -8,14 +8,20 @@
 
 @Html.ActionLink("Sitzungsmodus", "Index", "Master", new { Area = "Session" }, new { @class = "index-action btn btn-primary" })
 
-<h2>Push-Benarchichtigungen</h2>
+<h2>Push-Benachrichtigungen</h2>
 <div class="row">
-	<div class="col-lg-6">
+	<div class="col-lg-12">
 		<div class="panel panel-primary">
-			<div class="panel-heading">
-				<h3 class="panel-title">Test</h3>
-			</div>
-			wow
+			@if (Model.Notifications.Any())
+			{
+				Html.RenderPartial("~/Views/Push/_NotificationList.cshtml", Model.Notifications);
+			}
+			else
+			{
+				<div class="panel-body">
+					Es sind keine Push-Benachrichtigungen vorhanden.
+				</div>
+			}
 		</div>
 	</div>
 </div>

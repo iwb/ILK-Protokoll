@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using ILK_Protokoll.Models;
@@ -20,7 +21,7 @@ namespace ILK_Protokoll.Controllers
 
 			 return PartialView("_EditListTopic", pushlist);
 		 }
-		 public object _RegisterPushTargets(int topicID, Dictionary<int, bool> users)
+		 public PartialViewResult _RegisterPushTargets(int topicID, Dictionary<int, bool> users)
 		 {
 			 var desired = new HashSet<int>(users.Where(kvp => kvp.Value).Select(kvp => kvp.Key));
 			 var actual = new HashSet<int>(db.PushNotifications.Where(pn => pn.TopicID == topicID).Select(pn => pn.UserID));
@@ -38,6 +39,14 @@ namespace ILK_Protokoll.Controllers
 			 db.SaveChanges();
 
 			 return _EditListTopic(db.Topics.Find(topicID));
+		 }
+
+		 public ActionResult _ConfirmRead(int id)
+		 {
+			 var pn = db.PushNotifications.Find(id);
+			 pn.Confirmed = true;
+			 db.SaveChanges();
+			 return new HttpStatusCodeResult(HttpStatusCode.NoContent);
 		 }
     }
 }
