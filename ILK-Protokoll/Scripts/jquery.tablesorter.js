@@ -301,7 +301,7 @@
 					if (!node) return "";
 
 					if (!config.supportsTextContent) config.supportsTextContent = node.textContent || false;
-					
+
 					if (config.textExtraction == "simple") {
 						// Parsing for relative time information within a time-tag
 						if (node.firstElementChild && node.firstElementChild.tagName == "TIME" && node.firstElementChild.hasAttribute("datetime")) {
@@ -318,7 +318,7 @@
 							}
 						}
 					} else {
-						if (typeof(config.textExtraction) == "function") {
+						if (typeof (config.textExtraction) == "function") {
 							text = config.textExtraction(node);
 						} else {
 							text = $(node).text();
@@ -442,19 +442,19 @@
 							var rowSpan = c.rowSpan || 1;
 							var colSpan = c.colSpan || 1;
 							var firstAvailCol;
-							if (typeof(matrix[rowIndex]) == "undefined") {
+							if (typeof (matrix[rowIndex]) == "undefined") {
 								matrix[rowIndex] = [];
 							}
 							// Find first available column in the first row
 							for (var k = 0; k < matrix[rowIndex].length + 1; k++) {
-								if (typeof(matrix[rowIndex][k]) == "undefined") {
+								if (typeof (matrix[rowIndex][k]) == "undefined") {
 									firstAvailCol = k;
 									break;
 								}
 							}
 							lookup[cellId] = firstAvailCol;
 							for (var k = rowIndex; k < rowIndex + rowSpan; k++) {
-								if (typeof(matrix[k]) == "undefined") {
+								if (typeof (matrix[k]) == "undefined") {
 									matrix[k] = [];
 								}
 								var matrixrow = matrix[k];
@@ -526,7 +526,7 @@
 				};
 
 				function formatSortingOrder(v) {
-					if (typeof(v) != "Number") {
+					if (typeof (v) != "Number") {
 						return (v.toLowerCase() == "desc") ? 1 : 0;
 					} else {
 						return (v == 1) ? 1 : 0;
@@ -984,17 +984,16 @@
 
 			if (isUS) {
 				s = s.replace(/(\d{1,2})\/(\d{1,2})\/(\d{2,4})/, "$3-$1-$2");
-			}
-			else if (isDE) {
+			} else if (isDE) {
 				s = s.replace(/(\d{1,2})[.\-](\d{1,2})[.\-](\d{2,4})/, "$3-$2-$1");
-				
+
 			} else if (isISO) {
 				// Everything okay
 			} else {
 				return $.tablesorter.formatFloat(new Date(s.trim()).getTime());
 			}
-			
-			s = s.replace(/\D(\d{2})-(\d{1,2})-(\d{1,2})/, "20$1-$2-$3").trim();
+
+			s = "20" + s.trim().match(/(\d{2})-(\d{1,2})-(\d{1,2})/)[0];
 			return $.tablesorter.formatFloat(new Date(s).getTime());
 		},
 		type: "numeric"
