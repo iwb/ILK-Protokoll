@@ -49,10 +49,10 @@ namespace ILK_Protokoll.Controllers
 			User voter = db.Users.Find(voterID);
 			db.Votes.Single(v => v.Voter.ID == voter.ID && v.Topic.ID == topicID).Kind = vote;
 
-			string message = string.Format("In Vertretung für {0} abgestimmt mit \"{1}\".", voter.ShortName,
+			string message = string.Format("{0} hat in Vertretung für {1} abgestimmt mit \"{2}\".", GetCurrentUser().ShortName, voter.ShortName,
 				vote.GetDescription());
 
-			db.Comments.Add(new Comment {Author = GetCurrentUser(), TopicID = topicID, Content = message});
+			db.Comments.Add(new Comment { Author = db.Users.Find(voterID), TopicID = topicID, Content = message });
 			db.SaveChanges();
 			return _List(db.Topics.Find(topicID), linkAllAuditors);
 		}
