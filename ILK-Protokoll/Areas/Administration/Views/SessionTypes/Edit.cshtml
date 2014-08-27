@@ -7,6 +7,9 @@
 
 <h2>@ViewBag.Title</h2>
 
+<div>
+	@Html.ActionLink("Zurück zum Index", "Index")
+</div>
 
 @using (Html.BeginForm())
 {
@@ -58,10 +61,6 @@
 		</div>
 	</div>
 }
-
-<div>
-	@Html.ActionLink("Back to List", "Index")
-</div>
 
 @section Scripts {
 	@Scripts.Render("~/bundles/jqueryval")
