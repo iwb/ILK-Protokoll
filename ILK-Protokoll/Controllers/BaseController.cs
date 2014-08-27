@@ -21,6 +21,11 @@ namespace ILK_Protokoll.Controllers
 
 		protected User _CurrentUser;
 
+		public BaseController()
+		{
+			db.Database.Initialize(false);
+		}
+
 		protected override void OnActionExecuting(ActionExecutingContext filterContext)
 		{
 			base.OnActionExecuting(filterContext);
