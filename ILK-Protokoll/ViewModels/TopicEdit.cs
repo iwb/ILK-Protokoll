@@ -37,6 +37,10 @@ namespace ILK_Protokoll.ViewModels
 		[Required]
 		public string Title { get; set; }
 
+		[Display(Name = "Uhrzeit")]
+		[DisplayFormat(ConvertEmptyStringToNull = false)]
+		public string Time { get; set; }
+
 		[Display(Name = "Beschreibung")]
 		[DataType(DataType.MultilineText)]
 		[Required]
@@ -66,6 +70,7 @@ namespace ILK_Protokoll.ViewModels
 				TargetSessionType = t.TargetSessionType,
 				TargetSessionTypeID = t.TargetSessionTypeID,
 				Title = t.Title,
+				Time = t.Time,
 			};
 		}
 	}

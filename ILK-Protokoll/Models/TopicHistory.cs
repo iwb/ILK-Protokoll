@@ -17,6 +17,9 @@ namespace ILK_Protokoll.Models
 		[Required]
 		public string Title { get; set; }
 
+		[Required(AllowEmptyStrings = true)]
+		public string Time { get; set; }
+
 		[Required]
 		public string Description { get; set; }
 
@@ -28,6 +31,8 @@ namespace ILK_Protokoll.Models
 
 		[Required]
 		public int SessionTypeID { get; set; }
+
+		public int? TargetSessionTypeID { get; set; }
 
 		[Required]
 		public Priority Priority { get; set; }
@@ -45,10 +50,12 @@ namespace ILK_Protokoll.Models
 				TopicID = t.ID,
 				EditorID = editorID,
 				Title = t.Title,
+				Time = t.Time,
 				Description = t.Description,
 				Proposal = t.Proposal,
 				OwnerID = t.OwnerID,
 				SessionTypeID = t.SessionTypeID,
+				TargetSessionTypeID = t.TargetSessionTypeID,
 				Priority = t.Priority,
 				ValidFrom = t.ValidFrom,
 				ValidUntil = DateTime.Now

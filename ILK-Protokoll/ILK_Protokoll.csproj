@@ -277,6 +277,18 @@
     <Compile Include="Migrations\201408251222297_topic_Push_added.Designer.cs">
       <DependentUpon>201408251222297_topic_Push_added.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201408271506049_topic_time_added.cs" />
+    <Compile Include="Migrations\201408271506049_topic_time_added.Designer.cs">
+      <DependentUpon>201408271506049_topic_time_added.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201408271515005_topichistory_time_added.cs" />
+    <Compile Include="Migrations\201408271515005_topichistory_time_added.Designer.cs">
+      <DependentUpon>201408271515005_topichistory_time_added.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201408271553214_topichistory_targetsession_added.cs" />
+    <Compile Include="Migrations\201408271553214_topichistory_targetsession_added.Designer.cs">
+      <DependentUpon>201408271553214_topichistory_targetsession_added.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Assignment.cs" />
     <Compile Include="Models\Attachment.cs" />
@@ -682,6 +694,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201408251222297_topic_Push_added.resx">
       <DependentUpon>201408251222297_topic_Push_added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201408271506049_topic_time_added.resx">
+      <DependentUpon>201408271506049_topic_time_added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201408271515005_topichistory_time_added.resx">
+      <DependentUpon>201408271515005_topichistory_time_added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201408271553214_topichistory_targetsession_added.resx">
+      <DependentUpon>201408271553214_topichistory_targetsession_added.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

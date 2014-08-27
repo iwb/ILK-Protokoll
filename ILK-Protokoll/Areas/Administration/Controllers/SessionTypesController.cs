@@ -91,12 +91,13 @@ namespace ILK_Protokoll.Areas.Administration.Controllers
 		// POST: Administration/SessionTypes/Edit/5
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public ActionResult Edit([Bind(Include = "ID,Name")] SessionType input, IEnumerable<int> Attendees)
+		public ActionResult Edit([Bind(Include = "ID,Name,Active")] SessionType input, IEnumerable<int> Attendees)
 		{
 			if (ModelState.IsValid)
 			{
 				var sessionType = db.SessionTypes.Find(input.ID);
 				sessionType.Name = input.Name;
+				sessionType.Active = input.Active;
 				sessionType.Attendees.Clear();
 
 				if (Attendees != null)

@@ -47,6 +47,10 @@ namespace ILK_Protokoll.Models
 		[Required]
 		public string Title { get; set; }
 
+		[Display(Name = "Uhrzeit")]
+		[Required(AllowEmptyStrings = true)]
+		public string Time { get; set; }
+
 		[Display(Name = "Beschreibung")]
 		[DataType(DataType.MultilineText)]
 		[Required]
@@ -138,22 +142,8 @@ namespace ILK_Protokoll.Models
 			Priority = updates.Priority;
 			Proposal = updates.Proposal;
 			Title = updates.Title;
+			Time = updates.Time;
 			ValidFrom = DateTime.Now;
-		}
-
-		public void IncorporateHistory(TopicHistory history)
-		{
-			if (IsReadOnly)
-				throw new InvalidOperationException("Diese Diskussion ist beendet und kann daher nicht bearbeitet werden.");
-			// ReSharper disable DoNotCallOverridableMethodsInConstructor
-			Description = history.Description;
-			OwnerID = history.OwnerID;
-			Proposal = history.Proposal;
-			SessionTypeID = history.SessionTypeID;
-			Priority = history.Priority;
-			Title = history.Title;
-			ValidFrom = history.ValidFrom;
-			// ReSharper restore DoNotCallOverridableMethodsInConstructor
 		}
 	}
 

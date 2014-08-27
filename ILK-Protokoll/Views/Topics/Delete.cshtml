@@ -11,62 +11,45 @@
 	<h4>Topic</h4>
 	<hr />
 	<dl class="dl-horizontal">
-		<dt>
-			@Html.DisplayNameFor(model => model.SessionTypeID)
-		</dt>
-
+		<dt>@Html.DisplayNameFor(model => model.SessionTypeID)</dt>
 		<dd>
 			@Html.DisplayFor(model => model.SessionType.Name)
 		</dd>
 
-		<dt>
-			@Html.DisplayNameFor(model => model.Title)
-		</dt>
-
+		<dt>@Html.DisplayNameFor(model => model.Title)</dt>
 		<dd>
 			@Html.DisplayFor(model => model.Title)
 		</dd>
 
-		<dt>
-			@Html.DisplayNameFor(model => model.Description)
-		</dt>
+		<dt>@Html.DisplayNameFor(model => model.Time)</dt>
+		<dd>
+			@Html.DisplayFor(model => model.Time)
+		</dd>
 
+		<dt>@Html.DisplayNameFor(model => model.Description)</dt>
 		<dd>
 			@Html.DisplayFor(model => model.Description)
 		</dd>
 
-		<dt>
-			@Html.DisplayNameFor(model => model.Proposal)
-		</dt>
-
+		<dt>@Html.DisplayNameFor(model => model.Proposal)</dt>
 		<dd>
 			@Html.DisplayFor(model => model.Proposal)
 		</dd>
 
-		<dt>
-			@Html.DisplayNameFor(model => model.Priority)
-		</dt>
-
+		<dt>@Html.DisplayNameFor(model => model.Priority)</dt>
 		<dd>
 			@Html.DisplayFor(model => model.Priority)
 		</dd>
 
-		<dt>
-			@Html.DisplayNameFor(model => model.Created)
-		</dt>
-
+		<dt>@Html.DisplayNameFor(model => model.Created)</dt>
 		<dd>
 			@Html.DisplayFor(model => model.Created)
 		</dd>
 
-		<dt>
-			@Html.DisplayNameFor(model => model.ValidFrom)
-		</dt>
-
+		<dt>@Html.DisplayNameFor(model => model.ValidFrom)</dt>
 		<dd>
 			@Html.DisplayFor(model => model.ValidFrom)
 		</dd>
-
 	</dl>
 
 	@using (Html.BeginForm())

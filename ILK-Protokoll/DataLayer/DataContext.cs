@@ -62,20 +62,5 @@ namespace ILK_Protokoll.DataLayer
 						.ToList()
 						.OrderBy(u => u.ShortName, StringComparer.CurrentCultureIgnoreCase));
 		}
-
-		public Topic GetTopicAt(int id, DateTime time)
-		{
-			Topic t = Topics.Find(id);
-			if (time > t.ValidFrom)
-				return t;
-			else if (time < t.Created)
-				return null;
-			else
-			{
-				TopicHistory histdata = TopicHistory.Single(x => x.ValidFrom < time && x.ValidUntil > time);
-				t.IncorporateHistory(histdata);
-				return t;
-			}
-		}
 	}
 }

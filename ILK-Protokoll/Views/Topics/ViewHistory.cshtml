@@ -25,6 +25,15 @@
 
 					<dt>@Html.DisplayNameFor(model => model.Current.SessionTypeID)</dt>
 					<dd>@Model.SessionTypes[@Model.Initial.SessionTypeID]</dd>
+					
+					@if (Model.Initial.TargetSessionTypeID.HasValue)
+					{
+						<dt>@Html.DisplayNameFor(model => model.Current.TargetSessionTypeID)</dt>
+						<dd>@Model.SessionTypes[@Model.Initial.TargetSessionTypeID.Value]</dd>
+					}
+
+					<dt>@Html.DisplayNameFor(model => model.Current.Time)</dt>
+					<dd>@Model.Initial.Time</dd>
 
 					<dt>@Html.DisplayNameFor(model => model.Current.OwnerID)</dt>
 					<dd>@Model.Usernames[@Model.Initial.OwnerID]</dd>
@@ -64,6 +73,18 @@
 						{
 							<dt>Neuer Sitzungstyp</dt>
 							<dd>@Html.DisplayFor(model => item.SessionType)</dd>
+						}
+						
+						@if (item.TargetSessionType != null)
+						{
+							<dt>Neuer Ziel-Sitzungstyp</dt>
+							<dd>@Html.DisplayFor(model => item.TargetSessionType)</dd>
+						}
+
+						@if (item.Time != null)
+						{
+							<dt>Neue Uhrzeit</dt>
+							<dd>@Html.DisplayFor(model => item.Time)</dd>
 						}
 						
 						@if (item.Owner != null)
@@ -109,6 +130,15 @@
 
 					<dt>@Html.DisplayNameFor(model => model.Current.SessionTypeID)</dt>
 					<dd>@Model.SessionTypes[@Model.Current.SessionTypeID]</dd>
+					
+					@if (Model.Current.TargetSessionTypeID.HasValue)
+					{
+						<dt>@Html.DisplayNameFor(model => model.Current.TargetSessionTypeID)</dt>
+						<dd>@Model.SessionTypes[@Model.Current.TargetSessionTypeID.Value]</dd>
+					}
+					
+					<dt>@Html.DisplayNameFor(model => model.Current.Time)</dt>
+					<dd>@Html.DisplayFor(model => model.Current.Time)</dd>
 
 					<dt>@Html.DisplayNameFor(model => model.Current.OwnerID)</dt>
 					<dd>@Model.Usernames[@Model.Current.OwnerID]</dd>

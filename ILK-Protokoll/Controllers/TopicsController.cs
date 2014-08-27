@@ -152,7 +152,7 @@ namespace ILK_Protokoll.Controllers
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		public ActionResult Create(
-			[Bind(Include = "ID,Attachments,Description,Duties,OwnerID,Owner,Priority,Proposal,SessionTypeID,Title,ToDo")] TopicEdit input)
+			[Bind(Include = "ID,Attachments,Description,Duties,OwnerID,Owner,Priority,Proposal,SessionTypeID,Title,Time,ToDo")] TopicEdit input)
 		{
 			if (ModelState.IsValid)
 			{
@@ -222,7 +222,7 @@ namespace ILK_Protokoll.Controllers
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		public ActionResult Edit(
-			[Bind(Include = "ID,Attachments,Description,Duties,OwnerID,Priority,Proposal,TargetSessionTypeID,Title,ToDo")] TopicEdit input)
+			[Bind(Include = "ID,Attachments,Description,Duties,OwnerID,Priority,Proposal,TargetSessionTypeID,Title,Time,ToDo")] TopicEdit input)
 		{
 			if (ModelState.IsValid)
 			{
@@ -235,7 +235,7 @@ namespace ILK_Protokoll.Controllers
 				db.TopicHistory.Add(TopicHistory.FromTopic(topic, GetCurrentUser().ID));
 
 				topic.IncorporateUpdates(input);
-				topic.TargetSessionTypeID = input.TargetSessionTypeID == topic.SessionTypeID ? 0 : input.TargetSessionTypeID;
+				topic.TargetSessionTypeID = input.TargetSessionTypeID == topic.SessionTypeID ? null : input.TargetSessionTypeID;
 
 				if (topic.TargetSessionTypeID > 0)
 				{
@@ -318,9 +318,11 @@ namespace ILK_Protokoll.Controllers
 					Modified = p.Item1.ValidUntil,
 					Editor = vm.Usernames[p.Item1.EditorID],
 					SessionType = SimpleDiff(p.Item1.SessionTypeID, p.Item2.SessionTypeID, vm.SessionTypes),
+					TargetSessionType = SimpleDiff(p.Item1.TargetSessionTypeID, p.Item2.TargetSessionTypeID, vm.SessionTypes, "(kein)"),
 					Owner = SimpleDiff(p.Item1.OwnerID, p.Item2.OwnerID, vm.Usernames),
 					Priority = p.Item1.Priority == p.Item2.Priority ? null : p.Item2.Priority.DisplayName(),
 					Title = diff.diff_main(p.Item1.Title, p.Item2.Title),
+					Time = p.Item1.Time == p.Item2.Time ? null : p.Item2.Time,
 					Description = diff.diff_main(p.Item1.Description, p.Item2.Description),
 					Proposal = diff.diff_main(p.Item1.Proposal, p.Item2.Proposal)
 				});
@@ -332,6 +334,10 @@ namespace ILK_Protokoll.Controllers
 		private string SimpleDiff(int idA, int idB, IDictionary<int, string> dict)
 		{
 			return idA == idB ? null : dict[idB];
+		}
+		private string SimpleDiff(int? idA, int? idB, IDictionary<int, string> dict, string defaultText)
+		{
+			return idA == idB ? null : (idB.HasValue ? dict[idB.Value] : defaultText);
 		}
 	}
 }

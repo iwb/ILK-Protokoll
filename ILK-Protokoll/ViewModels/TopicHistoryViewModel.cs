@@ -33,6 +33,10 @@ namespace ILK_Protokoll.ViewModels
 
 		public string SessionType { get; set; }
 
+		public string TargetSessionType { get; set; }
+
+		public string Time { get; set; }
+
 		public string Owner { get; set; }
 
 		public string Priority { get; set; }

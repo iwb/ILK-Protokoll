@@ -13,6 +13,7 @@ namespace ILK_Protokoll.Areas.Administration.Models
 	{
 		public SessionType()
 		{
+			Active = true;
 			// ReSharper disable once DoNotCallOverridableMethodsInConstructor
 			Attendees = new List<User>();
 		}

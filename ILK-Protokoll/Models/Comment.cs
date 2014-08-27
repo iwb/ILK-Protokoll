@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace ILK_Protokoll.Models
 {
@@ -17,6 +18,7 @@ namespace ILK_Protokoll.Models
 
 		public DateTime Created { get; set; }
 
+		[Required]
 		public string Content { get; set; }
 	}
 }
