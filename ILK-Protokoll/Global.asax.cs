@@ -1,4 +1,5 @@
 ﻿using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
@@ -18,6 +19,14 @@ namespace ILK_Protokoll
 			BundleConfig.RegisterBundles(BundleTable.Bundles);
 
 			Database.SetInitializer(new MigrateDatabaseToLatestVersion<DataContext, Configuration>());
+
+			using (var context = new DataContext())
+			{
+				if (!context.Database.Exists())
+				{
+					((IObjectContextAdapter)context).ObjectContext.CreateDatabase();
+				}
+			}
 
 #if DEBUG
 			foreach (Bundle bundle in BundleTable.Bundles)

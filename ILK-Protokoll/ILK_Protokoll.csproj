@@ -392,9 +392,6 @@
     <Content Include="Areas\Session\Views\Finalize\Index.cshtml" />
     <Content Include="Areas\Session\Views\Discussion\Index.cshtml" />
     <Content Include="Areas\Administration\Views\Settings\Index.cshtml" />
-    <Content Include="CodeTemplates\AddView\CSHTML\Create.tt" />
-    <Content Include="CodeTemplates\AddView\CSHTML\Edit.tt" />
-    <Content Include="CodeTemplates\AddView\CSHTML\MyList.tt" />
     <Content Include="Areas\Session\Views\Master\Create.cshtml" />
     <Content Include="Areas\Session\Views\Master\Index.cshtml" />
     <Content Include="Areas\Administration\Views\SessionTypes\DeleteHint.cshtml" />
@@ -607,6 +604,7 @@
     <Content Include="Views\Push\_NotificationList.cshtml" />
     <Content Include="Views\Push\_DisplayListTopic.cshtml" />
     <None Include="Web.Integration.config" />
+    <None Include="Web.Production.config" />
     <None Include="Web.Testing.config" />
   </ItemGroup>
   <ItemGroup>
