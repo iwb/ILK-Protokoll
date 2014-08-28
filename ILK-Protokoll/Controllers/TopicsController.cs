@@ -55,9 +55,7 @@ namespace ILK_Protokoll.Controllers
 
 			filter.UserList = new SelectList(db.GetUserOrdered(GetCurrentUser()), "ID", "Shortname");
 			filter.PriorityList = PriorityChoices(filter.ShowPriority);
-			filter.SessionTypeList = db.SessionTypes
-				.Where(st => st.Active)
-				.Select(st => new SelectListItem() {Text = st.Name, Value = st.ID.ToString()});
+			filter.SessionTypeList = new SelectList(db.GetActiveSessionTypes(), "ID", "Name");
 
 			filter.TimespanList = TimespanChoices(filter.Timespan);
 			filter.Topics = query.OrderByDescending(t => t.Priority).ThenByDescending(t => t.Title).ToList();
@@ -144,8 +142,8 @@ namespace ILK_Protokoll.Controllers
 		{
 			var viewmodel = new TopicEdit
 			{
-				SessionTypeList = new SelectList(db.SessionTypes, "ID", "Name"),
-				TargetSessionTypeList = new SelectList(db.SessionTypes, "ID", "Name"),
+				SessionTypeList = new SelectList(db.GetActiveSessionTypes(), "ID", "Name"),
+				TargetSessionTypeList = new SelectList(db.GetActiveSessionTypes(), "ID", "Name"),
 				UserList = new SelectList(db.GetUserOrdered(GetCurrentUser()), "ID", "ShortName")
 			};
 			return View(viewmodel);
@@ -190,8 +188,8 @@ namespace ILK_Protokoll.Controllers
 				return RedirectToAction("Index");
 			}
 
-			input.SessionTypeList = new SelectList(db.SessionTypes, "ID", "Name", input.SessionTypeID);
-			input.TargetSessionTypeList = new SelectList(db.SessionTypes, "ID", "Name", input.TargetSessionTypeID);
+			input.SessionTypeList = new SelectList(db.GetActiveSessionTypes(), "ID", "Name", input.SessionTypeID);
+			input.TargetSessionTypeList = new SelectList(db.GetActiveSessionTypes(), "ID", "Name", input.TargetSessionTypeID);
 			input.UserList = new SelectList(db.GetUserOrdered(GetCurrentUser()), "ID", "ShortName");
 			return View(input);
 		}
@@ -214,8 +212,8 @@ namespace ILK_Protokoll.Controllers
 			}
 
 			TopicEdit viewmodel = TopicEdit.FromTopic(topic);
-			viewmodel.SessionTypeList = new SelectList(db.SessionTypes, "ID", "Name");
-			viewmodel.TargetSessionTypeList = new SelectList(db.SessionTypes, "ID", "Name");
+			viewmodel.SessionTypeList = new SelectList(db.GetActiveSessionTypes(), "ID", "Name");
+			viewmodel.TargetSessionTypeList = new SelectList(db.GetActiveSessionTypes(), "ID", "Name");
 			viewmodel.UserList = new SelectList(db.GetUserOrdered(GetCurrentUser()), "ID", "ShortName", viewmodel.OwnerID);
 
 			return View(viewmodel);
@@ -270,8 +268,8 @@ namespace ILK_Protokoll.Controllers
 				return RedirectToAction("Details", new {Area = "", id = input.ID});
 			}
 			input.SessionType = topic.SessionType;
-			input.SessionTypeList = new SelectList(db.SessionTypes, "ID", "Name", input.SessionTypeID);
-			input.TargetSessionTypeList = new SelectList(db.SessionTypes, "ID", "Name", input.TargetSessionTypeID);
+			input.SessionTypeList = new SelectList(db.GetActiveSessionTypes(), "ID", "Name", input.SessionTypeID);
+			input.TargetSessionTypeList = new SelectList(db.GetActiveSessionTypes(), "ID", "Name", input.TargetSessionTypeID);
 			input.UserList = new SelectList(db.GetUserOrdered(GetCurrentUser()), "ID", "ShortName");
 			return View(input);
 		}

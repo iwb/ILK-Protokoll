@@ -62,5 +62,10 @@ namespace ILK_Protokoll.DataLayer
 						.ToList()
 						.OrderBy(u => u.ShortName, StringComparer.CurrentCultureIgnoreCase));
 		}
+
+		public IEnumerable<SessionType> GetActiveSessionTypes()
+		{
+			return SessionTypes.Where(st => st.Active).OrderBy(st => st.Name);
+		}
 	}
 }

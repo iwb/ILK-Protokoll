@@ -19,7 +19,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 		// GET: Session/Master
 		public ActionResult Index()
 		{
-			ViewBag.SessionTypes = new SelectList(db.SessionTypes, "ID", "Name");
+			ViewBag.SessionTypes = new SelectList(db.GetActiveSessionTypes(), "ID", "Name");
 			return View(db.ActiveSessions.Include(session => session.Manager).ToList());
 		}
 

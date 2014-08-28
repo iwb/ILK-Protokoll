@@ -13,7 +13,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 		public override PartialViewResult _CreateForm()
 		{
 			ViewBag.UserList = new SelectList(db.GetUserOrdered(GetCurrentUser()), "ID", "ShortName");
-			ViewBag.SessionTypeList = new SelectList(db.SessionTypes, "ID", "Name");
+			ViewBag.SessionTypeList = new SelectList(db.GetActiveSessionTypes(), "ID", "Name");
 
 			return base._CreateForm();
 		}
@@ -21,7 +21,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 		public override ActionResult _BeginEdit(int id)
 		{
 			ViewBag.UserList = new SelectList(db.GetUserOrdered(GetCurrentUser()), "ID", "ShortName");
-			ViewBag.SessionTypeList = new SelectList(db.SessionTypes, "ID", "Name");
+			ViewBag.SessionTypeList = new SelectList(db.GetActiveSessionTypes(), "ID", "Name");
 			return base._BeginEdit(id);
 		}
 	}
