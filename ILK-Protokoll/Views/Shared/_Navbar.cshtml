@@ -6,15 +6,22 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			@Html.ActionLink("Dashboard", "Index", "Home", new { area = "" }, new { @class = "navbar-brand iwblogo" })
+			@Html.ActionLink("Dashboard", "Index", "Home", new {area = ""}, new {@class = "navbar-brand iwblogo"})
 		</div>
 		<div class="navbar-collapse collapse" id="primaryNavbarContent">
 			<p class="navbar-right navbar-text">
+				@{
+					var shortname = User.Identity.Name.Split('\\').Last();
+					if (shortname.Length > 3)
+					{
+						shortname = shortname.Substring(shortname.Length - 3);
+					}
+				}
 				<span class="visible-xs">Eingeloggt als <b>@User.Identity.Name</b></span>
-				<span class="hidden-xs usertile">@User.Identity.Name.Split('\\').Last()</span>
+				<span class="hidden-xs usertile">@shortname</span>
 			</p>
 
-			@using (Html.BeginForm("Results", "Search", FormMethod.Get, new { @class = "navbar-form navbar-right" }))
+			@using (Html.BeginForm("Results", "Search", FormMethod.Get, new {@class = "navbar-form navbar-right"}))
 			{
 				<div class="form-group">
 					<div class="input-group">
@@ -27,12 +34,12 @@
 			}
 
 			<ul class="nav navbar-nav">
-				<li class="@ViewBag.TopicStyle">@Html.ActionLink("Diskussionspunkte", "Index", "Topics", new { Area = "" }, null)</li>
-				<li class="@ViewBag.DecisionStyle">@Html.ActionLink("Beschlüsse", "Index", "Decisions", new { Area = "" }, null)</li>
-				<li class="@ViewBag.SessionReportStyle">@Html.ActionLink("Protokolle", "Index", "SessionReports", new { Area = "" }, null)</li>
-				<li class="@ViewBag.AssignmentStyle">@Html.ActionLink("Aufgaben", "Index", "Assignments", new { Area = "" }, null)</li>
-				<li class="@ViewBag.ViewListsStyle">@Html.ActionLink("Listen", "Index", "ViewLists", new { Area = "" }, null)</li>
-				<li class="@ViewBag.AdminStyle">@Html.ActionLink("Verwaltung", "Index", "AdminHome", new { Area = "Administration" }, null)</li>
+				<li class="@ViewBag.TopicStyle">@Html.ActionLink("Diskussionspunkte", "Index", "Topics", new {Area = ""}, null)</li>
+				<li class="@ViewBag.DecisionStyle">@Html.ActionLink("Beschlüsse", "Index", "Decisions", new {Area = ""}, null)</li>
+				<li class="@ViewBag.SessionReportStyle">@Html.ActionLink("Protokolle", "Index", "SessionReports", new {Area = ""}, null)</li>
+				<li class="@ViewBag.AssignmentStyle">@Html.ActionLink("Aufgaben", "Index", "Assignments", new {Area = ""}, null)</li>
+				<li class="@ViewBag.ViewListsStyle">@Html.ActionLink("Listen", "Index", "ViewLists", new {Area = ""}, null)</li>
+				<li class="@ViewBag.AdminStyle">@Html.ActionLink("Verwaltung", "Index", "AdminHome", new {Area = "Administration"}, null)</li>
 			</ul>
 		</div>
 	</div>

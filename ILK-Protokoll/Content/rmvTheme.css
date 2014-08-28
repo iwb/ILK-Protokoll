@@ -6189,6 +6189,14 @@ body {
     padding-top: 5px;
   }
 }
+@media (min-width: 1600px) {
+  .navbar-form {
+    width: 420px;
+  }
+  .navbar-form .input-group {
+    width: 400px;
+  }
+}
 textarea.form-control {
   min-height: 120px;
 }
@@ -6329,7 +6337,7 @@ a:hover {
   display: inline-block;
   margin-left: 10px;
   font-size: 18px;
-  width: 50px;
+  min-width: 50px;
 }
 .userlist > li input {
   display: inline-block;
