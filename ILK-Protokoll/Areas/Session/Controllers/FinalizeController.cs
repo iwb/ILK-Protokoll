@@ -43,6 +43,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 			session.LockedTopics = db.TopicLocks
 				.Include(tl => tl.Session)
 				.Include(tl => tl.Topic)
+				.Include(tl => tl.Topic.Creator)
 				.ToList();
 
 			session.SessionType.LastDate = session.End;
@@ -58,7 +59,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 			}
 			catch (DbEntityValidationException e)
 			{
-				var message = ErrorMessageFromException(e);
+				var message = "Fehler beim Speichern des SessionReport<br />" + ErrorMessageFromException(e);
 				return HTTPStatus(HttpStatusCode.InternalServerError, message);
 			}
 
@@ -141,7 +142,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 			}
 			catch (DbEntityValidationException e)
 			{
-				var message = ErrorMessageFromException(e);
+				var message = "Fehler beim Schreiben der Topics<br />" + ErrorMessageFromException(e);
 				return HTTPStatus(HttpStatusCode.InternalServerError, message);
 			}
 			catch (DataException ex)
