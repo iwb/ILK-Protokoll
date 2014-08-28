@@ -82,7 +82,7 @@ namespace ILK_Protokoll.Controllers
 
 		private static IEnumerable<SelectListItem> TimespanChoices(int preselect)
 		{
-			return new []
+			return new[]
 			{
 				new SelectListItem
 				{
@@ -249,7 +249,7 @@ namespace ILK_Protokoll.Controllers
 					{
 						topic.Votes.Add(new Vote(user, VoteKind.None));
 					}
-					
+
 					if (topic.Lock != null)
 						topic.Lock.Action = TopicAction.None;
 				}
@@ -312,30 +312,59 @@ namespace ILK_Protokoll.Controllers
 				Diff_Timeout = 0.4f,
 			};
 
+			// Anonyme Funktion, um die Biliothek diff_match_patch handlich zu verpacken.
+			Func<string, string, List<Diff>> textDiff = (a, b) =>
+			{
+				var list = diff.diff_main(a, b);
+				diff.diff_cleanupSemantic(list);
+				return list;
+			};
+
 			foreach (var p in history.Pairwise())
 			{
 				vm.Differences.Add(new TopicHistoryDiff()
 				{
+					// Ein Eintrag entspricht später einer Box auf der Seite. Wenn keine Änderung existiert, sollte hier null gespeichert werden. Bei einer Änderung wird der NEUE Wert (der in Item2 enthalten ist) genommen.
+					// SimpleDiff ist eine kleine helferfunktion, da die Zeilen sonst arg lang werden würden. Hier wird kein Text vergleichen - antweder hat sich alles geändert, oder gar nichts. (Daher "simple")
+					// textDiff ist komplexer, hier wird der Text analysiert und auf ähnliche Abschnitte hin untersucht.
 					Modified = p.Item1.ValidUntil,
 					Editor = vm.Usernames[p.Item1.EditorID],
 					SessionType = SimpleDiff(p.Item1.SessionTypeID, p.Item2.SessionTypeID, vm.SessionTypes),
 					TargetSessionType = SimpleDiff(p.Item1.TargetSessionTypeID, p.Item2.TargetSessionTypeID, vm.SessionTypes, "(kein)"),
 					Owner = SimpleDiff(p.Item1.OwnerID, p.Item2.OwnerID, vm.Usernames),
 					Priority = p.Item1.Priority == p.Item2.Priority ? null : p.Item2.Priority.DisplayName(),
-					Title = diff.diff_main(p.Item1.Title, p.Item2.Title),
+					Title = textDiff(p.Item1.Title, p.Item2.Title),
 					Time = p.Item1.Time == p.Item2.Time ? null : p.Item2.Time,
-					Description = diff.diff_main(p.Item1.Description, p.Item2.Description),
-					Proposal = diff.diff_main(p.Item1.Proposal, p.Item2.Proposal)
+					Description = textDiff(p.Item1.Description, p.Item2.Description),
+					Proposal = textDiff(p.Item1.Proposal, p.Item2.Proposal)
 				});
 			}
 
 			return View(vm);
 		}
 
+		/// <summary>
+		/// Vergleicht die beiden IDs und gibt den Unterschied zurück. Bei Gleichheit wird null zurückgegeben.
+		/// Bei verschiedenen Ids wird der Rückgabewert aus dem Dictionary anhand von idB ermittelt.
+		/// </summary>
+		/// <param name="idA">Erste ID</param>
+		/// <param name="idB">Zweite ID</param>
+		/// <param name="dict">Lookup für den Rückgabewert</param>
+		/// <returns>null, wenn idA == idB, dict[idB] sonst.</returns>
 		private string SimpleDiff(int idA, int idB, IDictionary<int, string> dict)
 		{
 			return idA == idB ? null : dict[idB];
 		}
+
+		/// <summary>
+		/// Vergleicht die beiden IDs und gibt den Unterschied zurück. Bei Gleichheit wird null zurückgegeben.
+		/// Bei verschiedenen Ids wird der Rückgabewert aus dem Dictionary anhand von idB ermittelt.
+		/// </summary>
+		/// <param name="idA">Erste ID</param>
+		/// <param name="idB">Zweite ID</param>
+		/// <param name="dict">Lookup für den Rückgabewert</param>
+		/// <param name="defaultText">Standardtext für den Rückgabewert, wenn idB null ist</param>
+		/// <returns>null, wenn idA == idB, dict[idB] wenn idB != null, defaultText sonst.</returns>
 		private string SimpleDiff(int? idA, int? idB, IDictionary<int, string> dict, string defaultText)
 		{
 			return idA == idB ? null : (idB.HasValue ? dict[idB.Value] : defaultText);
