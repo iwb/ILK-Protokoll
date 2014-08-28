@@ -1,0 +1,60 @@
+﻿@model ILK_Protokoll.ViewModels.ExtendedSearchVM
+@{
+	ViewBag.Title = "Erweiterte Suche";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<p>
+	Bei der Suche wird grundsätzlich nur an Wortanfängen gesucht, und die Groß-/Kleinschreibung nicht beachtet. Suchbegriffe werden normalerweise an Leerraumzeichen getrennt und mit <em>ODER</em> verknüpft. In der erweiterten Suche können Sie Begriffe mit <em>AND</em> verknüpfen, um den Suchraum weiter einzuschänken und Anführungszeichen benutzen, um ganze Satzteile zu suchen. Zusätzlich können die zu durchsuchenden Objekte detailliert festgelegt werden.
+</p>
+
+@using (Html.BeginForm("Index", "Search", FormMethod.Get, new { @class = "form-horizontal" }))
+{
+	<div class="form-group">
+		@Html.LabelFor(model => model.Searchterm, new { @class = "control-label col-md-2" })
+		<div class="col-md-6">
+			@Html.EditorFor(model => model.Searchterm, new { htmlAttributes = new { @class = "form-control" } })
+			@Html.ValidationMessageFor(model => model.Searchterm, "", new { @class = "text-danger" })
+		</div>
+	</div>
+
+	<div class="form-group">
+		<div class="col-md-offset-2 col-xs-6 col-sm-4 col-md-2">
+			<div class="form-group">
+				@Html.EditorFor(model => model.SearchTopics, new { htmlAttributes = new { @class = "check-box" } })
+				@Html.LabelFor(model => model.SearchTopics, new { @class = "control-label" })
+			</div>
+			<div class="form-group">
+				@Html.EditorFor(model => model.SearchComments, new { htmlAttributes = new { @class = "check-box" } })
+				@Html.LabelFor(model => model.SearchComments, new { @class = "control-label" })
+			</div>
+		</div>
+		<div class="col-xs-6 col-sm-4 col-md-2">
+			<div class="form-group">
+				@Html.EditorFor(model => model.SearchAssignments, new { htmlAttributes = new { @class = "check-box" } })
+				@Html.LabelFor(model => model.SearchAssignments, new { @class = "control-label" })
+			</div>
+			<div class="form-group">
+				@Html.EditorFor(model => model.SearchAttachments, new { htmlAttributes = new { @class = "check-box" } })
+				@Html.LabelFor(model => model.SearchAttachments, new { @class = "control-label" })
+			</div>
+		</div>
+		<div class="col-xs-6 col-sm-4 col-md-2">
+			<div class="form-group">
+				@Html.EditorFor(model => model.SearchDecisions, new { htmlAttributes = new { @class = "check-box" } })
+				@Html.LabelFor(model => model.SearchDecisions, new { @class = "control-label" })
+			</div>
+			<div class="form-group">
+				@Html.EditorFor(model => model.SearchLists, new { htmlAttributes = new { @class = "check-box" } })
+				@Html.LabelFor(model => model.SearchLists, new { @class = "control-label" })
+			</div>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<div class="col-sm-offset-2 col-sm-10">
+			<button class="btn btn-primary" type="submit">Suchen</button>
+		</div>
+	</div>
+}

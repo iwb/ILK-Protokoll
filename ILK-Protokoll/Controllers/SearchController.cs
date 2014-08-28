@@ -12,11 +12,12 @@ namespace ILK_Protokoll.Controllers
 {
 	public class SearchController : BaseController
 	{
-		// GET: Search
+		// GET: Results
+		// Einfache Suche über die Navbar
 		public ActionResult Results(string searchterm)
 		{
 			if (string.IsNullOrWhiteSpace(searchterm))
-				return RedirectToAction("Search");
+				return RedirectToAction("Index");
 
 			var words = Regex.Split(searchterm, @"\s+").Select(Regex.Escape);
 
@@ -38,12 +39,89 @@ namespace ILK_Protokoll.Controllers
 			return View(results);
 		}
 
+		// GET: /Search
+		// Erweiterte Suche 
+		public ActionResult Index(ExtendedSearchVM input)
+		{
+			if (string.IsNullOrWhiteSpace(input.Searchterm))
+				return View("SearchMask", input);
+			else
+				return ExtendendResults(input);
+		}
+
+		private static IEnumerable<string> Tokenize(string str)
+		{
+			return Regex.Matches(str, @"(?<match>\w+)|\""(?<match>[\w\s]*)""")
+				.Cast<Match>()
+				.Select(m => m.Groups["match"].Value);
+		}
+
+		private static IEnumerable<string> MakePatterns(IEnumerable<string> items, string delimiter)
+		{
+			Func<IEnumerable<string>, string> escapeAndJoin = x => x.Select(Regex.Escape).Aggregate((a, b) => a + "|" + b);
+
+			var currentItems = new List<string>();
+			foreach (var item in items)
+			{
+				if (item == delimiter && currentItems.Count > 0)
+				{
+					yield return @"\b(" + escapeAndJoin(currentItems) + ")";
+					currentItems.Clear();
+				}
+				else
+					currentItems.Add(item);
+			}
+			if (currentItems.Count > 0)
+				yield return @"\b(" + escapeAndJoin(currentItems) + ")";
+		}
+
+		private ActionResult ExtendendResults(ExtendedSearchVM input)
+		{
+			var tokens = Tokenize(input.Searchterm).ToList();
+			var searchpatterns = MakePatterns(tokens, "AND");
+			var regexes = searchpatterns.Select(pattern => new Regex(pattern, RegexOptions.IgnoreCase));
+
+			var sets = new List<HashSet<SearchResult>>();
+
+			foreach (var regex in regexes)
+			{
+				var currentset = new HashSet<SearchResult>();
+				sets.Add(currentset);
+
+				if (input.SearchTopics)
+					SearchTopics(regex, currentset);
+				if (input.SearchComments)
+					SearchComments(regex, currentset);
+				if (input.SearchAssignments)
+					SearchAssignments(regex, currentset);
+				if (input.SearchAttachments)
+					SearchAttachments(regex, currentset);
+				if (input.SearchDecisions)
+					SearchDecisions(regex, currentset);
+				if (input.SearchLists)
+					SearchLists(regex, currentset);
+			}
+
+			var results = sets.Aggregate((a, b) =>
+			{
+				a.IntersectWith(b);
+				return a;
+			}).ToList();
+
+			ViewBag.SearchTerm = input.Searchterm;
+			ViewBag.SearchPattern = @"\b(" + tokens.Where(x => x != "AND").Aggregate((a, b) => a + "|" + b) + ")";
+			results.Sort((a, b) => b.Score.CompareTo(a.Score)); // Absteigend sortieren
+
+			return View("Results", results);
+		}
+
 		private void SearchTopics(Regex pattern, ICollection<SearchResult> resultlist)
 		{
 			foreach (var topic in db.Topics)
 			{
 				var sr = new SearchResult
 				{
+					ID = topic.ID,
 					Score = topic.IsReadOnly ? -5 : 0,
 					EntityType = "Diskussion",
 					Title = topic.Title,
@@ -93,7 +171,7 @@ namespace ILK_Protokoll.Controllers
 		{
 			var query = from c in db.Comments
 				join t in db.Topics on c.TopicID equals t.ID
-				select new {topicID = t.ID, Text = c.Content, t.Title, c.Created};
+				select new {commentID = c.ID, topicID = t.ID, Text = c.Content, t.Title, c.Created};
 
 			foreach (var comment in query)
 			{
@@ -102,6 +180,7 @@ namespace ILK_Protokoll.Controllers
 				{
 					resultlist.Add(new SearchResult(comment.Text)
 					{
+						ID = comment.commentID,
 						Score = ScoreMult(2, m.Count),
 						EntityType = "Kommentar",
 						Title = comment.Title,
@@ -121,6 +200,7 @@ namespace ILK_Protokoll.Controllers
 				{
 					resultlist.Add(new SearchResult("Aufgabentitel", assignment.Title)
 					{
+						ID = assignment.ID,
 						Score = ScoreMult(9, m.Count),
 						EntityType = "Aufgabe",
 						Title = assignment.Title,
@@ -135,6 +215,7 @@ namespace ILK_Protokoll.Controllers
 				{
 					resultlist.Add(new SearchResult("Aufgabentext", assignment.Description)
 					{
+						ID = assignment.ID,
 						Score = ScoreMult(7, m.Count),
 						EntityType = "Aufgabe",
 						Title = assignment.Description,
@@ -154,6 +235,7 @@ namespace ILK_Protokoll.Controllers
 				{
 					resultlist.Add(new SearchResult("Dateiname", attachment.DisplayName)
 					{
+						ID = attachment.ID,
 						Score = ScoreMult(9, m.Count),
 						EntityType = "Datei",
 						Title = attachment.DisplayName,
@@ -170,6 +252,7 @@ namespace ILK_Protokoll.Controllers
 			{
 				var sr = new SearchResult
 				{
+					ID = decision.ID,
 					Score = decision.Type == DecisionType.Resolution ? 0 : -11,
 					EntityType = decision.Type.DisplayName(),
 					Title = decision.OriginTopic.Title,
@@ -191,7 +274,7 @@ namespace ILK_Protokoll.Controllers
 				m = pattern.Matches(decision.Text);
 				if (m.Count > 0)
 				{
-					sr.Score += 9;
+					sr.Score += 16;
 					sr.Hits.Add(new Hit
 					{
 						Property = "Beschlusstext",
@@ -216,6 +299,7 @@ namespace ILK_Protokoll.Controllers
 				{
 					resultlist.Add(new SearchResult(item.Description)
 					{
+						ID = item.ID,
 						Score = 7,
 						EntityType = "Listeneintrag",
 						Title = "Termin",
@@ -229,6 +313,7 @@ namespace ILK_Protokoll.Controllers
 				{
 					resultlist.Add(new SearchResult(item.Place)
 					{
+						ID = item.ID,
 						Score = 5,
 						EntityType = "Listeneintrag",
 						Title = "Termin",
@@ -245,6 +330,7 @@ namespace ILK_Protokoll.Controllers
 				{
 					resultlist.Add(new SearchResult(item.Description)
 					{
+						ID = item.ID,
 						Score = 7,
 						EntityType = "Listeneintrag",
 						Title = "Auslandskonferenz",
@@ -261,6 +347,7 @@ namespace ILK_Protokoll.Controllers
 				{
 					resultlist.Add(new SearchResult(item.Topics)
 					{
+						ID = item.ID,
 						Score = 7,
 						EntityType = "Listeneintrag",
 						Title = "ILK-Tag",
@@ -277,6 +364,7 @@ namespace ILK_Protokoll.Controllers
 				{
 					resultlist.Add(new SearchResult(item.Comments)
 					{
+						ID = item.ID,
 						Score = 7,
 						EntityType = "Listeneintrag",
 						Title = "ILK-Regeltermin",
@@ -293,6 +381,7 @@ namespace ILK_Protokoll.Controllers
 				{
 					resultlist.Add(new SearchResult(item.Description)
 					{
+						ID = item.ID,
 						Score = 6.5f,
 						EntityType = "Listeneintrag",
 						Title = "Vakante Stelle",
@@ -309,11 +398,6 @@ namespace ILK_Protokoll.Controllers
 				return 0;
 			else
 				return baseScore * (float)(5 - 4 * Math.Pow(0.8, count - 1));
-		}
-
-		public ActionResult Search()
-		{
-			return View();
 		}
 	}
 }

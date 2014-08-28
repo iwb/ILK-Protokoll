@@ -312,6 +312,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\AssignmentEdit.cs" />
     <Compile Include="ViewModels\DashBoard.cs" />
+    <Compile Include="ViewModels\ExtendedSearchVM.cs" />
     <Compile Include="ViewModels\FilteredDecisions.cs" />
     <Compile Include="ViewModels\FilteredAssignments.cs" />
     <Compile Include="ViewModels\FilteredTopics.cs" />
@@ -581,7 +582,7 @@
     <Content Include="Views\Shared\_Navbar.cshtml" />
     <Content Include="Views\Shared\_GlobalScripts.cshtml" />
     <Content Include="Views\Shared\_Footer.cshtml" />
-    <Content Include="Views\Search\Search.cshtml" />
+    <Content Include="Views\Search\SearchMask.cshtml" />
     <Content Include="Views\Search\Results.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\Boolean.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\Dictionary_User_bool.cshtml" />
