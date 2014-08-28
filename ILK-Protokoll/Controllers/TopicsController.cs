@@ -25,7 +25,8 @@ namespace ILK_Protokoll.Controllers
 		{
 			IQueryable<Topic> topics = db.Topics
 				.Include(t => t.SessionType)
-				.Include(t => t.TargetSessionType);
+				.Include(t => t.TargetSessionType)
+				.Include(t => t.Creator);
 
 			if (!filter.ShowReadonly)
 				topics = topics.Where(t => !t.IsReadOnly);

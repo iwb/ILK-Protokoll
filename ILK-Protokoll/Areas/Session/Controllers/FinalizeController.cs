@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.Entity.Validation;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
@@ -50,13 +52,31 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 
 			SessionReport report = SessionReport.FromActiveSession(session);
 			report = db.SessionReports.Add(report);
-			db.SaveChanges();
-
+			try
+			{
+				db.SaveChanges();
+			}
+			catch (DbEntityValidationException e)
+			{
+				var message = ErrorMessageFromException(e);
+				return HTTPStatus(HttpStatusCode.InternalServerError, message);
+			}
 
 			string html = HelperMethods.RenderViewAsString(ControllerContext, "SessionReport", session);
 			byte[] pdfcontent = HelperMethods.ConvertHTMLToPDF(html);
 
-			System.IO.File.WriteAllBytes(SessionReport.Directory + report.FileName, pdfcontent);
+			try
+			{
+				System.IO.File.WriteAllBytes(SessionReport.Directory + report.FileName, pdfcontent);
+			}
+			catch (IOException e)
+			{
+				return HTTPStatus(HttpStatusCode.InternalServerError, e.Message);
+			}
+			catch (UnauthorizedAccessException e)
+			{
+				return HTTPStatus(HttpStatusCode.InternalServerError, e.Message);
+			}
 
 			List<Topic> topics = db.Topics
 				.Include(t => t.SessionType)
@@ -118,6 +138,11 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 			try
 			{
 				db.SaveChanges();
+			}
+			catch (DbEntityValidationException e)
+			{
+				var message = ErrorMessageFromException(e);
+				return HTTPStatus(HttpStatusCode.InternalServerError, message);
 			}
 			catch (DataException ex)
 			{
