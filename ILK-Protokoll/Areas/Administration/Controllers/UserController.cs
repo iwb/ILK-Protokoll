@@ -23,9 +23,10 @@ namespace ILK_Protokoll.Areas.Administration.Controllers
 			ViewBag.AUserStyle = "active";
 		}
 
-		// GET: Administration/User
 		private const string DomainName = "iwbmuc";
+		private readonly string[] _authorizeGroups = {"ILK", "ILK-Proto"}; // Benutzer dieser Gruppen werden automatisch hinzugefügt
 
+		// GET: Administration/User
 		public ActionResult Index()
 		{
 			List<User> users = db.Users.OrderByDescending(u => u.IsActive).ThenBy(u => u.ShortName).ToList();
@@ -40,12 +41,9 @@ namespace ILK_Protokoll.Areas.Administration.Controllers
 			foreach (User user in myusers)
 				user.IsActive = user.Equals(GetCurrentUser());
 
-			const string addgroupName = "ILK"; // Benutzer dieser Gruppe werden hinzugefügt
-
 			using (var context = new PrincipalContext(ContextType.Domain, DomainName))
 			using (var userp = new UserPrincipal(context))
 			using (var searcher = new PrincipalSearcher(userp))
-			//using (GroupPrincipal adEmployees = GroupPrincipal.FindByIdentity(context, IdentityType.SamAccountName, allGroupName))
 			{
 				PrincipalSearchResult<Principal> adEmployees = searcher.FindAll();
 
@@ -79,27 +77,28 @@ namespace ILK_Protokoll.Areas.Administration.Controllers
 				}
 
 				// Schließlich werden neue User in die Datenbank importiert.
-				using (GroupPrincipal ilks = GroupPrincipal.FindByIdentity(context, IdentityType.SamAccountName, addgroupName))
+				foreach (var group in _authorizeGroups)
 				{
-					if (ilks == null)
+					using (GroupPrincipal groupPrincipal = GroupPrincipal.FindByIdentity(context, IdentityType.SamAccountName, group))
 					{
-						return new HttpStatusCodeResult(
-							HttpStatusCode.InternalServerError,
-							string.Format("Die Gruppe \"{0}\" wurde nicht gefunden.", addgroupName)
-							);
-					}
-					// Der Benutzer "TerminILK" ist hier nicht angebracht und wird über diese GUID entfernt.
-					var terminilkGuid = new Guid("{b5f9a1c7-ba25-4902-88a0-ffe59fae893a}");
-
-					foreach (var adIlk in ilks.GetMembers(true).Cast<UserPrincipal>().Where(p => p.Guid != terminilkGuid))
-					{
-						User ilk = myusers.SingleOrDefault(u => u.Guid == adIlk.Guid);
-						if (ilk == null)
+						if (groupPrincipal == null)
 						{
-							ilk = CreateUserFromADUser(adIlk);
-							db.Users.Add(ilk);
+							return HTTPStatus(HttpStatusCode.InternalServerError,
+								string.Format("Die Gruppe \"{0}\" wurde nicht gefunden.", group));
 						}
-						ilk.IsActive = true;
+						// Der Benutzer "TerminILK" ist hier nicht angebracht und wird über diese GUID entfernt.
+						var terminilkGuid = new Guid("{b5f9a1c7-ba25-4902-88a0-ffe59fae893a}");
+
+						foreach (var adIlk in groupPrincipal.GetMembers(true).Cast<UserPrincipal>().Where(p => p.Guid != terminilkGuid))
+						{
+							User ilk = myusers.SingleOrDefault(u => u.Guid == adIlk.Guid);
+							if (ilk == null)
+							{
+								ilk = CreateUserFromADUser(adIlk);
+								db.Users.Add(ilk);
+							}
+							ilk.IsActive = true;
+						}
 					}
 				}
 			}
