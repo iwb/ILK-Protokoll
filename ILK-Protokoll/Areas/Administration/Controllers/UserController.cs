@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
 using System.DirectoryServices.AccountManagement;
 using System.Linq;
 using System.Net;
@@ -16,15 +15,17 @@ namespace ILK_Protokoll.Areas.Administration.Controllers
 {
 	public class UserController : BaseController
 	{
+		private const string DomainName = "iwbmuc";
+
+		private readonly string[] _authorizeGroups = {"ILK", "ILK-Proto"};
+			// Benutzer dieser Gruppen werden automatisch hinzugefügt
+
 		protected override void OnActionExecuting(ActionExecutingContext filterContext)
 		{
 			base.OnActionExecuting(filterContext);
 			ViewBag.AdminStyle = "active";
 			ViewBag.AUserStyle = "active";
 		}
-
-		private const string DomainName = "iwbmuc";
-		private readonly string[] _authorizeGroups = {"ILK", "ILK-Proto"}; // Benutzer dieser Gruppen werden automatisch hinzugefügt
 
 		// GET: Administration/User
 		public ActionResult Index()
@@ -47,7 +48,8 @@ namespace ILK_Protokoll.Areas.Administration.Controllers
 			{
 				PrincipalSearchResult<Principal> adEmployees = searcher.FindAll();
 
-				Dictionary<Guid, UserPrincipal> employees = adEmployees.Where(p => p.Guid != null).Cast<UserPrincipal>().ToDictionary(p => p.Guid.Value);
+				Dictionary<Guid, UserPrincipal> employees =
+					adEmployees.Where(p => p.Guid != null).Cast<UserPrincipal>().ToDictionary(p => p.Guid.Value);
 
 
 				// Benutzer, zu denen eine GUID gespeichert ist, werden zuerst synchronisiert, da die Übereinstimmung garantiert richtig ist
