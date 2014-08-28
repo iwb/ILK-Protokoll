@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Validation;
-using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
@@ -23,40 +22,45 @@ namespace ILK_Protokoll.Controllers
 		// GET: Topics
 		public ActionResult Index(FilteredTopics filter)
 		{
-			IQueryable<Topic> topics = db.Topics
+			IQueryable<Topic> query = db.Topics
 				.Include(t => t.SessionType)
 				.Include(t => t.TargetSessionType)
 				.Include(t => t.Creator);
 
 			if (!filter.ShowReadonly)
-				topics = topics.Where(t => !t.IsReadOnly);
+				query = query.Where(t => !t.IsReadOnly);
 
 			if (filter.ShowPriority >= 0)
-				topics = topics.Where(t => t.Priority == (Priority)filter.ShowPriority);
+				query = query.Where(t => t.Priority == (Priority)filter.ShowPriority);
 
 			if (filter.SessionTypeID > 0)
-				topics = topics.Where(t => t.SessionTypeID == filter.SessionTypeID);
+				query = query.Where(t => t.SessionTypeID == filter.SessionTypeID);
 
 			if (filter.Timespan != 0)
 			{
 				if (filter.Timespan > 0) // Nur die letzten x Tage anzeigen
 				{
 					var cutoff = DateTime.Today.AddDays(-filter.Timespan);
-					topics = topics.Where(t => t.Created >= cutoff);
+					query = query.Where(t => t.Created >= cutoff);
 				}
 				else // Alles VOR den letzten x Tagen anzeigen
 				{
 					var cutoff = DateTime.Today.AddDays(filter.Timespan);
-					topics = topics.Where(t => t.Created < cutoff);
+					query = query.Where(t => t.Created < cutoff);
 				}
 			}
+
+			if (filter.OwnerID != 0)
+				query = query.Where(a => a.OwnerID == filter.OwnerID);
+
+			filter.UserList = new SelectList(db.GetUserOrdered(GetCurrentUser()), "ID", "Shortname");
 			filter.PriorityList = PriorityChoices(filter.ShowPriority);
 			filter.SessionTypeList = db.SessionTypes
 				.Where(st => st.Active)
 				.Select(st => new SelectListItem() {Text = st.Name, Value = st.ID.ToString()});
 
 			filter.TimespanList = TimespanChoices(filter.Timespan);
-			filter.Topics = topics.ToList();
+			filter.Topics = query.OrderByDescending(t => t.Priority).ThenByDescending(t => t.Title).ToList();
 
 			return View(filter);
 		}
@@ -225,10 +229,9 @@ namespace ILK_Protokoll.Controllers
 		public ActionResult Edit(
 			[Bind(Include = "ID,Attachments,Description,Duties,OwnerID,Priority,Proposal,TargetSessionTypeID,Title,Time,ToDo")] TopicEdit input)
 		{
+			Topic topic = db.Topics.Include(t => t.Creator).Single(t => t.ID == input.ID);
 			if (ModelState.IsValid)
 			{
-				Topic topic = db.Topics.Find(input.ID);
-
 				var auth = topic.IsEditableBy(GetCurrentUser(), GetSession());
 				if (!auth.IsAuthorized)
 					return HTTPStatus(HttpStatusCode.Forbidden, auth.Reason);
@@ -254,11 +257,19 @@ namespace ILK_Protokoll.Controllers
 						topic.Lock.Action = TopicAction.None;
 				}
 
-				db.SaveChanges();
+				try
+				{
+					db.SaveChanges();
+				}
+				catch (DbEntityValidationException e)
+				{
+					var message = ErrorMessageFromException(e);
+					return HTTPStatus(500, message);
+				}
+
 				return RedirectToAction("Details", new {Area = "", id = input.ID});
 			}
-			Topic t = db.Topics.Find(input.ID);
-			input.SessionType = t.SessionType;
+			input.SessionType = topic.SessionType;
 			input.SessionTypeList = new SelectList(db.SessionTypes, "ID", "Name", input.SessionTypeID);
 			input.TargetSessionTypeList = new SelectList(db.SessionTypes, "ID", "Name", input.TargetSessionTypeID);
 			input.UserList = new SelectList(db.GetUserOrdered(GetCurrentUser()), "ID", "ShortName");
@@ -344,8 +355,8 @@ namespace ILK_Protokoll.Controllers
 		}
 
 		/// <summary>
-		/// Vergleicht die beiden IDs und gibt den Unterschied zurück. Bei Gleichheit wird null zurückgegeben.
-		/// Bei verschiedenen Ids wird der Rückgabewert aus dem Dictionary anhand von idB ermittelt.
+		///    Vergleicht die beiden IDs und gibt den Unterschied zurück. Bei Gleichheit wird null zurückgegeben.
+		///    Bei verschiedenen Ids wird der Rückgabewert aus dem Dictionary anhand von idB ermittelt.
 		/// </summary>
 		/// <param name="idA">Erste ID</param>
 		/// <param name="idB">Zweite ID</param>
@@ -357,8 +368,8 @@ namespace ILK_Protokoll.Controllers
 		}
 
 		/// <summary>
-		/// Vergleicht die beiden IDs und gibt den Unterschied zurück. Bei Gleichheit wird null zurückgegeben.
-		/// Bei verschiedenen Ids wird der Rückgabewert aus dem Dictionary anhand von idB ermittelt.
+		///    Vergleicht die beiden IDs und gibt den Unterschied zurück. Bei Gleichheit wird null zurückgegeben.
+		///    Bei verschiedenen Ids wird der Rückgabewert aus dem Dictionary anhand von idB ermittelt.
 		/// </summary>
 		/// <param name="idA">Erste ID</param>
 		/// <param name="idB">Zweite ID</param>
