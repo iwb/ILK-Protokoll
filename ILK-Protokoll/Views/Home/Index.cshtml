@@ -3,10 +3,12 @@
 @model ILK_Protokoll.ViewModels.DashBoard
 
 @{
-	ViewBag.Title = "Dashboard";
+	ViewBag.Title = "Dashboard";	
 }
-
-@Html.ActionLink("Sitzungsmodus", "Index", "Master", new { Area = "Session" }, new { @class = "index-action btn btn-primary" })
+<div class="index-action">
+	<a onclick="muteColors();" class="btn btn-default">Mute</a>
+	@Html.ActionLink("Sitzungsmodus", "Index", "Master", new { Area = "Session" }, new { @class = "btn btn-primary" })
+</div>
 
 <h2>Push-Benachrichtigungen</h2>
 <div class="row">
@@ -82,5 +84,20 @@
 			itemSelector: '.masonry-item',
 			resizeable: true,
 		});
+
+		var siteMuted = false;
+
+		function muteColors() {
+			if (siteMuted) {
+				$('.body-content').css("background-color", "#FFF");
+				$('.topic-panel').css("margin-bottom", "");
+				siteMuted = false;
+			} else {
+				$('.body-content').css("transition", "background 500ms").css("background-color", "#333");
+				$('.topic-panel').css("margin-bottom", "120px");
+				siteMuted = true;
+			}
+			msnry.layout();
+		}
 	</script>
 }
