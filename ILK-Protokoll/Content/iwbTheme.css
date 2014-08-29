@@ -6292,7 +6292,7 @@ h6 {
   margin: 0;
   font-weight: bold;
 }
-.panel > .panel {
+.panel .panel {
   margin-bottom: 0;
   border: none;
   border-radius: 0;
@@ -6301,7 +6301,7 @@ h6 {
 .panel > .panel-heading {
   border-radius: 0;
 }
-.panel > .panel > .panel-heading {
+.panel .panel > .panel-heading {
   border-radius: 0;
 }
 .panel-body {
@@ -6400,6 +6400,7 @@ a:hover {
   display: table-cell;
   white-space: normal;
   width: 100%;
+  background-color: #FFF;
 }
 .comment-panel-group .comment-delete {
   background-color: #DDD;
