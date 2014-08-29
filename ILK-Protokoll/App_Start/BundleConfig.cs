@@ -50,9 +50,9 @@ namespace ILK_Protokoll
 			// finden Sie unter http://go.microsoft.com/fwlink/?LinkId=301862
 
 #if DEBUG
-			BundleTable.EnableOptimizations = true;
+			BundleTable.EnableOptimizations = false;
 #else
-			BundleTable.EnableOptimizations = true;
+			BundleTable.EnableOptimizations = false;
 #endif
 		}
 	}
