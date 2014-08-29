@@ -6295,6 +6295,10 @@ h6 {
 .panel .panel {
   margin-bottom: 0;
   border: none;
+  border-radius: 0;
+}
+.panel .panel:last-child {
+  border-radius: 4px;
 }
 .panel > .panel-heading {
   border-radius: 0;
