@@ -4,7 +4,7 @@
 <table class="table table-striped table-hover table-sortable">
 	<thead>
 		<tr>
-			<th class="col-xs-4">
+			<th class="col-xs-4 hidden-xs">
 				@Html.DisplayNameFor(model => model.TopicID)
 			</th>
 			<th class="col-xs-5">
@@ -16,7 +16,6 @@
 			<th class="col-xs-1">
 				@Html.DisplayNameFor(model => model.ReminderSent)
 			</th>
-			<th class="col-xs-1">Aktionen</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -37,20 +36,18 @@
 				visual = null;
 			}
 			<tr class="@visual">
-				<td>
+				<td class="hidden-xs">
 					@Html.ActionLink(item.Topic.Title.Shorten(100), "Details", "Topics", new { id = item.TopicID }, null)
 				</td>
-				<td>
+				<td style="position: relative;">
 					@item.Title.Shorten(100)
+					<a href="@Url.Action("Details", "Assignments", new { id = item.ID })"><span class="divlink"></span></a>
 				</td>
 				<td>
 					@item.DueDate.ToShortDateString()
 				</td>
 				<td>
 					@Html.DisplayFor(modelItem => item.ReminderSent)
-				</td>
-				<td>
-					@Html.ActionLink("Details", "Details", "Assignments", new { id = item.ID }, null)
 				</td>
 			</tr>
 		}
