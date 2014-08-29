@@ -134,7 +134,7 @@
 					decimal: '/\.|\,/g',
 					onRenderHeader: null,
 					selectorHeaders: 'thead th',
-					debug: false
+					debug: true
 				};
 
 				/* debuging utils */
@@ -304,8 +304,9 @@
 
 					if (config.textExtraction == "simple") {
 						// Parsing for relative time information within a time-tag
-						if (node.firstElementChild && node.firstElementChild.tagName == "TIME" && node.firstElementChild.hasAttribute("datetime")) {
-							text = node.firstElementChild.getAttribute("datetime");
+						var timetag = $(node).find('time[datetime]');
+						if (timetag.length > 0) {
+							text = timetag.attr("datetime");
 						} else if (node.firstElementChild && node.firstElementChild.tagName == "FILESIZE" && node.firstElementChild.hasAttribute("bytes")) {
 							text = node.firstElementChild.getAttribute("bytes");
 						} else if (config.supportsTextContent) {
@@ -943,7 +944,7 @@
 			return /^\d{4}[\/-]\d{1,2}[\/-]\d{1,2}/.test(s);
 		},
 		format: function(s) {
-			return $.tablesorter.formatFloat((s != "") ? new Date(s).getTime() : "0");
+			return $.tablesorter.formatFloat((s != "") ? -new Date(s).getTime() : "0");
 		},
 		type: "numeric"
 	});
@@ -965,7 +966,7 @@
 			return s.match(new RegExp(/^[A-Za-z]{3,10}\.? [0-9]{1,2}, ([0-9]{4}|'?[0-9]{2}) (([0-2]?[0-9]:[0-5][0-9])|([0-1]?[0-9]:[0-5][0-9]\s(AM|PM)))$/));
 		},
 		format: function(s) {
-			return $.tablesorter.formatFloat(new Date(s).getTime());
+			return $.tablesorter.formatFloat(-new Date(s).getTime());
 		},
 		type: "numeric"
 	});
@@ -986,15 +987,14 @@
 				s = s.replace(/(\d{1,2})\/(\d{1,2})\/(\d{2,4})/, "$3-$1-$2");
 			} else if (isDE) {
 				s = s.replace(/(\d{1,2})[.\-](\d{1,2})[.\-](\d{2,4})/, "$3-$2-$1");
-
 			} else if (isISO) {
 				// Everything okay
 			} else {
-				return $.tablesorter.formatFloat(new Date(s.trim()).getTime());
+				return $.tablesorter.formatFloat(-new Date(s.trim()).getTime());
 			}
 
 			s = "20" + s.trim().match(/(\d{2})-(\d{1,2})-(\d{1,2})/)[0];
-			return $.tablesorter.formatFloat(new Date(s).getTime());
+			return $.tablesorter.formatFloat(-new Date(s).getTime());
 		},
 		type: "numeric"
 	});
@@ -1004,7 +1004,7 @@
 			return /^(([0-2]?[0-9]:[0-5][0-9])|([0-1]?[0-9]:[0-5][0-9]\s(am|pm)))$/.test(s);
 		},
 		format: function(s) {
-			return $.tablesorter.formatFloat(new Date("2000/01/01 " + s).getTime());
+			return $.tablesorter.formatFloat(-new Date("2000/01/01 " + s).getTime());
 		},
 		type: "numeric"
 	});
