@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -6,6 +7,8 @@ using System.Data.Entity.Validation;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
+using System.Web;
 using System.Web.Mvc;
 using ILK_Protokoll.Areas.Session.Models;
 using ILK_Protokoll.Mailers;
@@ -112,7 +115,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 							Text = t.Proposal,
 							Type = DecisionType.Resolution
 						};
-						foreach ( var duty in t.Assignments.Where(a => a.Type == AssignmentType.Duty))
+						foreach (var duty in t.Assignments.Where(a => a.Type == AssignmentType.Duty))
 							mailer.SendNewAssignment(duty);
 						break;
 					case TopicAction.Close:
@@ -161,7 +164,6 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 				.Include(tl => tl.Session)
 				.Include(tl => tl.Topic)
 				.ToList();
-
 			return View("SessionReport", session);
 		}
 	}

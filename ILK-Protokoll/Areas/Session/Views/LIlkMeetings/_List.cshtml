@@ -29,7 +29,10 @@
 					<th class="col-sm-3">
 						@Html.DisplayNameFor(model => model.Comments)
 					</th>
-					<th class="col-sm-1"></th>
+					@if(!ViewBag.Reporting)
+					{
+						<th class="col-sm-1"></th>
+					}
 				</tr>
 			</thead>
 			<tbody id="ilkMeeting_tbody">

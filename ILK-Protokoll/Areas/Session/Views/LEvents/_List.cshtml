@@ -32,7 +32,10 @@
 					<th class="col-sm-1">
 						@Html.DisplayNameFor(model => model.Organizer)
 					</th>
-					<th class="col-sm-1"></th>
+					@if(!ViewBag.Reporting)
+					{
+						<th class="col-sm-1"></th>
+					}
 				</tr>
 			</thead>
 			<tbody id="event_tbody">

@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Data.Entity;
+using System.Data.Entity.Validation;
 using System.Linq;
-using System.Web.Mvc;
-using EntityFramework.Extensions;
 using ILK_Protokoll.Areas.Administration.Models;
 using ILK_Protokoll.Areas.Session.Models;
 using ILK_Protokoll.Controllers;
@@ -16,12 +15,19 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 		{
 			var session = db.ActiveSessions.Add(new ActiveSession(type) {Manager = GetCurrentUser()});
 
-			foreach (var t in db.Topics.Where(t => t.TargetSessionTypeID == type.ID))
+			foreach (var t in db.Topics.Include(t => t.Creator).Where(t => t.TargetSessionTypeID == type.ID))
 			{
 				t.SessionTypeID = type.ID;
 				t.TargetSessionTypeID = null;
 			}
-			db.SaveChanges();
+			try
+			{
+				db.SaveChanges();
+			}
+			catch (DbEntityValidationException e)
+			{
+				throw new InvalidOperationException(ErrorMessageFromException(e), e);
+			}
 
 			var topics = db.Topics
 				.Where(t => t.Decision == null && !t.IsReadOnly)

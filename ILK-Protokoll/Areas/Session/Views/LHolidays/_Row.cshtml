@@ -20,18 +20,21 @@
 			@: @Model.Start.Value.ToString("d") bis @Model.End.Value.ToString("d")
 		}
 	</td>
-	<td class="actions">
-		<a data-ajax="true"
-			data-ajax-method="POST"
-			data-ajax-success="ReplaceRow('Holiday', @Model.ID, data);"
-			href="@Url.Action("_BeginEdit", "LHolidays", new {Area = "Session", id = Model.ID})"><span class="glyphicon glyphicon-edit" title="Urlaubseintrag bearbeiten"></span></a>
+	@if (!ViewBag.Reporting)
+	{
+		<td class="actions">
+			<a data-ajax="true"
+			   data-ajax-method="POST"
+			   data-ajax-success="ReplaceRow('Holiday', @Model.ID, data);"
+			   href="@Url.Action("_BeginEdit", "LHolidays", new {Area = "Session", id = Model.ID})"><span class="glyphicon glyphicon-edit" title="Urlaubseintrag bearbeiten"></span></a>
 
-		<a data-ajax="true"
-			data-ajax-method="POST"
-			data-ajax-confirm="Urlaubseintrag wirklich löschen?"
-			data-ajax-success="RemoveRow('Holiday', @Model.ID);"
-			href="@Url.Action("_Delete", "LHolidays", new {Area = "Session", id = Model.ID})">
-			<span class="glyphicon glyphicon-remove" title="Urlaubseintrag löschen"></span>
-		</a>
-	</td>
+			<a data-ajax="true"
+			   data-ajax-method="POST"
+			   data-ajax-confirm="Urlaubseintrag wirklich löschen?"
+			   data-ajax-success="RemoveRow('Holiday', @Model.ID);"
+			   href="@Url.Action("_Delete", "LHolidays", new {Area = "Session", id = Model.ID})">
+				<span class="glyphicon glyphicon-remove" title="Urlaubseintrag löschen"></span>
+			</a>
+		</td>
+	}
 </tr>

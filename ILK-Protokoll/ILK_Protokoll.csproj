@@ -446,6 +446,11 @@
     <Content Include="Areas\Session\Views\LHolidays\_Edit.cshtml" />
     <Content Include="Areas\Session\Views\LHolidays\_List.cshtml" />
     <Content Include="Areas\Session\Views\LHolidays\_Row.cshtml" />
+    <Content Include="Areas\Session\Views\Finalize\_ReportTopic.cshtml" />
+    <Content Include="Areas\Session\Views\Finalize\_ReportAssignments.cshtml" />
+    <Content Include="Areas\Session\Views\Finalize\_ReportAttachments.cshtml" />
+    <Content Include="Areas\Session\Views\Finalize\_ReportComments.cshtml" />
+    <Content Include="Areas\Session\Views\Finalize\_ReportVotes.cshtml" />
     <None Include="Content\bootstrap\bootstrap.less" />
     <Content Include="Content\iwbTheme.less" />
     <Content Include="Areas\Administration\Views\web.config" />

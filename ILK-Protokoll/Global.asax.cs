@@ -18,11 +18,12 @@ namespace ILK_Protokoll
 			BundleConfig.RegisterBundles(BundleTable.Bundles);
 
 			Database.SetInitializer(new MigrateDatabaseToLatestVersion<DataContext, Configuration>());
-
+			
 #if DEBUG
 			foreach (Bundle bundle in BundleTable.Bundles)
 				bundle.Transforms.Clear();
 #endif
 		}
 	}
+
 }

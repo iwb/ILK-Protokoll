@@ -89,7 +89,9 @@
 					@{ Html.RenderPartial("_StateButtons", tlock); }
 				</div>
 				<div>
-					@Html.Action("Details", "Topics", new { Area = "", id = tlock.TopicID, reporting = true })
+					@{
+						Html.RenderPartial("_ReportTopic", tlock.Topic);
+					}
 				</div>
 			</div>
 		}

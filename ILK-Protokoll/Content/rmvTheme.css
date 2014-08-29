@@ -6295,8 +6295,6 @@ h6 {
 .panel .panel {
   margin-bottom: 0;
   border: none;
-  border-radius: 0;
-  background-color: #9bc7be;
 }
 .panel > .panel-heading {
   border-radius: 0;

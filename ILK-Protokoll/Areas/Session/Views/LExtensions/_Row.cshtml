@@ -19,18 +19,21 @@
 	<td>
 		@Html.DisplayFor(model => model.Approved)
 	</td>
-	<td class="actions">
-		<a data-ajax="true"
-		   data-ajax-method="POST"
-		   data-ajax-success="ReplaceRow('extension', @Model.ID, data);"
-		   href="@Url.Action("_BeginEdit", "LExtensions", new {Area = "Session", id = Model.ID})"><span class="glyphicon glyphicon-edit" title="Vertragsverlängerung bearbeiten"></span></a>
+	@if (!ViewBag.Reporting)
+	{
+		<td class="actions">
+			<a data-ajax="true"
+			   data-ajax-method="POST"
+			   data-ajax-success="ReplaceRow('extension', @Model.ID, data);"
+			   href="@Url.Action("_BeginEdit", "LExtensions", new {Area = "Session", id = Model.ID})"><span class="glyphicon glyphicon-edit" title="Vertragsverlängerung bearbeiten"></span></a>
 
-		<a data-ajax="true"
-		   data-ajax-method="POST"
-		   data-ajax-confirm="Vertragsverlängerung wirklich löschen?"
-		   data-ajax-success="RemoveRow('extension', @Model.ID);"
-		   href="@Url.Action("_Delete", "LExtensions", new {Area = "Session", id = Model.ID})">
-			<span class="glyphicon glyphicon-remove" title="Vertragsverlängerung löschen"></span>
-		</a>
-	</td>
+			<a data-ajax="true"
+			   data-ajax-method="POST"
+			   data-ajax-confirm="Vertragsverlängerung wirklich löschen?"
+			   data-ajax-success="RemoveRow('extension', @Model.ID);"
+			   href="@Url.Action("_Delete", "LExtensions", new {Area = "Session", id = Model.ID})">
+				<span class="glyphicon glyphicon-remove" title="Vertragsverlängerung löschen"></span>
+			</a>
+		</td>
+	}
 </tr>

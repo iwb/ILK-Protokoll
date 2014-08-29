@@ -12,7 +12,6 @@ using System.Web;
 using System.Web.Mvc;
 using ILK_Protokoll.DataLayer;
 using ILK_Protokoll.Models;
-using Microsoft.SqlServer.Server;
 
 namespace ILK_Protokoll.Controllers
 {
@@ -38,6 +37,8 @@ namespace ILK_Protokoll.Controllers
 			"xlsx",
 			"xltx"
 		};
+
+		public static HashSet<string> KnownExtensions = new HashSet<string>();
 
 		private string Serverpath
 		{
@@ -77,11 +78,13 @@ namespace ILK_Protokoll.Controllers
 			else if (entity == AttachmentContainer.EmployeePresentation)
 				files = files.Where(a => a.EmployeePresentationID == id);
 
-			ViewBag.EntityID = id;
-			ViewBag.CurrentUser = GetCurrentUser();
-			ViewBag.KnownExtensions = new HashSet<string>(
+			KnownExtensions = new HashSet<string>(
 				from path in Directory.GetFiles(Server.MapPath("~/img/fileicons"), "*.png")
 				select Path.GetFileNameWithoutExtension(path));
+
+			ViewBag.EntityID = id;
+			ViewBag.CurrentUser = GetCurrentUser();
+			ViewBag.KnownExtensions = KnownExtensions;
 
 			if (makeList)
 				return PartialView("_AttachmentList", files.ToList());
@@ -111,7 +114,10 @@ namespace ILK_Protokoll.Controllers
 				return HTTPStatus(HttpStatusCode.Forbidden, "Da das Thema gesperrt ist, können Sie keine Dateien hochladen.");
 
 			if (entity == AttachmentContainer.Topic && db.Topics.Find(id).IsReadOnly)
-				return HTTPStatus(HttpStatusCode.Forbidden, "Da das Thema schreibgeschützt ist, können Sie keine Dateien bearbeiten.");
+			{
+				return HTTPStatus(HttpStatusCode.Forbidden,
+					"Da das Thema schreibgeschützt ist, können Sie keine Dateien bearbeiten.");
+			}
 
 			var statusMessage = new StringBuilder();
 			int successful = 0;
@@ -200,7 +206,10 @@ namespace ILK_Protokoll.Controllers
 				return HTTPStatus(HttpStatusCode.Forbidden, "Da das Thema gesperrt ist, können Sie keine Dateien bearbeiten.");
 
 			if (attachment.TopicID.HasValue && attachment.Topic.IsReadOnly)
-				return HTTPStatus(HttpStatusCode.Forbidden, "Da das Thema schreibgeschützt ist, können Sie keine Dateien bearbeiten.");
+			{
+				return HTTPStatus(HttpStatusCode.Forbidden,
+					"Da das Thema schreibgeschützt ist, können Sie keine Dateien bearbeiten.");
+			}
 
 			attachment.Deleted = DateTime.Now; // In den Papierkorb
 			try
@@ -227,7 +236,10 @@ namespace ILK_Protokoll.Controllers
 				return HTTPStatus(HttpStatusCode.Forbidden, "Da das Thema gesperrt ist, können Sie keine Dateien bearbeiten.");
 
 			if (attachment.TopicID.HasValue && attachment.Topic.IsReadOnly)
-				return HTTPStatus(HttpStatusCode.Forbidden, "Da das Thema schreibgeschützt ist, können Sie keine Dateien bearbeiten.");
+			{
+				return HTTPStatus(HttpStatusCode.Forbidden,
+					"Da das Thema schreibgeschützt ist, können Sie keine Dateien bearbeiten.");
+			}
 
 			try
 			{

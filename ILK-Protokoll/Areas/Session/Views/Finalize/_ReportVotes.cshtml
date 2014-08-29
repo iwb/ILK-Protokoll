@@ -1,0 +1,38 @@
+﻿@using ILK_Protokoll.Models
+@using ILK_Protokoll.util
+@model IEnumerable<ILK_Protokoll.Models.Vote>
+
+@helper GetVoteIcon(VoteKind vk)
+{
+	string iconname = "";
+	switch (vk)
+	{
+		case VoteKind.None:
+			iconname = "glyphicon-record";
+			break;
+
+		case VoteKind.Approved:
+			iconname = "glyphicon-ok-sign";
+			break;
+
+		case VoteKind.Reservation:
+			iconname = "glyphicon-question-sign";
+			break;
+
+		case VoteKind.Rejected:
+			iconname = "glyphicon-remove-sign";
+			break;
+	}
+	<span class="glyphicon @iconname" title="@vk.GetDescription()"></span>
+}
+@* Für die eigene Stimme *@
+
+<ul class="userlist">
+	@foreach (var vote in Model)
+	{
+		<li>
+			@GetVoteIcon(vote.Kind)
+			@vote.Voter
+		</li>
+	}
+</ul>

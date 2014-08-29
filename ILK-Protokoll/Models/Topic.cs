@@ -89,7 +89,7 @@ namespace ILK_Protokoll.Models
 
 		[Display(Name = "Ersteller")]
 		[Required]
-		public User Creator { get; set; }
+		public virtual User Creator { get; set; }
 
 		/// <summary>
 		///    Gibt das Datum der letzten Änderung an. Falls der Diskussionspunkt nie geändert wurde, gleicht das Änderungsdatum

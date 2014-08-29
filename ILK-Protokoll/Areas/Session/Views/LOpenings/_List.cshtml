@@ -29,7 +29,10 @@
 					<th class="col-sm-4">
 						@Html.DisplayNameFor(model => model.Description)
 					</th>
-					<th class="col-sm-1"></th>
+					@if(!ViewBag.Reporting)
+					{
+						<th class="col-sm-1"></th>
+					}
 				</tr>
 			</thead>
 			<tbody id="opening_tbody">

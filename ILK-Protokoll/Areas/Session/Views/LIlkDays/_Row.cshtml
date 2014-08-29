@@ -33,18 +33,21 @@
 	<td>
 		@Html.DisplayFor(model => model.Participants)
 	</td>
-	<td class="actions">
-		<a data-ajax="true"
-		   data-ajax-method="POST"
-		   data-ajax-success="ReplaceRow('ilkDay', @Model.ID, data);"
-		   href="@Url.Action("_BeginEdit", "LIlkDays", new {Area = "Session", id = Model.ID})"><span class="glyphicon glyphicon-edit" title="Klausur-Tag bearbeiten"></span></a>
+	@if (!ViewBag.Reporting)
+	{
+		<td class="actions">
+			<a data-ajax="true"
+			   data-ajax-method="POST"
+			   data-ajax-success="ReplaceRow('ilkDay', @Model.ID, data);"
+			   href="@Url.Action("_BeginEdit", "LIlkDays", new {Area = "Session", id = Model.ID})"><span class="glyphicon glyphicon-edit" title="Klausur-Tag bearbeiten"></span></a>
 
-		<a data-ajax="true"
-		   data-ajax-method="POST"
-		   data-ajax-confirm="Klausur-Tag wirklich löschen?"
-		   data-ajax-success="RemoveRow('ilkDay', @Model.ID);"
-		   href="@Url.Action("_Delete", "LIlkDays", new {Area = "Session", id = Model.ID})">
-			<span class="glyphicon glyphicon-remove" title="Klausur-Tag löschen"></span>
-		</a>
-	</td>
+			<a data-ajax="true"
+			   data-ajax-method="POST"
+			   data-ajax-confirm="Klausur-Tag wirklich löschen?"
+			   data-ajax-success="RemoveRow('ilkDay', @Model.ID);"
+			   href="@Url.Action("_Delete", "LIlkDays", new {Area = "Session", id = Model.ID})">
+				<span class="glyphicon glyphicon-remove" title="Klausur-Tag löschen"></span>
+			</a>
+		</td>
+	}
 </tr>

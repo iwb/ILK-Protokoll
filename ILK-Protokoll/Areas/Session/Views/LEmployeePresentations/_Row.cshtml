@@ -32,26 +32,29 @@
 	<td>
 		@Html.DisplayFor(model => model.Selected)
 	</td>
-	<td class="actions">
+	@if (!ViewBag.Reporting)
+	{
+		<td class="actions">
 		
-		@{
-			string url = Request.Url != null ? Request.Url.PathAndQuery : null;
-		}
+			@{
+				string url = Request.Url != null ? Request.Url.PathAndQuery : null;
+			}
 
-		<a href="@Url.Action("Edit", "LEmployeePresentations", new { Area = "Session", id = Model.ID, returnURL = url })" target="empPres"><span class="glyphicon glyphicon-new-window" title="Eintrag ausführlich bearbeiten"></span></a>
+			<a href="@Url.Action("Edit", "LEmployeePresentations", new {Area = "Session", id = Model.ID, returnURL = url})" target="empPres"><span class="glyphicon glyphicon-new-window" title="Eintrag ausführlich bearbeiten"></span></a>
 		
 
-		<a data-ajax="true"
-		   data-ajax-method="POST"
-		   data-ajax-success="ReplaceRow('employeePresentation', @Model.ID, data);"
-		   href="@Url.Action("_BeginEdit", "LEmployeePresentations", new {Area = "Session", id = Model.ID})"><span class="glyphicon glyphicon-edit" title="Eintrag bearbeiten"></span></a>
+			<a data-ajax="true"
+			   data-ajax-method="POST"
+			   data-ajax-success="ReplaceRow('employeePresentation', @Model.ID, data);"
+			   href="@Url.Action("_BeginEdit", "LEmployeePresentations", new {Area = "Session", id = Model.ID})"><span class="glyphicon glyphicon-edit" title="Eintrag bearbeiten"></span></a>
 
-		<a data-ajax="true"
-		   data-ajax-method="POST"
-		   data-ajax-confirm="Eintrag wirklich löschen?"
-		   data-ajax-success="RemoveRow('employeePresentation', @Model.ID);"
-		   href="@Url.Action("_Delete", "LEmployeePresentations", new {Area = "Session", id = Model.ID})">
-			<span class="glyphicon glyphicon-remove" title="Eintrag löschen"></span>
-		</a>
-	</td>
+			<a data-ajax="true"
+			   data-ajax-method="POST"
+			   data-ajax-confirm="Eintrag wirklich löschen?"
+			   data-ajax-success="RemoveRow('employeePresentation', @Model.ID);"
+			   href="@Url.Action("_Delete", "LEmployeePresentations", new {Area = "Session", id = Model.ID})">
+				<span class="glyphicon glyphicon-remove" title="Eintrag löschen"></span>
+			</a>
+		</td>
+	}
 </tr>
