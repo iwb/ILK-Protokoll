@@ -10,8 +10,10 @@ namespace ILK_Protokoll
 			bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
 				"~/Scripts/jquery-{version}.js",
 				"~/Scripts/jquery.unobtrusive-ajax.js",
+				"~/Scripts/jquery-ui-{version}.js"));
+
+			bundles.Add(new Bundle("~/bundles/other").Include( // No minifiaction
 				"~/Scripts/jquery.timeago.js",
-				"~/Scripts/jquery-ui-{version}.js",
 				"~/Scripts/jquery.highlight.js",
 				"~/Scripts/jquery.tablesorter.js"));
 
@@ -52,7 +54,7 @@ namespace ILK_Protokoll
 #if DEBUG
 			BundleTable.EnableOptimizations = false;
 #else
-			BundleTable.EnableOptimizations = false;
+			BundleTable.EnableOptimizations = true;
 #endif
 		}
 	}
