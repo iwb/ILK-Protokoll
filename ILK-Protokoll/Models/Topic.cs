@@ -107,6 +107,15 @@ namespace ILK_Protokoll.Models
 
 		public TopicLock Lock { get; set; }
 
+		public bool HasDecision()
+		{
+			return Decision != null;
+		}
+		public bool HasDecision(DecisionType d)
+		{
+			return Decision != null && Decision.Type == d;
+		}
+
 		public AuthResult IsEditableBy(User u, ActiveSession s)
 		{
 			if (IsReadOnly)

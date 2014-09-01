@@ -66,8 +66,17 @@ namespace ILK_Protokoll.Controllers
 
 		public ActionResult MarkAsOpen(int id)
 		{
-			var a = db.Assignments.Find(id);
-			a.IsDone = false;
+			var assignment = db.Assignments.Find(id);
+			assignment.IsDone = false;
+
+			var topic = db.Topics
+				.Include(t => t.Lock)
+				.Include(t => t.Lock.Session.Manager)
+				.Single(t => t.ID == assignment.TopicID);
+
+			if (assignment.Type == AssignmentType.ToDo && topic.Lock != null)
+				topic.Lock.Action = TopicAction.None; // Falls eine ToDo hinzugefügt wird, Wiedervorlage auswählen.
+
 			db.SaveChanges();
 
 			return RedirectToAction("Details", new {id});
@@ -77,7 +86,7 @@ namespace ILK_Protokoll.Controllers
 		///    Verschickt Erinnerungen für Aufgaben, die bald fällig werden, oder überfällig sind.
 		/// </summary>
 		/// <param name="db">Ein Datenbankkontext</param>
-		/// <returns>Anzahl der E-maisl, die verschickt wurden.</returns>
+		/// <returns>Anzahl der Aufgaben, die betrachtet wurden.</returns>
 		public static int SendReminders(DataContext db)
 		{
 			/* Gespeichert wird in der Datenbank ja nur der Datumsanteil. Eine Aufgabe, die am Donnerstag fällig wird, enthält hier also Do, 0:00 als Zeitangabe.
@@ -87,18 +96,20 @@ namespace ILK_Protokoll.Controllers
 			var due = db.Assignments.Where(a => !a.IsDone && !a.ReminderSent && a.IsActive && a.DueDate < cutoff).ToList();
 			foreach (var a in due)
 			{
-				if (a.Type == AssignmentType.Duty && !a.Topic.IsReadOnly) // Keine Erinnerung für Umsetzungsaufgaben, wo keine Beschlüsse gefallen sind
-					continue;
-
-				mailer.SendAssignmentReminder(a);
-				a.ReminderSent = true;
+				// Erinnerung für Umsetzungsaufgaben nur, wenn ein Beschluss gefallen ist 
+				if (a.Type == AssignmentType.ToDo || a.Topic.HasDecision(DecisionType.Resolution))
+				{
+					mailer.SendAssignmentReminder(a);
+					a.ReminderSent = true;
+				}
 			}
 			db.SaveChanges();
 
 			cutoff = DateTime.Now.AddDays(-1);
 			var overdue = db.Assignments.Where(a => !a.IsDone && a.IsActive && a.DueDate < cutoff).ToList();
-			foreach (var a in overdue.Where(a => a.Type != AssignmentType.Duty || a.Topic.IsReadOnly))
-				mailer.SendAssignmentOverdue(a);
+			foreach (var a in overdue)
+				if (a.Type == AssignmentType.ToDo || a.Topic.HasDecision(DecisionType.Resolution))
+					mailer.SendAssignmentOverdue(a);
 
 			return due.Count + overdue.Count;
 		}
@@ -133,7 +144,11 @@ namespace ILK_Protokoll.Controllers
 				var assignment = db.Assignments.Create();
 				TryUpdateModel(assignment, new[] {"Type", "Title", "Description", "TopicID", "OwnerID", "DueDate", "IsActive"});
 
-				db.Assignments.Add(assignment);
+				var a = db.Assignments.Add(assignment);
+
+				if (input.Type == AssignmentType.ToDo && a.Topic.Lock != null)
+					a.Topic.Lock.Action = TopicAction.None; // Falls eine ToDo hinzugefügt wird, Wiedervorlage auswählen.
+
 				db.SaveChanges();
 
 				if (assignment.Type == AssignmentType.ToDo && input.IsActive)
@@ -189,7 +204,6 @@ namespace ILK_Protokoll.Controllers
 			}
 
 			var assignment = db.Assignments.Find(input.ID);
-
 
 			if (assignment.Type == AssignmentType.ToDo && !assignment.IsActive && input.IsActive)
 				// Das Aktiv-Flag hat sich auf true geändert

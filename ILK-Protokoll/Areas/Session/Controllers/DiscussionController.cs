@@ -34,7 +34,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 				.Where(t => t.Lock.Session.ID == session.ID || (t.SessionTypeID == session.SessionType.ID && t.Created < session.Start))
 				.OrderByDescending(t => t.Priority)
 				.ThenBy(t => t.Created).ToList();
-
+			
 			foreach (Topic topic in topics)
 				topic.IsLocked = topic.Lock != null;
 
@@ -56,7 +56,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 				return HTTPStatus(HttpStatusCode.Forbidden, "Falsche Sitzung.");
 
 			// Den Beschluss verhindern, falls noch offene Aufgaben vorliegen
-			if (state == TopicAction.Decide && tlock.Topic.Assignments.Any(a => a.Type == AssignmentType.ToDo && !a.IsDone))
+			if (state == TopicAction.Decide && tlock.Topic.Assignments.Any(a => a.Type == AssignmentType.ToDo && !a.IsDone && a.IsActive))
 			{
 				tlock.Message = "Es liegen noch offene ToDo-Aufgaben vor. Dieses Thema kann daher nicht beschlossen werden.";
 				return PartialView("_StateButtons", tlock);

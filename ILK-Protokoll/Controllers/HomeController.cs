@@ -20,7 +20,7 @@ namespace ILK_Protokoll.Controllers
 
 			var myAssignments = db.Assignments.Where(a => a.Owner.ID == user.ID && !a.IsDone && a.IsActive).ToLookup(a => a.Type);
 			dash.MyToDos = myAssignments[AssignmentType.ToDo];
-			dash.MyDuties = myAssignments[AssignmentType.Duty];
+			dash.MyDuties = myAssignments[AssignmentType.Duty].Where(a => a.Topic.HasDecision(DecisionType.Resolution));
 
 			dash.MyTopics = db.Topics
 				.Include(t => t.SessionType)
