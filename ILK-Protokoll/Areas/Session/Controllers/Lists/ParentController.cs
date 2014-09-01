@@ -4,8 +4,11 @@ using System.Data.Entity.Validation;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using DDay.iCal;
+using DDay.iCal.Serialization.iCalendar;
 using EntityFramework.Extensions;
 using ILK_Protokoll.Areas.Session.Models.Lists;
+using Event = DDay.iCal.Event;
 
 namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 {
@@ -53,7 +56,8 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 		public virtual PartialViewResult _FetchRow(int id)
 		{
 			var row = Entities.Single(m => m.ID == id);
-			if (GetSession() != null && row.LockSessionID == GetSession().ID) // ggf. lock entfernen
+			var session = GetSession();
+			if (session != null && row.LockSessionID == session.ID) // ggf. lock entfernen
 			{
 				row.LockSessionID = null;
 				db.SaveChanges();
@@ -127,7 +131,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 
 			if (row.LockSessionID != null && (GetSession() == null || row.LockSessionID != GetSession().ID))
 				return HTTPStatus(409, "Der Datensatz ist momentan gesperrt.");
-			
+
 			TryUpdateModel(row, "", null, new[] {"Created"});
 			row.LockSessionID = null;
 
@@ -167,6 +171,46 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 			}
 
 			return new HttpStatusCodeResult(HttpStatusCode.NoContent);
+		}
+
+		public virtual ActionResult Download(int id)
+		{
+			throw new NotImplementedException();
+		}
+
+		protected static string CreateCalendarEvent(
+			string title, string description, DateTime startDate, DateTime endDate,
+			string location, string eventId, bool allDayEvent)
+		{
+			if (string.IsNullOrWhiteSpace(eventId))
+				eventId = Guid.NewGuid().ToString();
+
+			var iCal = new iCalendar
+			{
+				Method = "REQUEST",
+				Version = "2.0"
+			};
+
+			iCal.AddLocalTimeZone();
+
+			var evt = iCal.Create<Event>();
+			evt.Summary = title;
+			evt.Start = new iCalDateTime(startDate);
+			evt.End = new iCalDateTime(endDate);
+			evt.Description = description;
+			evt.Location = location;
+			evt.IsAllDay = allDayEvent;
+			evt.UID = eventId;
+			evt.Organizer = new Organizer { CommonName = "ILK-Protokoll", Value = new Uri("mailto:no-reply@iwb.tum.de") };
+			evt.Alarms.Add(new Alarm
+			{
+				Duration = new TimeSpan(0, 15, 0),
+				Trigger = new Trigger(new TimeSpan(0, 15, 0)),
+				Action = AlarmAction.Display,
+				Description = "Erinnerung"
+			});
+
+			return new iCalendarSerializer().SerializeToString(iCal);
 		}
 	}
 

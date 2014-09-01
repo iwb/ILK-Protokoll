@@ -28,10 +28,16 @@
 	@if (!ViewBag.Reporting)
 	{
 		<td class="actions">
+			<a href="@Url.Action("Download", "LConferences", new {Area = "Session", id = Model.ID})">
+				<span class="glyphicon glyphicon-download" title="Termin downloaden"></span>
+			</a>
+
 			<a data-ajax="true"
 			   data-ajax-method="POST"
 			   data-ajax-success="ReplaceRow('conference', @Model.ID, data);"
-			   href="@Url.Action("_BeginEdit", "LConferences", new {Area = "Session", id = Model.ID})"><span class="glyphicon glyphicon-edit" title="Konferenz bearbeiten"></span></a>
+			   href="@Url.Action("_BeginEdit", "LConferences", new {Area = "Session", id = Model.ID})">
+				<span class="glyphicon glyphicon-edit" title="Konferenz bearbeiten"></span>
+			</a>
 
 			<a data-ajax="true"
 			   data-ajax-method="POST"

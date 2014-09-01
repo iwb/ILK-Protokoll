@@ -26,6 +26,11 @@ namespace ILK_Protokoll.Areas.Session.Models.Lists
 		/// Enthält die ActiveSessionID, die diesen Einträgt gesperrt hält. NULL, wen kein Lock besteht.
 		/// </summary>
 		public int? LockSessionID { get; set; }
+
+		/// <summary>
+		/// Enthält eine GUID, falls eine vergeben ist.
+		/// </summary>
+		public Guid? GUID { get; set; }
 	}
 
 }
