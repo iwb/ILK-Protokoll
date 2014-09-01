@@ -58,6 +58,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 				row.LockSessionID = null;
 				db.SaveChanges();
 			}
+			ViewBag.Reporting = false;
 
 			return PartialView("_Row", row);
 		}
