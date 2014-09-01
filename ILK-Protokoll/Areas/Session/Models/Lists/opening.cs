@@ -26,6 +26,7 @@ namespace ILK_Protokoll.Areas.Session.Models.Lists
 		[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
 		public DateTime Start { get; set; }
 
+		[DisplayName("TG/OE")]
 		[Required]
 		public string TG { get; set; }
 

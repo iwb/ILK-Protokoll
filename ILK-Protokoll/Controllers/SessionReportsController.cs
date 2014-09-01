@@ -17,7 +17,7 @@ namespace ILK_Protokoll.Controllers
 		// GET: SessionReports
 		public ActionResult Index()
 		{
-			return View(db.SessionReports.ToList());
+			return View(db.SessionReports.Include(sr => sr.Manager).ToList());
 		}
 
 		// GET: SessionReports/Details/5
