@@ -134,7 +134,7 @@
 					decimal: '/\.|\,/g',
 					onRenderHeader: null,
 					selectorHeaders: 'thead th',
-					debug: true
+					debug: false
 				};
 
 				/* debuging utils */
