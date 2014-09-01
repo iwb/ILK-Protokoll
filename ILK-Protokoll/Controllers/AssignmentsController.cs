@@ -20,7 +20,7 @@ namespace ILK_Protokoll.Controllers
 
 		// GET: Assignments
 		public ActionResult Index(
-			[Bind(Include = "ShowToDos,ShowDuties,ShowPast, ShowFuture, ShowDone, UserID")] FilteredAssignments filter)
+			[Bind(Include = "ShowToDos,ShowDuties,ShowPast,ShowFuture,ShowDone,UserID")] FilteredAssignments filter)
 		{
 			IQueryable<Assignment> query = db.Assignments;
 
@@ -84,17 +84,20 @@ namespace ILK_Protokoll.Controllers
 			 * Tatsächlich fällig wird sie allerdings erst am Donnerstag um 24:00. Damit erklärt sich der eine Tag Unterschied in den cutoff-Daten. */
 			var mailer = new UserMailer();
 			var cutoff = DateTime.Now.AddDays(6);
-			var due = db.Assignments.Where(a => !a.IsDone && !a.ReminderSent && a.DueDate < cutoff).ToList();
+			var due = db.Assignments.Where(a => !a.IsDone && !a.ReminderSent && a.IsActive && a.DueDate < cutoff).ToList();
 			foreach (var a in due)
 			{
+				if (a.Type == AssignmentType.Duty && !a.Topic.IsReadOnly) // Keine Erinnerung für Umsetzungsaufgaben, wo keine Beschlüsse gefallen sind
+					continue;
+
 				mailer.SendAssignmentReminder(a);
 				a.ReminderSent = true;
 			}
 			db.SaveChanges();
 
 			cutoff = DateTime.Now.AddDays(-1);
-			var overdue = db.Assignments.Where(a => !a.IsDone && a.DueDate < cutoff).ToList();
-			foreach (var a in overdue)
+			var overdue = db.Assignments.Where(a => !a.IsDone && a.IsActive && a.DueDate < cutoff).ToList();
+			foreach (var a in overdue.Where(a => a.Type != AssignmentType.Duty || a.Topic.IsReadOnly))
 				mailer.SendAssignmentOverdue(a);
 
 			return due.Count + overdue.Count;
@@ -128,12 +131,12 @@ namespace ILK_Protokoll.Controllers
 			else
 			{
 				var assignment = db.Assignments.Create();
-				TryUpdateModel(assignment, new[] {"Type", "Title", "Description", "TopicID", "OwnerID", "DueDate"});
+				TryUpdateModel(assignment, new[] {"Type", "Title", "Description", "TopicID", "OwnerID", "DueDate", "IsActive"});
 
 				db.Assignments.Add(assignment);
 				db.SaveChanges();
 
-				if (assignment.Type == AssignmentType.ToDo)
+				if (assignment.Type == AssignmentType.ToDo && input.IsActive)
 				{
 					var mailer = new UserMailer();
 					mailer.SendNewAssignment(assignment);
@@ -167,7 +170,8 @@ namespace ILK_Protokoll.Controllers
 				OwnerID = assignment.OwnerID,
 				Title = assignment.Title,
 				TopicID = assignment.TopicID,
-				Type = assignment.Type
+				Type = assignment.Type,
+				IsActive = assignment.IsActive
 			};
 
 			return View(vm);
@@ -186,12 +190,21 @@ namespace ILK_Protokoll.Controllers
 
 			var assignment = db.Assignments.Find(input.ID);
 
+
+			if (assignment.Type == AssignmentType.ToDo && !assignment.IsActive && input.IsActive)
+				// Das Aktiv-Flag hat sich auf true geändert
+			{
+				var mailer = new UserMailer();
+				mailer.SendNewAssignment(assignment);
+			}
+
 			if (IsTopicLocked(assignment.TopicID))
 				throw new TopicLockedException();
 
-			TryUpdateModel(assignment, new[] {"Type", "Title", "Description", "TopicID", "OwnerID", "DueDate"});
+			TryUpdateModel(assignment, new[] {"Type", "Title", "Description", "TopicID", "OwnerID", "DueDate", "IsActive"});
 			db.Entry(assignment).State = EntityState.Modified;
 			db.SaveChanges();
+
 			return RedirectToAction("Index");
 		}
 	}

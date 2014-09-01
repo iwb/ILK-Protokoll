@@ -289,6 +289,10 @@
     <Compile Include="Migrations\201408271553214_topichistory_targetsession_added.Designer.cs">
       <DependentUpon>201408271553214_topichistory_targetsession_added.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201409010700369_Ass_active_Flag_added.cs" />
+    <Compile Include="Migrations\201409010700369_Ass_active_Flag_added.Designer.cs">
+      <DependentUpon>201409010700369_Ass_active_Flag_added.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Assignment.cs" />
     <Compile Include="Models\Attachment.cs" />
@@ -709,6 +713,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201408271553214_topichistory_targetsession_added.resx">
       <DependentUpon>201408271553214_topichistory_targetsession_added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201409010700369_Ass_active_Flag_added.resx">
+      <DependentUpon>201409010700369_Ass_active_Flag_added.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

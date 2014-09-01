@@ -115,7 +115,8 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 							Text = t.Proposal,
 							Type = DecisionType.Resolution
 						};
-						foreach (var duty in t.Assignments.Where(a => a.Type == AssignmentType.Duty))
+						db.Assignments.RemoveRange(db.Assignments.Where(a => a.TopicID == t.ID && !a.IsActive)); // Inaktive Aufgaben löschen
+						foreach (var duty in t.Assignments.Where(a => a.Type == AssignmentType.Duty && a.IsActive))
 							mailer.SendNewAssignment(duty);
 						break;
 					case TopicAction.Close:

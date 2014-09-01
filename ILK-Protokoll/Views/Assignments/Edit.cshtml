@@ -60,7 +60,15 @@
 				@Html.ValidationMessageFor(model => model.DueDate, "", new { @class = "text-danger" })
 			</div>
 		</div>
-
+		@if (!Model.IsActive)
+		{ 
+			<div class="form-group">
+				@Html.LabelFor(model => model.IsActive, htmlAttributes: new { @class = "control-label col-md-2" })
+				<div class="col-md-5">
+					@Html.EditorFor(model => model.IsActive, new { htmlAttributes = new { @class = "form-control", data_toggle = "tooltip", data_placement = "right", title = "Das Aktiv-Flag bestimmt, ob der Besitzer E-Mails erhält. Es kann nur einmal gesetzt werden." } })
+				</div>
+			</div>
+		}
 		<div class="form-group">
 			<div class="col-md-offset-2 col-md-5">
 				<input type="submit" value="Speichern" class="btn btn-default" />

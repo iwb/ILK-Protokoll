@@ -18,7 +18,7 @@ namespace ILK_Protokoll.Controllers
 					.Where(pn => pn.UserID == user.ID && pn.Topic.IsReadOnly && !pn.Confirmed)
 					.ToList();
 
-			var myAssignments = db.Assignments.Where(a => a.Owner.ID == user.ID && !a.IsDone).ToLookup(a => a.Type);
+			var myAssignments = db.Assignments.Where(a => a.Owner.ID == user.ID && !a.IsDone && a.IsActive).ToLookup(a => a.Type);
 			dash.MyToDos = myAssignments[AssignmentType.ToDo];
 			dash.MyDuties = myAssignments[AssignmentType.Duty];
 

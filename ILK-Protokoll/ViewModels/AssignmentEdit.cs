@@ -10,6 +10,7 @@ namespace ILK_Protokoll.ViewModels
 		public AssignmentEdit()
 		{
 			DueDate = DateTime.Today;
+			IsActive = true;
 		}
 
 		public int ID { get; set; }
@@ -38,5 +39,8 @@ namespace ILK_Protokoll.ViewModels
 		[DataType(DataType.Date)]
 		[Required]
 		public DateTime DueDate { get; set; }
+
+		[Display(Name = "Aktiv")]
+		public bool IsActive { get; set; }
 	}
 }

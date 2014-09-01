@@ -20,10 +20,13 @@
 			<th class="col-xs-1">
 				@Html.DisplayNameFor(model => model.DueDate)
 			</th>
-			<th class="col-xs-1">
+			<th>
+				@Html.DisplayNameFor(model => model.IsActive)
+			</th>
+			<th>
 				@Html.DisplayNameFor(model => model.ReminderSent)
 			</th>
-			<th class="col-xs-1">
+			<th>
 				@Html.DisplayNameFor(model => model.IsDone)
 			</th>
 			<th class="col-xs-1">Aktionen</th>
@@ -60,6 +63,9 @@
 				</td>
 				<td class="@visual">
 					@item.DueDate.ToShortDateString()
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.IsActive)
 				</td>
 				<td>
 					@Html.DisplayFor(modelItem => item.ReminderSent)

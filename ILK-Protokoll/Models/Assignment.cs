@@ -42,6 +42,10 @@ namespace ILK_Protokoll.Models
 		[Required]
 		public DateTime DueDate { get; set; }
 
+		[Column("Active")]
+		[Display(Name = "Aktiv")]
+		public bool IsActive { get; set; }
+
 		[Display(Name = "Erinnert")]
 		public bool ReminderSent { get; set; }
 

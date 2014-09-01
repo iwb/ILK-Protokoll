@@ -1,4 +1,5 @@
-﻿@model ILK_Protokoll.ViewModels.AssignmentEdit
+﻿@using ILK_Protokoll.util
+@model ILK_Protokoll.ViewModels.AssignmentEdit
 
 @{
 	ViewBag.Title = "Aufgabe erstellen";
@@ -10,17 +11,17 @@
 {
 	@Html.AntiForgeryToken()
 	@Html.HiddenFor(model => model.TopicID)
-	
+
 	<div class="form-horizontal">
 		<hr />
 		<div class="form-group">
 			@Html.LabelFor(model => model.Type, htmlAttributes: new { @class = "control-label col-md-2" })
 			<div class="col-md-2">
-				@Html.EnumDropDownListFor(model => model.Type, new {  @class = "form-control" })
+				@Html.EnumDropDownListFor(model => model.Type, new { @class = "form-control" })
 				@Html.ValidationMessageFor(model => model.Type, "", new { @class = "text-danger" })
 			</div>
 		</div>
-		
+
 		<div class="form-group">
 			@Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
 			<div class="col-md-5">
@@ -54,6 +55,13 @@
 		</div>
 
 		<div class="form-group">
+			@Html.LabelFor(model => model.IsActive, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-5">
+				@Html.EditorFor(model => model.IsActive, new { htmlAttributes = new { @class = "form-control", data_toggle="tooltip", data_placement="right", title="Das Aktiv-Flag bestimmt, ob der Besitzer E-Mails erhält. Es kann nur einmal gesetzt werden." } })
+			</div>
+		</div>
+
+		<div class="form-group">
 			<div class="col-md-offset-2 col-md-5">
 				<input type="submit" value="Erstellen" class="btn btn-default" />
 			</div>
@@ -63,9 +71,16 @@
 }
 
 <div>
-	@Html.ActionLink("Verwerfen", "Details", "Topics", new { id = Model.TopicID}, null)
+	@Html.ActionLink("Verwerfen", "Details", "Topics", new { id = Model.TopicID }, null)
 </div>
 
 @section Scripts {
 	@Scripts.Render("~/bundles/jqueryval")
+}
+
+@using (Html.Delayed(null, "Tooltips"))
+{
+	<script type="text/javascript">
+		$('[data-toggle=tooltip]').tooltip();
+	</script>
 }
