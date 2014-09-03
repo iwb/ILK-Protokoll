@@ -300,6 +300,10 @@
     <Compile Include="Migrations\201409011247123_listitem_guid_added.Designer.cs">
       <DependentUpon>201409011247123_listitem_guid_added.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201409021228172_resubmitdate_added.cs" />
+    <Compile Include="Migrations\201409021228172_resubmitdate_added.Designer.cs">
+      <DependentUpon>201409021228172_resubmitdate_added.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Assignment.cs" />
     <Compile Include="Models\Attachment.cs" />
