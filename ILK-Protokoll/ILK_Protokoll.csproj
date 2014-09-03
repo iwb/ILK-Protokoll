@@ -727,6 +727,9 @@
     <EmbeddedResource Include="Migrations\201409011247123_listitem_guid_added.resx">
       <DependentUpon>201409011247123_listitem_guid_added.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201409021228172_resubmitdate_added.resx">
+      <DependentUpon>201409021228172_resubmitdate_added.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

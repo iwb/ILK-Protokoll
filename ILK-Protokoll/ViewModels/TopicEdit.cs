@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Web.Mvc;
 using ILK_Protokoll.Areas.Administration.Models;
@@ -32,6 +33,11 @@ namespace ILK_Protokoll.ViewModels
 		public SelectList UserList { get; set; }
 		public SelectList SessionTypeList { get; set; }
 		public SelectList TargetSessionTypeList { get; set; }
+
+		[Display(Name = "Wiedervorlagedatum")]
+		[DataType(DataType.Date)]
+		[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+		public DateTime? ResubmissionDate { get; set; }
 
 		[Display(Name = "Titel")]
 		[Required]

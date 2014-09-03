@@ -49,14 +49,20 @@
 							<dt>@Html.DisplayNameFor(model => model.SessionTypeID)</dt>
 							<dd>@Html.DisplayFor(model => model.SessionType.Name)</dd>
 
-							<dt>@Html.DisplayNameFor(model => model.Time)</dt>
-							<dd>@Html.DisplayFor(model => model.Time)</dd>
-
 							@if (Model.TargetSessionTypeID != null)
 							{
 								<dt>@Html.DisplayNameFor(model => model.TargetSessionTypeID)</dt>
 								<dd>@Html.DisplayFor(model => model.TargetSessionType.Name)</dd>
 							}
+
+							@if (Model.ResubmissionDate != null)
+							{
+								<dt>@Html.DisplayNameFor(model => model.ResubmissionDate)</dt>
+								<dd>@Html.DisplayFor(model => model.ResubmissionDate)</dd>
+							}
+
+							<dt>@Html.DisplayNameFor(model => model.Time)</dt>
+							<dd>@Html.DisplayFor(model => model.Time)</dd>
 
 							<dt>@Html.DisplayNameFor(model => model.OwnerID)</dt>
 							<dd>@Html.DisplayFor(model => model.Owner.ShortName)</dd>

@@ -48,7 +48,7 @@ namespace ILK_Protokoll.DataLayer
 		}
 
 		/// <summary>
-		///    Gibt alle Benutzer zurück, mit dem aktuellen Benutzer als erstes Element und den restlichen benutzern in
+		///    Gibt alle Benutzer zurück, mit dem aktuellen Benutzer als erstes Element und den restlichen Benutzern in
 		///    alphabetischer Reihenfolge.
 		/// </summary>
 		/// <param name="currentUser">Der aktuelle Benutzer, dieser wird an den Anfang der Liste sortiert.</param>

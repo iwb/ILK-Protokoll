@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using ILK_Protokoll.Areas.Administration.Models;
@@ -42,6 +43,11 @@ namespace ILK_Protokoll.Models
 
 		[Display(Name = "Zukünftiger Sitzungstyp")] // Falls der DP gerade verschoben wird
 		public int? TargetSessionTypeID { get; set; }
+
+
+		[Display(Name = "Wiedervorlagedatum")]
+		[DataType(DataType.Date)]
+		public DateTime? ResubmissionDate { get; set; }
 
 		[Display(Name = "Titel")]
 		[Required]
