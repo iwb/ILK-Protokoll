@@ -6,14 +6,12 @@ namespace ILK_Protokoll.Migrations
 	{
 		public override void Up()
 		{
-			AddColumn("dbo.TopicLock", "ResubmissionDate", c => c.DateTime());
 			AddColumn("dbo.Topic", "ResubmissionDate", c => c.DateTime());
 		}
 
 		public override void Down()
 		{
 			DropColumn("dbo.Topic", "ResubmissionDate");
-			DropColumn("dbo.TopicLock", "ResubmissionDate");
 		}
 	}
 }

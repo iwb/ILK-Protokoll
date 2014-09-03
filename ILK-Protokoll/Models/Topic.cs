@@ -47,6 +47,7 @@ namespace ILK_Protokoll.Models
 
 		[Display(Name = "Wiedervorlagedatum")]
 		[DataType(DataType.Date)]
+		[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
 		public DateTime? ResubmissionDate { get; set; }
 
 		[Display(Name = "Titel")]
@@ -94,8 +95,11 @@ namespace ILK_Protokoll.Models
 		public DateTime Created { get; set; }
 
 		[Display(Name = "Ersteller")]
-		[Required]
+		[ForeignKey("CreatorID")]
 		public virtual User Creator { get; set; }
+
+		[Required]
+		public int CreatorID { get; set; }
 
 		/// <summary>
 		///    Gibt das Datum der letzten Änderung an. Falls der Diskussionspunkt nie geändert wurde, gleicht das Änderungsdatum

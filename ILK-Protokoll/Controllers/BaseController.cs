@@ -103,7 +103,7 @@ namespace ILK_Protokoll.Controllers
 			return HTTPStatus((int)statuscode, message);
 		}
 
-		protected string ErrorMessageFromException(DbEntityValidationException ex)
+		protected static string ErrorMessageFromException(DbEntityValidationException ex)
 		{
 			StringBuilder msg = new StringBuilder();
 			foreach (var entity in ex.EntityValidationErrors)

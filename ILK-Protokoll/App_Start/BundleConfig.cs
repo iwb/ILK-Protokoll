@@ -14,6 +14,7 @@ namespace ILK_Protokoll
 
 			bundles.Add(new Bundle("~/bundles/other").Include( // No minifiaction
 				"~/Scripts/jquery.timeago.js",
+				"~/Scripts/spin.js",
 				"~/Scripts/jquery.highlight.js",
 				"~/Scripts/jquery.tablesorter.js"));
 

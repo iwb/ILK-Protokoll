@@ -1,111 +1,110 @@
-﻿@model ILK_Protokoll.Areas.Session.Models.ActiveSession
+﻿@using System
+@using System.Linq
+@model ILK_Protokoll.Areas.Session.Models.ActiveSession
 @{
 	Layout = null;
 	ViewBag.Title = "Sitzungsprotokoll";
+	ViewData.Add("Reporting", true);
 }
 
 <!DOCTYPE html>
 <html>
-<head>
-	<title>@ViewBag.Title</title>
-	<link href="@Url.Content("~/Content/iwbTheme.css")" rel="stylesheet" />
-	<style type="text/css">
-		div.panel {
-			page-break-inside: avoid;
-		}
-	</style>
-</head>
-<body style="width:750px;">
-	<div class="navbar navbar-default navbar-fixed-top" id="main-navbar">
-		<div class="container">
-			<div class="navbar-text" style="float:right;">
-				@DateTime.Now.ToLongDateString()
-			</div>
-			<div class="navbar-header">
-				<p class="navbar-brand iwblogo">@ViewBag.Title</p>
-			</div>
-			<h3 class="navbar-text" style="float: none; text-align: center;">
-				@Model.SessionType.Name
-			</h3>
-		</div>
-	</div>
-	<div class="container body-content">
-		<br />
-		<br />
-		<br />
-		<br />
-
-		<div class="panel panel-primary">
-			<div class="panel-heading">
-				<h4>Stammdaten</h4>
-			</div>
-			<div class="panel-body">
-				<dl class="dl-horizontal" style="line-height: 40px;">
-					<dt>@Html.DisplayNameFor(model => model.PresentUsers)</dt>
-					<dd>
-						@{
-							var users = Model.SessionType.Attendees.ToDictionary(u => u, u => Model.PresentUsers.Contains(u));
-						}
-						@Html.DisplayFor(m => users, "Dictionary_User_bool")
-					</dd>
-
-					<dt>@Html.DisplayNameFor(model => model.AdditionalAttendees)</dt>
-					<dd>@Html.DisplayFor(model => model.AdditionalAttendees)</dd>
-
-
-					<dt>@Html.DisplayNameFor(model => model.Notes)</dt>
-					<dd>@Html.DisplayFor(model => model.Notes, "String_Multiline")</dd>
-
-					<dt>@Html.DisplayNameFor(model => model.Start)</dt>
-					<dd>@Model.Start.ToString("f")</dd>
-
-					<dt>@Html.DisplayNameFor(model => model.End)</dt>
-					<dd>@Model.End.ToString("f")</dd>
-				</dl>
-
-			</div>
-		</div>
-
-		@Html.Action("_List", "LEvents", new { Area = "Session", reporting = true })
-		<hr />
-		@Html.Action("_List", "LConferences", new { Area = "Session", reporting = true })
-		<hr />
-		@Html.Action("_List", "LExtensions", new { Area = "Session", reporting = true })
-		<hr />
-		@Html.Action("_List", "LEmployeePresentations", new { Area = "Session", reporting = true })
-		<hr />
-		@Html.Action("_List", "LIlkDays", new { Area = "Session", reporting = true })
-		<hr />
-		@Html.Action("_List", "LIlkMeetings", new { Area = "Session", reporting = true })
-		<hr />
-		@Html.Action("_List", "LOpenings", new { Area = "Session", reporting = true })
-		<hr />
-		@Html.Action("_List", "LHolidays", new { Area = "Session", reporting = true })
-
-		@foreach (var tlock in Model.LockedTopics)
-		{
-			<div style="page-break-before: always">
-				<div class="buttongroup" id="state_buttons_@tlock.Topic.ID">
-					@{ Html.RenderPartial("_StateButtons", tlock); }
+	<head>
+		<title>@ViewBag.Title</title>
+		<link href="@Url.Content("~/Content/iwbTheme.css")" rel="stylesheet" />
+		<style type="text/css">
+			div.panel { page-break-inside: avoid; }
+		</style>
+	</head>
+	<body style="width: 750px;">
+		<div class="navbar navbar-default navbar-fixed-top" id="main-navbar">
+			<div class="container">
+				<div class="navbar-text" style="float: right;">
+					@DateTime.Now.ToLongDateString()
 				</div>
-				<div>
+				<div class="navbar-header">
+					<p class="navbar-brand iwblogo">@ViewBag.Title</p>
+				</div>
+				<h3 class="navbar-text" style="float: none; text-align: center;">
+					@Model.SessionType.Name
+				</h3>
+			</div>
+		</div>
+		<div class="container body-content">
+			<br />
+			<br />
+			<br />
+			<br />
+
+			<div class="panel panel-primary">
+				<div class="panel-heading">
+					<h4>Stammdaten</h4>
+				</div>
+				<div class="panel-body">
+					<dl class="dl-horizontal" style="line-height: 40px;">
+						<dt>@Html.DisplayNameFor(model => model.PresentUsers)</dt>
+						<dd>
+							@{
+								var users = Model.SessionType.Attendees.ToDictionary(u => u, u => Model.PresentUsers.Contains(u));
+							}
+							@Html.DisplayFor(m => users, "Dictionary_User_bool")
+						</dd>
+
+						<dt>@Html.DisplayNameFor(model => model.AdditionalAttendees)</dt>
+						<dd>@Html.DisplayFor(model => model.AdditionalAttendees)</dd>
+
+
+						<dt>@Html.DisplayNameFor(model => model.Notes)</dt>
+						<dd>@Html.DisplayFor(model => model.Notes, "String_Multiline")</dd>
+
+						<dt>@Html.DisplayNameFor(model => model.Start)</dt>
+						<dd>@Model.Start.ToString("f")</dd>
+
+						<dt>@Html.DisplayNameFor(model => model.End)</dt>
+						<dd>@Model.End.ToString("f")</dd>
+					</dl>
+
+				</div>
+			</div>
+
+			@Html.Action("_List", "LEvents", new {Area = "Session", reporting = true})
+			<hr />
+			@Html.Action("_List", "LConferences", new {Area = "Session", reporting = true})
+			<hr />
+			@Html.Action("_List", "LExtensions", new {Area = "Session", reporting = true})
+			<hr />
+			@Html.Action("_List", "LEmployeePresentations", new {Area = "Session", reporting = true})
+			<hr />
+			@Html.Action("_List", "LIlkDays", new {Area = "Session", reporting = true})
+			<hr />
+			@Html.Action("_List", "LIlkMeetings", new {Area = "Session", reporting = true})
+			<hr />
+			@Html.Action("_List", "LOpenings", new {Area = "Session", reporting = true})
+			<hr />
+			@Html.Action("_List", "LHolidays", new {Area = "Session", reporting = true})
+
+			@foreach (var tlock in Model.LockedTopics)
+			{
+				<div style="page-break-before: always">
+					<div class="buttongroup" id="state_buttons_@tlock.Topic.ID">
+						@{ Html.RenderPartial("_StateButtons", tlock, ViewData); }
+					</div>
 					@{
 						Html.RenderPartial("_ReportTopic", tlock.Topic);
 					}
 				</div>
-			</div>
-		}
+			}
 
-		<hr style="clear: both;" />
-		<footer>
-			<p>&copy; 2014 &#8211; <i>iwb</i>, Technische Universität München</p>
+			<hr style="clear: both;" />
+			<footer>
+				<p>&copy; 2014 &#8211; <i>iwb</i>, Technische Universität München</p>
 
-			<p>
-				Version 0.0<br />
-				Build 0
-			</p>
-		</footer>
-	</div>
-</body>
+				<p>
+					Version 0.0<br />
+					Build 0
+				</p>
+			</footer>
+		</div>
+	</body>
 
 </html>

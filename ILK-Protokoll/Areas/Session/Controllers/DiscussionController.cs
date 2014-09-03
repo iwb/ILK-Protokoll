@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Validation;
 using System.Linq;
@@ -31,16 +32,18 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 				.Include(t => t.Comments)
 				.Include(t => t.Lock)
 				.Where(t => t.Decision == null && !t.IsReadOnly)
-				.Where(t => t.Lock.Session.ID == session.ID || (t.SessionTypeID == session.SessionType.ID && t.Created < session.Start))
+				.Where(
+					t => t.Lock.Session.ID == session.ID || (t.SessionTypeID == session.SessionType.ID && t.Created < session.Start && !(t.ResubmissionDate >= session.Start )))
 				.OrderByDescending(t => t.Priority)
 				.ThenBy(t => t.Created).ToList();
-			
+
 			foreach (Topic topic in topics)
 				topic.IsLocked = topic.Lock != null;
 
 			return View(topics);
 		}
 
+				[HttpPost]
 		public ActionResult _ChangeState(int id, TopicAction state)
 		{
 			ActiveSession session = GetSession();
@@ -56,7 +59,8 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 				return HTTPStatus(HttpStatusCode.Forbidden, "Falsche Sitzung.");
 
 			// Den Beschluss verhindern, falls noch offene Aufgaben vorliegen
-			if (state == TopicAction.Decide && tlock.Topic.Assignments.Any(a => a.Type == AssignmentType.ToDo && !a.IsDone && a.IsActive))
+			if (state == TopicAction.Decide &&
+			    tlock.Topic.Assignments.Any(a => a.Type == AssignmentType.ToDo && !a.IsDone && a.IsActive))
 			{
 				tlock.Message = "Es liegen noch offene ToDo-Aufgaben vor. Dieses Thema kann daher nicht beschlossen werden.";
 				return PartialView("_StateButtons", tlock);
@@ -82,6 +86,25 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 			}
 
 			return PartialView("_StateButtons", tlock);
+		}
+
+		[HttpPost]
+		public ActionResult _ChangeResubmissionDate(int topicID, DateTime? resubmissionDate)
+		{
+			var topic = db.Topics.Find(topicID);
+			topic.ResubmissionDate = resubmissionDate;
+
+			try
+			{
+				db.SaveChanges();
+			}
+			catch (DbEntityValidationException e)
+			{
+				string message = ErrorMessageFromException(e);
+				return HTTPStatus(500, message);
+			}
+
+			return new HttpStatusCodeResult(HttpStatusCode.NoContent);
 		}
 	}
 }

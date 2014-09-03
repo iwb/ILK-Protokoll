@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Validation;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -160,11 +161,13 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 		public ActionResult ShowReport()
 		{
 			ActiveSession session = GetSession();
+			Debug.Assert(session != null, "session != null");
 			session.End = DateTime.Now;
 			session.LockedTopics = db.TopicLocks
 				.Include(tl => tl.Session)
 				.Include(tl => tl.Topic)
 				.ToList();
+
 			return View("SessionReport", session);
 		}
 	}

@@ -304,6 +304,10 @@
     <Compile Include="Migrations\201409021228172_resubmitdate_added.Designer.cs">
       <DependentUpon>201409021228172_resubmitdate_added.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201409031500552_explicit_creatorid_added.cs" />
+    <Compile Include="Migrations\201409031500552_explicit_creatorid_added.Designer.cs">
+      <DependentUpon>201409031500552_explicit_creatorid_added.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Assignment.cs" />
     <Compile Include="Models\Attachment.cs" />
@@ -586,7 +590,6 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\jquery-2.1.1.js" />
     <Content Include="Scripts\jquery-ui-1.11.1.js" />
-    <Content Include="Scripts\jquery-ui.min-1.11.1.js" />
     <Content Include="Scripts\jquery.form.js" />
     <Content Include="Scripts\jquery.highlight.js" />
     <Content Include="Scripts\jquery.rtResponsiveTables.js" />
@@ -594,15 +597,14 @@
     <Content Include="Scripts\jquery.timeago.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
-    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
-    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\ListUtilities.js" />
     <Content Include="Scripts\masonry_grid.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.js" />
+    <Content Include="Scripts\spin.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config" />
     <Content Include="Views\Web.config" />
@@ -762,6 +764,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201409021228172_resubmitdate_added.resx">
       <DependentUpon>201409021228172_resubmitdate_added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201409031500552_explicit_creatorid_added.resx">
+      <DependentUpon>201409031500552_explicit_creatorid_added.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

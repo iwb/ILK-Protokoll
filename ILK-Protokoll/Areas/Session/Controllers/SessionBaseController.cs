@@ -15,6 +15,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 		{
 			var session = db.ActiveSessions.Add(new ActiveSession(type) {Manager = GetCurrentUser()});
 
+			// GGf. Themen übernehmen, die in die aktuelle Sitzung hinein verschoben werden.
 			foreach (var t in db.Topics.Include(t => t.Creator).Where(t => t.TargetSessionTypeID == type.ID))
 			{
 				t.SessionTypeID = type.ID;
@@ -32,6 +33,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 			var topics = db.Topics
 				.Where(t => t.Decision == null && !t.IsReadOnly)
 				.Where(t => t.SessionTypeID == session.SessionType.ID && t.TargetSessionTypeID == null)
+				.Where(t => t.ResubmissionDate == null || t.ResubmissionDate < DateTime.Now)
 				.ToList();
 
 			foreach (var topic in topics)

@@ -21,12 +21,6 @@ namespace ILK_Protokoll.Models
 
 		[NotMapped]
 		public string Message { get; set; }
-
-
-		[Display(Name = "Wiedervorlagedatum")]
-		[DataType(DataType.Date)]
-		[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-		public DateTime? ResubmissionDate { get; set; }
 	}
 
 	public enum TopicAction
