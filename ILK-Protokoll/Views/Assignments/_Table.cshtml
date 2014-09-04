@@ -1,5 +1,6 @@
-﻿@using ILK_Protokoll.util
-@model IEnumerable<ILK_Protokoll.Models.Assignment>
+﻿@using System
+@using ILK_Protokoll.util
+@model System.Collections.Generic.IEnumerable<ILK_Protokoll.Models.Assignment>
 
 <table class="table table-striped table-hover table-sortable">
 	<thead>
@@ -37,11 +38,13 @@
 			}
 			<tr class="@visual">
 				<td class="hidden-xs">
-					@Html.ActionLink(item.Topic.Title.Shorten(100), "Details", "Topics", new { id = item.TopicID }, null)
+					@Html.ActionLink(item.Topic.Title.Shorten(100), "Details", "Topics", new {id = item.TopicID}, null)
 				</td>
-				<td style="position: relative;">
-					@item.Title.Shorten(100)
-					<a href="@Url.Action("Details", "Assignments", new { id = item.ID })"><span class="divlink"></span></a>
+				<td>
+					<div style="position: relative;">
+						@item.Title.Shorten(100)
+						<a href="@Url.Action("Details", "Assignments", new {id = item.ID})"><span class="divlink"></span></a>
+					</div>
 				</td>
 				<td>
 					@item.DueDate.ToShortDateString()
