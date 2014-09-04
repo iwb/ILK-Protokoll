@@ -28,9 +28,11 @@ namespace ILK_Protokoll.Areas.Session.Models.Lists
 		[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
 		public DateTime EndDate { get; set; }
 
+		[Required(AllowEmptyStrings = true)]
 		[DisplayName("Uhrzeit")]
 		public string Time { get; set; }
 
+		[Required(AllowEmptyStrings = true)]
 		[DisplayName("Ort")]
 		public string Place { get; set; }
 

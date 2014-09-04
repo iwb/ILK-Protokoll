@@ -30,6 +30,7 @@ namespace ILK_Protokoll.Areas.Session.Models.Lists
 		[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm}", ApplyFormatInEditMode = true)]
 		public DateTime End { get; set; }
 
+		[Required]
 		[DisplayName("Ort")]
 		public string Place { get; set; }
 

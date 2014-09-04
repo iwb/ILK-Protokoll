@@ -43,6 +43,7 @@ namespace ILK_Protokoll.Areas.Session.Models.Lists
 		[DisplayName("Mitarbeiter")]
 		public string Employee { get; set; }
 
+		[Required(AllowEmptyStrings = true)]
 		[DisplayName("Budget")]
 		public string Funding { get; set; }
 

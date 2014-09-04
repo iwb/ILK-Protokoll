@@ -40,6 +40,7 @@ namespace ILK_Protokoll.Areas.Session.Models.Lists
 		[ForeignKey("Organizer")]
 		public int OrganizerID { get; set; }
 
+		[Required(AllowEmptyStrings = true)]
 		[DisplayName("Anmerkung")]
 		public string Comments { get; set; }
 	}
