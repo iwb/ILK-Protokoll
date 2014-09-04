@@ -1,13 +1,21 @@
-﻿@using ILK_Protokoll.Models
+﻿@using System.Linq
+@using ILK_Protokoll.Models
 @using ILK_Protokoll.util
 @model ILK_Protokoll.ViewModels.DashBoard
 
 @{
-	ViewBag.Title = "Dashboard";	
+	ViewBag.Title = "Dashboard";
 }
+<div id="javascript-warning" class="alert alert-danger jumbotron">
+	<h2><strong>Für diese Seite ist JavaScript erforderlich!</strong></h2>
+</div>
+<script type="text/javascript">
+	document.getElementById("javascript-warning").style.display = 'none';
+</script>
+
 <div class="index-action">
-	<a onclick="muteColors();" class="btn btn-default">Mute</a>
-	@Html.ActionLink("Sitzungsmodus", "Index", "Master", new { Area = "Session" }, new { @class = "btn btn-primary" })
+	<a onclick=" muteColors(); " class="btn btn-default">Mute</a>
+	@Html.ActionLink("Sitzungsmodus", "Index", "Master", new {Area = "Session"}, new {@class = "btn btn-primary"})
 </div>
 
 <h2>Push-Benachrichtigungen</h2>

@@ -30,13 +30,6 @@
 	<body>
 		@{ Html.RenderPartial("_Navbar"); }
 		<div class="container-fluid body-content">
-			<div id="javascript-warning" class="alert alert-danger jumbotron">
-				<h2><strong>Für diese Seite ist JavaScript erforderlich!</strong></h2>
-			</div>
-			<script type="text/javascript">
-				document.getElementById("javascript-warning").style.display = 'none';
-			</script>
-
 			<div id="alerts">
 				@if (ViewBag.CurrentSession != null)
 				{
