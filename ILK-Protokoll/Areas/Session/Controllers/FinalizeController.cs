@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -8,8 +7,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
-using System.Web;
 using System.Web.Mvc;
 using ILK_Protokoll.Areas.Session.Models;
 using ILK_Protokoll.Mailers;
@@ -116,7 +113,8 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 							Text = t.Proposal,
 							Type = DecisionType.Resolution
 						};
-						db.Assignments.RemoveRange(db.Assignments.Where(a => a.TopicID == t.ID && !a.IsActive)); // Inaktive Aufgaben löschen
+						db.Assignments.RemoveRange(db.Assignments.Where(a => a.TopicID == t.ID && !a.IsActive));
+							// Inaktive Aufgaben löschen
 						foreach (var duty in t.Assignments.Where(a => a.Type == AssignmentType.Duty && a.IsActive))
 							mailer.SendNewAssignment(duty);
 						break;
@@ -136,7 +134,8 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 					default:
 						throw new ArgumentOutOfRangeException();
 				}
-				db.TopicLocks.Remove(t.Lock);
+				if (t.Lock != null) // Wenn gelöscht wird, ist t.Lock hier bereits null
+					db.TopicLocks.Remove(t.Lock);
 			}
 			db.ActiveSessions.Remove(session);
 			Session.Remove("SessionID");
