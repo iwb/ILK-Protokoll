@@ -41,6 +41,7 @@ namespace ILK_Protokoll.Areas.Session.Models.Lists
 		public int OrganizerID { get; set; }
 
 		[Required(AllowEmptyStrings = true)]
+		[DisplayFormat(ConvertEmptyStringToNull = false)]
 		[DisplayName("Anmerkung")]
 		public string Comments { get; set; }
 	}

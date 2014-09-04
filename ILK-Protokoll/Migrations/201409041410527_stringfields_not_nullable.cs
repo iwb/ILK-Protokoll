@@ -13,7 +13,7 @@ namespace ILK_Protokoll.Migrations
 			Sql(@"UPDATE [dbo].[L_IlkMeeting] SET [Comments] = '' WHERE [Comments] IS NULL");
 
 			AlterColumn("dbo.L_Conference", "Funding", c => c.String(nullable: false, defaultValue: ""));
-			AlterColumn("dbo.L_Event", "Time", c => c.String(nullable: false, defaultValue: " "));
+			AlterColumn("dbo.L_Event", "Time", c => c.String(nullable: false, defaultValue: ""));
 			AlterColumn("dbo.L_Event", "Place", c => c.String(nullable: false, defaultValue: ""));
 			AlterColumn("dbo.L_IlkDay", "Place", c => c.String(nullable: false, defaultValue: ""));
 			AlterColumn("dbo.L_IlkMeeting", "Comments", c => c.String(nullable: false, defaultValue: ""));

@@ -29,10 +29,12 @@ namespace ILK_Protokoll.Areas.Session.Models.Lists
 		public DateTime EndDate { get; set; }
 
 		[Required(AllowEmptyStrings = true)]
+		[DisplayFormat(ConvertEmptyStringToNull = false)]
 		[DisplayName("Uhrzeit")]
 		public string Time { get; set; }
 
 		[Required(AllowEmptyStrings = true)]
+		[DisplayFormat(ConvertEmptyStringToNull = false)]
 		[DisplayName("Ort")]
 		public string Place { get; set; }
 
