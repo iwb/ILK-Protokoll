@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
 using ILK_Protokoll.Models;
@@ -22,11 +23,13 @@ namespace ILK_Protokoll.Controllers
 			dash.MyToDos = myAssignments[AssignmentType.ToDo];
 			dash.MyDuties = myAssignments[AssignmentType.Duty].Where(a => a.Topic.HasDecision(DecisionType.Resolution));
 
+			var cutoff = DateTime.Now.AddDays(3);
 			dash.MyTopics = db.Topics
 				.Include(t => t.SessionType)
 				.Include(t => t.TargetSessionType)
 				.Include(t => t.Owner)
 				.Where(t => !t.IsReadOnly)
+				.Where(t => !(t.ResubmissionDate >= cutoff))
 				.Where(t => t.OwnerID == user.ID || t.Votes.Any(v => v.Voter.ID == user.ID))
 				.OrderByDescending(t => t.Priority)
 				.ThenByDescending(t => t.Created).ToList();
