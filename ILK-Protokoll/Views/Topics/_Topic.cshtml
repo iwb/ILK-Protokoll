@@ -47,7 +47,15 @@
 			</div>
 		</div>
 		<div class="panel-separator" id="auditorlist_@Model.ID">
-			@Html.Action("_List", "Votes", new { topic = Model, Area = "" })
+			@if (ViewBag.CurrentSession != null)
+			{
+				@Html.Action("_List", "Votes", new { topic = Model, Area = "", linkAllAuditors = true })
+			}
+			else
+			{
+				@Html.Action("_List", "Votes", new { topic = Model, Area = "" })
+			}
+			
 		</div>
 
 		@{
