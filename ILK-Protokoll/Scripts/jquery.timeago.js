@@ -195,7 +195,9 @@
 			element.data("timeago", { datetime: $t.datetime(element) });
 			var text = $.trim(element.text());
 			if ($t.settings.localeTitle) {
-				element.attr("title", element.data('timeago').datetime.toLocaleString());
+				var d = element.data('timeago').datetime;
+				var str = (d.getHours() == 0 && d.getMinutes() == 0 && d.getSeconds() == 0) ? d.toLocaleDateString() : d.toLocaleString();
+				element.attr("title", str);
 			} else if (text.length > 0 && !($t.isTime(element) && element.attr("title"))) {
 				element.attr("title", text);
 			}

@@ -19,14 +19,20 @@
 			<th class="hidden-xs">
 				@Html.DisplayNameFor(model => model.Description)
 			</th>
-			<th class="col-sm-1">
+			<th>
+				@Html.DisplayNameFor(model => model.OwnerID)
+			</th>
+			<th>
 				@Html.DisplayNameFor(model => model.Priority)
 			</th>
-			<th class="col-sm-1">
+			<th>
 				@Html.DisplayNameFor(model => model.Created)
 			</th>
-			<th class="col-sm-1 hidden-xs">
+			<th class="hidden-xs">
 				@Html.DisplayNameFor(model => model.ValidFrom)
+			</th>
+			<th class="hidden-sm">
+				<span title="Wiedervorlagedatum">WVD</span>
 			</th>
 		</tr>
 	</thead>
@@ -57,6 +63,9 @@
 					<a href="@Url.Action("Details", new {id = item.ID})">@item.Description.Shorten(150)</a>
 				</td>
 				<td>
+					@Html.DisplayFor(model => item.Owner.ShortName)
+				</td>
+				<td>
 					@item.Priority.DisplayName()
 				</td>
 				<td>
@@ -65,6 +74,16 @@
 				</td>
 				<td class="hidden-xs">
 					@Html.DisplayFor(modelItem => item.ValidFrom)
+				</td>
+				<td class="hidden-sm">
+					@if (item.ResubmissionDate.HasValue)
+					{
+						@item.ResubmissionDate.Value.ToString("d.M.")
+					}
+					else
+					{
+						<text>-</text>
+					}
 				</td>
 			</tr>
 		}

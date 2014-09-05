@@ -160,6 +160,7 @@ namespace ILK_Protokoll.Models
 			OwnerID = updates.OwnerID;
 			Priority = updates.Priority;
 			Proposal = updates.Proposal;
+			ResubmissionDate = updates.ResubmissionDate;
 			Title = updates.Title;
 			Time = updates.Time;
 			ValidFrom = DateTime.Now;

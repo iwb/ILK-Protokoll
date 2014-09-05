@@ -6534,6 +6534,7 @@ th.headerSortUp,
 th.headerSortDown {
   border-bottom-color: #af0331 !important;
   padding-right: 0 !important;
+  white-space: nowrap;
 }
 th.headerSortUp:after {
   font-family: 'Glyphicons Halflings';

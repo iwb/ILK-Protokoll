@@ -71,6 +71,7 @@ namespace ILK_Protokoll.ViewModels
 				OwnerID = t.OwnerID,
 				Priority = t.Priority,
 				Proposal = t.Proposal,
+				ResubmissionDate =  t.ResubmissionDate,
 				SessionType = t.SessionType,
 				SessionTypeID = t.SessionTypeID,
 				TargetSessionType = t.TargetSessionType,

@@ -154,8 +154,7 @@ namespace ILK_Protokoll.Controllers
 		// finden Sie unter http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public ActionResult Create(
-			[Bind(Include = "ID,Attachments,Description,Duties,OwnerID,Owner,Priority,Proposal,SessionTypeID,Title,Time,ToDo")] TopicEdit input)
+		public ActionResult Create([Bind(Exclude = "TargetSessionTypeID")] TopicEdit input)
 		{
 			if (ModelState.IsValid)
 			{
@@ -224,8 +223,7 @@ namespace ILK_Protokoll.Controllers
 		// finden Sie unter http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public ActionResult Edit(
-			[Bind(Include = "ID,Attachments,Description,Duties,OwnerID,Priority,Proposal,TargetSessionTypeID,Title,Time,ToDo")] TopicEdit input)
+		public ActionResult Edit([Bind(Exclude = "SessionTypeID")] TopicEdit input)
 		{
 			Topic topic = db.Topics.Include(t => t.Creator).Single(t => t.ID == input.ID);
 			if (ModelState.IsValid)
