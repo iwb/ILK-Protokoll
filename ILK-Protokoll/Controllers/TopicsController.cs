@@ -34,7 +34,7 @@ namespace ILK_Protokoll.Controllers
 				query = query.Where(t => t.Priority == (Priority)filter.ShowPriority);
 
 			if (filter.SessionTypeID > 0)
-				query = query.Where(t => t.SessionTypeID == filter.SessionTypeID);
+				query = query.Where(t => t.SessionTypeID == filter.SessionTypeID || t.TargetSessionTypeID == filter.SessionTypeID);
 
 			if (filter.Timespan != 0)
 			{
