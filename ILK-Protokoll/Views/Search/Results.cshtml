@@ -1,19 +1,24 @@
 ﻿@using ILK_Protokoll.util
-@model System.Collections.Generic.ICollection<ILK_Protokoll.ViewModels.SearchResult>
+@model ICollection<ILK_Protokoll.ViewModels.SearchResult>
 
 @{
 	ViewBag.Title = "Suchergebnisse";
+	string timestr = null;
+	if (ViewBag.ElapsedMilliseconds != null)
+	{
+		timestr = string.Format("({0:0.00} Sekunden)", ViewBag.ElapsedMilliseconds / 1000f);
+	}
 }
 
 <h2>@ViewBag.Title</h2>
 
 @if (Model.Count == 1)
 {
-	<h4>Ihre Suche nach &quot;@ViewBag.SearchTerm&quot; hat ein Ergebnis ergeben.</h4>
+	<h4>Ihre Suche nach <b>@ViewBag.SearchTerm</b> hat ein Ergebnis ergeben. @timestr</h4>
 }
 else
 {
-	<h4>Ihre Suche nach &quot;@ViewBag.SearchTerm&quot; hat @Model.Count Ergebnisse ergeben.</h4>
+	<h4>Ihre Suche nach <b>@ViewBag.SearchTerm</b> hat @Model.Count Ergebnisse ergeben. @timestr</h4>
 }
 
 <div class="row" id="searchresults">

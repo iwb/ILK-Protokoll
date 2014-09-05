@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
@@ -19,6 +20,9 @@ namespace ILK_Protokoll.Controllers
 			if (string.IsNullOrWhiteSpace(searchterm))
 				return RedirectToAction("Index");
 
+			var sw = new Stopwatch();
+			sw.Start();
+
 			var words = Regex.Split(searchterm, @"\s+").Select(Regex.Escape);
 
 			var searchpattern = @"\b(" + words.Aggregate((a, b) => a + "|" + b) + ")";
@@ -33,6 +37,7 @@ namespace ILK_Protokoll.Controllers
 			SearchDecisions(regex, results);
 			SearchLists(regex, results);
 
+			ViewBag.ElapsedMilliseconds = sw.ElapsedMilliseconds;
 			ViewBag.SearchTerm = searchterm;
 			ViewBag.SearchPattern = searchpattern;
 			results.Sort((a, b) => b.Score.CompareTo(a.Score)); // Absteigend sortieren
@@ -77,6 +82,9 @@ namespace ILK_Protokoll.Controllers
 
 		private ActionResult ExtendendResults(ExtendedSearchVM input)
 		{
+			var sw = new Stopwatch();
+			sw.Start();
+
 			var tokens = Tokenize(input.Searchterm).ToList();
 			var searchpatterns = MakePatterns(tokens, "AND");
 			var regexes = searchpatterns.Select(pattern => new Regex(pattern, RegexOptions.IgnoreCase));
@@ -108,6 +116,8 @@ namespace ILK_Protokoll.Controllers
 				return a;
 			}).ToList();
 
+
+			ViewBag.ElapsedMilliseconds = sw.ElapsedMilliseconds;
 			ViewBag.SearchTerm = input.Searchterm;
 			ViewBag.SearchPattern = @"\b(" + tokens.Where(x => x != "AND").Aggregate((a, b) => a + "|" + b) + ")";
 			results.Sort((a, b) => b.Score.CompareTo(a.Score)); // Absteigend sortieren
