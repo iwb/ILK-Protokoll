@@ -95,10 +95,10 @@
 						}
 						<label for="resubmissionDate" class="control-label">Datum:</label>
 
-						<input class="form-control" style="display:inline-block;" data-val="true" data-val-date="Das Feld &quot;Wiedervorlagedatum&quot; muss eine Datumsangabe sein." id="Topic_@(Model.TopicID)_ResubmissionDate" name="resubmissionDate" type="date" value="@datevalue" onchange="removeindicator(@Model.TopicID)" />
+						<input class="form-control" style="display:inline-block; width:auto;" data-val="true" data-val-date="Das Feld &quot;Wiedervorlagedatum&quot; muss eine Datumsangabe sein." id="Topic_@(Model.TopicID)_ResubmissionDate" name="resubmissionDate" type="date" value="@datevalue" onchange="removeindicator(@Model.TopicID)" />
 						@Html.ValidationMessageFor(model => model.Topic.ResubmissionDate, "", new { @class = "text-danger" })
-						<i class="glyphicon glyphicon-ok form-control-feedback collapse"></i>
-						<i class="glyphicon glyphicon-remove  form-control-feedback collapse"></i>
+						<i style="top: 0;" class="glyphicon glyphicon-ok form-control-feedback collapse"></i>
+						<i style="top: 0;" class="glyphicon glyphicon-remove  form-control-feedback collapse"></i>
 					</div>
 					<button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-check"></span></button>
 
