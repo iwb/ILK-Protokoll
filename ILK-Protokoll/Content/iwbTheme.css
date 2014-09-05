@@ -6288,6 +6288,13 @@ p.navbar-right.navbar-text {
 .index-action > .btn {
   margin-left: 7px;
 }
+.index-subaction {
+  margin-top: -5px;
+  float: right;
+}
+.index-subaction > .btn {
+  margin-left: 7px;
+}
 h6 {
   margin: 0;
   font-weight: bold;
@@ -6801,7 +6808,6 @@ fieldset[disabled] .btn-hover-danger.active {
   padding: 5px 5px 9px 5px;
   background-color: #dddddd;
   margin-bottom: -4px;
-  margin-top: 35px;
   border: #000 1px solid;
   border-top-left-radius: 9px;
 }

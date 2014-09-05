@@ -29,7 +29,7 @@ namespace ILK_Protokoll.Controllers
 				.Include(t => t.TargetSessionType)
 				.Include(t => t.Owner)
 				.Where(t => !t.IsReadOnly)
-				.Where(t => !(t.ResubmissionDate >= cutoff))
+				.Where(t => t.ResubmissionDate == null || t.ResubmissionDate < cutoff)
 				.Where(t => t.OwnerID == user.ID || t.Votes.Any(v => v.Voter.ID == user.ID))
 				.OrderByDescending(t => t.Priority)
 				.ThenByDescending(t => t.Created).ToList();

@@ -14,7 +14,6 @@
 </script>
 
 <div class="index-action">
-	<a onclick=" muteColors(); " class="btn btn-default">Mute</a>
 	@Html.ActionLink("Sitzungsmodus", "Index", "Master", new {Area = "Session"}, new {@class = "btn btn-primary"})
 </div>
 
@@ -75,11 +74,15 @@
 	</div>
 </div>
 <hr />
+<div class="index-subaction">
+	<a class="btn btn-default" onclick="collapseTopicsOut();"> Alle Themen ausklappen</a>
+	<a class="btn btn-default" onclick="collapseTopicsIn();"> Alle Themen einklappen</a>
+</div>
 <h2>Diskussionspunkte</h2>
 <div class="row" id="topicsContainer">
 	@foreach (Topic t in Model.MyTopics)
 	{
-		<div class="col-lg-6 col-md-12 masonry-item">
+		<div class="col-xs-12 col-lg-6 masonry-item">
 			@{ Html.RenderPartial("~/Views/Topics/_Topic.cshtml", t); }
 		</div>
 	}
@@ -106,6 +109,32 @@
 				siteMuted = true;
 			}
 			msnry.layout();
+		}
+	</script>
+}
+
+@using (Html.Delayed(null, "CollapseTopics"))
+{
+	<script type="text/javascript">
+		function collapseTopicsOut() {
+
+			$('.topic-content').show(); // Workaround, damit sich die GUI-Elemente nicht während der Animation überlappen
+			msnry.layout();
+			$('.topic-content').hide();
+
+			$('.topic-panel').each(function () {
+				var link = $(this).find('.panel-heading .panel-collapse-heading a');
+				var content = $(this).find('.topic-content');
+				collapseTopicOut(link, content);
+			});
+		}
+
+		function collapseTopicsIn() {
+			$('.topic-panel').each(function () {
+				var link = $(this).find('.panel-heading .panel-collapse-heading a');
+				var content = $(this).find('.topic-content');
+				collapseTopicIn(link, content);
+			});
 		}
 	</script>
 }
