@@ -198,6 +198,7 @@ namespace ILK_Protokoll.Models
 		}
 	}
 
+	[Serializable]
 	public class TopicLockedException : Exception
 	{
 		public TopicLockedException()
