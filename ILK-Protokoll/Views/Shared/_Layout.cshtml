@@ -1,5 +1,6 @@
 ﻿@using ILK_Protokoll.Models
 @using ILK_Protokoll.util
+@using StackExchange.Profiling
 <!DOCTYPE html>
 <html>
 	<head>
@@ -26,6 +27,8 @@
 		@Scripts.Render("~/bundles/jquery")
 		@Scripts.Render("~/bundles/bootstrap")
 		@Scripts.Render("~/bundles/other")
+		
+		@MiniProfiler.RenderIncludes()
 	</head>
 	<body>
 		@{ Html.RenderPartial("_Navbar"); }
