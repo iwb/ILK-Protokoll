@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using ILK_Protokoll.Areas.Session.Models;
 using ILK_Protokoll.Models;
 using Mvc.Mailer;
@@ -69,9 +70,9 @@ namespace ILK_Protokoll.Mailers
 			mail.Send();
 		}
 
-		public void SendSessionReport(ActiveSession session, SessionReport report)
+		public void SendSessionReport(IEnumerable<Topic> topics, SessionReport report)
 		{
-			ViewData.Model = session;
+			ViewData.Model = topics;
 			ViewBag.Report = report;
 			ViewBag.Host = FQDN;
 			var mail = Populate(x =>

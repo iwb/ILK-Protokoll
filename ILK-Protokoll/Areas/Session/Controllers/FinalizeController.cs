@@ -91,7 +91,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 
 			try
 			{
-				mailer.SendSessionReport(session, report);
+				mailer.SendSessionReport(topics, report);
 			}
 			catch (Exception ex)
 			{

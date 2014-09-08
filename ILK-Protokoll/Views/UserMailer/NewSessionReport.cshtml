@@ -1,6 +1,6 @@
 @using ILK_Protokoll.Models
 @using ILK_Protokoll.util
-@model ILK_Protokoll.Areas.Session.Models.ActiveSession
+@model IEnumerable<Topic>
 @{
 	var report = (SessionReport)ViewBag.Report;
 }
@@ -29,20 +29,20 @@
 		</tr>
 	</thead>
 	<tbody>
-		@foreach (TopicLock item in Model.LockedTopics)
+		@foreach (Topic item in Model)
 		{
 			<tr>
 				<td>
-					@item.Topic.Title.Shorten(60)
+					@item.Title.Shorten(60)
 				</td>
 				<td>
-					@item.Topic.Description.Shorten(150)
+					@item.Description.Shorten(150)
 				</td>
 				<td>
-					@item.Topic.Created.ToString("d")
+					@item.Created.ToString("d")
 				</td>
 				<td>
-					@item.Action.DisplayName()
+					@item.Lock.Action.DisplayName()
 				</td>
 			</tr>
 		}
