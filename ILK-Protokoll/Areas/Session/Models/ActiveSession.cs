@@ -53,6 +53,8 @@ namespace ILK_Protokoll.Areas.Session.Models
 		[Required]
 		public DateTime Start { get; set; }
 
+		[DisplayName("Ende")]
+
 		[NotMapped]
 		public DateTime End { get; set; }
 
