@@ -331,6 +331,8 @@
     <Compile Include="Models\SessionReport.cs" />
     <Compile Include="Models\TopicHistory.cs" />
     <Compile Include="Models\TopicLock.cs" />
+    <Compile Include="ProfilingActionFilter.cs" />
+    <Compile Include="ProfilingViewEngine.cs" />
     <Compile Include="util\DelayedRenderExtensions.cs" />
     <Compile Include="util\DiffMatchPatch.cs" />
     <Compile Include="util\FutureDateAttribute.cs" />
