@@ -66,9 +66,6 @@
     <Reference Include="MiniProfiler.EntityFramework6">
       <HintPath>..\packages\MiniProfiler.EF6.3.0.11\lib\net40\MiniProfiler.EntityFramework6.dll</HintPath>
     </Reference>
-    <Reference Include="MiniProfiler.Mvc">
-      <HintPath>..\packages\MiniProfiler.MVC4.3.0.11\lib\net40\MiniProfiler.Mvc.dll</HintPath>
-    </Reference>
     <Reference Include="Mvc.Mailer, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\MvcMailer-vs2013.4.5.1-pre\lib\45\Mvc.Mailer.dll</HintPath>
