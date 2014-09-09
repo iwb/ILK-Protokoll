@@ -8,6 +8,7 @@ using StackExchange.Profiling;
 
 namespace ILK_Protokoll.Controllers
 {
+	[Authorize]
 	public class HomeController : BaseController
 	{
 		public ActionResult Index()

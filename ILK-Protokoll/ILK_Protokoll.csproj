@@ -184,6 +184,7 @@
     <Compile Include="Controllers\DecisionsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PushController.cs" />
+    <Compile Include="Controllers\StatisticsController.cs" />
     <Compile Include="Controllers\ViewListsController.cs" />
     <Compile Include="Controllers\ScheduledTasksController.cs" />
     <Compile Include="Controllers\SessionReportsController.cs" />
@@ -697,6 +698,7 @@
     <Content Include="Views\Push\_EditListTopic.cshtml" />
     <Content Include="Views\Push\_NotificationList.cshtml" />
     <Content Include="Views\Push\_DisplayListTopic.cshtml" />
+    <Content Include="Views\Statistics\Index.cshtml" />
     <None Include="Web.Integration.config" />
     <None Include="Web.Production.config" />
     <None Include="Web.Testing.config" />

@@ -53,14 +53,24 @@ namespace ILK_Protokoll.DataLayer
 		/// </summary>
 		/// <param name="currentUser">Der aktuelle Benutzer, dieser wird an den Anfang der Liste sortiert.</param>
 		/// <returns></returns>
-		public IEnumerable<User> GetUserOrdered([NotNull] User currentUser)
+		public IEnumerable<User> GetUserOrdered([CanBeNull] User currentUser)
 		{
-			return
-				currentUser.ToEnumerable()
-					.Concat(Users
-						.Where(u => u.ID != currentUser.ID && u.IsActive)
-						.ToList()
-						.OrderBy(u => u.ShortName, StringComparer.CurrentCultureIgnoreCase));
+			if (currentUser != null)
+			{
+				return
+					currentUser.ToEnumerable()
+						.Concat(Users
+							.Where(u => u.ID != currentUser.ID && u.IsActive)
+							.ToList()
+							.OrderBy(u => u.ShortName, StringComparer.CurrentCultureIgnoreCase));
+			}
+			else
+			{
+				return Users
+					.Where(u => u.IsActive)
+					.ToList()
+					.OrderBy(u => u.ShortName, StringComparer.CurrentCultureIgnoreCase);
+			}
 		}
 
 		public IEnumerable<SessionType> GetActiveSessionTypes()

@@ -30,16 +30,17 @@ namespace ILK_Protokoll.Controllers
 		protected override void OnActionExecuting(ActionExecutingContext filterContext)
 		{
 			base.OnActionExecuting(filterContext);
-			ViewBag.ColorScheme = GetCurrentUser().ColorScheme;
-			ViewBag.CurrentUser = GetCurrentUser();
+			var user = GetCurrentUser();
+			ViewBag.CurrentUser = user;
+			ViewBag.ColorScheme = user != null ? user.ColorScheme : ColorScheme.iwb;
 
-			ViewBag.CurrentSession = GetSession();
-			if (GetSession() != null)
-			{
-				ViewBag.LastSession = GetSession().SessionType.LastDate;
-			}
+			var session = GetSession();
+			ViewBag.CurrentSession = session;
+			if (session != null)
+				ViewBag.LastSession = session.SessionType.LastDate;
 		}
 
+		[CanBeNull]
 		protected User GetCurrentUser()
 		{
 			if (_CurrentUser == null)
