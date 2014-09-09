@@ -1,10 +1,9 @@
-﻿@using ILK_Protokoll.Areas.Session.Controllers
-@using ILK_Protokoll.Controllers
+﻿@using ILK_Protokoll.util
 @model ILK_Protokoll.Models.Comment
 
 <div class="comment-panel-group">
 	<p class="comment-author" title="@Model.Created.ToString("F")">@Model.Author</p>
-	<p class="comment-content">@Model.Content</p>
+	<p class="comment-content">@Html.DisplayWithLinksFor(model => model.Content)</p>
 	@if (Model.ID == ViewBag.AllowDeletion)
 	{
 		<p class="comment-delete">
