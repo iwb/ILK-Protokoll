@@ -1,0 +1,376 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WebTest Name="Integration_Sitzung" Id="dd5f170e-9ca2-407d-88e9-ada62e8a298b" Owner="" Priority="2147483647" Enabled="True" CssProjectStructure="" CssIteration="" Timeout="0" WorkItemIds="" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010" Description="" CredentialUserName="" CredentialPassword="" PreAuthenticate="True" Proxy="default" StopOnError="False" RecordedResultFile="WebTest1.1f88dc80-2975-4c66-ac46-2bad78e3bd65.rec.webtestresult" ResultsLocale="">
+  <Items>
+    <Request Method="GET" Guid="94c31f76-f558-4d0f-8226-d2ab41fdf19f" Version="1.1" Url="http://localhost/ilk-protokoll/" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="" ReportingName="" IgnoreHttpStatusCode="False" />
+    <Request Method="GET" Guid="c64abe08-44a9-46b5-b054-9d3713bfa98f" Version="1.1" Url="http://localhost/ilk-protokoll/Session" ThinkTime="2" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="" ReportingName="" IgnoreHttpStatusCode="False">
+      <Headers>
+        <Header Name="Referer" Value="http://localhost/ilk-protokoll/" />
+      </Headers>
+      <ExtractionRules>
+        <ExtractionRule Classname="Microsoft.VisualStudio.TestTools.WebTesting.Rules.ExtractHiddenFields, Microsoft.VisualStudio.QualityTools.WebTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" VariableName="1" DisplayName="Ausgeblendete Felder extrahieren" Description="Extrahieren Sie alle ausgeblendeten Felder aus der Antwort, und platzieren Sie sie im Testkontext.">
+          <RuleParameters>
+            <RuleParameter Name="Required" Value="True" />
+            <RuleParameter Name="HtmlDecode" Value="True" />
+          </RuleParameters>
+        </ExtractionRule>
+      </ExtractionRules>
+      <CorrelationExtractionRules>
+        <ExtractionRule Classname="Microsoft.VisualStudio.TestTools.WebTesting.Rules.ExtractText, Microsoft.VisualStudio.QualityTools.WebTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" VariableName="FormPostParam2.SessionTypeID" DisplayName="" Description="">
+          <RuleParameters>
+            <RuleParameter Name="StartsWith" Value="lue=&quot;" />
+            <RuleParameter Name="EndsWith" Value="&quot;&gt;Tes" />
+            <RuleParameter Name="Index" Value="5" />
+            <RuleParameter Name="IgnoreCase" Value="False" />
+            <RuleParameter Name="UseRegularExpression" Value="False" />
+            <RuleParameter Name="HtmlDecode" Value="True" />
+            <RuleParameter Name="Required" Value="False" />
+          </RuleParameters>
+        </ExtractionRule>
+      </CorrelationExtractionRules>
+    </Request>
+    <Request Method="POST" Guid="bf5b93e2-7aee-43b9-aee6-e87accd9bd9b" Version="1.1" Url="http://localhost/ilk-protokoll/Session/Master/Create" ThinkTime="2" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="" ReportingName="" IgnoreHttpStatusCode="False">
+      <Headers>
+        <Header Name="Referer" Value="http://localhost/ilk-protokoll/Session" />
+      </Headers>
+      <FormPostHttpBody>
+        <FormPostParameter Name="__RequestVerificationToken" Value="{{$HIDDEN1.__RequestVerificationToken}}" RecordedValue="-YFLrB-ek7OtF1ux0yXIzEvrTgUs4MjSMxsR-btR9C5kpCr1O14Sg_udUhhYbpXCbCs_t-Yv7sDvEmPiWbXVnrSG5mH-BdDHEjKtBpb9Zms1" CorrelationBinding="" UrlEncode="True" />
+        <FormPostParameter Name="SessionTypeID" Value="5" RecordedValue="5" CorrelationBinding="{{FormPostParam2.SessionTypeID}}" UrlEncode="True" />
+      </FormPostHttpBody>
+    </Request>
+    <Request Method="GET" Guid="bf8b543d-e39d-417a-a5e2-d99abaa8bf0c" Version="1.1" Url="http://localhost/ilk-protokoll/Session/Lists" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="" ReportingName="" IgnoreHttpStatusCode="False">
+      <Headers>
+        <Header Name="Referer" Value="http://localhost/ilk-protokoll/Session/Master/Create" />
+      </Headers>
+    </Request>
+    <Request Method="GET" Guid="eb6762be-5cae-4251-a021-e80efa5370fb" Version="1.1" Url="http://localhost/ilk-protokoll/Session/Master/Edit" ThinkTime="1" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="" ReportingName="" IgnoreHttpStatusCode="False">
+      <Headers>
+        <Header Name="Referer" Value="http://localhost/ilk-protokoll/Session/Lists" />
+      </Headers>
+    </Request>
+    <Request Method="GET" Guid="47d770b4-ea18-4811-9e2a-8048e22bee33" Version="1.1" Url="http://localhost/ilk-protokoll/Session/Discussion" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="" ReportingName="" IgnoreHttpStatusCode="False">
+      <Headers>
+        <Header Name="Referer" Value="http://localhost/ilk-protokoll/Session/Master/Edit" />
+      </Headers>
+    </Request>
+    <Request Method="GET" Guid="32b5e1da-91c0-4c12-abed-8b2de0a793b3" Version="1.1" Url="http://localhost/ilk-protokoll/Session/Finalize" ThinkTime="1" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="" ReportingName="" IgnoreHttpStatusCode="False">
+      <Headers>
+        <Header Name="Referer" Value="http://localhost/ilk-protokoll/Session/Discussion" />
+      </Headers>
+    </Request>
+    <Request Method="GET" Guid="a518e2cd-0842-4a4f-9453-9d72cd909987" Version="1.1" Url="http://localhost/ilk-protokoll/Session/Master/Edit" ThinkTime="6" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="" ReportingName="" IgnoreHttpStatusCode="False">
+      <Headers>
+        <Header Name="Referer" Value="http://localhost/ilk-protokoll/Session/Finalize" />
+      </Headers>
+      <ExtractionRules>
+        <ExtractionRule Classname="Microsoft.VisualStudio.TestTools.WebTesting.Rules.ExtractHiddenFields, Microsoft.VisualStudio.QualityTools.WebTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" VariableName="1" DisplayName="Ausgeblendete Felder extrahieren" Description="Extrahieren Sie alle ausgeblendeten Felder aus der Antwort, und platzieren Sie sie im Testkontext.">
+          <RuleParameters>
+            <RuleParameter Name="Required" Value="True" />
+            <RuleParameter Name="HtmlDecode" Value="True" />
+          </RuleParameters>
+        </ExtractionRule>
+      </ExtractionRules>
+      <CorrelationExtractionRules>
+        <ExtractionRule Classname="Microsoft.VisualStudio.TestTools.WebTesting.Rules.ExtractFormField, Microsoft.VisualStudio.QualityTools.WebTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" VariableName="FormPostParam1.Users[0].Value" DisplayName="" Description="">
+          <RuleParameters>
+            <RuleParameter Name="Name" Value="Users_0_Value" />
+            <RuleParameter Name="HtmlDecode" Value="True" />
+            <RuleParameter Name="Required" Value="False" />
+            <RuleParameter Name="Index" Value="0" />
+          </RuleParameters>
+        </ExtractionRule>
+      </CorrelationExtractionRules>
+    </Request>
+    <Request Method="POST" Guid="30a9b819-90d8-4cee-bb09-12569b699336" Version="1.1" Url="http://localhost/ilk-protokoll/Session/Master/Edit" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="http://localhost/ilk-protokoll/Session/Lists" ReportingName="" IgnoreHttpStatusCode="False">
+      <Headers>
+        <Header Name="Referer" Value="http://localhost/ilk-protokoll/Session/Master/Edit" />
+      </Headers>
+      <FormPostHttpBody>
+        <FormPostParameter Name="__RequestVerificationToken" Value="{{$HIDDEN1.__RequestVerificationToken}}" RecordedValue="FVqNp8c2dMorDyzJzDXXfGcYrGfX8b3705w5p17tdH5dudqgvtEOVBJPOaGgWKavSYPGQG6E5hTT3VRyGmAfe8C27KpxGP50E0GnRKW1rdI1" CorrelationBinding="" UrlEncode="True" />
+        <FormPostParameter Name="ID" Value="{{$HIDDEN1.ID}}" RecordedValue="38" CorrelationBinding="" UrlEncode="True" />
+        <FormPostParameter Name="Users[0].Key" Value="{{$HIDDEN1.Users[0].Key}}" RecordedValue="1" CorrelationBinding="" UrlEncode="True" />
+        <FormPostParameter Name="Users[0].Value" Value="true" RecordedValue="true" CorrelationBinding="{{FormPostParam1.Users[0].Value}}" UrlEncode="True" />
+        <FormPostParameter Name="Users[0].Value" Value="{{$HIDDEN1.Users[0].Value}}" RecordedValue="false" CorrelationBinding="" UrlEncode="True" />
+        <FormPostParameter Name="AdditionalAttendees" Value="" RecordedValue="" CorrelationBinding="" UrlEncode="True" />
+        <FormPostParameter Name="Notes" Value="" RecordedValue="" CorrelationBinding="" UrlEncode="True" />
+      </FormPostHttpBody>
+    </Request>
+    <Request Method="GET" Guid="4e8d73fa-079a-4d47-86a5-7b26ad01bc48" Version="1.1" Url="http://localhost/ilk-protokoll/Session/Discussion" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="" ReportingName="" IgnoreHttpStatusCode="False">
+      <Headers>
+        <Header Name="Referer" Value="http://localhost/ilk-protokoll/Session/Lists" />
+      </Headers>
+    </Request>
+    <Request Method="GET" Guid="8a939cbf-4fec-423d-abdd-d9a8f9bd9364" Version="1.1" Url="http://localhost/ilk-protokoll/Session/Finalize" ThinkTime="1" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="" ReportingName="" IgnoreHttpStatusCode="False">
+      <Headers>
+        <Header Name="Referer" Value="http://localhost/ilk-protokoll/Session/Discussion" />
+      </Headers>
+    </Request>
+    <Request Method="GET" Guid="c10508ff-d5ec-4c54-9520-1fe34d35518b" Version="1.1" Url="http://localhost/ilk-protokoll/Session/Discussion" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="" ReportingName="" IgnoreHttpStatusCode="False">
+      <Headers>
+        <Header Name="Referer" Value="http://localhost/ilk-protokoll/Session/Finalize" />
+      </Headers>
+    </Request>
+    <Request Method="GET" Guid="e921e856-b14b-4ab0-a6ec-1074f5115882" Version="1.1" Url="http://localhost/ilk-protokoll/Session/Lists" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="" ReportingName="" IgnoreHttpStatusCode="False">
+      <Headers>
+        <Header Name="Referer" Value="http://localhost/ilk-protokoll/Session/Discussion" />
+      </Headers>
+      <ExtractionRules>
+        <ExtractionRule Classname="Microsoft.VisualStudio.TestTools.WebTesting.Rules.ExtractHiddenFields, Microsoft.VisualStudio.QualityTools.WebTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" VariableName="1" DisplayName="Ausgeblendete Felder extrahieren" Description="Extrahieren Sie alle ausgeblendeten Felder aus der Antwort, und platzieren Sie sie im Testkontext.">
+          <RuleParameters>
+            <RuleParameter Name="Required" Value="True" />
+            <RuleParameter Name="HtmlDecode" Value="True" />
+          </RuleParameters>
+        </ExtractionRule>
+      </ExtractionRules>
+    </Request>
+    <Request Method="POST" Guid="de169606-af4f-4c67-822f-d4620540cd6c" Version="1.1" Url="http://localhost/ilk-protokoll/Session/LEvents/_Create" ThinkTime="3" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="" ReportingName="" IgnoreHttpStatusCode="False">
+      <Headers>
+        <Header Name="Accept" Value="*/*" />
+        <Header Name="X-Requested-With" Value="XMLHttpRequest" />
+        <Header Name="Referer" Value="http://localhost/ilk-protokoll/Session/Lists" />
+      </Headers>
+      <ExtractionRules>
+        <ExtractionRule Classname="Microsoft.VisualStudio.TestTools.WebTesting.Rules.ExtractText, Microsoft.VisualStudio.QualityTools.WebTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" VariableName="Param2" DisplayName="Text extrahieren" Description="Extrahieren Sie einen Text aus der Antwort, und platzieren Sie ihn im Testkontext.">
+          <RuleParameters>
+            <RuleParameter Name="StartsWith" Value="vent_" />
+            <RuleParameter Name="EndsWith" Value="&quot;&gt;&#xD;&#xA;	" />
+            <RuleParameter Name="Index" Value="0" />
+            <RuleParameter Name="IgnoreCase" Value="False" />
+            <RuleParameter Name="UseRegularExpression" Value="False" />
+            <RuleParameter Name="HtmlDecode" Value="True" />
+            <RuleParameter Name="Required" Value="False" />
+          </RuleParameters>
+        </ExtractionRule>
+      </ExtractionRules>
+      <FormPostHttpBody>
+        <FormPostParameter Name="__RequestVerificationToken" Value="{{$HIDDEN1.__RequestVerificationToken}}" RecordedValue="Hfa5-JBnMp2ajt_5DngO0nNbsZtI79bg2JQSh2pws9UyjOh1eqATyX7GS0tyX3BilJIVvf_Hn61eEGJV1rOVz52Qx1lK-ACCHdlj-ToaRB81" CorrelationBinding="" UrlEncode="True" />
+        <FormPostParameter Name="StartDate_display" Value="20.09.2014" RecordedValue="28.09.2014" CorrelationBinding="" UrlEncode="True" />
+        <FormPostParameter Name="StartDate" Value="2014-09-20" RecordedValue="2014-09-28" CorrelationBinding="" UrlEncode="True" />
+        <FormPostParameter Name="EndDate_display" Value="29.09.2014" RecordedValue="29.09.2014" CorrelationBinding="" UrlEncode="True" />
+        <FormPostParameter Name="EndDate" Value="2014-09-29" RecordedValue="2014-09-29" CorrelationBinding="" UrlEncode="True" />
+        <FormPostParameter Name="Time" Value="14:00" RecordedValue="14:00" CorrelationBinding="" UrlEncode="True" />
+        <FormPostParameter Name="Place" Value="Garching" RecordedValue="Garching" CorrelationBinding="" UrlEncode="True" />
+        <FormPostParameter Name="Description" Value="Party" RecordedValue="Party" CorrelationBinding="" UrlEncode="True" />
+        <FormPostParameter Name="Organizer" Value="hz" RecordedValue="hz" CorrelationBinding="" UrlEncode="True" />
+        <FormPostParameter Name="X-Requested-With" Value="XMLHttpRequest" RecordedValue="XMLHttpRequest" CorrelationBinding="" UrlEncode="True" />
+      </FormPostHttpBody>
+    </Request>
+    <Request Method="GET" Guid="b4126384-6a87-4ce6-b1ad-00cb7e9fa6d2" Version="1.1" Url="http://localhost/ilk-protokoll/Session/Discussion" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="" ReportingName="" IgnoreHttpStatusCode="False">
+      <Headers>
+        <Header Name="Referer" Value="http://localhost/ilk-protokoll/Session/Lists" />
+      </Headers>
+      <ExtractionRules>
+        <ExtractionRule Classname="Microsoft.VisualStudio.TestTools.WebTesting.Rules.ExtractText, Microsoft.VisualStudio.QualityTools.WebTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" VariableName="Param0" DisplayName="Text extrahieren" Description="Extrahieren Sie einen Text aus der Antwort, und platzieren Sie ihn im Testkontext.">
+          <RuleParameters>
+            <RuleParameter Name="StartsWith" Value="tons_" />
+            <RuleParameter Name="EndsWith" Value="&quot; hre" />
+            <RuleParameter Name="Index" Value="1" />
+            <RuleParameter Name="IgnoreCase" Value="False" />
+            <RuleParameter Name="UseRegularExpression" Value="False" />
+            <RuleParameter Name="HtmlDecode" Value="True" />
+            <RuleParameter Name="Required" Value="False" />
+          </RuleParameters>
+        </ExtractionRule>
+      </ExtractionRules>
+      <CorrelationExtractionRules>
+        <ExtractionRule Classname="Microsoft.VisualStudio.TestTools.WebTesting.Rules.ExtractText, Microsoft.VisualStudio.QualityTools.WebTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" VariableName="QueryStringParam1.state" DisplayName="" Description="">
+          <RuleParameters>
+            <RuleParameter Name="StartsWith" Value="?state=" />
+            <RuleParameter Name="EndsWith" Value="&quot;" />
+            <RuleParameter Name="Index" Value="1" />
+            <RuleParameter Name="IgnoreCase" Value="False" />
+            <RuleParameter Name="UseRegularExpression" Value="False" />
+            <RuleParameter Name="HtmlDecode" Value="True" />
+            <RuleParameter Name="Required" Value="False" />
+          </RuleParameters>
+        </ExtractionRule>
+        <ExtractionRule Classname="Microsoft.VisualStudio.TestTools.WebTesting.Rules.ExtractText, Microsoft.VisualStudio.QualityTools.WebTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" VariableName="QueryStringParam2.state" DisplayName="" Description="">
+          <RuleParameters>
+            <RuleParameter Name="StartsWith" Value="?state=" />
+            <RuleParameter Name="EndsWith" Value="&quot;" />
+            <RuleParameter Name="Index" Value="2" />
+            <RuleParameter Name="IgnoreCase" Value="False" />
+            <RuleParameter Name="UseRegularExpression" Value="False" />
+            <RuleParameter Name="HtmlDecode" Value="True" />
+            <RuleParameter Name="Required" Value="False" />
+          </RuleParameters>
+        </ExtractionRule>
+        <ExtractionRule Classname="Microsoft.VisualStudio.TestTools.WebTesting.Rules.ExtractText, Microsoft.VisualStudio.QualityTools.WebTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" VariableName="QueryStringParam3.state" DisplayName="" Description="">
+          <RuleParameters>
+            <RuleParameter Name="StartsWith" Value="?state=" />
+            <RuleParameter Name="EndsWith" Value="&quot;" />
+            <RuleParameter Name="Index" Value="3" />
+            <RuleParameter Name="IgnoreCase" Value="False" />
+            <RuleParameter Name="UseRegularExpression" Value="False" />
+            <RuleParameter Name="HtmlDecode" Value="True" />
+            <RuleParameter Name="Required" Value="False" />
+          </RuleParameters>
+        </ExtractionRule>
+        <ExtractionRule Classname="Microsoft.VisualStudio.TestTools.WebTesting.Rules.ExtractText, Microsoft.VisualStudio.QualityTools.WebTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" VariableName="QueryStringParam4.state" DisplayName="" Description="">
+          <RuleParameters>
+            <RuleParameter Name="StartsWith" Value="?state=" />
+            <RuleParameter Name="EndsWith" Value="&quot;" />
+            <RuleParameter Name="Index" Value="1" />
+            <RuleParameter Name="IgnoreCase" Value="False" />
+            <RuleParameter Name="UseRegularExpression" Value="False" />
+            <RuleParameter Name="HtmlDecode" Value="True" />
+            <RuleParameter Name="Required" Value="False" />
+          </RuleParameters>
+        </ExtractionRule>
+        <ExtractionRule Classname="Microsoft.VisualStudio.TestTools.WebTesting.Rules.ExtractText, Microsoft.VisualStudio.QualityTools.WebTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" VariableName="QueryStringParam5.state" DisplayName="" Description="">
+          <RuleParameters>
+            <RuleParameter Name="StartsWith" Value="?state=" />
+            <RuleParameter Name="EndsWith" Value="&quot;" />
+            <RuleParameter Name="Index" Value="0" />
+            <RuleParameter Name="IgnoreCase" Value="False" />
+            <RuleParameter Name="UseRegularExpression" Value="False" />
+            <RuleParameter Name="HtmlDecode" Value="True" />
+            <RuleParameter Name="Required" Value="False" />
+          </RuleParameters>
+        </ExtractionRule>
+      </CorrelationExtractionRules>
+    </Request>
+    <Request Method="POST" Guid="aecd0d60-f24a-4e73-a1fc-6821c0aa01b2" Version="1.1" Url="http://localhost/ilk-protokoll/Session/Discussion/_ChangeState/{{Param0}}" ThinkTime="1" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="" ReportingName="" IgnoreHttpStatusCode="False">
+      <Headers>
+        <Header Name="Accept" Value="*/*" />
+        <Header Name="X-Requested-With" Value="XMLHttpRequest" />
+        <Header Name="Referer" Value="http://localhost/ilk-protokoll/Session/Discussion" />
+      </Headers>
+      <QueryStringParameters>
+        <QueryStringParameter Name="state" Value="Decide" RecordedValue="Decide" CorrelationBinding="{{QueryStringParam1.state}}" UrlEncode="False" UseToGroupResults="False" />
+      </QueryStringParameters>
+      <FormPostHttpBody>
+        <FormPostParameter Name="X-Requested-With" Value="XMLHttpRequest" RecordedValue="XMLHttpRequest" CorrelationBinding="" UrlEncode="True" />
+      </FormPostHttpBody>
+    </Request>
+    <Request Method="POST" Guid="b3ed7ece-7632-494f-83e3-c4bb96165055" Version="1.1" Url="http://localhost/ilk-protokoll/Session/Discussion/_ChangeState/{{Param0}}" ThinkTime="1" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="" ReportingName="" IgnoreHttpStatusCode="False">
+      <Headers>
+        <Header Name="Accept" Value="*/*" />
+        <Header Name="X-Requested-With" Value="XMLHttpRequest" />
+        <Header Name="Referer" Value="http://localhost/ilk-protokoll/Session/Discussion" />
+      </Headers>
+      <QueryStringParameters>
+        <QueryStringParameter Name="state" Value="Close" RecordedValue="Close" CorrelationBinding="{{QueryStringParam2.state}}" UrlEncode="False" UseToGroupResults="False" />
+      </QueryStringParameters>
+      <FormPostHttpBody>
+        <FormPostParameter Name="X-Requested-With" Value="XMLHttpRequest" RecordedValue="XMLHttpRequest" CorrelationBinding="" UrlEncode="True" />
+      </FormPostHttpBody>
+    </Request>
+    <Request Method="POST" Guid="f330361a-ebff-4a2e-ab85-a0251ed11d20" Version="1.1" Url="http://localhost/ilk-protokoll/Session/Discussion/_ChangeState/{{Param0}}" ThinkTime="1" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="" ReportingName="" IgnoreHttpStatusCode="False">
+      <Headers>
+        <Header Name="Accept" Value="*/*" />
+        <Header Name="X-Requested-With" Value="XMLHttpRequest" />
+        <Header Name="Referer" Value="http://localhost/ilk-protokoll/Session/Discussion" />
+      </Headers>
+      <QueryStringParameters>
+        <QueryStringParameter Name="state" Value="Delete" RecordedValue="Delete" CorrelationBinding="{{QueryStringParam3.state}}" UrlEncode="False" UseToGroupResults="False" />
+      </QueryStringParameters>
+      <FormPostHttpBody>
+        <FormPostParameter Name="X-Requested-With" Value="XMLHttpRequest" RecordedValue="XMLHttpRequest" CorrelationBinding="" UrlEncode="True" />
+      </FormPostHttpBody>
+    </Request>
+    <Request Method="POST" Guid="4252fbd0-2174-4493-9742-39d0d460a42c" Version="1.1" Url="http://localhost/ilk-protokoll/Session/Discussion/_ChangeState/{{Param0}}" ThinkTime="1" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="" ReportingName="" IgnoreHttpStatusCode="False">
+      <Headers>
+        <Header Name="Accept" Value="*/*" />
+        <Header Name="X-Requested-With" Value="XMLHttpRequest" />
+        <Header Name="Referer" Value="http://localhost/ilk-protokoll/Session/Discussion" />
+      </Headers>
+      <QueryStringParameters>
+        <QueryStringParameter Name="state" Value="Decide" RecordedValue="Decide" CorrelationBinding="{{QueryStringParam4.state}}" UrlEncode="False" UseToGroupResults="False" />
+      </QueryStringParameters>
+      <FormPostHttpBody>
+        <FormPostParameter Name="X-Requested-With" Value="XMLHttpRequest" RecordedValue="XMLHttpRequest" CorrelationBinding="" UrlEncode="True" />
+      </FormPostHttpBody>
+    </Request>
+    <Request Method="POST" Guid="d7ad30dc-bc67-4447-ad25-d64343c2c924" Version="1.1" Url="http://localhost/ilk-protokoll/Session/Discussion/_ChangeState/{{Param0}}" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="" ReportingName="" IgnoreHttpStatusCode="False">
+      <Headers>
+        <Header Name="Accept" Value="*/*" />
+        <Header Name="X-Requested-With" Value="XMLHttpRequest" />
+        <Header Name="Referer" Value="http://localhost/ilk-protokoll/Session/Discussion" />
+      </Headers>
+      <QueryStringParameters>
+        <QueryStringParameter Name="state" Value="None" RecordedValue="None" CorrelationBinding="{{QueryStringParam5.state}}" UrlEncode="False" UseToGroupResults="False" />
+      </QueryStringParameters>
+      <FormPostHttpBody>
+        <FormPostParameter Name="X-Requested-With" Value="XMLHttpRequest" RecordedValue="XMLHttpRequest" CorrelationBinding="" UrlEncode="True" />
+      </FormPostHttpBody>
+    </Request>
+    <Request Method="GET" Guid="c766d47a-e262-473b-ab3d-444d43e2ee0b" Version="1.1" Url="http://localhost/ilk-protokoll/Topics/Details/{{Param0}}" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="" ReportingName="" IgnoreHttpStatusCode="False">
+      <Headers>
+        <Header Name="Referer" Value="http://localhost/ilk-protokoll/Session/Discussion" />
+      </Headers>
+      <CorrelationExtractionRules>
+        <ExtractionRule Classname="Microsoft.VisualStudio.TestTools.WebTesting.Rules.ExtractText, Microsoft.VisualStudio.QualityTools.WebTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" VariableName="FormPostParam3.X-Requested-With" DisplayName="" Description="">
+          <RuleParameters>
+            <RuleParameter Name="StartsWith" Value="h&quot;, &quot;" />
+            <RuleParameter Name="EndsWith" Value="&quot;);&#xD;&#xA;" />
+            <RuleParameter Name="Index" Value="0" />
+            <RuleParameter Name="IgnoreCase" Value="False" />
+            <RuleParameter Name="UseRegularExpression" Value="False" />
+            <RuleParameter Name="HtmlDecode" Value="True" />
+            <RuleParameter Name="Required" Value="False" />
+          </RuleParameters>
+        </ExtractionRule>
+      </CorrelationExtractionRules>
+    </Request>
+    <Request Method="GET" Guid="631768d2-6481-49ee-907b-324a8599a1b9" Version="1.1" Url="http://localhost/ilk-protokoll/Topics/Details/{{Param0}}" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="" ReportingName="" IgnoreHttpStatusCode="False" />
+    <Request Method="GET" Guid="a5efd736-e306-4880-99df-17d5426dd8d4" Version="1.1" Url="http://localhost/ilk-protokoll/Session/Finalize" ThinkTime="3" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="" ReportingName="" IgnoreHttpStatusCode="False">
+      <Headers>
+        <Header Name="Referer" Value="http://localhost/ilk-protokoll/Session/Discussion" />
+      </Headers>
+      <ExtractionRules>
+        <ExtractionRule Classname="Microsoft.VisualStudio.TestTools.WebTesting.Rules.ExtractHiddenFields, Microsoft.VisualStudio.QualityTools.WebTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" VariableName="1" DisplayName="Ausgeblendete Felder extrahieren" Description="Extrahieren Sie alle ausgeblendeten Felder aus der Antwort, und platzieren Sie sie im Testkontext.">
+          <RuleParameters>
+            <RuleParameter Name="Required" Value="True" />
+            <RuleParameter Name="HtmlDecode" Value="True" />
+          </RuleParameters>
+        </ExtractionRule>
+      </ExtractionRules>
+    </Request>
+    <Request Method="POST" Guid="d5d42142-43ba-45d9-ad24-f46fe36625e6" Version="1.1" Url="http://localhost/ilk-protokoll/Session/Finalize/GenerateReport" ThinkTime="13" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="" ReportingName="" IgnoreHttpStatusCode="False">
+      <Headers>
+        <Header Name="Accept" Value="*/*" />
+        <Header Name="X-Requested-With" Value="XMLHttpRequest" />
+        <Header Name="Referer" Value="http://localhost/ilk-protokoll/Session/Finalize" />
+      </Headers>
+      <ExtractionRules>
+        <ExtractionRule Classname="Microsoft.VisualStudio.TestTools.WebTesting.Rules.ExtractText, Microsoft.VisualStudio.QualityTools.WebTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" VariableName="Param1" DisplayName="Text extrahieren" Description="Extrahieren Sie einen Text aus der Antwort, und platzieren Sie ihn im Testkontext.">
+          <RuleParameters>
+            <RuleParameter Name="StartsWith" Value="ails/" />
+            <RuleParameter Name="EndsWith" Value="&quot; tar" />
+            <RuleParameter Name="Index" Value="0" />
+            <RuleParameter Name="IgnoreCase" Value="False" />
+            <RuleParameter Name="UseRegularExpression" Value="False" />
+            <RuleParameter Name="HtmlDecode" Value="True" />
+            <RuleParameter Name="Required" Value="False" />
+          </RuleParameters>
+        </ExtractionRule>
+      </ExtractionRules>
+      <FormPostHttpBody>
+        <FormPostParameter Name="__RequestVerificationToken" Value="{{$HIDDEN1.__RequestVerificationToken}}" RecordedValue="EmlXR3dpYPHVNu8lzj2wTstaqbIvqW5YFda6ffT-bpLTqMC9sCwsFaI4YNbhkAGG72m8ZLAnVKZMw5EVxzBAADZ0zQBiPjYXBYV5PqFj9ww1" CorrelationBinding="" UrlEncode="True" />
+        <FormPostParameter Name="X-Requested-With" Value="XMLHttpRequest" RecordedValue="XMLHttpRequest" CorrelationBinding="{{FormPostParam3.X-Requested-With}}" UrlEncode="True" />
+      </FormPostHttpBody>
+    </Request>
+    <Request Method="GET" Guid="3ce29fdb-ecb5-4472-9baf-626b6b531df0" Version="1.1" Url="http://localhost/ilk-protokoll/SessionReports/Details/{{Param1}}" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="" ReportingName="" IgnoreHttpStatusCode="False">
+      <Headers>
+        <Header Name="Referer" Value="http://localhost/ilk-protokoll/Session/Finalize" />
+      </Headers>
+    </Request>
+    <Request Method="GET" Guid="54261694-de38-48e5-b173-7d14d3ad0e2b" Version="1.1" Url="http://localhost/ilk-protokoll/SessionReports/Details/{{Param1}}" ThinkTime="6" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="" ReportingName="" IgnoreHttpStatusCode="False" />
+    <Request Method="GET" Guid="b4517d9e-df75-4f67-9069-9c5dc596f1ab" Version="1.1" Url="http://localhost/ilk-protokoll/" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="" ReportingName="" IgnoreHttpStatusCode="False">
+      <Headers>
+        <Header Name="Referer" Value="http://localhost/ilk-protokoll/Session/Finalize" />
+      </Headers>
+    </Request>
+    <Request Method="POST" Guid="dbae3872-5113-47a4-8b7a-d8a64d814b0f" Version="1.1" Url="http://localhost/ilk-protokoll/Session/LEvents/_Delete/{{Param2}}" ThinkTime="0" Timeout="300" ParseDependentRequests="True" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="0" ExpectedResponseUrl="" ReportingName="" IgnoreHttpStatusCode="False">
+      <FormPostHttpBody />
+    </Request>
+  </Items>
+  <ValidationRules>
+    <ValidationRule Classname="Microsoft.VisualStudio.TestTools.WebTesting.Rules.ValidateResponseUrl, Microsoft.VisualStudio.QualityTools.WebTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" DisplayName="Antwort-URL" Description="Überprüft, ob die Antwort-URL nach Umleitungen mit der aufgezeichneten Antwort-URL identisch ist. QueryString-Parameter werden ignoriert." Level="Low" ExectuionOrder="BeforeDependents" />
+    <ValidationRule Classname="Microsoft.VisualStudio.TestTools.WebTesting.Rules.ValidationRuleResponseTimeGoal, Microsoft.VisualStudio.QualityTools.WebTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" DisplayName="Antwortzeitziel" Description="Überprüft, ob die Antwortzeit für die Anforderung kleiner oder gleich dem in der Anforderung angegebenen Antwortzeitziel ist. Antwortzeitziele von 0 werden ignoriert." Level="Low" ExectuionOrder="AfterDependents">
+      <RuleParameters>
+        <RuleParameter Name="Tolerance" Value="1000" />
+      </RuleParameters>
+    </ValidationRule>
+  </ValidationRules>
+</WebTest>
