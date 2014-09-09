@@ -40,18 +40,20 @@ namespace ILK_Protokoll.Controllers
 				ViewBag.LastSession = session.SessionType.LastDate;
 		}
 
-		[CanBeNull]
+		[NotNull]
 		protected User GetCurrentUser()
 		{
 			if (_CurrentUser == null)
 			{
 				if (Session["UserID"] == null)
-				{
 					_CurrentUser = UserController.GetUser(db, User);
-					Session["UserID"] = _CurrentUser.ID;
-				}
 				else
 					_CurrentUser = db.Users.Find(Session["UserID"]);
+
+				if (_CurrentUser != null)
+					Session["UserID"] = _CurrentUser.ID;
+				else
+					_CurrentUser = new User();
 			}
 
 			return _CurrentUser;

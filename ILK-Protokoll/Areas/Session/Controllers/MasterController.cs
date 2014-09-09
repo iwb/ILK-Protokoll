@@ -25,6 +25,14 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 
 		public ActionResult Create(int SessionTypeID)
 		{
+			var uid = GetCurrentUser().ID;
+			var activeSession = (from s in db.ActiveSessions
+				where s.Manager.ID == uid && s.SessionType.ID == SessionTypeID
+				select s.ID).SingleOrDefault();
+
+			if (activeSession > 0)
+				return View(ResumeSession(activeSession)); 
+
 			var st = db.SessionTypes.Find(SessionTypeID);
 			if (st != null)
 				return View(CreateNewSession(st));
