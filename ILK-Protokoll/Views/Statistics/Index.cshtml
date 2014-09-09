@@ -1,0 +1,21 @@
+﻿@model Dictionary<string, double>
+
+@{
+	ViewBag.Title = "Statistik";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div>
+	<dl class="dl-horizontal">
+		@foreach (var kvp in Model)
+		{
+			<dt>
+				@kvp.Key
+			</dt>
+			<dd>
+				@kvp.Value
+			</dd>
+		}
+	</dl>
+</div>
