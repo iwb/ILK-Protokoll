@@ -202,6 +202,14 @@ h6 {
 	border-top: 1px solid #605E5C;
 }
 
+a:hover {
+	cursor: pointer;
+}
+
+.panel-collapse-heading a {
+	text-decoration: none;
+}
+
 .panel-collapse-heading a:after {
 	font-family: 'Glyphicons Halflings';
 	content: "\e114";
@@ -212,10 +220,6 @@ h6 {
 	content: "\e080";
 }
 
-a:hover {
-	text-decoration: none;
-	cursor: pointer;
-}
 
 .userlist {
 	list-style: none;
@@ -228,12 +232,20 @@ a:hover {
 	margin-left: 10px;
 	font-size: 18px;
 	min-width: 50px;
-}
 
-.userlist > li input {
-	display: inline-block;
-	width: auto;
-	height: auto;
+	input {
+		display: inline-block;
+		width: auto;
+		height: auto;
+	}
+
+	a {
+		color: @brand-primary;
+	}
+
+	a:hover {
+		text-decoration: none;
+	}
 }
 
 .userlist > li .glyphicon-ok-sign,

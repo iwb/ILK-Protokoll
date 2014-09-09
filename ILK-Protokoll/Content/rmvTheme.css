@@ -6325,6 +6325,12 @@ h6 {
 .panel > .panel-heading ~ .panel-body {
   border-top: 1px solid #605E5C;
 }
+a:hover {
+  cursor: pointer;
+}
+.panel-collapse-heading a {
+  text-decoration: none;
+}
 .panel-collapse-heading a:after {
   font-family: 'Glyphicons Halflings';
   content: "\e114";
@@ -6332,10 +6338,6 @@ h6 {
 }
 .panel-collapse-heading a.collapsed:after {
   content: "\e080";
-}
-a:hover {
-  text-decoration: none;
-  cursor: pointer;
 }
 .userlist {
   list-style: none;
@@ -6352,6 +6354,12 @@ a:hover {
   display: inline-block;
   width: auto;
   height: auto;
+}
+.userlist > li a {
+  color: #009474;
+}
+.userlist > li a:hover {
+  text-decoration: none;
 }
 .userlist > li .glyphicon-ok-sign,
 .userlist > li .glyphicon-ok,
