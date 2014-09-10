@@ -9,6 +9,11 @@ namespace ILK_Protokoll.ViewModels
 {
 	public class TopicEdit
 	{
+		public TopicEdit()
+		{
+			Priority = Priority.Medium;
+		}
+
 		[Display(Name = "Topic-ID")]
 		public int ID { get; set; }
 

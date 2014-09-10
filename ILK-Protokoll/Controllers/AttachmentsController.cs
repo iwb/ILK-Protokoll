@@ -54,12 +54,15 @@ namespace ILK_Protokoll.Controllers
 		{
 			string userAgent = request.UserAgent;
 			bool isInternetExplorer = !string.IsNullOrEmpty(userAgent) && userAgent.Contains("Trident");
-			if (Environment.MachineName == "02MUCILK" && isInternetExplorer)
+			if (Environment.MachineName.StartsWith("02MUCILK") && isInternetExplorer)
 			{
 				Attachment a = db.Attachments.Find(attachmentID);
 				bool isOfficeDocument = OfficeExtensions.Contains(a.Extension);
 				if (isOfficeDocument)
-					return "file://02mucilk/Uploads/" + a.FileName;
+				{
+					var host = Dns.GetHostName() + ".iwb.mw.tu-muenchen.de";
+					return "file://" + host + "/Uploads/" + a.FileName;
+				}
 			}
 
 			return url.Content(VirtualPath + attachmentID);
