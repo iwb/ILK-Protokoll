@@ -45,15 +45,17 @@ namespace ILK_Protokoll.Controllers
 		{
 			if (_CurrentUser == null)
 			{
-				if (Session["UserID"] == null)
-					_CurrentUser = UserController.GetUser(db, User);
-				else
+				var user = Session["CurrentUser"] as User;
+				if (user != null)
+					_CurrentUser = user;
+				else if (Session["UserID"] != null)
 					_CurrentUser = db.Users.Find(Session["UserID"]);
 
-				if (_CurrentUser != null)
-					Session["UserID"] = _CurrentUser.ID;
-				else
-					_CurrentUser = new User();
+				if (_CurrentUser == null) // User was not found in our database
+					_CurrentUser = UserController.GetUser(db, User) ?? new User(); // new User() ==> Anonymous User
+				
+				Session["UserID"] = _CurrentUser.ID;
+				Session["CurrentUser"] = _CurrentUser;
 			}
 
 			return _CurrentUser;
@@ -66,8 +68,7 @@ namespace ILK_Protokoll.Controllers
 			if (sessionID.HasValue && sessionID > 0)
 			{
 				var s = db.ActiveSessions.Find(sessionID);
-				if (s == null)
-					Session["SessionID"] = null;
+				Session["SessionID"] = s;
 				return s;
 			}
 			else
