@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
@@ -19,6 +20,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 		public LEventsController()
 		{
 			_dbSet = db.LEvents;
+			Entities = _dbSet.OrderBy(e => e.StartDate).ThenBy(e => e.EndDate);
 		}
 
 		public override ActionResult Download(int id)

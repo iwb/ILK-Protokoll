@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
 using System.Web.Mvc;
 using ILK_Protokoll.Areas.Session.Models.Lists;
@@ -12,6 +13,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 		public LIlkMeetingsController()
 		{
 			_dbSet = db.LIlkMeetings;
+			Entities = _dbSet.OrderBy(im => im.Start).ThenBy(im => im.Place);
 		}
 
 		public override PartialViewResult _CreateForm()

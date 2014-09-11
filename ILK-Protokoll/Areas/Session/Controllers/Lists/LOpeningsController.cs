@@ -1,4 +1,5 @@
-﻿using ILK_Protokoll.Areas.Session.Models.Lists;
+﻿using System.Linq;
+using ILK_Protokoll.Areas.Session.Models.Lists;
 
 namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 {
@@ -7,6 +8,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 		public LOpeningsController()
 		{
 			_dbSet = db.LOpenings;
+			Entities = _dbSet.OrderBy(o => o.Start).ThenBy(o => o.Project);
 		}
 	}
 }
