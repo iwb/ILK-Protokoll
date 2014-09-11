@@ -13,7 +13,7 @@ namespace ILK_Protokoll.Controllers
 	{
 		public PartialViewResult _List(Topic topic)
 		{
-			List<Comment> comments = topic.Comments.OrderBy(c => c.Created).ToList();
+			var comments = db.Comments.Include(c => c.Author).Where(c => c.TopicID == topic.ID).OrderBy(c => c.Created).ToList();
 			ViewBag.TopicID = topic.ID;
 			ViewBag.ShowCreateForm = !topic.IsReadOnly && !IsTopicLocked(topic);
 
