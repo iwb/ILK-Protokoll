@@ -1,4 +1,5 @@
-﻿@model ILK_Protokoll.Areas.Session.Models.Lists.Event
+﻿@using ILK_Protokoll.util
+@model ILK_Protokoll.Areas.Session.Models.Lists.Event
 
 <tr id="event_createform">
 	<td colspan="7">
@@ -36,3 +37,16 @@
 		}
 	</td>
 </tr>
+
+@using (Html.Delayed(null, "evt_date_sync"))
+{
+	<script type="text/javascript">
+		$('#evt_create_start').change(function () {
+			$('#evt_create_end').val($('#evt_create_start').val());
+		});
+		$('#evt_create_start_display').change(function () {
+			$('#evt_create_end').val($('#evt_create_start').val());
+			$('#evt_create_end_display').val($('#evt_create_start_display').val());
+		});
+	</script>
+}

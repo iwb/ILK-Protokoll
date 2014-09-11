@@ -1,4 +1,5 @@
-﻿@model ILK_Protokoll.Areas.Session.Models.Lists.Holiday
+﻿@using ILK_Protokoll.util
+@model ILK_Protokoll.Areas.Session.Models.Lists.Holiday
 
 <tr id="Holiday_createform">
 	<td colspan="4">
@@ -34,3 +35,16 @@
 		}
 	</td>
 </tr>
+
+@using (Html.Delayed(null, "holi_date_sync"))
+{
+	<script type="text/javascript">
+		$('#holi_create_start').change(function() {
+			$('#holi_create_end').val($('#holi_create_start').val());
+		});
+		$('#holi_create_start_display').change(function () {
+			$('#holi_create_end').val($('#holi_create_start').val());
+			$('#holi_create_end_display').val($('#holi_create_start_display').val());
+		});
+	</script>
+}

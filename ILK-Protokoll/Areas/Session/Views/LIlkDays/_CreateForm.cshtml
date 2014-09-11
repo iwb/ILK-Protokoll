@@ -1,4 +1,5 @@
-﻿@model ILK_Protokoll.Areas.Session.Models.Lists.IlkDay
+﻿@using ILK_Protokoll.util
+@model ILK_Protokoll.Areas.Session.Models.Lists.IlkDay
 
 <tr id="ilkDay_createform">
 	<td colspan="7">
@@ -41,13 +42,18 @@
 								var timeparts = $('#ilkDayCreation_Start_time')[0].value.split(':');
 								$('#ilkDayCreation_StartDateTime').val(new Date(dateparts[0], dateparts[1] - 1, dateparts[2], timeparts[0], timeparts[1]).toISOString());
 							});
-							$('#ilkDayCreation_End_date, #ilkDayCreation_End_time').change(function() {
+
+							function CopyIlkDayEndDate() {
 								var dateparts = $('#ilkDayCreation_End_date')[0].value.split('-');
 								if (dateparts.length == 1) {
 									dateparts = dateparts[0].split('.').reverse();
 								}
 								var timeparts = $('#ilkDayCreation_End_time')[0].value.split(':');
 								$('#ilkDayCreation_EndDateTime').val(new Date(dateparts[0], dateparts[1] - 1, dateparts[2], timeparts[0], timeparts[1]).toISOString());
+							}
+
+							$('#ilkDayCreation_End_date, #ilkDayCreation_End_time').change(function() {
+								CopyIlkDayEndDate();
 							});
 						</script>
 					</div>
@@ -75,3 +81,18 @@
 		}
 	</td>
 </tr>
+
+@using (Html.Delayed(null, "ilkd_date_sync"))
+{
+	<script type="text/javascript">
+		$('#ilkDayCreation_Start_date').change(function () {
+			$('#ilkDayCreation_End_date').val($('#ilkDayCreation_Start_date').val());
+			CopyIlkDayEndDate();
+		});
+		$('#ilkDayCreation_Start_date_display').change(function () {
+			$('#ilkDayCreation_End_date_display').val($('#ilkDayCreation_Start_date_display').val());
+			$('#ilkDayCreation_End_date').val($('#ilkDayCreation_Start_date').val());
+			CopyIlkDayEndDate();
+		});
+	</script>
+}

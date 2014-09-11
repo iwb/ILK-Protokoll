@@ -1,4 +1,5 @@
-﻿@model ILK_Protokoll.Areas.Session.Models.Lists.Conference
+﻿@using ILK_Protokoll.util
+@model ILK_Protokoll.Areas.Session.Models.Lists.Conference
 
 <tr id="conference_createform">
 	<td colspan="8">
@@ -39,3 +40,16 @@
 		}
 	</td>
 </tr>
+
+@using (Html.Delayed(null, "conf_date_sync"))
+{
+	<script type="text/javascript">
+		$('#conf_create_start').change(function() {
+			$('#conf_create_end').val($('#conf_create_start').val());
+		});
+		$('#conf_create_start_display').change(function () {
+			$('#conf_create_end').val($('#conf_create_start').val());
+			$('#conf_create_end_display').val($('#conf_create_start_display').val());
+		});
+	</script>
+}
