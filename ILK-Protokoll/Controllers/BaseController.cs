@@ -32,7 +32,7 @@ namespace ILK_Protokoll.Controllers
 			base.OnActionExecuting(filterContext);
 			var user = GetCurrentUser();
 			ViewBag.CurrentUser = user;
-			ViewBag.ColorScheme = user.ColorScheme;
+			ViewBag.CurrentColorScheme = user.ColorScheme;
 
 			var session = GetSession();
 			ViewBag.CurrentSession = session;
@@ -70,11 +70,11 @@ namespace ILK_Protokoll.Controllers
 		[CanBeNull]
 		protected ActiveSession GetSession()
 		{
-			var sessionID = (int?)Session["SessionID"];
-			if (sessionID.HasValue && sessionID > 0)
+			var sessionID = Session["SessionID"];
+			if (sessionID != null)
 			{
-				var s = db.ActiveSessions.Find(sessionID);
-				Session["SessionID"] = s;
+				var s = db.ActiveSessions.Find((int)sessionID);
+				Session["SessionID"] = s.ID;
 				return s;
 			}
 			else
