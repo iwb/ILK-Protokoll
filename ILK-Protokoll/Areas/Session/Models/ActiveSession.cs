@@ -31,7 +31,6 @@ namespace ILK_Protokoll.Areas.Session.Models
 		public int ID { get; set; }
 
 		[DisplayName("Sitzungsleiter")]
-		[Required]
 		public virtual User Manager { get; set; }
 
 		[ForeignKey("Manager")]
