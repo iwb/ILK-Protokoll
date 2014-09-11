@@ -11,10 +11,10 @@ namespace ILK_Protokoll.Models
 		public int TopicID { get; set; }
 
 		[Required]
-		public ActiveSession Session { get; set; }
+		public virtual ActiveSession Session { get; set; }
 
 		[Required]
-		public Topic Topic { get; set; }
+		public virtual Topic Topic { get; set; }
 
 		[Required]
 		public TopicAction Action { get; set; }

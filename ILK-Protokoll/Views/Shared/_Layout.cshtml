@@ -28,7 +28,10 @@
 		@Scripts.Render("~/bundles/bootstrap")
 		@Scripts.Render("~/bundles/other")
 		
-		@MiniProfiler.RenderIncludes()
+		@if (((User)ViewBag.CurrentUser).Guid == Guid.Parse("624e7ee2-a4c3-49a3-8c08-01ab1f01132f")) // Benutzer hz
+		{
+			@MiniProfiler.RenderIncludes()
+		}
 	</head>
 	<body>
 		@{ Html.RenderPartial("_Navbar"); }
