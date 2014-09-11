@@ -13,6 +13,7 @@ namespace ILK_Protokoll.Models
 		{
 			SessionTypes = new List<SessionType>();
 			IsActive = false;
+			ColorScheme = ColorScheme.iwb;
 		}
 
 		public User(string name)

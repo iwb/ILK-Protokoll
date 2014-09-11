@@ -320,6 +320,14 @@
     <Compile Include="Migrations\201409041410527_stringfields_not_nullable.Designer.cs">
       <DependentUpon>201409041410527_stringfields_not_nullable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201409101350414_comment_AuthorID_explicit.cs" />
+    <Compile Include="Migrations\201409101350414_comment_AuthorID_explicit.Designer.cs">
+      <DependentUpon>201409101350414_comment_AuthorID_explicit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201409110709441_userids_added.cs" />
+    <Compile Include="Migrations\201409110709441_userids_added.Designer.cs">
+      <DependentUpon>201409110709441_userids_added.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Assignment.cs" />
     <Compile Include="Models\Attachment.cs" />
@@ -802,6 +810,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201409041410527_stringfields_not_nullable.resx">
       <DependentUpon>201409041410527_stringfields_not_nullable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201409101350414_comment_AuthorID_explicit.resx">
+      <DependentUpon>201409101350414_comment_AuthorID_explicit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201409110709441_userids_added.resx">
+      <DependentUpon>201409110709441_userids_added.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -13,7 +13,7 @@ namespace ILK_Protokoll.Areas.Session.Models.Lists
 	public class Holiday : BaseItem
 	{
 		[DisplayName("Person")]
-		public User Person { get; set; }
+		public virtual User Person { get; set; }
 
 		[ForeignKey("Person")]
 		public int PersonID { get; set; }

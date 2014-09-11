@@ -62,6 +62,9 @@ namespace ILK_Protokoll.Models
 		[Display(Name = "Ersteller")]
 		public virtual User Uploader { get; set; }
 
+		[ForeignKey("Uploader")]
+		public int UploaderID { get; set; }
+
 		[Required]
 		[Display(Name = "Uploaddatum")]
 		public DateTime Created { get; set; }

@@ -32,7 +32,10 @@ namespace ILK_Protokoll.Areas.Session.Models
 
 		[DisplayName("Sitzungsleiter")]
 		[Required]
-		public User Manager { get; set; }
+		public virtual User Manager { get; set; }
+
+		[ForeignKey("Manager")]
+		public int ManagerID { get; set; }
 
 		[DisplayName("Sitzungstyp")]
 		[Required]
