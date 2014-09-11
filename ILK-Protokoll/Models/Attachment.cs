@@ -58,7 +58,6 @@ namespace ILK_Protokoll.Models
 		[ScaffoldColumn(false)]
 		public string Extension { get; set; }
 
-		[Required]
 		[Display(Name = "Ersteller")]
 		public virtual User Uploader { get; set; }
 

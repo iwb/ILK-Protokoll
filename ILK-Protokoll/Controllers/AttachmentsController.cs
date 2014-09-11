@@ -177,9 +177,10 @@ namespace ILK_Protokoll.Controllers
 					file.SaveAs(path);
 					successful++;
 				}
-				catch (DbEntityValidationException)
+				catch (DbEntityValidationException ex)
 				{
-					statusMessage.AppendFormat("Datei \"{0}\" konnte nicht in der Datenbank gespeichert werden.", fullName)
+					var message = ErrorMessageFromException(ex);
+					statusMessage.AppendFormat("Datei \"{0}\" konnte nicht in der Datenbank gespeichert werden.\n{1}", fullName, message)
 						.AppendLine();
 				}
 				catch (IOException)
