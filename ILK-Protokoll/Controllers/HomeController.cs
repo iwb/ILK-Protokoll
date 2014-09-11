@@ -42,7 +42,7 @@ namespace ILK_Protokoll.Controllers
 					.Where(t => t.ResubmissionDate == null || t.ResubmissionDate < cutoff)
 					.Where(t => t.OwnerID == userID || t.Votes.Any(v => v.Voter.ID == userID))
 					.OrderByDescending(t => t.Priority)
-					.ThenByDescending(t => t.Created).ToList();
+					.ThenByDescending(t => t.ValidFrom).ToList();
 			}
 			return View(dash);
 		}
