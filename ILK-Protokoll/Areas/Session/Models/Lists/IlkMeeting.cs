@@ -32,6 +32,7 @@ namespace ILK_Protokoll.Areas.Session.Models.Lists
 		public virtual SessionType SessionType { get; set; }
 
 		[ForeignKey("SessionType")]
+		[DisplayName("Sitzungstyp")]
 		public int SessionTypeID { get; set; }
 
 		[DisplayName("Verant.")]
