@@ -43,7 +43,7 @@ namespace ILK_Protokoll.Areas.Administration.Controllers
 		// GET: SessionTypes/Create
 		public ActionResult Create()
 		{
-			ViewBag.UserDict = db.GetUserOrdered(GetCurrentUser()).ToDictionary(u => u, u => false);
+			ViewBag.UserDict = CreateUserDictionary(u => false);
 			return View();
 		}
 
@@ -68,7 +68,7 @@ namespace ILK_Protokoll.Areas.Administration.Controllers
 				return RedirectToAction("Index");
 			}
 
-			ViewBag.UserDict = db.GetUserOrdered(GetCurrentUser()).ToDictionary(u => u, u => Attendees.Contains(u.ID));
+			ViewBag.UserDict = CreateUserDictionary(u => Attendees.Contains(u.ID));
 			return View(sessionType);
 		}
 
@@ -84,7 +84,7 @@ namespace ILK_Protokoll.Areas.Administration.Controllers
 			{
 				return HttpNotFound();
 			}
-			ViewBag.UserDict = db.GetUserOrdered(GetCurrentUser()).ToDictionary(u => u, u => sessionType.Attendees.Contains(u));
+			ViewBag.UserDict = CreateUserDictionary(u => sessionType.Attendees.Contains(u));
 			return View(sessionType);
 		}
 
@@ -107,7 +107,8 @@ namespace ILK_Protokoll.Areas.Administration.Controllers
 				db.SaveChanges();
 				return RedirectToAction("Index");
 			}
-			ViewBag.UserDict = db.GetUserOrdered(GetCurrentUser()).ToDictionary(u => u, u => Attendees.Contains(u.ID));
+			ViewBag.UserDict = CreateUserDictionary(u => Attendees.Contains(u.ID));
+
 			return View(input);
 		}
 

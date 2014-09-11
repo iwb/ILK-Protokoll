@@ -34,13 +34,13 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 
 		public override PartialViewResult _CreateForm()
 		{
-			ViewBag.UserList = new SelectList(db.GetUserOrdered(GetCurrentUser()), "ID", "ShortName");
+			ViewBag.UserList = CreateUserSelectList();
 			return base._CreateForm();
 		}
 
 		public override ActionResult _BeginEdit(int id)
 		{
-			ViewBag.UserList = new SelectList(db.GetUserOrdered(GetCurrentUser()), "ID", "ShortName");
+			ViewBag.UserList = CreateUserSelectList();
 			return base._BeginEdit(id);
 		}
 
@@ -53,7 +53,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 			if (presentation == null)
 				return HttpNotFound();
 
-			ViewBag.UserList = new SelectList(db.GetUserOrdered(GetCurrentUser()), "ID", "ShortName");
+			ViewBag.UserList = CreateUserSelectList();
 			ViewBag.ReturnURL = returnURL ?? Url.Action("Index", "Lists", new {Area = "Session"});
 			return View(presentation);
 		}
@@ -71,7 +71,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 				else
 					return Redirect(returnURL);
 			}
-			ViewBag.UserList = new SelectList(db.GetUserOrdered(GetCurrentUser()), "ID", "ShortName");
+			ViewBag.UserList = CreateUserSelectList();
 			ViewBag.ReturnURL = returnURL ?? Url.Action("Index", "Lists", new { Area = "Session" });
 			return View(input);
 		}

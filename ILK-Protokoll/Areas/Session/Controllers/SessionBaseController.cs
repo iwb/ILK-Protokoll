@@ -13,7 +13,10 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 	{
 		protected ActiveSession CreateNewSession(SessionType type)
 		{
-			var session = db.ActiveSessions.Add(new ActiveSession(type) {Manager = GetCurrentUser()});
+			var session = db.ActiveSessions.Add(new ActiveSession(type)
+			{
+				ManagerID = GetCurrentUserID()
+			});
 
 			// GGf. Themen übernehmen, die in die aktuelle Sitzung hinein verschoben werden.
 			foreach (var t in db.Topics.Include(t => t.Creator).Where(t => t.TargetSessionTypeID == type.ID))
@@ -59,7 +62,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 				throw new ArgumentException("Session-ID was not found.");
 
 			Session["SessionID"] = session.ID;
-			session.Manager = GetCurrentUser();
+			session.ManagerID = GetCurrentUserID();
 			db.SaveChanges();
 			return session;
 		}

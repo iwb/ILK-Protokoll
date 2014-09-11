@@ -43,7 +43,7 @@ namespace ILK_Protokoll.Controllers
 				query = query.Where(a => a.Owner.ID == filter.UserID);
 
 			filter.Assignments = query.OrderBy(a => a.DueDate).ToList();
-			filter.UserList = new SelectList(db.GetUserOrdered(GetCurrentUser()), "ID", "Shortname");
+			filter.UserList = CreateUserSelectList();
 
 			return View(filter);
 		}
@@ -123,7 +123,7 @@ namespace ILK_Protokoll.Controllers
 
 			var a = new AssignmentEdit {TopicID = topicID};
 
-			ViewBag.UserList = new SelectList(db.GetUserOrdered(GetCurrentUser()), "ID", "ShortName");
+			ViewBag.UserList = CreateUserSelectList();
 			return View(a);
 		}
 
@@ -136,7 +136,7 @@ namespace ILK_Protokoll.Controllers
 				throw new TopicLockedException();
 			else if (!ModelState.IsValid)
 			{
-				ViewBag.UserList = new SelectList(db.GetUserOrdered(GetCurrentUser()), "ID", "ShortName");
+				ViewBag.UserList = CreateUserSelectList();
 				return View(input);
 			}
 			else
@@ -175,7 +175,7 @@ namespace ILK_Protokoll.Controllers
 			if (IsTopicLocked(assignment.TopicID))
 				throw new TopicLockedException();
 
-			ViewBag.UserList = new SelectList(db.GetUserOrdered(GetCurrentUser()), "ID", "ShortName");
+			ViewBag.UserList = CreateUserSelectList();
 
 			var vm = new AssignmentEdit()
 			{
@@ -199,7 +199,7 @@ namespace ILK_Protokoll.Controllers
 		{
 			if (!ModelState.IsValid)
 			{
-				ViewBag.UserList = new SelectList(db.GetUserOrdered(GetCurrentUser()), "ID", "ShortName");
+				ViewBag.UserList = CreateUserSelectList();
 				return View(input);
 			}
 

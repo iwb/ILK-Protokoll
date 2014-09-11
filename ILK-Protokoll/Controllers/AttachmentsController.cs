@@ -86,7 +86,6 @@ namespace ILK_Protokoll.Controllers
 				select Path.GetFileNameWithoutExtension(path));
 
 			ViewBag.EntityID = id;
-			ViewBag.CurrentUser = GetCurrentUser();
 			ViewBag.KnownExtensions = KnownExtensions;
 
 			if (makeList)
@@ -156,7 +155,7 @@ namespace ILK_Protokoll.Controllers
 					SafeName = InvalidChars.Replace(filename, ""),
 					Extension = fileext,
 					FileSize = file.ContentLength,
-					Uploader = GetCurrentUser(),
+					UploaderID = GetCurrentUserID(),
 					Created = DateTime.Now
 				};
 

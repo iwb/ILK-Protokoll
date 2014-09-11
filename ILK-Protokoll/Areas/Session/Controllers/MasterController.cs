@@ -25,7 +25,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 
 		public ActionResult Create(int SessionTypeID)
 		{
-			var uid = GetCurrentUser().ID;
+			var uid = GetCurrentUserID();
 			var activeSession = (from s in db.ActiveSessions
 				where s.Manager.ID == uid && s.SessionType.ID == SessionTypeID
 				select s.ID).SingleOrDefault();

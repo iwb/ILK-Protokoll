@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Validation;
-using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -32,7 +32,7 @@ namespace ILK_Protokoll.Controllers
 			base.OnActionExecuting(filterContext);
 			var user = GetCurrentUser();
 			ViewBag.CurrentUser = user;
-			ViewBag.ColorScheme = user != null ? user.ColorScheme : ColorScheme.iwb;
+			ViewBag.ColorScheme = user.ColorScheme;
 
 			var session = GetSession();
 			ViewBag.CurrentSession = session;
@@ -46,19 +46,25 @@ namespace ILK_Protokoll.Controllers
 			if (_CurrentUser == null)
 			{
 				var user = Session["CurrentUser"] as User;
+				var userid = Session["UserID"] as int?;
 				if (user != null)
 					_CurrentUser = user;
-				else if (Session["UserID"] != null)
-					_CurrentUser = db.Users.Find(Session["UserID"]);
+				else if (userid != null)
+					_CurrentUser = db.Users.AsNoTracking().Single(u => u.ID == userid);
 
 				if (_CurrentUser == null) // User was not found in our database
 					_CurrentUser = UserController.GetUser(db, User) ?? new User(); // new User() ==> Anonymous User
-				
+
 				Session["UserID"] = _CurrentUser.ID;
 				Session["CurrentUser"] = _CurrentUser;
 			}
 
 			return _CurrentUser;
+		}
+
+		protected int GetCurrentUserID()
+		{
+			return (int?)Session["UserID"] ?? GetCurrentUserID();
 		}
 
 		[CanBeNull]
@@ -73,6 +79,21 @@ namespace ILK_Protokoll.Controllers
 			}
 			else
 				return null;
+		}
+
+		protected SelectList CreateUserSelectList()
+		{
+			return new SelectList(db.GetUserOrdered(GetCurrentUser()), "ID", "ShortName");
+		}
+
+		protected SelectList CreateUserSelectList(int selectedID)
+		{
+			return new SelectList(db.GetUserOrdered(GetCurrentUser()), "ID", "ShortName", selectedID);
+		}
+
+		protected Dictionary<User, T> CreateUserDictionary<T>(Func<User, T> valueSelector)
+		{
+			return db.GetUserOrdered(GetCurrentUser()).ToDictionary(u => u, valueSelector);
 		}
 
 		public bool IsTopicLocked(int topicID)

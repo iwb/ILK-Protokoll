@@ -39,7 +39,11 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 		public ActionResult GenerateReport()
 		{
 			ActiveSession session = GetSession();
-			session.Manager = GetCurrentUser();
+
+			if (session == null)
+				return HTTPStatus(HttpStatusCode.InternalServerError, "Active Session not found.");
+
+			session.ManagerID = GetCurrentUserID();
 			session.End = DateTime.Now;
 			session.LockedTopics = db.TopicLocks
 				.Include(tl => tl.Session)

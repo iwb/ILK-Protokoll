@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
@@ -17,7 +18,7 @@ namespace ILK_Protokoll.Controllers
 			ViewBag.ShowCreateForm = !topic.IsReadOnly && !IsTopicLocked(topic);
 
 			Comment lastcomment = comments.LastOrDefault();
-			ViewBag.AllowDeletion = (lastcomment != null) && (lastcomment.Author.Equals(GetCurrentUser())) ? lastcomment.ID : -1;
+			ViewBag.AllowDeletion = (lastcomment != null) && !topic.IsReadOnly && (lastcomment.AuthorID == GetCurrentUserID()) ? lastcomment.ID : -1;
 
 			return PartialView("_CommentList", comments);
 		}
@@ -45,9 +46,18 @@ namespace ILK_Protokoll.Controllers
 					throw new TopicLockedException();
 
 				comment.Created = DateTime.Now;
-				comment.Author = GetCurrentUser();
+				comment.AuthorID = GetCurrentUserID();
 				db.Comments.Add(comment);
-				db.SaveChanges();
+
+				try
+				{
+					db.SaveChanges();
+				}
+				catch (DbEntityValidationException ex)
+				{
+					var message = ErrorMessageFromException(ex);
+					return HTTPStatus(500, message);
+				}
 
 				return _List(topic);
 			}

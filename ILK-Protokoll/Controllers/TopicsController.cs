@@ -53,7 +53,7 @@ namespace ILK_Protokoll.Controllers
 			if (filter.OwnerID != 0)
 				query = query.Where(a => a.OwnerID == filter.OwnerID);
 
-			filter.UserList = new SelectList(db.GetUserOrdered(GetCurrentUser()), "ID", "Shortname");
+			filter.UserList = CreateUserSelectList();
 			filter.PriorityList = PriorityChoices(filter.ShowPriority);
 			filter.SessionTypeList = new SelectList(db.GetActiveSessionTypes(), "ID", "Name");
 
@@ -144,7 +144,7 @@ namespace ILK_Protokoll.Controllers
 			{
 				SessionTypeList = new SelectList(db.GetActiveSessionTypes(), "ID", "Name"),
 				TargetSessionTypeList = new SelectList(db.GetActiveSessionTypes(), "ID", "Name"),
-				UserList = new SelectList(db.GetUserOrdered(GetCurrentUser()), "ID", "ShortName")
+				UserList = CreateUserSelectList()
 			};
 			return View(viewmodel);
 		}
@@ -160,7 +160,7 @@ namespace ILK_Protokoll.Controllers
 			{
 				var t = new Topic
 				{
-					Creator = GetCurrentUser(),
+					CreatorID = GetCurrentUserID(),
 					SessionTypeID = input.SessionTypeID
 				};
 				t.IncorporateUpdates(input);
@@ -189,7 +189,7 @@ namespace ILK_Protokoll.Controllers
 
 			input.SessionTypeList = new SelectList(db.GetActiveSessionTypes(), "ID", "Name", input.SessionTypeID);
 			input.TargetSessionTypeList = new SelectList(db.GetActiveSessionTypes(), "ID", "Name", input.TargetSessionTypeID);
-			input.UserList = new SelectList(db.GetUserOrdered(GetCurrentUser()), "ID", "ShortName");
+			input.UserList = CreateUserSelectList();
 			return View(input);
 		}
 
@@ -213,7 +213,7 @@ namespace ILK_Protokoll.Controllers
 			TopicEdit viewmodel = TopicEdit.FromTopic(topic);
 			viewmodel.SessionTypeList = new SelectList(db.GetActiveSessionTypes(), "ID", "Name");
 			viewmodel.TargetSessionTypeList = new SelectList(db.GetActiveSessionTypes(), "ID", "Name");
-			viewmodel.UserList = new SelectList(db.GetUserOrdered(GetCurrentUser()), "ID", "ShortName", viewmodel.OwnerID);
+			viewmodel.UserList = CreateUserSelectList(viewmodel.OwnerID);
 
 			return View(viewmodel);
 		}
@@ -232,7 +232,7 @@ namespace ILK_Protokoll.Controllers
 				if (!auth.IsAuthorized)
 					return HTTPStatus(HttpStatusCode.Forbidden, auth.Reason);
 
-				db.TopicHistory.Add(TopicHistory.FromTopic(topic, GetCurrentUser().ID));
+				db.TopicHistory.Add(TopicHistory.FromTopic(topic, GetCurrentUserID()));
 
 				topic.IncorporateUpdates(input);
 				topic.TargetSessionTypeID = input.TargetSessionTypeID == topic.SessionTypeID ? null : input.TargetSessionTypeID;
@@ -268,7 +268,7 @@ namespace ILK_Protokoll.Controllers
 			input.SessionType = topic.SessionType;
 			input.SessionTypeList = new SelectList(db.GetActiveSessionTypes(), "ID", "Name", input.SessionTypeID);
 			input.TargetSessionTypeList = new SelectList(db.GetActiveSessionTypes(), "ID", "Name", input.TargetSessionTypeID);
-			input.UserList = new SelectList(db.GetUserOrdered(GetCurrentUser()), "ID", "ShortName");
+			input.UserList = CreateUserSelectList();
 			return View(input);
 		}
 

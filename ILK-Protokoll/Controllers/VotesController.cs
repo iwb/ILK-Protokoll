@@ -16,11 +16,10 @@ namespace ILK_Protokoll.Controllers
 
 			ViewBag.ownvote = topic.Votes.SingleOrDefault(v => v.Voter.Equals(GetCurrentUser()));
 			ViewBag.TopicID = topic.ID;
-			ViewBag.CurrentUser = GetCurrentUser();
 			ViewBag.LinkAllAuditors = linkAllAuditors && !IsTopicLocked(topic.ID);
 
-			IOrderedEnumerable<Vote> displayvotes = topic.Votes.Where(v => !v.Voter.Equals(GetCurrentUser()))
-				.OrderBy(v => v.Voter.ShortName, StringComparer.CurrentCultureIgnoreCase);
+			var displayvotes = topic.Votes.Where(v => !v.Voter.Equals(GetCurrentUser()))
+				.OrderBy(v => v.Voter.ShortName, StringComparer.CurrentCultureIgnoreCase).ToList();
 
 			return PartialView("_VoteList", displayvotes);
 		}
@@ -30,7 +29,7 @@ namespace ILK_Protokoll.Controllers
 			if (db.Topics.Find(topicID).IsReadOnly)
 				return HTTPStatus(HttpStatusCode.Forbidden, "Das Thema ist schreibgeschützt.");
 
-			int cuid = GetCurrentUser().ID;
+			int cuid = GetCurrentUserID();
 			Vote dbvote = db.Votes.SingleOrDefault(v => v.Voter.ID == cuid && v.Topic.ID == topicID);
 
 			if (dbvote == null)

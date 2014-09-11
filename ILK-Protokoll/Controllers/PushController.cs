@@ -12,8 +12,7 @@ namespace ILK_Protokoll.Controllers
 		public PartialViewResult _EditListTopic(Topic topic)
 		{
 			var targets = new HashSet<int>(topic.PushTargets.Select(pt => pt.UserID));
-			var users = db.GetUserOrdered(GetCurrentUser());
-			var pushlist = users.ToDictionary(u => u, u => targets.Contains(u.ID));
+			var pushlist = CreateUserDictionary(u => targets.Contains(u.ID));
 			ViewBag.TopicID = topic.ID;
 
 			return PartialView("_EditListTopic", pushlist);
