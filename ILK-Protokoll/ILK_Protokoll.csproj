@@ -328,6 +328,10 @@
     <Compile Include="Migrations\201409110709441_userids_added.Designer.cs">
       <DependentUpon>201409110709441_userids_added.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201409110922120_activeSession_sessiontypeid_added.cs" />
+    <Compile Include="Migrations\201409110922120_activeSession_sessiontypeid_added.Designer.cs">
+      <DependentUpon>201409110922120_activeSession_sessiontypeid_added.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Assignment.cs" />
     <Compile Include="Models\Attachment.cs" />
@@ -816,6 +820,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201409110709441_userids_added.resx">
       <DependentUpon>201409110709441_userids_added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201409110922120_activeSession_sessiontypeid_added.resx">
+      <DependentUpon>201409110922120_activeSession_sessiontypeid_added.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

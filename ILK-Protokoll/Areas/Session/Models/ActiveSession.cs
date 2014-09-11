@@ -37,8 +37,10 @@ namespace ILK_Protokoll.Areas.Session.Models
 		public int ManagerID { get; set; }
 
 		[DisplayName("Sitzungstyp")]
-		[Required]
 		public virtual SessionType SessionType { get; set; }
+
+		[ForeignKey("SessionType")]
+		public int SessionTypeID { get; set; }
 
 		[DisplayName("Anwesenheit")]
 		[Required]

@@ -174,6 +174,17 @@ namespace ILK_Protokoll.Controllers
 
 				db.Topics.Add(t);
 
+				// Falls in einer Sitzung eine neue Diskussion erzeugt wird, kann diese der Sitzung zugeschlagen werden.
+				var session = GetSession();
+				if (session != null && session.SessionTypeID == input.SessionTypeID)
+				{
+					session.LockedTopics.Add(new TopicLock()
+					{
+						Topic = t,
+						Session = session
+					});
+				}
+				
 				try
 				{
 					db.SaveChanges();
