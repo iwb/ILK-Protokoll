@@ -12,6 +12,7 @@ using ILK_Protokoll.Areas.Session.Models;
 using ILK_Protokoll.Mailers;
 using ILK_Protokoll.Models;
 using ILK_Protokoll.util;
+using StackExchange.Profiling;
 
 namespace ILK_Protokoll.Areas.Session.Controllers
 {
@@ -68,8 +69,16 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 				return HTTPStatus(HttpStatusCode.InternalServerError, message);
 			}
 
-			string html = HelperMethods.RenderViewAsString(ControllerContext, "SessionReport", session);
-			byte[] pdfcontent = HelperMethods.ConvertHTMLToPDF(html);
+			string html;
+			byte[] pdfcontent;
+			using (MiniProfiler.Current.Step("Rendering des Reports"))
+			{
+				html = HelperMethods.RenderViewAsString(ControllerContext, "SessionReport", session);
+			}
+			using (MiniProfiler.Current.Step("PDF Generierung"))
+			{
+				pdfcontent = HelperMethods.ConvertHTMLToPDF(html);
+			}
 
 			try
 			{
@@ -87,7 +96,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 			var result = ProcessTopics(session, report);
 			if (result != null)
 				return result;
-			
+
 			db.ActiveSessions.Remove(session);
 			Session.Remove("SessionID");
 
