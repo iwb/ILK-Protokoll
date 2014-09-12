@@ -5,7 +5,7 @@
 	UpdateTargetId = "comments_" + Model.TopicID,
 	OnBegin = "$('#comment_form_" + ViewBag.TopicID + "').submit(function(){return false;});",
 	OnFailure = "DisplayErrorMessage('#comments_" + ViewBag.TopicID + "', 'Der Kommentar konnte nicht verarbeitet werden.<br />' + xhr.responseText); $('#comment_form_" + ViewBag.TopicID + "').unbind('submit');",
-	OnSuccess = "if (typeof msnry != 'undefined') { msnry.layout(); }",
+	OnSuccess = "PerformMasonryLayout();",
 }, new {id = "comment_form_" + ViewBag.TopicID}))
 {
 	@Html.AntiForgeryToken()
@@ -34,9 +34,7 @@
 			}
 		});
 
-		if (typeof msnry != 'undefined') {
-			msnry.layout();
-		}
+		PerformMasonryLayout();
 		$(this).css('height', '120px').removeClass('btn-default').addClass('btn-primary');
 		$(this).children(":first").removeClass('glyphicon-align-justify').addClass('glyphicon-check'); // Span element within
 		$(this).off("click").click(function() {

@@ -111,7 +111,7 @@ namespace ILK_Protokoll.Controllers
 		public ActionResult Details(int? id, bool reporting = false)
 		{
 			if (id == null)
-				return HTTPStatus(400, "Für diesen Vorgang ist eine TopicID ist erforderlich.");
+				return HTTPStatus(HttpStatusCode.BadRequest, "Für diesen Vorgang ist eine TopicID ist erforderlich.");
 
 			var topic = db.Topics
 				.Include(t => t.Assignments)

@@ -130,7 +130,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 			var row = Entities.Single(m => m.ID == input.ID);
 
 			if (row.LockSessionID != null && (GetSession() == null || row.LockSessionID != GetSession().ID))
-				return HTTPStatus(409, "Der Datensatz ist momentan gesperrt.");
+				return HTTPStatus(409, "Der Datensatz ist momentan gesperrt."); // HTTP 409 Conflict
 
 			TryUpdateModel(row, "", null, new[] {"Created"});
 			row.LockSessionID = null;

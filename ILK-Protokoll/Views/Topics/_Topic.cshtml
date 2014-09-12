@@ -111,13 +111,13 @@
 	<script type="text/javascript">
 		function collapseTopicOut(link, content) {
 
-			content.slideDown(400, "easeOutQuad", function () { if (typeof msnry !== 'undefined') { msnry.layout(); } });
+			content.slideDown(400, "easeOutQuad", function () { PerformMasonryLayout(); });
 			link.removeClass("collapsed");
 		}
 
 		function collapseTopicIn(link, content) {
 
-			content.slideUp(400, "easeOutQuad", function () { if (typeof msnry !== 'undefined') { msnry.layout(); } });
+			content.slideUp(400, "easeOutQuad", function () { PerformMasonryLayout(); });
 			link.addClass("collapsed");
 		} 
 
@@ -125,7 +125,7 @@
 			if ($(sender).hasClass("collapsed")) { // Ausklappen
 
 				$(selector).show(); // Workaround, damit sich die GUI-Elemente nicht während der Animation überlappen
-				msnry.layout();
+				PerformMasonryLayout();
 				$(selector).hide();
 
 				collapseTopicOut($(sender), $(selector));
