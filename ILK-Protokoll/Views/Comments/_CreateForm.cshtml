@@ -21,12 +21,18 @@
 }
 
 <script type="text/javascript">
-	$('#comment_form_@ViewBag.TopicID .inputexpander').click(function() {
-		var txtarea = $('<textarea name="Content" class="form-control" placeholder="Kommentar hinzufügen" id="comment_input_@Model.TopicID" style="height: 120px; resize: none;"></textarea>');
+	$('#comment_form_@ViewBag.TopicID .inputexpander').click(function () {
 		var input = $(this).parent().prev();
+		var txtarea = $('<textarea name="Content" class="form-control" placeholder="Kommentar hinzufügen" id="comment_input_@Model.TopicID" style="height: 120px; resize: none;"></textarea>');
+
 		txtarea.val(input.val());
 		input.replaceWith(txtarea);
 		txtarea.focus();
+		txtarea.keydown(function (event) {
+			if ((event.keyCode == 10 || event.keyCode == 13) && event.ctrlKey) {
+				$("#comment_form_@ViewBag.TopicID").submit();
+			}
+		});
 
 		if (typeof msnry != 'undefined') {
 			msnry.layout();

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Validation;
 using System.Linq;
@@ -18,7 +17,9 @@ namespace ILK_Protokoll.Controllers
 			ViewBag.ShowCreateForm = !topic.IsReadOnly && !IsTopicLocked(topic);
 
 			Comment lastcomment = comments.LastOrDefault();
-			ViewBag.AllowDeletion = (lastcomment != null) && !topic.IsReadOnly && (lastcomment.AuthorID == GetCurrentUserID()) ? lastcomment.ID : -1;
+			ViewBag.AllowDeletion = (lastcomment != null) && !topic.IsReadOnly && (lastcomment.AuthorID == GetCurrentUserID())
+				? lastcomment.ID
+				: -1;
 
 			return PartialView("_CommentList", comments);
 		}
@@ -35,38 +36,39 @@ namespace ILK_Protokoll.Controllers
 		[ValidateAntiForgeryToken]
 		public ActionResult _Submit([Bind(Include = "TopicID,Content")] Comment comment)
 		{
-			if (ModelState.IsValid && !string.IsNullOrWhiteSpace(comment.Content))
+			if (string.IsNullOrWhiteSpace(comment.Content))
+				return HTTPStatus(422, "Der Kommentar enthält keinen Text.");
+
+			if (!ModelState.IsValid)
 			{
-				var topic = db.Topics
-					.Include(t => t.Lock)
-					.Include(t => t.Lock.Session.Manager)
-					.Single(t => t.ID == comment.TopicID);
-
-				if (topic.IsReadOnly || IsTopicLocked(topic))
-					throw new TopicLockedException();
-
-				comment.Created = DateTime.Now;
-				comment.AuthorID = GetCurrentUserID();
-				comment.Content = comment.Content.Trim();
-				db.Comments.Add(comment);
-
-				try
-				{
-					db.SaveChanges();
-				}
-				catch (DbEntityValidationException ex)
-				{
-					var message = ErrorMessageFromException(ex);
-					return HTTPStatus(500, message);
-				}
-
-				return _List(topic);
-			}
-			else
-			{
-				return new HttpStatusCodeResult(HttpStatusCode.BadRequest,
+				return HTTPStatus(HttpStatusCode.InternalServerError,
 					"Dieser Kommentar kann nicht erstellt werden: Es fehlen Informationen.");
 			}
+
+			var topic = db.Topics
+				.Include(t => t.Lock)
+				.Include(t => t.Lock.Session.Manager)
+				.Single(t => t.ID == comment.TopicID);
+
+			if (topic.IsReadOnly || IsTopicLocked(topic))
+				throw new TopicLockedException();
+
+			comment.Created = DateTime.Now;
+			comment.AuthorID = GetCurrentUserID();
+			comment.Content = comment.Content.Trim();
+			db.Comments.Add(comment);
+
+			try
+			{
+				db.SaveChanges();
+			}
+			catch (DbEntityValidationException ex)
+			{
+				var message = ErrorMessageFromException(ex);
+				return HTTPStatus(HttpStatusCode.InternalServerError, message);
+			}
+
+			return _List(topic);
 		}
 
 
