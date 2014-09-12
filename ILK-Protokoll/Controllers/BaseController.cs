@@ -38,6 +38,9 @@ namespace ILK_Protokoll.Controllers
 			ViewBag.CurrentSession = session;
 			if (session != null)
 				ViewBag.LastSession = session.SessionType.LastDate;
+
+			if (Request.QueryString["profiler"] != null)
+				Session["profiler"] = Request.QueryString["profiler"] == "true";
 		}
 
 		[NotNull]

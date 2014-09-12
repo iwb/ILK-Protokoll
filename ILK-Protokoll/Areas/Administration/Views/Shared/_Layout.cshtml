@@ -28,7 +28,7 @@
 		@Scripts.Render("~/bundles/bootstrap")
 		@Scripts.Render("~/bundles/other")
 
-		@if (((User)ViewBag.CurrentUser).Guid == Guid.Parse("624e7ee2-a4c3-49a3-8c08-01ab1f01132f")) // Benutzer hz
+		@if ((bool?)Session["profiler"] == true) // Profiler aktivieren
 		{
 			@MiniProfiler.RenderIncludes()
 		}
