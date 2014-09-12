@@ -84,6 +84,32 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 				return HTTPStatus(HttpStatusCode.InternalServerError, e.Message);
 			}
 
+			var result = ProcessTopics(session, report);
+			if (result != null)
+				return result;
+			
+			db.ActiveSessions.Remove(session);
+			Session.Remove("SessionID");
+
+			try
+			{
+				db.SaveChanges();
+			}
+			catch (DbEntityValidationException e)
+			{
+				var message = "Fehler beim Schreiben der Topics<br />" + ErrorMessageFromException(e);
+				return HTTPStatus(HttpStatusCode.InternalServerError, message);
+			}
+			catch (DataException ex)
+			{
+				return HTTPStatus(HttpStatusCode.InternalServerError, ex.Message);
+			}
+
+			return PartialView("_ReportSuccess", report.ID);
+		}
+
+		protected ActionResult ProcessTopics(ActiveSession session, SessionReport report)
+		{
 			List<Topic> topics = db.Topics
 				.Include(t => t.SessionType)
 				.Include(t => t.Lock)
@@ -99,10 +125,10 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 			}
 			catch (Exception ex)
 			{
-				return HTTPStatus(HttpStatusCode.InternalServerError, "Fehler beim mailen: " + ex.Message);
+				return HTTPStatus(HttpStatusCode.InternalServerError, "Fehler beim Versenden der E-Mails: " + ex.Message);
 			}
 
-			foreach (Topic t in topics)
+			foreach (var t in topics)
 			{
 				switch (t.Lock.Action)
 				{
@@ -118,7 +144,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 							Type = DecisionType.Resolution
 						};
 						db.Assignments.RemoveRange(db.Assignments.Where(a => a.TopicID == t.ID && !a.IsActive));
-							// Inaktive Aufgaben löschen
+						// Inaktive Aufgaben löschen
 						foreach (var duty in t.Assignments.Where(a => a.Type == AssignmentType.Duty && a.IsActive))
 							mailer.SendNewAssignment(duty);
 						break;
@@ -141,24 +167,8 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 				if (t.Lock != null) // Wenn gelöscht wird, ist t.Lock hier bereits null
 					db.TopicLocks.Remove(t.Lock);
 			}
-			db.ActiveSessions.Remove(session);
-			Session.Remove("SessionID");
 
-			try
-			{
-				db.SaveChanges();
-			}
-			catch (DbEntityValidationException e)
-			{
-				var message = "Fehler beim Schreiben der Topics<br />" + ErrorMessageFromException(e);
-				return HTTPStatus(HttpStatusCode.InternalServerError, message);
-			}
-			catch (DataException ex)
-			{
-				return HTTPStatus(HttpStatusCode.InternalServerError, ex.Message);
-			}
-
-			return PartialView("_ReportSuccess", report.ID);
+			return null;
 		}
 
 		public ActionResult ShowReport()
