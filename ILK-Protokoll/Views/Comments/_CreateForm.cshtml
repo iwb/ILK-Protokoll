@@ -1,4 +1,5 @@
-﻿@model ILK_Protokoll.Models.Comment
+﻿@using ILK_Protokoll.util
+@model ILK_Protokoll.Models.Comment
 
 @using (Ajax.BeginForm("_Submit", "Comments", new AjaxOptions
 {
@@ -21,24 +22,34 @@
 }
 
 <script type="text/javascript">
-	$('#comment_form_@ViewBag.TopicID .inputexpander').click(function () {
-		var input = $(this).parent().prev();
-		var txtarea = $('<textarea name="Content" class="form-control" placeholder="Kommentar hinzufügen" id="comment_input_@Model.TopicID" style="height: 120px; resize: none;"></textarea>');
-
-		txtarea.val(input.val());
-		input.replaceWith(txtarea);
-		txtarea.focus();
-		txtarea.keydown(function (event) {
-			if ((event.keyCode == 10 || event.keyCode == 13) && event.ctrlKey) {
-				$("#comment_form_@ViewBag.TopicID").submit();
-			}
-		});
-
-		PerformMasonryLayout();
-		$(this).css('height', '120px').removeClass('btn-default').addClass('btn-primary');
-		$(this).children(":first").removeClass('glyphicon-align-justify').addClass('glyphicon-check'); // Span element within
-		$(this).off("click").click(function() {
-			$("#comment_form_@ViewBag.TopicID").submit();
-		});
-	})
+	$('#comment_form_@ViewBag.TopicID .inputexpander').click(function () { performCommentFormExpansion(this, @Model.TopicID); });
 </script>
+
+@using (Html.Delayed(null, "CommentFormExpansion"))
+{
+	<script type="text/javascript">
+		function performCommentFormExpansion(button, topicid) {
+			var input = $(button).parent().prev();
+			var txtarea = $('<textarea name="Content" class="form-control" placeholder="Kommentar hinzufügen" id="comment_input_' + topicid + '" style="height: 120px; resize: none;"></textarea>');
+
+			txtarea.val(input.val());
+			input.replaceWith(txtarea);
+			txtarea.focus();
+			var len = txtarea.val().length;
+			txtarea[0].setSelectionRange(len, len);
+			txtarea.keydown(function(event) {
+				if ((event.keyCode == 10 || event.keyCode == 13) && event.ctrlKey) {
+					$("#comment_form_" + topicid).submit();
+				}
+			});
+
+			PerformMasonryLayout();
+			$(button).css('height', '120px').removeClass('btn-default').addClass('btn-primary');
+			$(button).children(":first").removeClass('glyphicon-align-justify').addClass('glyphicon-check'); // Span element within
+			$(button).off("click").click(function () {
+				$("#comment_form_" + topicid).submit();
+			});
+		}
+
+	</script>
+}
