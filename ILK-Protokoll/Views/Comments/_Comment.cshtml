@@ -3,7 +3,7 @@
 
 <div class="comment-panel-group">
 	<p class="comment-author" title="@Model.Created.ToString("F")">@Model.Author</p>
-	<p class="comment-content">@Html.DisplayWithLinksFor(model => model.Content)</p>
+	<p class="comment-content">@Html.DisplayWithLinksFor(model => model.Content, "String_Multiline")</p>
 	@if (Model.ID == ViewBag.AllowDeletion)
 	{
 		<p class="comment-delete">

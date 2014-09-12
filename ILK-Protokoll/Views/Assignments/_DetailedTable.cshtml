@@ -59,7 +59,12 @@
 					@Html.ActionLink(item.Topic.Title.Shorten(100), "Details", "Topics", new {id = item.TopicID}, null)
 				</td>
 				<td>
-					@item.Title.Shorten(100)
+					<div style="position: relative;">
+						<a href="@Url.Action("Details", "Assignments", new {id = item.ID})">
+							<span class="divlink"></span>
+							@item.Title.Shorten(100)
+						</a>
+					</div>
 				</td>
 				<td class="@visual">
 					@item.DueDate.ToShortDateString()

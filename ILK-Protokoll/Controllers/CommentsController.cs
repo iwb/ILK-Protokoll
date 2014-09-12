@@ -47,6 +47,7 @@ namespace ILK_Protokoll.Controllers
 
 				comment.Created = DateTime.Now;
 				comment.AuthorID = GetCurrentUserID();
+				comment.Content = comment.Content.Trim();
 				db.Comments.Add(comment);
 
 				try

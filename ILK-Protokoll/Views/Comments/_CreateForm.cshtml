@@ -14,5 +14,27 @@
 	<div class="input-group">
 		<span class="input-group-addon">@User.Identity.Name.Split('\\').Last()</span>
 		<input type="text" name="Content" class="form-control" placeholder="Kommentar hinzufügen" id="comment_input_@Model.TopicID">
+		<span class="input-group-btn">
+			<button class="btn btn-default inputexpander" type="button"><span class="glyphicon glyphicon-align-justify"></span><span class="sr-only">Mehrzeilig</span></button>
+		</span>
 	</div>
 }
+
+<script type="text/javascript">
+	$('#comment_form_@ViewBag.TopicID .inputexpander').click(function() {
+		var txtarea = $('<textarea name="Content" class="form-control" placeholder="Kommentar hinzufügen" id="comment_input_@Model.TopicID" style="height: 120px; resize: none;"></textarea>');
+		var input = $(this).parent().prev();
+		txtarea.val(input.val());
+		input.replaceWith(txtarea);
+		txtarea.focus();
+
+		if (typeof msnry != 'undefined') {
+			msnry.layout();
+		}
+		$(this).css('height', '120px').removeClass('btn-default').addClass('btn-primary');
+		$(this).children(":first").removeClass('glyphicon-align-justify').addClass('glyphicon-check'); // Span element within
+		$(this).off("click").click(function() {
+			$("#comment_form_@ViewBag.TopicID").submit();
+		});
+	})
+</script>
