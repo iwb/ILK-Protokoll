@@ -1,8 +1,7 @@
 ﻿@using ILK_Protokoll.Areas.Session.Models
 @using ILK_Protokoll.Models
 @using ILK_Protokoll.util
-@model System.Collections.Generic.ICollection<Topic>
-
+@model ILK_Protokoll.ViewModels.FilteredTopics
 
 @{
 	ViewBag.Title = "Diskussion";
@@ -18,8 +17,44 @@
 
 <h2>@ViewBag.Title</h2>
 
+<div class="panel panel-primary">
+	<div class="panel-heading">
+		<h4 class="panel-title">Filter</h4>
+	</div>
+	<div class="panel-body">
+		@using (Html.BeginForm("Index", "Discussion", new { Area = "Session" }, FormMethod.Get, new { @class = "form-inline" }))
+		{
+			<div class="col-sm-4">
+				<div class="row">
+					<div class="form-group">
+						@Html.DropDownListFor(model => model.ShowPriority, Model.PriorityList, new { @class = "form-control", style = "min-width:200px;" })
+					</div>
+				</div>
+				<div class="row">
+					<div class="form-group">
+						@Html.DropDownListFor(model => model.Timespan, Model.TimespanList, "(Zeitraum beliebig)", new { @class = "form-control", style = "min-width:200px;" })
+					</div>
+				</div>
+			</div>
+
+			<div class="col-sm-4">
+				<div class="row">
+					<div class="form-group">
+						@Html.DropDownListFor(m => m.OwnerID, Model.UserList, "(Alle Besitzer)", new { @class = "form-control", style = "min-width:180px;" })
+					</div>
+				</div>
+				<div class="row">
+					<div class="form-group">
+						<input type="submit" value="Filtern" class="btn btn-primary" />
+					</div>
+				</div>
+			</div>
+		}
+	</div>
+</div>
+
 <div class="row" id="topicsContainer">
-	@foreach (var topic in Model)
+	@foreach (var topic in Model.Topics)
 	{
 		<div class="col-xs-12  col-lg-6">
 			<div class="buttongroup" id="state_buttons_@topic.ID">

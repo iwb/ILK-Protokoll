@@ -63,7 +63,7 @@ namespace ILK_Protokoll.Controllers
 			return View(filter);
 		}
 
-		private static IEnumerable<SelectListItem> PriorityChoices(int preselect)
+		internal static IEnumerable<SelectListItem> PriorityChoices(int preselect)
 		{
 			var placeholder = new SelectListItem
 			{
@@ -82,7 +82,7 @@ namespace ILK_Protokoll.Controllers
 			return placeholder.Concat(items);
 		}
 
-		private static IEnumerable<SelectListItem> TimespanChoices(int preselect)
+		internal static IEnumerable<SelectListItem> TimespanChoices(int preselect)
 		{
 			return new[]
 			{

@@ -6,7 +6,9 @@ using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using ILK_Protokoll.Areas.Session.Models;
+using ILK_Protokoll.Controllers;
 using ILK_Protokoll.Models;
+using ILK_Protokoll.ViewModels;
 
 namespace ILK_Protokoll.Areas.Session.Controllers
 {
@@ -19,31 +21,58 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 		}
 
 		// GET: Session/Topic
-		public ActionResult Index()
+		public ActionResult Index(FilteredTopics filter)
 		{
 			ActiveSession session = GetSession();
 			if (session == null)
 				return RedirectToAction("Index", "Master");
 
-			List<Topic> topics = db.Topics
+
+			IQueryable<Topic> query = db.Topics
 				.Include(t => t.SessionType)
 				.Include(t => t.TargetSessionType)
 				.Include(t => t.Owner)
 				.Include(t => t.Comments)
 				.Include(t => t.Lock)
 				.Where(t => t.Decision == null && !t.IsReadOnly)
-				.Where(
-					t => t.Lock.Session.ID == session.ID || (t.SessionTypeID == session.SessionType.ID && t.Created < session.Start && !(t.ResubmissionDate >= session.Start )))
-				.OrderByDescending(t => t.Priority)
-				.ThenBy(t => t.Created).ToList();
+				.Where(t =>
+					t.Lock.Session.ID == session.ID ||
+					(t.SessionTypeID == session.SessionType.ID && t.Created < session.Start && !(t.ResubmissionDate >= session.Start)));
 
-			foreach (Topic topic in topics)
+			if (filter.ShowPriority >= 0)
+				query = query.Where(t => t.Priority == (Priority)filter.ShowPriority);
+
+			if (filter.Timespan != 0)
+			{
+				if (filter.Timespan > 0) // Nur die letzten x Tage anzeigen
+				{
+					var cutoff = DateTime.Today.AddDays(-filter.Timespan);
+					query = query.Where(t => t.Created >= cutoff);
+				}
+				else // Alles VOR den letzten x Tagen anzeigen
+				{
+					var cutoff = DateTime.Today.AddDays(filter.Timespan);
+					query = query.Where(t => t.Created < cutoff);
+				}
+			}
+
+			if (filter.OwnerID != 0)
+				query = query.Where(a => a.OwnerID == filter.OwnerID);
+
+			filter.UserList = CreateUserSelectList();
+			filter.PriorityList = TopicsController.PriorityChoices(filter.ShowPriority);
+			filter.SessionTypeList = new SelectList(db.GetActiveSessionTypes(), "ID", "Name");
+
+			filter.TimespanList = TopicsController.TimespanChoices(filter.Timespan);
+			filter.Topics = query.OrderByDescending(t => t.Priority).ThenBy(t => t.Created).ToList();
+
+			foreach (var topic in filter.Topics)
 				topic.IsLocked = topic.Lock != null;
 
-			return View(topics);
+			return View(filter);
 		}
 
-				[HttpPost]
+		[HttpPost]
 		public ActionResult _ChangeState(int id, TopicAction state)
 		{
 			ActiveSession session = GetSession();

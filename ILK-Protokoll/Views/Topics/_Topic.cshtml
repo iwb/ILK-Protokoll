@@ -27,7 +27,7 @@
 			<p>Geändert @Html.DisplayFor(model => model.ValidFrom)</p>
 		</div>
 		<span class="panel-collapse-heading" style="display: inline-block; float: left; margin: 2px 16px 0 -12px; font-size: 180%;">
-			<a onclick="toggleSection(this, '#topicContent_@Model.ID');" style="color: #FFF;"></a>
+			<a onclick="toggleSection(this, '#topicContent_@Model.ID');" style="color: inherit;"></a>
 		</span>
 		<h3 class="panel-title">
 			@Html.ActionLink(Model.Title, "Details", "Topics", new { id = Model.ID, Area = "" }, null)
