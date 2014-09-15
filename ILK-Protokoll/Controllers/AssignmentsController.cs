@@ -219,7 +219,7 @@ namespace ILK_Protokoll.Controllers
 			db.Entry(assignment).State = EntityState.Modified;
 			db.SaveChanges();
 
-			return RedirectToAction("Index");
+			return RedirectToAction("Details", "Topics", new { id = input.TopicID });
 		}
 	}
 }
