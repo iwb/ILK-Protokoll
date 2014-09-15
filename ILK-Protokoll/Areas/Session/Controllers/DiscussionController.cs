@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Validation;
 using System.Linq;
@@ -9,6 +8,7 @@ using ILK_Protokoll.Areas.Session.Models;
 using ILK_Protokoll.Controllers;
 using ILK_Protokoll.Models;
 using ILK_Protokoll.ViewModels;
+using StackExchange.Profiling;
 
 namespace ILK_Protokoll.Areas.Session.Controllers
 {
@@ -64,7 +64,15 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 			filter.SessionTypeList = new SelectList(db.GetActiveSessionTypes(), "ID", "Name");
 
 			filter.TimespanList = TopicsController.TimespanChoices(filter.Timespan);
-			filter.Topics = query.OrderByDescending(t => t.Priority).ThenBy(t => t.Created).ToList();
+
+			using (MiniProfiler.Current.Step("Sortierung der Themen"))
+			{
+				filter.Topics = query.ToList().OrderBy(t =>
+				{
+					TimeSpan time;
+					return TimeSpan.TryParse(t.Time, out time) ? time : new TimeSpan();
+				}).ThenByDescending(t => t.Priority).ThenBy(t => t.Created).ToList();
+			}
 
 			foreach (var topic in filter.Topics)
 				topic.IsLocked = topic.Lock != null;
