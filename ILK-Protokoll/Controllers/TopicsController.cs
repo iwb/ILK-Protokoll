@@ -58,7 +58,7 @@ namespace ILK_Protokoll.Controllers
 			filter.SessionTypeList = new SelectList(db.GetActiveSessionTypes(), "ID", "Name");
 
 			filter.TimespanList = TimespanChoices(filter.Timespan);
-			filter.Topics = query.OrderByDescending(t => t.Priority).ThenByDescending(t => t.Title).ToList();
+			filter.Topics = query.OrderByDescending(t => t.Priority).ThenBy(t => t.Title).ToList();
 
 			return View(filter);
 		}
