@@ -59,13 +59,13 @@
 						<h4 style="font-weight: bold;">
 							@Html.DisplayNameFor(model => model.Description)
 						</h4>
-						@Html.DisplayFor(model => model.Description, "String_Multiline")
+						@Html.DisplayWithLinksFor(model => model.Description, "String_Multiline")
 					</div>
 					<div class="col-md-6">
 						<h4 style="font-weight: bold;">
 							@Html.DisplayNameFor(model => model.Proposal)
 						</h4>
-						@Html.DisplayFor(model => model.Proposal, "String_Multiline")
+						@Html.DisplayWithLinksFor(model => model.Proposal, "String_Multiline")
 					</div>
 				</div>
 			</div>

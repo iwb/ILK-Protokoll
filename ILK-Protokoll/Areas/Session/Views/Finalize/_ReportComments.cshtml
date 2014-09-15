@@ -1,4 +1,5 @@
 ﻿@using ILK_Protokoll.Models
+@using ILK_Protokoll.util
 @model IEnumerable<ILK_Protokoll.Models.Comment>
 
 @if (Model.Any())
@@ -8,7 +9,7 @@
 		{
 			<div class="comment-panel-group">
 				<p class="comment-author" title="@comment.Created.ToString("F")">@comment.Author</p>
-				<p class="comment-content">@comment.Content</p>
+				<p class="comment-content">@Html.DisplayWithLinksFor(model => comment.Content, "String_Multiline")</p>
 			</div>
 		}
 	</div>
