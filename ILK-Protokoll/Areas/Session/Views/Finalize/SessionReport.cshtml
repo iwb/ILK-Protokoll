@@ -1,5 +1,5 @@
-﻿@using System
-@using System.Linq
+﻿@using ILK_Protokoll.Models
+@using ILK_Protokoll.util
 @model ILK_Protokoll.Areas.Session.Models.ActiveSession
 @{
 	Layout = null;
@@ -13,13 +13,9 @@
 		<title>@ViewBag.Title</title>
 		<link href="@Url.Content("~/Content/iwbTheme.css")" rel="stylesheet" />
 		<style type="text/css">
-			div.panel {
-				 page-break-inside: avoid;
-			}
+			div.panel { page-break-inside: avoid; }
 
-			* {
-				border-radius: 0 !important;
-			}
+			* { border-radius: 0 !important; }
 		</style>
 	</head>
 	<body style="width: 750px;">
@@ -72,29 +68,41 @@
 
 				</div>
 			</div>
-
+			<h2>Listen</h2>
 			@Html.Action("_List", "LEvents", new {Area = "Session", reporting = true})
-			<hr />
+
 			@Html.Action("_List", "LConferences", new {Area = "Session", reporting = true})
-			<hr />
+
 			@Html.Action("_List", "LExtensions", new {Area = "Session", reporting = true})
-			<hr />
+
 			@Html.Action("_List", "LEmployeePresentations", new {Area = "Session", reporting = true})
-			<hr />
+
 			@Html.Action("_List", "LIlkDays", new {Area = "Session", reporting = true})
-			<hr />
+
 			@Html.Action("_List", "LIlkMeetings", new {Area = "Session", reporting = true})
-			<hr />
+
 			@Html.Action("_List", "LOpenings", new {Area = "Session", reporting = true})
-			<hr />
+
 			@Html.Action("_List", "LHolidays", new {Area = "Session", reporting = true})
 
 			@foreach (var tlock in Model.LockedTopics)
 			{
 				<div style="page-break-before: always">
-					<div class="buttongroup" id="state_buttons_@tlock.Topic.ID">
-						@{ Html.RenderPartial("_StateButtons", tlock, ViewData); }
-					</div>
+					<h2>@tlock.Action.DisplayName()</h2>
+					@if (tlock.Action == TopicAction.None)
+					{
+						<p>
+							<b>@Html.DisplayNameFor(model => tlock.Topic.ResubmissionDate): </b>
+							@if (tlock.Topic.ResubmissionDate != null)
+							{
+								@tlock.Topic.ResubmissionDate.Value.ToString("d")
+							}
+							else
+							{
+								@:Nächstmöglich
+							}
+						</p>
+					}
 					@{
 						Html.RenderPartial("_ReportTopic", tlock.Topic);
 					}
@@ -104,11 +112,6 @@
 			<hr style="clear: both;" />
 			<footer>
 				<p>&copy; 2014 &#8211; <i>iwb</i>, Technische Universität München</p>
-
-				<p>
-					Version 0.0<br />
-					Build 0
-				</p>
 			</footer>
 		</div>
 	</body>
