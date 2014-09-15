@@ -4443,11 +4443,11 @@ a.label:focus {
   top: -1px;
 }
 .label-default {
-  background-color: #9bc7be;
+  background-color: #605e5c;
 }
 .label-default[href]:hover,
 .label-default[href]:focus {
-  background-color: #7ab5a8;
+  background-color: #464543;
 }
 .label-primary {
   background-color: #009474;
@@ -6456,7 +6456,6 @@ p.panel-title {
   font-size: 14px;
   color: inherit;
   float: right;
-  width: 10%;
   min-width: 200px;
 }
 .panel-title-right a {
@@ -6479,6 +6478,7 @@ p.panel-title {
   border-radius: 3px;
   background-color: #FFF;
   font-weight: bold;
+  margin-left: 30px;
 }
 .panel-footer {
   background-color: #DDD;
@@ -6581,6 +6581,10 @@ dl {
   white-space: pre-wrap;
   text-decoration: line-through;
   background-color: #feb3c7;
+}
+.label {
+  padding: .3em .6em .3em;
+  margin-right: 2px;
 }
 .btn-hover-primary {
   color: #333333;
