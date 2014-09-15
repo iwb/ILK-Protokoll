@@ -46,11 +46,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 
 			session.ManagerID = GetCurrentUserID();
 			session.End = DateTime.Now;
-			session.LockedTopics = db.TopicLocks
-				.Include(tl => tl.Session)
-				.Include(tl => tl.Topic)
-				.Include(tl => tl.Topic.Creator)
-				.ToList();
+			session.LockedTopics = session.LockedTopics.ToList(); // Wird mehrfach durchlaufen
 
 			session.SessionType.LastDate = session.End;
 
@@ -185,10 +181,6 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 			ActiveSession session = GetSession();
 			Debug.Assert(session != null, "session != null");
 			session.End = DateTime.Now;
-			session.LockedTopics = db.TopicLocks
-				.Include(tl => tl.Session)
-				.Include(tl => tl.Topic)
-				.ToList();
 
 			return View("SessionReport", session);
 		}
