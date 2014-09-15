@@ -77,9 +77,9 @@
 				using (Ajax.BeginForm("_ChangeResubmissionDate", "Discussion", new { Area = "Session" }, new AjaxOptions
 				{
 					HttpMethod = "POST",
-					OnBegin = "ShowLoading(" + Model.TopicID + ")",
-					OnSuccess = "ShowSuccess(" + Model.TopicID + ")",
-					OnFailure = "ShowFailure(" + Model.TopicID + ")"
+					OnBegin = "ShowLoading(" + Model.TopicID + ");",
+					OnSuccess = "ShowSuccess(" + Model.TopicID + ");",
+					OnFailure = "ShowFailure(" + Model.TopicID + ");"
 				}, new
 				{
 					@class = "form-inline",
@@ -95,7 +95,7 @@
 						}
 						<label for="resubmissionDate" class="control-label">Datum:</label>
 
-						<input class="form-control" style="display:inline-block; width:auto;" data-val="true" data-val-date="Das Feld &quot;Wiedervorlagedatum&quot; muss eine Datumsangabe sein." id="Topic_@(Model.TopicID)_ResubmissionDate" name="resubmissionDate" type="date" value="@datevalue" onchange="removeindicator(@Model.TopicID)" />
+						<input class="form-control" style="display:inline-block; width:auto;" data-val="true" data-val-date="Das Feld &quot;Wiedervorlagedatum&quot; muss eine Datumsangabe sein." id="Topic_@(Model.TopicID)_ResubmissionDate" name="resubmissionDate" type="date" value="@datevalue" onchange="RemoveIndicator(@Model.TopicID);" />
 						@Html.ValidationMessageFor(model => model.Topic.ResubmissionDate, "", new { @class = "text-danger" })
 						<i style="top: 0;" class="glyphicon glyphicon-ok form-control-feedback collapse"></i>
 						<i style="top: 0;" class="glyphicon glyphicon-remove  form-control-feedback collapse"></i>
