@@ -21,7 +21,7 @@ namespace ILK_Protokoll.Controllers
 			var displayvotes = topic.Votes.Where(v => !v.Voter.Equals(GetCurrentUser()))
 				.OrderBy(v => v.Voter.ShortName, StringComparer.CurrentCultureIgnoreCase).ToList();
 
-			return PartialView("_VoteList", displayvotes);
+			return topic.IsReadOnly ? PartialView("~/Areas/Session/Views/Finalize/_ReportVotes.cshtml", displayvotes) : PartialView("_VoteList", displayvotes);
 		}
 
 		public ActionResult _Register(int topicID, VoteKind vote, bool linkAllAuditors = false)
@@ -42,6 +42,9 @@ namespace ILK_Protokoll.Controllers
 
 		public ActionResult _Register2(int topicID, int voterID, VoteKind vote, bool linkAllAuditors = false)
 		{
+			if (db.Topics.Find(topicID).IsReadOnly)
+				return HTTPStatus(HttpStatusCode.Forbidden, "Das Thema ist schreibgeschützt.");
+
 			if (IsTopicLocked(topicID))
 				return HTTPStatus(HttpStatusCode.Forbidden, "Das Thema ist gesperrt.");
 
