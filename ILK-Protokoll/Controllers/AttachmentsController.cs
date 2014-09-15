@@ -69,7 +69,7 @@ namespace ILK_Protokoll.Controllers
 		}
 
 		// GET: Attachments
-		public PartialViewResult _List(AttachmentContainer entity, int id, bool makeList = false)
+		public PartialViewResult _List(AttachmentContainer entity, int id, bool makeList = false, bool showActions = true)
 		{
 			var files = db.Attachments
 				.Where(a => a.Deleted == null)
@@ -91,7 +91,9 @@ namespace ILK_Protokoll.Controllers
 			if (makeList)
 				return PartialView("_AttachmentList", files.ToList());
 			else
-				return PartialView("_AttachmentTable", files.ToList());
+			{
+				return showActions ? PartialView("_AttachmentTable", files.ToList()) : PartialView("~/Areas/Session/Views/Finalize/_ReportAttachments.cshtml", files.ToList());
+			}
 		}
 
 		public ActionResult _UploadForm(AttachmentContainer entity, int id)

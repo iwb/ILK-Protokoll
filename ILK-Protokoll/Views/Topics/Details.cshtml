@@ -258,7 +258,7 @@ else
 			}
 			else
 			{
-				@Html.Action("_List", "Attachments", new { entity = AttachmentContainer.Topic, id = Model.ID })
+				@Html.Action("_List", "Attachments", new { entity = AttachmentContainer.Topic, id = Model.ID, showActions = !Model.IsReadOnly })
 			}
 			@if (!ViewBag.Reporting && !Model.IsReadOnly)
 			{
