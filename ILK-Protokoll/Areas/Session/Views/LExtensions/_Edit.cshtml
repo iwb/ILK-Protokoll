@@ -23,7 +23,7 @@
 					@Html.EditorFor(model => model.Comment, new {htmlAttributes = new {@class = "form-control", id = "ext_" + Model.ID + "comm"}})
 				</div>
 				<div class="col-sm-1">
-					@Html.EditorFor(model => model.Approved, new {htmlAttributes = new {@class = "form-control", id = "ext_" + Model.ID + "app"}})
+					@Html.EnumDropDownListFor(model => model.Approval, new { @class = "form-control", id = "ext_" + Model.ID + "app" })
 				</div>
 				<div class="col-sm-1 actions">
 					@Html.HiddenFor(model => model.ID)

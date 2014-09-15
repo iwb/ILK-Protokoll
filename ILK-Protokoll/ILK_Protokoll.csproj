@@ -165,6 +165,7 @@
     <Compile Include="Areas\Session\Controllers\MasterController.cs" />
     <Compile Include="Areas\Session\Controllers\DiscussionController.cs" />
     <Compile Include="Areas\Session\Controllers\SessionBaseController.cs" />
+    <Compile Include="Areas\Session\Models\Lists\Approval.cs" />
     <Compile Include="Areas\Session\Models\Lists\BaseItem.cs" />
     <Compile Include="Areas\Session\Models\Lists\Event.cs" />
     <Compile Include="Areas\Session\Models\Lists\IlkDay.cs" />
@@ -331,6 +332,10 @@
     <Compile Include="Migrations\201409110922120_activeSession_sessiontypeid_added.cs" />
     <Compile Include="Migrations\201409110922120_activeSession_sessiontypeid_added.Designer.cs">
       <DependentUpon>201409110922120_activeSession_sessiontypeid_added.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201409151502066_approval_tristate.cs" />
+    <Compile Include="Migrations\201409151502066_approval_tristate.Designer.cs">
+      <DependentUpon>201409151502066_approval_tristate.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Assignment.cs" />
@@ -711,6 +716,7 @@
     <Content Include="Views\Push\_NotificationList.cshtml" />
     <Content Include="Views\Push\_DisplayListTopic.cshtml" />
     <Content Include="Views\Statistics\Index.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\Approval.cshtml" />
     <None Include="Web.Integration.config" />
     <None Include="Web.Production.config" />
     <None Include="Web.Testing.config" />
@@ -823,6 +829,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201409110922120_activeSession_sessiontypeid_added.resx">
       <DependentUpon>201409110922120_activeSession_sessiontypeid_added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201409151502066_approval_tristate.resx">
+      <DependentUpon>201409151502066_approval_tristate.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

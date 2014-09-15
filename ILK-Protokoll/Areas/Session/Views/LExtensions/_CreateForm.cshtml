@@ -24,7 +24,7 @@
 					@Html.EditorFor(model => model.Comment, new {htmlAttributes = new {@class = "form-control", id = "ext_create_comm"}})
 				</div>
 				<div class="col-sm-1">
-					@Html.EditorFor(model => model.Approved, new {htmlAttributes = new {@class = "form-control", id = "ext_create_app"}})
+					@Html.EnumDropDownListFor(model => model.Approval, new { @class = "form-control", id = "ext_create_app" })
 				</div>
 				<div class="col-sm-1">
 					<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-check"></span></button>

@@ -1,0 +1,18 @@
+﻿@using ILK_Protokoll.Areas.Session.Models.Lists
+@using ILK_Protokoll.util
+@model ILK_Protokoll.Areas.Session.Models.Lists.Approval
+
+@switch (Model)
+{
+	case Approval.Pending:
+		<span class="text-primary glyphicon glyphicon-record" title="@Model.DisplayName()"></span><i class="sr-only">@Model.DisplayName()</i>
+		break;
+	case Approval.Approved:
+	<span class="text-success glyphicon glyphicon-ok" title="@Model.DisplayName()"></span><i class="sr-only">@Model.DisplayName()</i>
+		break;
+	case Approval.Rejected:
+	<span class="text-danger glyphicon glyphicon-remove" title="@Model.DisplayName()"></span><i class="sr-only">@Model.DisplayName()</i>
+		break;
+	default:
+		throw new ArgumentOutOfRangeException();
+}

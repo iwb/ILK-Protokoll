@@ -49,6 +49,6 @@ namespace ILK_Protokoll.Areas.Session.Models.Lists
 		public string Funding { get; set; }
 
 		[DisplayName("Genehmigt")]
-		public bool Approved { get; set; }
+		public Approval Approval { get; set; }
 	}
 }

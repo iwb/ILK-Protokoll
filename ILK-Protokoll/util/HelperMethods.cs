@@ -3,18 +3,27 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
-using Microsoft.Ajax.Utilities;
+using System.Web.Routing;
 using TuesPechkin;
 
 namespace ILK_Protokoll.util
 {
 	public static class HelperMethods
 	{
+		private static readonly Regex urlRegEx =
+			new Regex(
+				@"(?<!="")((http|ftp|https|file):\/\/[\d\w\-_]+(\.[\w\-_]+)*([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?)");
+
+		private static readonly Regex quotedUrlRegEx =
+			new Regex(
+				@"(?<!=)([""']|&quot;|&#39;)((http|ftp|https|file):\/\/[\d\w\-_]+(\.[\w\-_]+)*([\w\-\.,@?^=%&amp;:/~\+# ])*)\1");
+
 		public static string GetDescription(this Enum value)
 		{
 			FieldInfo field = value.GetType().GetField(value.ToString());
@@ -70,9 +79,6 @@ namespace ILK_Protokoll.util
 			else
 				return stripped;
 		}
-
-		private static readonly Regex urlRegEx = new Regex(@"(?<!="")((http|ftp|https|file):\/\/[\d\w\-_]+(\.[\w\-_]+)*([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?)");
-		private static readonly Regex quotedUrlRegEx = new Regex(@"(?<!=)([""']|&quot;|&#39;)((http|ftp|https|file):\/\/[\d\w\-_]+(\.[\w\-_]+)*([\w\-\.,@?^=%&amp;:/~\+# ])*)\1");
 
 		public static MvcHtmlString DisplayWithLinksFor<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper,
 			Expression<Func<TModel, TProperty>> expression,
@@ -191,6 +197,17 @@ namespace ILK_Protokoll.util
 
 			// convert document
 			return converter.Convert(document);
+		}
+
+		public static MvcHtmlString RenderHtmlAttributes<TModel>(
+			this HtmlHelper<TModel> htmlHelper, object htmlAttributes)
+		{
+			var attrbituesDictionary = new RouteValueDictionary(htmlAttributes);
+
+			return MvcHtmlString.Create(String.Join(" ",
+				attrbituesDictionary.Keys.Select(
+					key => String.Format("{0}=\"{1}\"", key,
+						htmlHelper.Encode(attrbituesDictionary[key])))));
 		}
 	}
 }
