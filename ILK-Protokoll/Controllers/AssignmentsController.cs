@@ -221,5 +221,32 @@ namespace ILK_Protokoll.Controllers
 
 			return RedirectToAction("Details", "Topics", new { id = input.TopicID });
 		}
+
+		// GET: Assignments/Delete/5
+		public ActionResult Delete(int? id)
+		{
+			if (GetSession() == null)
+				return HTTPStatus(HttpStatusCode.Forbidden, "Nur im Sitzungsmodus dürfen Aufgaben gelöscht werden!");
+
+			if (id == null)
+				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+			var assignment = db.Assignments.Find(id);
+			if (assignment == null)
+				return HttpNotFound();
+			return View(assignment);
+		}
+
+		// POST: Assignments/Delete/5
+		[HttpPost, ActionName("Delete")]
+		[ValidateAntiForgeryToken]
+		public ActionResult DeleteConfirmed(int id)
+		{
+			var assignment = db.Assignments.Find(id);
+			var tid = assignment.TopicID;
+			db.Assignments.Remove(assignment);
+			db.SaveChanges();
+			return RedirectToAction("Details", "Topics", new { id = tid });
+		}
+
 	}
 }

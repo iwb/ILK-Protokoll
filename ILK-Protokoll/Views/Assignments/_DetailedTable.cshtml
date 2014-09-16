@@ -82,6 +82,11 @@
 					<a href="@Url.Action("Details", "Assignments", new {id = item.ID})"><span class="glyphicon glyphicon-expand" title="Details"></span></a>
 					&nbsp;
 					<a href="@Url.Action("Edit", "Assignments", new {id = item.ID})"><span class="glyphicon glyphicon-edit" title="Bearbeiten"></span></a>
+					@if (ViewBag.CurrentSession != null)
+					{
+						<text>&nbsp;</text>
+						<a href="@Url.Action("Delete", "Assignments", new {id = item.ID})"><span class="glyphicon glyphicon-remove" title="Löschen"></span></a>
+					}
 				</td>
 			</tr>
 		}
