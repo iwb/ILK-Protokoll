@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 using ILK_Protokoll.Areas.Administration.Models;
 using ILK_Protokoll.Areas.Session.Models;
 using ILK_Protokoll.ViewModels;
@@ -20,6 +21,7 @@ namespace ILK_Protokoll.Models
 			Attachments = new List<Attachment>();
 			Created = DateTime.Now;
 			ValidFrom = DateTime.Now;
+			UnreadBy = new List<UnreadState>();
 			// ReSharper restore DoNotCallOverridableMethodsInConstructor
 		}
 
@@ -116,6 +118,13 @@ namespace ILK_Protokoll.Models
 		public bool IsLocked { get; set; }
 
 		public TopicLock Lock { get; set; }
+		
+		public virtual ICollection<UnreadState> UnreadBy { get; set; }
+
+		public bool IsUnreadBy(int userID)
+		{
+			return UnreadBy.Any(x => x.UserID == userID);
+		}
 
 		public bool HasDecision()
 		{

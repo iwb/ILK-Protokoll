@@ -27,6 +27,12 @@
 			</p>
 			<p>Geändert @Html.DisplayFor(model => model.ValidFrom)</p>
 		</div>
+		@if (Model.IsUnreadBy(ViewBag.CurrentUser.ID))
+		{
+			<span style="display: inline-block; float: left; font-size: 180%; margin: 2px 16px 0 0; color: #D48625;">
+				<span class="glyphicon glyphicon-asterisk"></span>
+			</span>
+		}
 		<span class="panel-collapse-heading" style="display: inline-block; float: left; font-size: 180%; margin: 2px 16px 0 -12px;">
 			<a onclick="toggleSection(this, '#topicContent_@Model.ID');" style="color: inherit;"></a>
 		</span>
@@ -67,7 +73,7 @@
 		<div class="panel panel-primary comment-panel">
 			<div class="panel-heading panel-collapse-heading" style="position: relative;">
 				<h4 class="panel-title">
-					<a onclick="toggleSection(this, '#comments_@Model.ID') " class="@classA">
+					<a onclick="toggleSection(this, '#comments_@Model.ID');" class="@classA">
 						@if (@Model.Comments.Count == 0)
 						{
 							@:Keine Kommentare

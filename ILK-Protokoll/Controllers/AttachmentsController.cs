@@ -92,7 +92,9 @@ namespace ILK_Protokoll.Controllers
 				return PartialView("_AttachmentList", files.ToList());
 			else
 			{
-				return showActions ? PartialView("_AttachmentTable", files.ToList()) : PartialView("~/Areas/Session/Views/Finalize/_ReportAttachments.cshtml", files.ToList());
+				return showActions
+					? PartialView("_AttachmentTable", files.ToList())
+					: PartialView("~/Areas/Session/Views/Finalize/_ReportAttachments.cshtml", files.ToList());
 			}
 		}
 
@@ -114,13 +116,19 @@ namespace ILK_Protokoll.Controllers
 			if (id <= 0)
 				return HTTPStatus(HttpStatusCode.BadRequest, "Die Dateien können keinem Ziel zugeordnet werden.");
 
-			if (entity == AttachmentContainer.Topic && IsTopicLocked(id))
-				return HTTPStatus(HttpStatusCode.Forbidden, "Da das Thema gesperrt ist, können Sie keine Dateien hochladen.");
-
-			if (entity == AttachmentContainer.Topic && db.Topics.Find(id).IsReadOnly)
+			Topic topic = null;
+			if (entity == AttachmentContainer.Topic)
 			{
-				return HTTPStatus(HttpStatusCode.Forbidden,
-					"Da das Thema schreibgeschützt ist, können Sie keine Dateien bearbeiten.");
+				topic = db.Topics.Find(id);
+
+				if (IsTopicLocked(id))
+					return HTTPStatus(HttpStatusCode.Forbidden, "Da das Thema gesperrt ist, können Sie keine Dateien hochladen.");
+
+				if (topic.IsReadOnly)
+				{
+					return HTTPStatus(HttpStatusCode.Forbidden,
+						"Da das Thema schreibgeschützt ist, können Sie keine Dateien bearbeiten.");
+				}
 			}
 
 			var statusMessage = new StringBuilder();
@@ -182,7 +190,8 @@ namespace ILK_Protokoll.Controllers
 				catch (DbEntityValidationException ex)
 				{
 					var message = ErrorMessageFromException(ex);
-					statusMessage.AppendFormat("Datei \"{0}\" konnte nicht in der Datenbank gespeichert werden.\n{1}", fullName, message)
+					statusMessage.AppendFormat("Datei \"{0}\" konnte nicht in der Datenbank gespeichert werden.\n{1}", fullName,
+						message)
 						.AppendLine();
 				}
 				catch (IOException)
@@ -193,6 +202,10 @@ namespace ILK_Protokoll.Controllers
 			statusMessage.AppendFormat(
 				successful == 1 ? "Eine Datei wurde erfolgreich verarbeitet." : "{0} Dateien wurden erfolgreich verarbeitet.",
 				successful);
+
+			// Ungelesen-Markierung aktualisieren
+			if (topic != null && successful > 0)
+				MarkAsUnread(topic);
 
 			ViewBag.StatusMessage = statusMessage.ToString();
 

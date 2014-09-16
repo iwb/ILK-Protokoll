@@ -39,6 +39,7 @@ namespace ILK_Protokoll.DataLayer
 		public DbSet<Topic> Topics { get; set; }
 		public DbSet<TopicHistory> TopicHistory { get; set; }
 		public DbSet<TopicLock> TopicLocks { get; set; }
+		public DbSet<UnreadState> UnreadState { get; set; }
 		public DbSet<User> Users { get; set; }
 		public DbSet<Vote> Votes { get; set; }
 
@@ -71,6 +72,10 @@ namespace ILK_Protokoll.DataLayer
 					.ToList()
 					.OrderBy(u => u.ShortName, StringComparer.CurrentCultureIgnoreCase);
 			}
+		}
+		public IQueryable<User> GetActiveUsers()
+		{
+			return Users.Where(u => u.IsActive);
 		}
 
 		public IEnumerable<SessionType> GetActiveSessionTypes()

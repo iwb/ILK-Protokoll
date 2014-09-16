@@ -125,6 +125,9 @@ namespace ILK_Protokoll.Controllers
 			if (topic == null)
 				return HttpNotFound();
 
+			// Ungelesen-Markierung aktualisieren
+			MarkAsRead(topic);
+
 			ViewBag.TopicID = id.Value;
 			ViewBag.TopicHistoryCount = db.TopicHistory.Count(t => t.TopicID == id.Value);
 			ViewBag.IsEditable = topic.IsEditableBy(GetCurrentUser(), GetSession()).IsAuthorized;
@@ -184,7 +187,10 @@ namespace ILK_Protokoll.Controllers
 						Session = session
 					});
 				}
-				
+
+				// Ungelesen-Markierung aktualisieren
+				MarkAsUnread(t);
+
 				try
 				{
 					db.SaveChanges();
@@ -243,11 +249,14 @@ namespace ILK_Protokoll.Controllers
 				if (!auth.IsAuthorized)
 					return HTTPStatus(HttpStatusCode.Forbidden, auth.Reason);
 
+				// Änderungsverfolgung
 				db.TopicHistory.Add(TopicHistory.FromTopic(topic, GetCurrentUserID()));
-
 				topic.IncorporateUpdates(input);
+
+				// Irrelevante Verschiebung auflösen
 				topic.TargetSessionTypeID = input.TargetSessionTypeID == topic.SessionTypeID ? null : input.TargetSessionTypeID;
 
+				// Ggf. neue Stimmberechtigte hinzufügen
 				if (topic.TargetSessionTypeID > 0)
 				{
 					var voters = new HashSet<int>(topic.Votes.Select(v => v.Voter.ID));
@@ -263,6 +272,9 @@ namespace ILK_Protokoll.Controllers
 					if (topic.Lock != null)
 						topic.Lock.Action = TopicAction.None;
 				}
+
+				// Ungelesen-Markierung aktualisieren
+				MarkAsUnread(topic);
 
 				try
 				{

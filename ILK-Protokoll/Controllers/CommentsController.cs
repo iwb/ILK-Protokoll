@@ -58,6 +58,9 @@ namespace ILK_Protokoll.Controllers
 			comment.Content = comment.Content.Trim();
 			db.Comments.Add(comment);
 
+			// Ungelesen-Markierung aktualisieren
+			MarkAsUnread(topic);
+
 			try
 			{
 				db.SaveChanges();

@@ -11,9 +11,12 @@ namespace ILK_Protokoll.Models
 	{
 		public User()
 		{
+// ReSharper disable DoNotCallOverridableMethodsInConstructor
 			SessionTypes = new List<SessionType>();
+			UnreadTopics = new List<UnreadState>();
 			IsActive = false;
 			ColorScheme = ColorScheme.iwb;
+// ReSharper restore DoNotCallOverridableMethodsInConstructor
 		}
 
 		public User(string name)
@@ -56,6 +59,8 @@ namespace ILK_Protokoll.Models
 
 		[Display(Name = "Push-Benachrichtigungen")]
 		public virtual ICollection<PushNotification> PushNotifications { get; set; }
+
+		public virtual ICollection<UnreadState> UnreadTopics { get; set; }
 
 		#region Equals() etc.
 

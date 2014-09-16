@@ -112,6 +112,27 @@ namespace ILK_Protokoll.Controllers
 			return t.Lock != null && !t.Lock.Session.Manager.Equals(GetCurrentUser());
 		}
 
+		protected void MarkAsUnread(Topic topic)
+		{
+			var lazyusers = topic.UnreadBy.ToDictionary(u => u.UserID);
+			foreach (var user in db.GetActiveUsers())
+			{
+				if (lazyusers.ContainsKey(user.ID))
+					lazyusers[user.ID].LatestChange = DateTime.Now;
+				else
+					topic.UnreadBy.Add(new UnreadState {TopicID = topic.ID, UserID = user.ID});
+			}
+		}
+		protected void MarkAsRead(Topic topic)
+		{
+			var item = topic.UnreadBy.FirstOrDefault(u => u.UserID == GetCurrentUserID());
+			if (item != null)
+			{
+				db.UnreadState.Remove(item);
+				db.SaveChangesAsync();
+			}
+		}
+
 		protected ContentResult HTTPStatus(int statuscode, string message)
 		{
 			Response.Clear();

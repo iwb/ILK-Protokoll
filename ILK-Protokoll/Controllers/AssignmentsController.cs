@@ -149,6 +149,9 @@ namespace ILK_Protokoll.Controllers
 				if (input.Type == AssignmentType.ToDo && a.Topic.Lock != null)
 					a.Topic.Lock.Action = TopicAction.None; // Falls eine ToDo hinzugefügt wird, Wiedervorlage auswählen.
 
+				// Ungelesen-Markierung aktualisieren
+				MarkAsUnread(a.Topic);
+
 				db.SaveChanges();
 
 				if (assignment.Type == AssignmentType.ToDo && input.IsActive)
