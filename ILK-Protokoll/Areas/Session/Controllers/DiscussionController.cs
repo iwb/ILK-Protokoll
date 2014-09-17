@@ -67,10 +67,10 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 
 			using (MiniProfiler.Current.Step("Sortierung der Themen"))
 			{
-				filter.Topics = query.ToList().OrderBy(t =>
+				filter.Topics = query.ToList().OrderByDescending(t => t.IsUnreadBy(GetCurrentUserID())).ThenBy(t =>
 				{
 					TimeSpan time;
-					return TimeSpan.TryParse(t.Time, out time) ? time : new TimeSpan();
+					return TimeSpan.TryParse(t.Time, out time) ? time : new TimeSpan(24, 0, 0);
 				}).ThenByDescending(t => t.Priority).ThenBy(t => t.Created).ToList();
 			}
 

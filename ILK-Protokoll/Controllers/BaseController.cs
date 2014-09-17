@@ -109,7 +109,8 @@ namespace ILK_Protokoll.Controllers
 
 		protected bool IsTopicLocked(Topic t)
 		{
-			return t.Lock != null && !t.Lock.Session.Manager.Equals(GetCurrentUser());
+			var tlock = db.TopicLocks.Where(tl => tl.TopicID == t.ID).Select(tl => new {tl.TopicID, tl.Session.ManagerID}).SingleOrDefault();
+			return tlock != null && tlock.ManagerID != GetCurrentUserID();
 		}
 
 		protected void MarkAsUnread(Topic topic)

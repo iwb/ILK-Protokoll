@@ -41,6 +41,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 
 			foreach (var topic in topics)
 			{
+				MarkAsUnread(topic);
 				session.LockedTopics.Add(new TopicLock()
 				{
 					Topic = topic,
@@ -54,15 +55,20 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 			return session;
 		}
 
-		protected ActiveSession ResumeSession(int SessionID)
+		protected ActiveSession ResumeSession(int sessionID)
 		{
-			var session = db.ActiveSessions.Find(SessionID);
+			var session = db.ActiveSessions.Find(sessionID);
 
 			if (session == null)
 				throw new ArgumentException("Session-ID was not found.");
 
 			Session["SessionID"] = session.ID;
 			session.ManagerID = GetCurrentUserID();
+
+			foreach (var tlock in session.LockedTopics)
+			{
+				MarkAsUnread(tlock.Topic);
+			}
 			db.SaveChanges();
 			return session;
 		}
