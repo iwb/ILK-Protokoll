@@ -5,7 +5,11 @@
 	ViewBag.Title = "Details (" + Model.Title + ")";
 }
 
-<h3>@ViewBag.Title</h3>
+<div class="index-action">
+	@Html.ActionLink("Bearbeiten", "Edit", new { id = Model.ID }, new { @class = "btn btn-primary" })
+</div>
+
+<h2>@ViewBag.Title</h2>
 
 @Html.ActionLink("Zurück zum Index", "Index")<br />
 @Html.ActionLink("Zurück zur Diskussion", "Details", "Topics", new {id = Model.TopicID}, null)

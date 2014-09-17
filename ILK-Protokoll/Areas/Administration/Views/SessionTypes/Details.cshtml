@@ -1,14 +1,20 @@
 ﻿@model ILK_Protokoll.Areas.Administration.Models.SessionType
 
 @{
-	ViewBag.Title = "Details";
+	ViewBag.Title = "Details (" + Model.Name + ")";
 }
 
-<h2>Details</h2>
+<div class="index-action">
+	@Html.ActionLink("Bearbeiten", "Edit", new { id = Model.ID }, new {@class="btn btn-primary"})
+</div>
+
+<h2>@ViewBag.Title</h2>
+
+@Html.ActionLink("Zurück zum Index", "Index")<br />
+
+<hr />
 
 <div>
-	<h4>SessionType</h4>
-	<hr />
 	<dl class="dl-horizontal">
 		<dt>
 			@Html.DisplayNameFor(model => model.ID)
@@ -33,6 +39,4 @@
 	</dl>
 </div>
 <p>
-	@Html.ActionLink("Bearbeiten", "Edit", new { id = Model.ID }) |
-	@Html.ActionLink("Zurück zum Index", "Index")
 </p>
