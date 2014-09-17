@@ -1,90 +1,68 @@
 ﻿@using ILK_Protokoll.Models
 @using ILK_Protokoll.util
-@model IEnumerable<ILK_Protokoll.Models.Vote>
-
+@using ILK_Protokoll.ViewModels
+@model ILK_Protokoll.ViewModels.VoteListViewModel
 @{
-	if (ViewBag.LinkAllAuditors == null)
-	{
-		ViewBag.LinkAllAuditors = false;
-	}
-}
-
-@helper GetVoteIcon(VoteKind vk)
-{
-	string iconname = "";
-	switch (vk)
-	{
-		case VoteKind.None:
-			iconname = "glyphicon-record";
-			break;
-
-		case VoteKind.Approved:
-			iconname = "glyphicon-ok-sign";
-			break;
-
-		case VoteKind.Reservation:
-			iconname = "glyphicon-question-sign";
-			break;
-
-		case VoteKind.Rejected:
-			iconname = "glyphicon-remove-sign";
-			break;
-	}
-	<span class="glyphicon @iconname" title="@vk.GetDescription()"></span>
+	string username = ((User)ViewBag.CurrentUser).ShortName;
 }
 @* Für die eigene Stimme *@
 @helper GetVoteLink(VoteKind vk)
 {
-	<a href="@Url.Action("_Register", new { topicID = ViewBag.TopicID, vote = vk.DisplayName(), linkAllAuditors = ViewBag.LinkAllAuditors})"
-		data-ajax="true"
-		data-ajax-method="POST"
-		data-ajax-mode="replace"
-		data-ajax-update="#auditorlist_@ViewBag.TopicID"
-		data-ajax-failure="DisplayErrorMessage('#auditorlist_@ViewBag.TopicID', 'Die Stimme konnte nicht verarbeitet werden. &lt;br /&gt;' + xhr.responseText);"
-		class="votelink">@GetVoteIcon(vk)
-	</a>
+	<a href="@Url.Action("_Register", new { topicID = Model.TopicID, vote = vk.DisplayName(), linkLevel = Model.LinkLevel})"
+	   data-ajax="true"
+	   data-ajax-method="POST"
+	   data-ajax-mode="replace"
+	   data-ajax-update="#auditorlist_@Model.TopicID"
+	   data-ajax-failure="DisplayErrorMessage('#auditorlist_@Model.TopicID', 'Die Stimme konnte nicht verarbeitet werden. &lt;br /&gt;' + xhr.responseText);"
+	   class="votelink">@Html.DisplayFor(m => vk)</a>
 }
 @* Für Abstimmen in Vertretung *@
 @helper GetVoteLink2(User voter, VoteKind vk)
 {
-	<a href="@Url.Action("_Register2", new { topicID = ViewBag.TopicID, voterID = voter.ID, vote = vk.DisplayName(), linkAllAuditors = ViewBag.LinkAllAuditors})"
+	<a href="@Url.Action("_Register2", new { topicID = Model.TopicID, voterID = voter.ID, vote = vk.DisplayName(), linkLevel = Model.LinkLevel })"
 		data-ajax="true"
 		data-ajax-method="POST"
 		data-ajax-mode="replace"
-		data-ajax-update="#auditorlist_@ViewBag.TopicID"
-		class="votelink">@GetVoteIcon(vk)</a>
+		data-ajax-update="#auditorlist_@Model.TopicID"
+		data-ajax-failure="DisplayErrorMessage('#auditorlist_@Model.TopicID', 'Die Stimme konnte nicht verarbeitet werden. &lt;br /&gt;' + xhr.responseText);"
+		class="votelink">@Html.DisplayFor(m => vk)</a>
 }
 
 <ul class="userlist">
-	@{
-		var ownvote = ViewBag.ownvote as Vote;
-		if (ownvote != null)
-		{
-			<li class="ownvote">
+	@if (Model.OwnVote != null)
+	{
+		<li class="ownvote">
+			@if (Model.LinkLevel == VoteLinkLevel.None)
+			{
+				@Html.DisplayFor(m => m.OwnVote.Kind)
+				@username
+			}
+			else
+			{
 				<div class="popover-markup">
-					<a class="trigger" id="ownvote_@ViewBag.TopicID">
-						@GetVoteIcon(ownvote.Kind) @(((User)ViewBag.CurrentUser).ShortName)
+					<a class="trigger">
+						@Html.DisplayFor(m => m.OwnVote.Kind) @username
 					</a>
-					<div class="content hide votelinks">
+					<div class="content hide">
 						@GetVoteLink(VoteKind.None)
 						@GetVoteLink(VoteKind.Approved)
 						@GetVoteLink(VoteKind.Reservation)
 						@GetVoteLink(VoteKind.Rejected)
 					</div>
 				</div>
-			</li>
-		}
+			}
+		</li>
 	}
-	@if (ViewBag.LinkAllAuditors)
+	@if (Model.LinkLevel > VoteLinkLevel.OnlyMine)
 	{
-		foreach (Vote vote in Model)
+		foreach (var vote in Model.OtherVotes)
 		{
 			<li>
 				<div class="popover-markup">
 					<a class="trigger">
-						@GetVoteIcon(vote.Kind) @vote.Voter
+						@Html.DisplayFor(m => vote.Kind) @vote.Voter
 					</a>
-					<div class="content hide votelinks">
+					<div class="content hide">
 						@GetVoteLink2(vote.Voter, VoteKind.None)
 						@GetVoteLink2(vote.Voter, VoteKind.Approved)
 						@GetVoteLink2(vote.Voter, VoteKind.Reservation)
@@ -96,17 +74,19 @@
 	}
 	else
 	{
-		foreach (Vote vote in Model)
+		foreach (var vote in Model.OtherVotes)
 		{
 			<li>
-				@GetVoteIcon(vote.Kind)
-				@vote.Voter
+				@Html.DisplayFor(m => vote.Kind) @vote.Voter
 			</li>
 		}
 	}
 </ul>
 
-<script type="text/javascript">
-	if (typeof enablePopovers !== 'undefined')
-		enablePopovers();
-</script>
+@if (IsAjax)
+{
+	<script type="text/javascript">
+		if (typeof enablePopovers !== 'undefined')
+			enablePopovers();
+	</script>
+}

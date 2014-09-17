@@ -1,0 +1,28 @@
+﻿@using System.ComponentModel
+@using ILK_Protokoll.Models
+@using ILK_Protokoll.util
+@model ILK_Protokoll.Models.VoteKind
+@{
+	string iconname = "";
+	switch (Model)
+	{
+		case VoteKind.None:
+			iconname = "glyphicon-record";
+			break;
+
+		case VoteKind.Approved:
+			iconname = "glyphicon-ok-sign";
+			break;
+
+		case VoteKind.Reservation:
+			iconname = "glyphicon-question-sign";
+			break;
+
+		case VoteKind.Rejected:
+			iconname = "glyphicon-remove-sign";
+			break;
+		default:
+			throw new InvalidEnumArgumentException();
+	}
+}
+<span class="voteicon glyphicon @iconname" title="@Model.GetDescription()"></span>

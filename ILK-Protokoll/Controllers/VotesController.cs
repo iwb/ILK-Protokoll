@@ -4,27 +4,37 @@ using System.Net;
 using System.Web.Mvc;
 using ILK_Protokoll.Models;
 using ILK_Protokoll.util;
+using ILK_Protokoll.ViewModels;
 
 namespace ILK_Protokoll.Controllers
 {
 	public class VotesController : BaseController
 	{
-		public ActionResult _List(Topic topic, bool linkAllAuditors = false)
+		public ActionResult _List(Topic topic, VoteLinkLevel linkLevel)
 		{
 			if (!ModelState.IsValid)
 				throw new InvalidOperationException("The Topic is invalid.");
 
-			ViewBag.ownvote = topic.Votes.SingleOrDefault(v => v.Voter.Equals(GetCurrentUser()));
-			ViewBag.TopicID = topic.ID;
-			ViewBag.LinkAllAuditors = linkAllAuditors && !IsTopicLocked(topic.ID);
+			if (linkLevel > VoteLinkLevel.OnlyMine && IsTopicLocked(topic.ID))
+				linkLevel = VoteLinkLevel.OnlyMine;
 
-			var displayvotes = topic.Votes.Where(v => !v.Voter.Equals(GetCurrentUser()))
-				.OrderBy(v => v.Voter.ShortName, StringComparer.CurrentCultureIgnoreCase).ToList();
+			if (topic.IsReadOnly)
+				linkLevel = VoteLinkLevel.None;
 
-			return topic.IsReadOnly ? PartialView("~/Areas/Session/Views/Finalize/_ReportVotes.cshtml", displayvotes) : PartialView("_VoteList", displayvotes);
+			var vm = new VoteListViewModel
+			{
+				TopicID = topic.ID,
+				OwnVote = topic.Votes.SingleOrDefault(v => v.Voter.Equals(GetCurrentUser())),
+				LinkLevel = linkLevel,
+				OtherVotes = topic.Votes
+					.Where(v => !v.Voter.Equals(GetCurrentUser()))
+					.OrderBy(v => v.Voter.ShortName, StringComparer.CurrentCultureIgnoreCase)
+					.ToList()
+			};
+			return PartialView("_VoteList", vm);
 		}
 
-		public ActionResult _Register(int topicID, VoteKind vote, bool linkAllAuditors = false)
+		public ActionResult _Register(int topicID, VoteKind vote, VoteLinkLevel linkLevel)
 		{
 			if (db.Topics.Find(topicID).IsReadOnly)
 				return HTTPStatus(HttpStatusCode.Forbidden, "Das Thema ist schreibgeschützt.");
@@ -37,10 +47,10 @@ namespace ILK_Protokoll.Controllers
 
 			dbvote.Kind = vote;
 			db.SaveChanges();
-			return _List(db.Topics.Find(topicID), linkAllAuditors);
+			return _List(db.Topics.Find(topicID), linkLevel);
 		}
 
-		public ActionResult _Register2(int topicID, int voterID, VoteKind vote, bool linkAllAuditors = false)
+		public ActionResult _Register2(int topicID, int voterID, VoteKind vote, VoteLinkLevel linkLevel)
 		{
 			if (db.Topics.Find(topicID).IsReadOnly)
 				return HTTPStatus(HttpStatusCode.Forbidden, "Das Thema ist schreibgeschützt.");
@@ -51,12 +61,13 @@ namespace ILK_Protokoll.Controllers
 			User voter = db.Users.Find(voterID);
 			db.Votes.Single(v => v.Voter.ID == voter.ID && v.Topic.ID == topicID).Kind = vote;
 
-			string message = string.Format("{0} hat in Vertretung für {1} abgestimmt mit \"{2}\".", GetCurrentUser().ShortName, voter.ShortName,
+			string message = string.Format("{0} hat in Vertretung für {1} abgestimmt mit \"{2}\".", GetCurrentUser().ShortName,
+				voter.ShortName,
 				vote.GetDescription());
 
-			db.Comments.Add(new Comment { Author = db.Users.Find(voterID), TopicID = topicID, Content = message });
+			db.Comments.Add(new Comment {Author = db.Users.Find(voterID), TopicID = topicID, Content = message});
 			db.SaveChanges();
-			return _List(db.Topics.Find(topicID), linkAllAuditors);
+			return _List(db.Topics.Find(topicID), linkLevel);
 		}
 	}
 }

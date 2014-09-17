@@ -1,5 +1,6 @@
 ﻿@using ILK_Protokoll.Models
 @using ILK_Protokoll.util
+@using ILK_Protokoll.ViewModels
 @model ILK_Protokoll.Models.Topic
 
 <div class="panel panel-primary topic-panel">
@@ -57,7 +58,7 @@
 			</div>
 		</div>
 		<div class="panel-separator" id="auditorlist_@Model.ID">
-			@Html.Action("_List", "Votes", new {topic = Model, Area = "", linkAllAuditors = ViewBag.CurrentSession != null})
+			@Html.Action("_List", "Votes", new { topic = Model, Area = "", linkLevel = ViewBag.CurrentSession != null ? VoteLinkLevel.Everyone : VoteLinkLevel.OnlyMine })
 		</div>
 
 		@{

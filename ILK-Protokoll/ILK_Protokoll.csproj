@@ -378,6 +378,7 @@
     <Compile Include="ViewModels\SearchResult.cs" />
     <Compile Include="ViewModels\TopicEdit.cs" />
     <Compile Include="ViewModels\TopicHistoryViewModel.cs" />
+    <Compile Include="ViewModels\VoteListViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
@@ -726,6 +727,7 @@
     <Content Include="Views\Push\_DisplayListTopic.cshtml" />
     <Content Include="Views\Statistics\Index.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\Approval.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\VoteKind.cshtml" />
     <None Include="Web.Integration.config" />
     <None Include="Web.Production.config" />
     <None Include="Web.Testing.config" />
