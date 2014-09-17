@@ -129,7 +129,7 @@ namespace ILK_Protokoll.Controllers
 			if (item != null)
 			{
 				db.UnreadState.Remove(item);
-				db.SaveChangesAsync();
+				db.SaveChanges();
 			}
 		}
 
