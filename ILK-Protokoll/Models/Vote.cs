@@ -1,4 +1,4 @@
-﻿using System.ComponentModel;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ILK_Protokoll.Models
@@ -32,9 +32,9 @@ namespace ILK_Protokoll.Models
 
 	public enum VoteKind
 	{
-		[Description("Neutral")] None,
-		[Description("Abgelehnt")] Rejected,
-		[Description("Gespächsbedarf")] Reservation,
-		[Description("Angenommen")] Approved
+		[Display(Name = "Neutral", Order = 1)] None,
+		[Display(Name = "Abgelehnt", Order = 4)] Rejected,
+		[Display(Name = "Gespächsbedarf", Order = 2)] Reservation,
+		[Display(Name = "Angenommen", Order = 3)] Approved
 	}
 }

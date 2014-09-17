@@ -3,7 +3,7 @@
 @using ILK_Protokoll.util
 @model ILK_Protokoll.Models.VoteKind
 @{
-	string iconname = "";
+	string iconname;
 	switch (Model)
 	{
 		case VoteKind.None:
@@ -25,4 +25,4 @@
 			throw new InvalidEnumArgumentException();
 	}
 }
-<span class="voteicon glyphicon @iconname" title="@Model.GetDescription()"></span>
+<span class="hidden">@Model.DisplayOrder()</span><span class="sr-only">@Model.DisplayName()</span><span class="voteicon glyphicon @iconname" title="@Model.DisplayName()"></span>

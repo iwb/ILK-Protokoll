@@ -8,7 +8,7 @@
 @* Für die eigene Stimme *@
 @helper GetVoteLink(VoteKind vk)
 {
-	<a href="@Url.Action("_Register", new { topicID = Model.TopicID, vote = vk.DisplayName(), linkLevel = Model.LinkLevel})"
+	<a href="@Url.Action("_Register", new { topicID = Model.TopicID, vote = vk.ToString(), linkLevel = Model.LinkLevel})"
 	   data-ajax="true"
 	   data-ajax-method="POST"
 	   data-ajax-mode="replace"
@@ -19,7 +19,7 @@
 @* Für Abstimmen in Vertretung *@
 @helper GetVoteLink2(User voter, VoteKind vk)
 {
-	<a href="@Url.Action("_Register2", new { topicID = Model.TopicID, voterID = voter.ID, vote = vk.DisplayName(), linkLevel = Model.LinkLevel })"
+	<a href="@Url.Action("_Register2", new { topicID = Model.TopicID, voterID = voter.ID, vote = vk.ToString(), linkLevel = Model.LinkLevel })"
 		data-ajax="true"
 		data-ajax-method="POST"
 		data-ajax-mode="replace"

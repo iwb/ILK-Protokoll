@@ -24,26 +24,29 @@ namespace ILK_Protokoll.util
 			new Regex(
 				@"(?<!=)([""']|&quot;|&#39;)((http|ftp|https|file):\/\/[\d\w\-_]+(\.[\w\-_]+)*([\w\-\.,@?^=%&amp;:/~\+# ])*)\1");
 
-		public static string GetDescription(this Enum value)
+		public static T GetAttribute<T>(this Enum value)
+			where T : Attribute
 		{
-			FieldInfo field = value.GetType().GetField(value.ToString());
-
-			var attribute = Attribute.GetCustomAttribute(field, typeof(DescriptionAttribute)) as DescriptionAttribute;
-
+			var field = value.GetType().GetField(value.ToString());
+			return Attribute.GetCustomAttribute(field, typeof(T)) as T;
+		}
+		
+		public static string GetDescription(this Enum value)		
+		{
+			var attribute = value.GetAttribute<DescriptionAttribute>();
 			return attribute == null ? value.ToString() : attribute.Description;
 		}
 
 		public static string DisplayName(this Enum value)
 		{
-			FieldInfo fieldInfo = value.GetType().GetField(value.ToString());
+			var attribute = value.GetAttribute<DisplayAttribute>();
+			return attribute == null ? value.ToString() : attribute.Name;
+		}
 
-			var descriptionAttributes = fieldInfo.GetCustomAttributes(
-				typeof(DisplayAttribute), false) as DisplayAttribute[];
-
-			if (descriptionAttributes == null)
-				return string.Empty;
-			else
-				return (descriptionAttributes.Length > 0) ? descriptionAttributes[0].Name : value.ToString();
+		public static int DisplayOrder(this Enum value)
+		{
+			var attribute = value.GetAttribute<DisplayAttribute>();
+			return attribute == null ? (int)Convert.ChangeType(value, typeof(int)) : attribute.Order;
 		}
 
 		public static IEnumerable<T> ToEnumerable<T>(this T item)

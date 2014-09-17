@@ -10,6 +10,9 @@
 			<th class="col-sm-1">
 				@Html.DisplayNameFor(model => model.SessionTypeID)
 			</th>
+			<th>
+				Stimme
+			</th>
 			<th class="col-sm-2">
 				@Html.DisplayNameFor(model => model.Title)
 			</th>
@@ -53,6 +56,19 @@
 					{
 						@:&#42;
 					}
+				</td>
+				<td>
+					@{
+						var myVote = item.Votes.SingleOrDefault(v => v.VoterID == ViewBag.Currentuser.ID);
+						if (myVote != null)
+						{
+							<span class="voteicon">@Html.DisplayFor(m => myVote.Kind)</span>
+						}
+						else
+						{
+							<span class="hidden">5</span><span class="sr-only">Nicht Berechtigt</span>
+						}
+}
 				</td>
 				<td>
 					<a href="@Url.Action("Details", new {id = item.ID})">@item.Title.Shorten(60)</a>
