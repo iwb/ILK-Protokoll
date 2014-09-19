@@ -13,3 +13,30 @@
 	Eine neue Sitzung des Typs &quot;<b>@Model.SessionType.Name</b>&quot; wurde erstellt.<br />
 	Verwenden Sie zur Navigation die Buttons oben rechts oder die Navigationsleiste.
 </p>
+
+<div style="margin-top: 100px;"></div>
+<div class="alert alert-info">
+	Falls Sie diese Sitzung versehentlich eröffnet haben, können sie <a class="alert-link" id="abortLink">die Sitzung abbrechen</a> ohne ein Protokoll zu generieren.
+	@using (Html.BeginForm(
+		"AbortSession",
+		"Master",
+		new { Area = "Session" },
+		FormMethod.Post, new
+		{
+			id = "abortForm",
+			style = "display: none;"
+		}))
+	{
+
+		<div style="margin-top: 20px;"></div>
+		@Html.AntiForgeryToken()
+		@Html.HiddenFor(m => m.ID)
+		<input type="submit" value="Sitzung abbrechen" class="btn btn-danger" id="submitButton">
+	}
+</div>
+
+<script type="text/javascript">
+	$('#abortLink').click(function() {
+		$('#abortForm').show(400);
+	});
+</script>
