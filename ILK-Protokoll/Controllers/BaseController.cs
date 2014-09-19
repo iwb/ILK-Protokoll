@@ -77,7 +77,12 @@ namespace ILK_Protokoll.Controllers
 			if (sessionID != null)
 			{
 				var s = db.ActiveSessions.Find((int)sessionID);
-				Session["SessionID"] = s.ID;
+
+				if (s != null)
+					Session["SessionID"] = s.ID;
+				else
+					Session.Remove("SessionID"); // Stale session
+
 				return s;
 			}
 			else

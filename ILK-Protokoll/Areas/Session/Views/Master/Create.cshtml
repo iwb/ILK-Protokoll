@@ -1,7 +1,7 @@
 ﻿@model ILK_Protokoll.Areas.Session.Models.ActiveSession
 
 @{
-	ViewBag.Title = "Neue Sitzung";
+	ViewBag.Title = "Neue " + @Model.SessionType.Name + " Sitzung";
 }
 
 <div class="index-action">
@@ -10,6 +10,6 @@
 <h2>@ViewBag.Title</h2>
 
 <p>
-	Eine neue Sitzung des Typs &quot;@Model.SessionType.Name&quot; wurde erstellt.<br />
-	Bitte verwenden Sie die Buttons oben rechts zur Navigation.
+	Eine neue Sitzung des Typs &quot;<b>@Model.SessionType.Name</b>&quot; wurde erstellt.<br />
+	Verwenden Sie zur Navigation die Buttons oben rechts oder die Navigationsleiste.
 </p>

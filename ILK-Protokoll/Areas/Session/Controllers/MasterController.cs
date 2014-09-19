@@ -80,5 +80,23 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 
 			return RedirectToAction("Index", "Lists", new {Area = "Session"});
 		}
+
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public ActionResult AbortSession(int id)
+		{
+			var session = GetSession();
+			if (session == null)
+				return RedirectToAction("Index");
+
+			if (session.ID != id)
+				return HTTPStatus(422, "Die Sitzungs-ID stimmt nicht überein!");
+
+			db.ActiveSessions.Remove(session);
+			db.SaveChanges();
+			Session.Remove("SessionID");
+
+			return RedirectToAction("Index", "Master", new { Area = "Session" });
+		}
 	}
 }
