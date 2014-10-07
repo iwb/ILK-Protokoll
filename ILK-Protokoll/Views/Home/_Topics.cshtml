@@ -1,0 +1,9 @@
+﻿@using ILK_Protokoll.Models
+@model IEnumerable<ILK_Protokoll.Models.Topic>
+			 
+@foreach (Topic t in Model)
+{
+	<div class="col-xs-12 col-lg-6 masonry-item">
+		@{ Html.RenderPartial("~/Views/Topics/_Topic.cshtml", t); }
+	</div>
+}

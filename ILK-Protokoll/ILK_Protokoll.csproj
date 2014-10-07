@@ -732,6 +732,7 @@
     <Content Include="Views\Topics\_EditDescription.cshtml" />
     <Content Include="Views\Topics\_Proposal.cshtml" />
     <Content Include="Views\Topics\_EditProposal.cshtml" />
+    <Content Include="Views\Home\_Topics.cshtml" />
     <None Include="Web.Integration.config" />
     <None Include="Web.Production.config" />
     <None Include="Web.Testing.config" />

@@ -346,23 +346,25 @@ namespace ILK_Protokoll.Controllers
 				if (!auth.IsAuthorized)
 					throw new TopicLockedException(auth.Reason);
 			}
-
-			// Änderungsverfolgung
-			db.TopicHistory.Add(TopicHistory.FromTopic(topic, GetCurrentUserID()));
-			topic.Description = description;
-			topic.ValidFrom = DateTime.Now;
-
-			// Ungelesen-Markierung aktualisieren
-			MarkAsUnread(topic);
-
-			try
+			if (description != topic.Description) //Trivialedit verhindern
 			{
-				db.SaveChanges();
-			}
-			catch (DbEntityValidationException e)
-			{
-				var message = ErrorMessageFromException(e);
-				return HTTPStatus(500, message);
+				// Änderungsverfolgung
+				db.TopicHistory.Add(TopicHistory.FromTopic(topic, GetCurrentUserID()));
+				topic.Description = description;
+				topic.ValidFrom = DateTime.Now;
+
+				// Ungelesen-Markierung aktualisieren
+				MarkAsUnread(topic);
+
+				try
+				{
+					db.SaveChanges();
+				}
+				catch (DbEntityValidationException e)
+				{
+					var message = ErrorMessageFromException(e);
+					return HTTPStatus(500, message);
+				}
 			}
 
 			ViewBag.TopicID = id;
@@ -413,23 +415,25 @@ namespace ILK_Protokoll.Controllers
 				if (!auth.IsAuthorized)
 					throw new TopicLockedException(auth.Reason);
 			}
-
-			// Änderungsverfolgung
-			db.TopicHistory.Add(TopicHistory.FromTopic(topic, GetCurrentUserID()));
-			topic.Proposal = proposal;
-			topic.ValidFrom = DateTime.Now;
-
-			// Ungelesen-Markierung aktualisieren
-			MarkAsUnread(topic);
-
-			try
+			if (proposal != topic.Proposal) //Trivialedit verhindern
 			{
-				db.SaveChanges();
-			}
-			catch (DbEntityValidationException e)
-			{
-				var message = ErrorMessageFromException(e);
-				return HTTPStatus(500, message);
+				// Änderungsverfolgung
+				db.TopicHistory.Add(TopicHistory.FromTopic(topic, GetCurrentUserID()));
+
+				topic.ValidFrom = DateTime.Now;
+
+				// Ungelesen-Markierung aktualisieren
+				MarkAsUnread(topic);
+
+				try
+				{
+					db.SaveChanges();
+				}
+				catch (DbEntityValidationException e)
+				{
+					var message = ErrorMessageFromException(e);
+					return HTTPStatus(500, message);
+				}
 			}
 
 			ViewBag.TopicID = id;

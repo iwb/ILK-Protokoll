@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 using ILK_Protokoll.Models;
 using ILK_Protokoll.ViewModels;
@@ -31,10 +33,19 @@ namespace ILK_Protokoll.Controllers
 				dash.MyToDos = myAssignments[AssignmentType.ToDo];
 				dash.MyDuties = myAssignments[AssignmentType.Duty].Where(a => a.Topic.HasDecision(DecisionType.Resolution));
 			}
-			using (profiler.Step("Themen"))
+			
+			dash.MyTopics = null; // Delayed AJAX loading
+			return View(dash);
+		}
+
+		public ActionResult _FetchTopics()
+		{
+			var userID = GetCurrentUserID();
+			List<Topic> topics;
+			using (MiniProfiler.Current.Step("Themen"))
 			{
 				var cutoff = DateTime.Now.AddDays(3);
-				dash.MyTopics = db.Topics
+				topics = db.Topics
 					.Include(t => t.SessionType)
 					.Include(t => t.TargetSessionType)
 					.Include(t => t.Owner)
@@ -44,7 +55,8 @@ namespace ILK_Protokoll.Controllers
 					.OrderByDescending(t => t.Priority)
 					.ThenByDescending(t => t.ValidFrom).ToList();
 			}
-			return View(dash);
+
+			return PartialView("~/Views/Home/_Topics.cshtml", topics);
 		}
 
 		public ActionResult About()
