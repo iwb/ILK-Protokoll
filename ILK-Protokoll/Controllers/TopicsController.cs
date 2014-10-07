@@ -371,20 +371,19 @@ namespace ILK_Protokoll.Controllers
 			return PartialView("_Description", topic);
 		}
 
+		public ActionResult _FetchDescription(int id)
+		{
+			var topic = db.Topics.Find(id);
 
+			if (topic == null)
+				return HttpNotFound("Topic not found!");
 
+			ViewBag.TopicID = id;
+			ViewBag.IsEditable = topic.IsEditableBy(GetCurrentUser(), GetSession()).IsAuthorized;
+			topic.IsLocked = false;
 
-
-
-
-
-
-
-
-
-
-
-
+			return PartialView("_Description", topic);
+		}
 
 		[HttpGet, ActionName("_EditProposal")]
 		public ActionResult _BeginEditProposal(int id)
@@ -439,25 +438,19 @@ namespace ILK_Protokoll.Controllers
 			return PartialView("_Proposal", topic);
 		}
 
+		public ActionResult _FetchProposal(int id)
+		{
+			var topic = db.Topics.Find(id);
 
+			if (topic == null)
+				return HttpNotFound("Topic not found!");
 
+			ViewBag.TopicID = id;
+			ViewBag.IsEditable = topic.IsEditableBy(GetCurrentUser(), GetSession()).IsAuthorized;
+			topic.IsLocked = false;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+			return PartialView("_Proposal", topic);
+		}
 
 		// GET: Topics/ViewHistory/5
 		public ActionResult ViewHistory(int id)
