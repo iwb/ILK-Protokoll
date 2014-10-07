@@ -318,6 +318,147 @@ namespace ILK_Protokoll.Controllers
 			return RedirectToAction("Index");
 		}
 
+		[HttpGet, ActionName("_EditDescription")]
+		public ActionResult _BeginEditDescription(int id)
+		{
+			var topic = db.Topics.Find(id);
+
+			if (topic == null)
+				return HttpNotFound("Topic not found!");
+
+			ViewBag.TopicID = id;
+			ViewBag.IsEditable = topic.IsEditableBy(GetCurrentUser(), GetSession()).IsAuthorized;
+			topic.IsLocked = false;
+
+			return PartialView("_EditDescription", topic);
+		}
+
+		[HttpPost, ActionName("_EditDescription"), ValidateAntiForgeryToken]
+		public ActionResult _SubmitEditDescription(int id, string description)
+		{
+			var topic = db.Topics.Find(id);
+
+			if (topic == null)
+				return HttpNotFound("Topic not found!");
+			else
+			{
+				var auth = topic.IsEditableBy(GetCurrentUser(), GetSession());
+				if (!auth.IsAuthorized)
+					throw new TopicLockedException(auth.Reason);
+			}
+
+			// Änderungsverfolgung
+			db.TopicHistory.Add(TopicHistory.FromTopic(topic, GetCurrentUserID()));
+			topic.Description = description;
+			topic.ValidFrom = DateTime.Now;
+
+			// Ungelesen-Markierung aktualisieren
+			MarkAsUnread(topic);
+
+			try
+			{
+				db.SaveChanges();
+			}
+			catch (DbEntityValidationException e)
+			{
+				var message = ErrorMessageFromException(e);
+				return HTTPStatus(500, message);
+			}
+
+			ViewBag.TopicID = id;
+			ViewBag.IsEditable = topic.IsEditableBy(GetCurrentUser(), GetSession()).IsAuthorized;
+			topic.IsLocked = false;
+			return PartialView("_Description", topic);
+		}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		[HttpGet, ActionName("_EditProposal")]
+		public ActionResult _BeginEditProposal(int id)
+		{
+			var topic = db.Topics.Find(id);
+
+			if (topic == null)
+				return HttpNotFound("Topic not found!");
+
+			ViewBag.TopicID = id;
+			ViewBag.IsEditable = topic.IsEditableBy(GetCurrentUser(), GetSession()).IsAuthorized;
+			topic.IsLocked = false;
+
+			return PartialView("_EditProposal", topic);
+		}
+
+		[HttpPost, ActionName("_EditProposal"), ValidateAntiForgeryToken]
+		public ActionResult _SubmitEditProposal(int id, string proposal)
+		{
+			var topic = db.Topics.Find(id);
+
+			if (topic == null)
+				return HttpNotFound("Topic not found!");
+			else
+			{
+				var auth = topic.IsEditableBy(GetCurrentUser(), GetSession());
+				if (!auth.IsAuthorized)
+					throw new TopicLockedException(auth.Reason);
+			}
+
+			// Änderungsverfolgung
+			db.TopicHistory.Add(TopicHistory.FromTopic(topic, GetCurrentUserID()));
+			topic.Proposal = proposal;
+			topic.ValidFrom = DateTime.Now;
+
+			// Ungelesen-Markierung aktualisieren
+			MarkAsUnread(topic);
+
+			try
+			{
+				db.SaveChanges();
+			}
+			catch (DbEntityValidationException e)
+			{
+				var message = ErrorMessageFromException(e);
+				return HTTPStatus(500, message);
+			}
+
+			ViewBag.TopicID = id;
+			ViewBag.IsEditable = topic.IsEditableBy(GetCurrentUser(), GetSession()).IsAuthorized;
+			topic.IsLocked = false;
+			return PartialView("_Proposal", topic);
+		}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 		// GET: Topics/ViewHistory/5
 		public ActionResult ViewHistory(int id)
 		{

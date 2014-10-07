@@ -1,0 +1,37 @@
+﻿@model ILK_Protokoll.Models.Topic
+
+@using(Ajax.BeginForm("_EditDescription", null, new AjaxOptions
+{
+	HttpMethod = "POST",
+	InsertionMode = InsertionMode.ReplaceWith,
+	UpdateTargetId = "description-panel",
+},
+new
+{
+	id = "description-form"
+}))
+{
+	@Html.AntiForgeryToken()
+	@Html.HiddenFor(model => model.ID)
+	<div class="panel panel-primary" id="description-panel">
+		<div class="panel-heading">
+			<div class="panel-title-right">
+				<p>
+					@if (!Model.IsReadOnly && !Model.IsLocked && ViewBag.IsEditable)
+					{
+						<a onclick="$('#description-form').submit();"><i class="glyphicon glyphicon-check"></i></a>
+					}
+				</p>
+			</div>
+			<h3 class="panel-title">
+				@Html.DisplayNameFor(model => model.Description)
+			</h3>
+		</div>
+		<div class="panel-body">
+			@Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", style = "resize:vertical;", id = "description-textarea" } })
+		</div>
+	</div>
+}
+<script type="text/javascript">
+	$('#description-textarea').height($('#description-textarea').prop('scrollHeight'));
+</script>

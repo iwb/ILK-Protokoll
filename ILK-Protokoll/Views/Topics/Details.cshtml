@@ -24,17 +24,14 @@
 							<i class="glyphicon glyphicon-lock"></i>
 							@:Schreibgeschützt
 						}
-						else
+						else if (Model.IsLocked)
 						{
-							if (Model.IsLocked)
-							{
-								<i class="glyphicon glyphicon-lock"></i>
-								@:Gesperrt
-							}
-							if (ViewBag.IsEditable)
-							{
-								<a href="@Url.Action("Edit", new {id = Model.ID})"><i class="glyphicon glyphicon-edit"></i> Bearbeiten</a>
-							}
+							<i class="glyphicon glyphicon-lock"></i>
+							@:Gesperrt
+						}
+						else if (ViewBag.IsEditable)
+						{
+							<a href="@Url.Action("Edit", new {id = Model.ID})"><i class="glyphicon glyphicon-edit"></i> Bearbeiten</a>
 						}
 					</p>
 				</div>
@@ -109,28 +106,16 @@
 
 <div class="row">
 	<div class="@descClass">
-		<div class="panel panel-primary">
-			<div class="panel-heading">
-				<h3 class="panel-title">@Html.DisplayNameFor(model => model.Description)</h3>
-			</div>
-			<div class="panel-body">
-				@Html.DisplayWithLinksFor(model => model.Description, "String_Multiline")
-			</div>
-		</div>
+		@{
+			Html.RenderPartial("_Description", Model);
+		}
 	</div>
 	@if (!hasDecision)
 	{
 		<div class="col-md-6">
-			<div class="panel panel-primary">
-				<div class="panel-heading">
-					<h3 class="panel-title">
-						@Html.DisplayNameFor(model => model.Proposal)
-					</h3>
-				</div>
-				<div class="panel-body">
-					@Html.DisplayWithLinksFor(model => model.Proposal, "String_Multiline")
-				</div>
-			</div>
+			@{
+				Html.RenderPartial("_Proposal", Model);
+			}
 		</div>
 	}
 </div>

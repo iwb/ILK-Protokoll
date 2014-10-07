@@ -728,6 +728,10 @@
     <Content Include="Views\Statistics\Index.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\Approval.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\VoteKind.cshtml" />
+    <Content Include="Views\Topics\_Description.cshtml" />
+    <Content Include="Views\Topics\_EditDescription.cshtml" />
+    <Content Include="Views\Topics\_Proposal.cshtml" />
+    <Content Include="Views\Topics\_EditProposal.cshtml" />
     <None Include="Web.Integration.config" />
     <None Include="Web.Production.config" />
     <None Include="Web.Testing.config" />
