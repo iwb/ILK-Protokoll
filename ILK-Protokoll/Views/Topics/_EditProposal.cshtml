@@ -1,15 +1,15 @@
 ﻿@model ILK_Protokoll.Models.Topic
 
-@using(Ajax.BeginForm("_EditProposal", null, new AjaxOptions
+@using (Ajax.BeginForm("_EditProposal", null, new AjaxOptions
 {
 	HttpMethod = "POST",
 	InsertionMode = InsertionMode.ReplaceWith,
 	UpdateTargetId = "proposal-panel",
 },
-new
-{
-	id = "proposal-form"
-}))
+	new
+	{
+		id = "proposal-form"
+	}))
 {
 	@Html.AntiForgeryToken()
 	@Html.HiddenFor(model => model.ID)
@@ -19,7 +19,7 @@ new
 				<p>
 					@if (!Model.IsReadOnly && !Model.IsLocked && ViewBag.IsEditable)
 					{
-						<a onclick="$('#proposal-form').submit();"><i class="glyphicon glyphicon-check"></i></a>
+						<a onclick=" $('#proposal-form').submit(); "><i class="glyphicon glyphicon-check"></i></a>
 					}
 				</p>
 			</div>
@@ -28,10 +28,35 @@ new
 			</h3>
 		</div>
 		<div class="panel-body">
-			@Html.EditorFor(model => model.Proposal, new { htmlAttributes = new { @class = "form-control", style = "resize:vertical;", id = "proposal-textarea" } })
+			@Html.EditorFor(model => model.Proposal, new {htmlAttributes = new {@class = "form-control", style = "resize:vertical;", id = "proposal-textarea"}})
+			<div class="form-group" style="margin-top: 10px;">
+				<div class="pull-right" style="margin-left: 10px;">
+					<button class="btn btn-sm btn-primary form-control" style="width: 10em;" type="submit">Speichern</button>
+				</div>
+				<div class="pull-right">
+					<button class="btn btn-sm btn-danger form-control" style="width: 10em;" type="button" id="proposal-abort-btn">Abbrechen</button>
+				</div>
+			</div>
 		</div>
 	</div>
 }
 <script type="text/javascript">
+	var proposalChanged = false;
+
 	$('#proposal-textarea').height($('#proposal-textarea').prop('scrollHeight'));
+	$('#proposal-textarea').on('change keyup paste', function() {
+		proposalChanged = true;
+	});
+
+	$('#proposal-abort-btn').click(function() {
+		if (!proposalChanged || confirm("Bearbeitung wirklich abbrechen? Änderungen gehen dabei verloren!")) {
+			$.ajax({
+				url: "@Url.Action("_FetchProposal", "Topics", new {id = Model.ID})",
+				type: 'POST',
+				success: function(result) {
+					$("#proposal-form").replaceWith(result);
+				}
+			}); //end ajax
+		}
+	});
 </script>

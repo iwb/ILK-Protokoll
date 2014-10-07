@@ -28,28 +28,28 @@
 			</h3>
 		</div>
 		<div class="panel-body">
-			@Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", style = "resize:vertical;", id = "description-textarea" } })
+			@Html.EditorFor(model => model.Description, new {htmlAttributes = new {@class = "form-control", style = "resize:vertical;", id = "description-textarea"}})
 			<div class="form-group" style="margin-top: 10px;">
 				<div class="pull-right" style="margin-left: 10px;">
 					<button class="btn btn-sm btn-primary form-control" style="width: 10em;" type="submit">Speichern</button>
 				</div>
 				<div class="pull-right">
-					<button class="btn btn-sm btn-danger form-control" style="width: 10em;" type="submit" id="abort-btn">Abbrechen</button>
+					<button class="btn btn-sm btn-danger form-control" style="width: 10em;" type="button" id="description-abort-btn">Abbrechen</button>
 				</div>
 			</div>
 		</div>
 	</div>
 }
 <script type="text/javascript">
-	var textchanged = false;
+	var descriptionChanged = false;
 
 	$('#description-textarea').height($('#description-textarea').prop('scrollHeight'));
 	$('#description-textarea').on('change keyup paste', function() {
-		textchanged = true;
+		descriptionChanged = true;
 	});
 
-	$('#abort-btn').click(function() {
-		if (!textchanged || confirm("Bearbeitung wirklich abbrechen? Änderungen gehen dabei verloren!")) {
+	$('#description-abort-btn').click(function() {
+		if (!descriptionChanged || confirm("Bearbeitung wirklich abbrechen? Änderungen gehen dabei verloren!")) {
 			$.ajax({
 				url: "@Url.Action("_FetchDescription", "Topics", new {id = Model.ID})",
 				type: 'POST',
