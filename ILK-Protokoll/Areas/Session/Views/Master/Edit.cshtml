@@ -58,18 +58,17 @@
 	@using (Html.BeginForm(
 		"AbortSession",
 		"Master",
-		new { Area = "Session" },
+		new {Area = "Session"},
 		FormMethod.Post, new
 		{
 			id = "abortForm",
-			style = "display: none;"
+			style = "display:none;"
 		}))
 	{
-
 		<div style="margin-top: 20px;"></div>
 		@Html.AntiForgeryToken()
 		@Html.HiddenFor(m => m.ID)
-		<input type="submit" value="Sitzung abbrechen" class="btn btn-danger" id="submitButton">
+	<input type="submit" value="Sitzung abbrechen" class="btn btn-danger" id="submitButton">
 	}
 </div>
 
@@ -79,6 +78,6 @@
 	});
 </script>
 
-	@section Scripts {
+@section Scripts {
 	@Scripts.Render("~/bundles/jqueryval")
 }

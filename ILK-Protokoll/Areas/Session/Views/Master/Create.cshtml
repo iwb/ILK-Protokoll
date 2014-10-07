@@ -5,7 +5,7 @@
 }
 
 <div class="index-action">
-	@Html.ActionLink("Weiter", "Edit", "Master", new { Area = "Session" }, new { @class = "btn btn-primary" })
+	@Html.ActionLink("Weiter", "Edit", "Master", new {Area = "Session"}, new {@class = "btn btn-primary"})
 </div>
 <h2>@ViewBag.Title</h2>
 
@@ -20,18 +20,17 @@
 	@using (Html.BeginForm(
 		"AbortSession",
 		"Master",
-		new { Area = "Session" },
+		new {Area = "Session"},
 		FormMethod.Post, new
 		{
 			id = "abortForm",
-			style = "display: none;"
+			style = "display:none;"
 		}))
 	{
-
 		<div style="margin-top: 20px;"></div>
 		@Html.AntiForgeryToken()
 		@Html.HiddenFor(m => m.ID)
-		<input type="submit" value="Sitzung abbrechen" class="btn btn-danger" id="submitButton">
+	<input type="submit" value="Sitzung abbrechen" class="btn btn-danger" id="submitButton">
 	}
 </div>
 
