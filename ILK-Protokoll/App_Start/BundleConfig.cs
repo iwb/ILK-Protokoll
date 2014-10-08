@@ -16,7 +16,10 @@ namespace ILK_Protokoll
 				"~/Scripts/jquery.timeago.js",
 				"~/Scripts/spin.js",
 				"~/Scripts/jquery.highlight.js",
-				"~/Scripts/jquery.tablesorter.js"));
+				"~/Scripts/jquery.tablesorter.js",
+				"~/Scripts/jquery.json.js",
+				"~/Scripts/jquery.cookie.js",
+				"~/Scripts/persistentTablesorter.js"));
 
 			bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
 				"~/Scripts/jquery.validate*"));

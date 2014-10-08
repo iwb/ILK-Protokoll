@@ -648,8 +648,10 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\jquery-2.1.1.js" />
     <Content Include="Scripts\jquery-ui-1.11.1.js" />
+    <Content Include="Scripts\jquery.cookie.js" />
     <Content Include="Scripts\jquery.form.js" />
     <Content Include="Scripts\jquery.highlight.js" />
+    <Content Include="Scripts\jquery.json.js" />
     <Content Include="Scripts\jquery.rtResponsiveTables.js" />
     <Content Include="Scripts\jquery.tablesorter.js" />
     <Content Include="Scripts\jquery.timeago.js" />
@@ -660,6 +662,7 @@
     <Content Include="Scripts\ListUtilities.js" />
     <Content Include="Scripts\masonry_grid.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\persistentTablesorter.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.js" />
     <Content Include="Scripts\spin.js" />
