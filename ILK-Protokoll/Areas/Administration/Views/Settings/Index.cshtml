@@ -7,7 +7,7 @@
 
 <h2>@ViewBag.Title</h2>
 
-<p>Diese Einstellungen sind Benutzerspezifisch, betreffen also nur Sie allein.</p>
+<p>Diese Einstellungen sind benutzerspezifisch, betreffen also nur Sie allein.</p>
 
 @using (Html.BeginForm("Save", "Settings", FormMethod.Post))
 {
@@ -21,12 +21,16 @@
 				@Html.ValidationMessageFor(model => model.ColorScheme, "", new {@class = "text-danger"})
 			</div>
 		</div>
-		
+
 		<div class="form-group">
 			@Html.LabelFor(model => model.ReportOccasions, new {@class = "control-label col-md-2"})
 			<div class="col-md-2">
-				@Html.EnumDropDownListFor(model => model.ReportOccasions, new {@class = "form-control", data_toggle = "tooltip", data_placement = "right", title = "Bestimmt die Bedingungen, zu denen das Sitzungsprotokoll im Nachgang per E-Mail verschickt wird."})
+				@Html.EnumDropDownListFor(model => model.ReportOccasions, new {@class = "form-control"})
+			
 				@Html.ValidationMessageFor(model => model.ReportOccasions, "", new {@class = "text-danger"})
+			</div>
+			<div class="col-md-3">
+					Bestimmt die Bedingungen, zu denen das Sitzungsprotokoll im Nachgang per E-Mail verschickt wird.
 			</div>
 		</div>
 
