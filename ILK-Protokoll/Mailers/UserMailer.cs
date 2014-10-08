@@ -1,5 +1,5 @@
-using System.Collections.Generic;
-using ILK_Protokoll.Areas.Session.Models;
+ï»¿using System.Collections.Generic;
+using System.Net;
 using ILK_Protokoll.Models;
 using Mvc.Mailer;
 
@@ -7,7 +7,7 @@ namespace ILK_Protokoll.Mailers
 {
 	public class UserMailer : MailerBase
 	{
-		private readonly string FQDN = "http://" + System.Net.Dns.GetHostName() + ".iwb.mw.tu-muenchen.de"; 
+		private readonly string FQDN = "http://" + Dns.GetHostName() + ".iwb.mw.tu-muenchen.de";
 
 		public UserMailer()
 		{
@@ -35,7 +35,7 @@ namespace ILK_Protokoll.Mailers
 			ViewBag.Host = FQDN;
 			var mail = Populate(x =>
 			{
-				x.Subject = string.Format("Neue Aufgabe »{0}« im ILK-Protokoll", assignment.Title);
+				x.Subject = string.Format("Neue Aufgabe Â»{0}Â« im ILK-Protokoll", assignment.Title);
 				x.ViewName = "NewAssignment";
 				x.To.Add(assignment.Owner.EmailAddress);
 			});
@@ -49,7 +49,7 @@ namespace ILK_Protokoll.Mailers
 			ViewBag.Host = FQDN;
 			var mail = Populate(x =>
 			{
-				x.Subject = string.Format("Die Aufgabe »{0}« wird bald fällig", assignment.Title);
+				x.Subject = string.Format("Die Aufgabe Â»{0}Â« wird bald fÃ¤llig", assignment.Title);
 				x.ViewName = "AssignmentReminder";
 				x.To.Add(assignment.Owner.EmailAddress);
 			});
@@ -63,7 +63,7 @@ namespace ILK_Protokoll.Mailers
 			ViewBag.Host = FQDN;
 			var mail = Populate(x =>
 			{
-				x.Subject = string.Format("Die Aufgabe »{0}« ist überfällig!", assignment.Title);
+				x.Subject = string.Format("Die Aufgabe Â»{0}Â« ist Ã¼berfÃ¤llig!", assignment.Title);
 				x.ViewName = "AssignmentOverdue";
 				x.To.Add(assignment.Owner.EmailAddress);
 			});
@@ -77,10 +77,14 @@ namespace ILK_Protokoll.Mailers
 			ViewBag.Host = FQDN;
 			var mail = Populate(x =>
 			{
-				x.Subject = string.Format("Eine Sitzung des Typs »{0}« wurde durchgeführt", report.SessionType.Name);
+				x.Subject = string.Format("Eine Sitzung des Typs Â»{0}Â« wurde durchgefÃ¼hrt", report.SessionType.Name);
 				x.ViewName = "NewSessionReport";
 				foreach (var user in report.SessionType.Attendees)
-					x.To.Add(user.EmailAddress);
+				{
+					if (user.Settings.ReportOccasions == SessionReportOccasions.Always
+					    || (user.Settings.ReportOccasions == SessionReportOccasions.WhenAbsent && !report.PresentUsers.Contains(user)))
+						x.To.Add(user.EmailAddress);
+				}
 			});
 			mail.Send();
 		}
