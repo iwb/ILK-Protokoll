@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using ILK_Protokoll.Areas.Administration.Models;
@@ -15,7 +14,7 @@ namespace ILK_Protokoll.Models
 			SessionTypes = new List<SessionType>();
 			UnreadTopics = new List<UnreadState>();
 			IsActive = false;
-			ColorScheme = ColorScheme.iwb;
+			Settings = new UserSettings();
 // ReSharper restore DoNotCallOverridableMethodsInConstructor
 		}
 
@@ -54,8 +53,7 @@ namespace ILK_Protokoll.Models
 		[InverseProperty("Attendees")]
 		public virtual ICollection<SessionType> SessionTypes { get; set; }
 
-		[DisplayName("Farbschema")]
-		public ColorScheme ColorScheme { get; set; }
+		public virtual UserSettings Settings { get; set; }
 
 		[Display(Name = "Push-Benachrichtigungen")]
 		public virtual ICollection<PushNotification> PushNotifications { get; set; }
@@ -91,11 +89,5 @@ namespace ILK_Protokoll.Models
 		}
 
 		#endregion
-	}
-
-	public enum ColorScheme
-	{
-		[Display(Name = "iwb Blau")] iwb,
-		[Display(Name = "RMV Grün")] RMV
 	}
 }

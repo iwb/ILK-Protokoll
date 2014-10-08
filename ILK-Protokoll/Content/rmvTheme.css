@@ -6830,6 +6830,10 @@ fieldset[disabled] .btn-hover-danger.active {
   margin-bottom: 0;
   margin-top: 10px;
 }
+.tooltip-inner {
+  width: 300px;
+  max-width: 300px;
+}
 /*IE-Hack*/
 @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
   /* IE10+ specific styles */

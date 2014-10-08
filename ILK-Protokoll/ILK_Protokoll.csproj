@@ -345,6 +345,10 @@
     <Compile Include="Migrations\201409161616525_userid_Mandatory.Designer.cs">
       <DependentUpon>201409161616525_userid_Mandatory.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201410081413383_refactoruserSettingsAddMailFreq.cs" />
+    <Compile Include="Migrations\201410081413383_refactoruserSettingsAddMailFreq.Designer.cs">
+      <DependentUpon>201410081413383_refactoruserSettingsAddMailFreq.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Assignment.cs" />
     <Compile Include="Models\Attachment.cs" />
@@ -355,6 +359,7 @@
     <Compile Include="Models\TopicHistory.cs" />
     <Compile Include="Models\TopicLock.cs" />
     <Compile Include="Models\UnreadState.cs" />
+    <Compile Include="Models\UserSettings.cs" />
     <Compile Include="ProfilingActionFilter.cs" />
     <Compile Include="ProfilingViewEngine.cs" />
     <Compile Include="util\DelayedRenderExtensions.cs" />
@@ -857,6 +862,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201409161616525_userid_Mandatory.resx">
       <DependentUpon>201409161616525_userid_Mandatory.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201410081413383_refactoruserSettingsAddMailFreq.resx">
+      <DependentUpon>201410081413383_refactoruserSettingsAddMailFreq.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

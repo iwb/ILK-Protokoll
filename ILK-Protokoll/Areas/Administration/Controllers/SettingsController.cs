@@ -18,17 +18,17 @@ namespace ILK_Protokoll.Areas.Administration.Controllers
 		public ActionResult Index()
 		{
 			var user = db.Users.Find(GetCurrentUserID());
-			return View(user);
+			return View(user.Settings);
 		}
 
 		// POST: Administration/Settings
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public ActionResult Save(ColorScheme colorScheme)
+		public ActionResult Save(UserSettings settings)
 		{
 			// GetCurrentUser() trackt keine Änderungen, daher den User neu aus der DB holen
 			var user = db.Users.Find(GetCurrentUserID());
-			user.ColorScheme = colorScheme;
+			user.Settings = settings;
 			db.SaveChanges();
 			Session["CurrentUser"] = null;
 			return RedirectToAction("Index");

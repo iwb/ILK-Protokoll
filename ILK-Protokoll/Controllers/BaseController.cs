@@ -32,7 +32,7 @@ namespace ILK_Protokoll.Controllers
 			base.OnActionExecuting(filterContext);
 			var user = GetCurrentUser();
 			ViewBag.CurrentUser = user;
-			ViewBag.CurrentColorScheme = user.ColorScheme;
+			ViewBag.CurrentColorScheme = user.Settings.ColorScheme;
 
 			var session = GetSession();
 			ViewBag.CurrentSession = session;
