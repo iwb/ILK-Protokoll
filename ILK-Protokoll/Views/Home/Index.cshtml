@@ -112,7 +112,8 @@
 		};
 		var ajaxspinner = new Spinner(opts).spin($('#topicsSpinner .ajax-spinner')[0]);
 
-		$('#topicsContainer').load("@Url.Action("_FetchTopics", "Home")", function() {
+		$('#topicsContainer').load("@Url.Action("_FetchTopics", "Home")", function () {
+			msnry.reloadItems();
 			PerformMasonryLayout();
 		});
 	</script>
