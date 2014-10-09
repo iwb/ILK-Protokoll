@@ -1,37 +1,44 @@
 ﻿@using ILK_Protokoll.util
 @model ILK_Protokoll.Models.Tag
 
+<div class="row">
+	<div class="col-lg-7">
 
-@using (Html.BeginForm("Create", "Tags", null, FormMethod.Post, new { @class = "form-inline" }))
-{
-	<div class="form-group col-sm-2 form-control-static">
-		<b class="">Neues Tag anlegen:</b>
+		@using (Html.BeginForm("Create", "Tags", null, FormMethod.Post, new {@class = "form-inline"}))
+		{
+			<div class="form-group form-control-static">
+				<b class="">Neues Tag anlegen:</b>
+			</div>
+			<span style="margin-right: 30px;"></span>
+			@Html.AntiForgeryToken()
+			<div class="form-group">
+				@Html.LabelFor(model => model.Name, htmlAttributes: new {@class = "sr-only"})
+				@Html.EditorFor(model => model.Name, new {htmlAttributes = new {@class = "form-control", placeholder = Html.GetDisplayName(model => model.Name)}})
+			</div>
+			<span style="margin-right: 30px;"></span>
+			<div class="form-group">
+				@Html.LabelFor(model => model.BackgroundColor, htmlAttributes: new {@class = "sr-only"})
+				@Html.EditorFor(model => model.BackgroundColor, new {htmlAttributes = new {@class = "form-control", style = "width: 100px;", id = "color-picker"}})
+			</div>
+			<span style="margin-right: 30px;"></span>
+			<div class="form-group">
+				<div class="form-control-static">
+					<span class="label" id="color-preview">Vorschau</span>
+				</div>
+			</div>
+			<span style="margin-right: 30px;"></span>
+			<div class="form-group">
+				<input type="submit" value="Speichern" class="btn btn-default" />
+			</div>
+			<span style="margin-right: 30px;"></span>
+			<div class="form-group">
+				@Html.ValidationMessageFor(model => model.Name, "", new {@class = "text-danger"})
+				@Html.ValidationMessageFor(model => model.BackgroundColor, "", new {@class = "text-danger"})
+				@Html.ValidationSummary(true, "", new {@class = "text-danger"})
+			</div>
+		}
 	</div>
-	@Html.AntiForgeryToken()
-	<div class="form-group col-sm-2">
-		@Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "sr-only" })
-		@Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", placeholder = Html.GetDisplayName(model => model.Name) } })
-	</div>
-
-	<div class="form-group col-sm-2">
-		@Html.LabelFor(model => model.BackgroundColor, htmlAttributes: new { @class = "sr-only" })
-		@Html.EditorFor(model => model.BackgroundColor, new { htmlAttributes = new { @class = "form-control", style = "width: 100%;", id="color-picker" } })
-	</div>
-	<div class="form-group col-sm-1">
-		<div class="form-control-static">
-			<span class="label" id="color-preview">Vorschau</span>
-		</div>
-	</div>
-
-	<div class="form-group">
-		<input type="submit" value="Speichern" class="btn btn-default" />
-	</div>
-	<div class="form-group">
-		@Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
-		@Html.ValidationMessageFor(model => model.BackgroundColor, "", new { @class = "text-danger" })
-		@Html.ValidationSummary(true, "", new { @class = "text-danger" })
-	</div>
-}
+</div>
 
 @using (Html.Delayed(null, "ColorPreview"))
 {
