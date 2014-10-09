@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
@@ -92,8 +93,17 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 			if (session.ID != id)
 				return HTTPStatus(422, "Die Sitzungs-ID stimmt nicht überein!");
 
+			session.PresentUsers.Clear();
 			db.ActiveSessions.Remove(session);
-			db.SaveChanges();
+			try
+			{
+				db.SaveChanges();
+			}
+			catch (DbEntityValidationException e)
+			{
+				var message = ErrorMessageFromException(e);
+				return HTTPStatus(500, message);
+			}
 			Session.Remove("SessionID");
 
 			return RedirectToAction("Index", "Master", new { Area = "Session" });
