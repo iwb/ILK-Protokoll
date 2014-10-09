@@ -1,0 +1,52 @@
+﻿@using ILK_Protokoll.Models
+@model IEnumerable<ILK_Protokoll.Models.Tag>
+
+@{
+	ViewBag.Title = "Tags verwalten";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@{
+	Html.RenderPartial("_Create", new Tag());
+}
+<div style="margin-top: 40px;"></div>
+
+<table class="table">
+	<thead>
+		<tr>
+			<th>
+				@Html.DisplayNameFor(model => model.Name)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.BGColor)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.TxtColor)
+			</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model)
+		{
+			<tr>
+				<td>
+					@Html.DisplayFor(modelItem => item.Name)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.BGColor)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.TxtColor)
+				</td>
+				<td>
+					@Html.ActionLink("Edit", "Edit", new {id = item.ID}) |
+					@Html.ActionLink("Details", "Details", new {id = item.ID}) |
+					@Html.ActionLink("Delete", "Delete", new {id = item.ID})
+				</td>
+			</tr>
+		}
+	</tbody>
+
+</table>

@@ -151,6 +151,7 @@
     <Compile Include="Areas\Administration\Controllers\SettingsController.cs" />
     <Compile Include="Areas\Administration\Controllers\RecycleBinController.cs" />
     <Compile Include="Areas\Administration\Controllers\SessionTypesController.cs" />
+    <Compile Include="Areas\Administration\Controllers\TagsController.cs" />
     <Compile Include="Areas\Administration\Controllers\UserController.cs" />
     <Compile Include="Areas\Session\Controllers\FinalizeController.cs" />
     <Compile Include="Areas\Session\Controllers\ListsController.cs" />
@@ -565,6 +566,11 @@
     <Content Include="Areas\Session\Views\Finalize\_ReportAttachments.cshtml" />
     <Content Include="Areas\Session\Views\Finalize\_ReportComments.cshtml" />
     <Content Include="Areas\Session\Views\Finalize\_ReportVotes.cshtml" />
+    <Content Include="Areas\Administration\Views\Tags\_Create.cshtml" />
+    <Content Include="Areas\Administration\Views\Tags\Delete.cshtml" />
+    <Content Include="Areas\Administration\Views\Tags\Details.cshtml" />
+    <Content Include="Areas\Administration\Views\Tags\Edit.cshtml" />
+    <Content Include="Areas\Administration\Views\Tags\Index.cshtml" />
     <None Include="Content\bootstrap\bootstrap.less" />
     <Content Include="Content\iwbTheme.less" />
     <Content Include="Areas\Administration\Views\web.config" />

@@ -5,7 +5,6 @@ using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
@@ -30,8 +29,8 @@ namespace ILK_Protokoll.util
 			var field = value.GetType().GetField(value.ToString());
 			return Attribute.GetCustomAttribute(field, typeof(T)) as T;
 		}
-		
-		public static string GetDescription(this Enum value)		
+
+		public static string GetDescription(this Enum value)
 		{
 			var attribute = value.GetAttribute<DescriptionAttribute>();
 			return attribute == null ? value.ToString() : attribute.Description;
@@ -126,6 +125,16 @@ namespace ILK_Protokoll.util
 				() => Activator.CreateInstance<TClass>(), typeof(TClass), name);
 
 			return new MvcHtmlString(metadata.DisplayName);
+		}
+
+		public static MvcHtmlString GetDisplayName<TModel, TProperty>(
+			this HtmlHelper<TModel> htmlHelper,
+			Expression<Func<TModel, TProperty>> expression
+			)
+		{
+			var metaData = ModelMetadata.FromLambdaExpression(expression, htmlHelper.ViewData);
+			string value = metaData.DisplayName ?? (metaData.PropertyName ?? ExpressionHelper.GetExpressionText(expression));
+			return MvcHtmlString.Create(value);
 		}
 
 		public static string RenderViewAsString(ControllerContext controllerContext, string viewName, object model)
