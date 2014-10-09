@@ -36,6 +36,7 @@ namespace ILK_Protokoll.DataLayer
 		public DbSet<PushNotification> PushNotifications { get; set; }
 		public DbSet<SessionReport> SessionReports { get; set; }
 		public DbSet<SessionType> SessionTypes { get; set; }
+		public DbSet<Tag> Tags { get; set; }
 		public DbSet<Topic> Topics { get; set; }
 		public DbSet<TopicHistory> TopicHistory { get; set; }
 		public DbSet<TopicLock> TopicLocks { get; set; }
