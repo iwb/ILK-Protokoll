@@ -350,6 +350,10 @@
     <Compile Include="Migrations\201410081413383_refactoruserSettingsAddMailFreq.Designer.cs">
       <DependentUpon>201410081413383_refactoruserSettingsAddMailFreq.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201410091049526_tags_added.cs" />
+    <Compile Include="Migrations\201410091049526_tags_added.Designer.cs">
+      <DependentUpon>201410091049526_tags_added.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Assignment.cs" />
     <Compile Include="Models\Attachment.cs" />
@@ -867,6 +871,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201410081413383_refactoruserSettingsAddMailFreq.resx">
       <DependentUpon>201410081413383_refactoruserSettingsAddMailFreq.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201410091049526_tags_added.resx">
+      <DependentUpon>201410091049526_tags_added.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -15,7 +15,7 @@ namespace ILK_Protokoll.Models
 		public Topic()
 		{
 			// ReSharper disable DoNotCallOverridableMethodsInConstructor
-			Tags = new List<Tag>();
+			Tags = new List<TagTopic>();
 			Comments = new List<Comment>();
 			Votes = new List<Vote>();
 			Assignments = new List<Assignment>();
@@ -58,7 +58,7 @@ namespace ILK_Protokoll.Models
 		public string Title { get; set; }
 
 		[Display(Name = "Tags")]
-		public virtual ICollection<Tag> Tags { get; set; }
+		public virtual ICollection<TagTopic> Tags { get; set; }
 
 		[Display(Name = "Uhrzeit")]
 		[Required(AllowEmptyStrings = true)]
