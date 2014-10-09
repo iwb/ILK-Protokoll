@@ -32,7 +32,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 				select s.ID).SingleOrDefault();
 
 			if (activeSession > 0)
-				return View(ResumeSession(activeSession)); 
+				return View(ResumeSession(activeSession));
 
 			var st = db.SessionTypes.Find(SessionTypeID);
 			if (st != null)
@@ -67,7 +67,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 		}
 
 		[HttpPost]
-		public ActionResult Edit(Dictionary<int, bool> Users,
+		public ActionResult Edit(Dictionary<int, bool> selectedUsers,
 			[Bind(Include = "AdditionalAttendees,Notes")] ActiveSession input)
 		{
 			var session = GetSession();
@@ -76,7 +76,15 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 
 			session.AdditionalAttendees = input.AdditionalAttendees;
 			session.Notes = input.Notes;
-			session.PresentUsers = Users.Where(kvp => kvp.Value).Select(kvp => db.Users.Find(kvp.Key)).ToList();
+
+			foreach (var kvp in selectedUsers)
+			{
+				if (kvp.Value)
+					session.PresentUsers.Add(db.Users.Find(kvp.Key));
+				else
+					session.PresentUsers.Remove(db.Users.Find(kvp.Key));
+			}
+
 			db.SaveChanges();
 
 			return RedirectToAction("Index", "Lists", new {Area = "Session"});
@@ -106,7 +114,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 			}
 			Session.Remove("SessionID");
 
-			return RedirectToAction("Index", "Master", new { Area = "Session" });
+			return RedirectToAction("Index", "Master", new {Area = "Session"});
 		}
 	}
 }

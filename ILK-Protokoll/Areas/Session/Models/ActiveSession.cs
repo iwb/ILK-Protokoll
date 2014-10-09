@@ -14,7 +14,7 @@ namespace ILK_Protokoll.Areas.Session.Models
 		public ActiveSession()
 		{
 			// ReSharper disable DoNotCallOverridableMethodsInConstructor
-			PresentUsers = new List<User>();
+			PresentUsers = new HashSet<User>();
 			LockedTopics = new List<TopicLock>();
 			// ReSharper restore DoNotCallOverridableMethodsInConstructor
 			Start = DateTime.Now;
