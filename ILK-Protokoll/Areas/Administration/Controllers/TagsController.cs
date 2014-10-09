@@ -6,15 +6,14 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using ILK_Protokoll.Controllers;
 using ILK_Protokoll.DataLayer;
 using ILK_Protokoll.Models;
 
 namespace ILK_Protokoll.Areas.Administration.Controllers
 {
-    public class TagsController : Controller
+    public class TagsController : BaseController
     {
-        private DataContext db = new DataContext();
-
         // GET: Administration/Tags
         public ActionResult Index()
         {
@@ -36,18 +35,10 @@ namespace ILK_Protokoll.Areas.Administration.Controllers
             return View(tag);
         }
 
-        // GET: Administration/Tags/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
         // POST: Administration/Tags/Create
-        // Aktivieren Sie zum Schutz vor übermäßigem Senden von Angriffen die spezifischen Eigenschaften, mit denen eine Bindung erfolgen soll. Weitere Informationen 
-        // finden Sie unter http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,Name,BGColor,TxtColor")] Tag tag)
+        public ActionResult Create(Tag tag)
         {
             if (ModelState.IsValid)
             {
@@ -56,7 +47,7 @@ namespace ILK_Protokoll.Areas.Administration.Controllers
                 return RedirectToAction("Index");
             }
 
-            return View(tag);
+	        return Index();
         }
 
         // GET: Administration/Tags/Edit/5

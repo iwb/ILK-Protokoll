@@ -50,6 +50,7 @@ namespace ILK_Protokoll.Models
 		}
 
 		[NotMapped]
+		[DisplayName("Textfarbe")]
 		public Color FontColor { get; set; }
 
 		public virtual ICollection<TagTopic> Topics { get; set; }
