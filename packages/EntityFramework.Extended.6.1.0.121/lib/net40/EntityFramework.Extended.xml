@@ -521,7 +521,7 @@
             </para>
             <para>
             The CacheManager also supports tagging the cache entry to support expiring by tag. <see cref="T:EntityFramework.Caching.CacheKey"/> supports a list
-            of tags to associate with the cache entry.  Use <see cref="M:EntityFramework.Caching.CacheManager.Expire(System.String)"/> to evict the cache entry by <see cref="T:EntityFramework.Caching.CacheTag"/>.
+            of tags to associate with the cache entry.  Use <see cref="F:Expire"/> to evict the cache entry by <see cref="T:EntityFramework.Caching.CacheTag"/>.
             </para>
             </remarks>
             <example>
@@ -1049,9 +1049,26 @@
             Copyright notice http://msdn.microsoft.com/en-gb/cc300389.aspx#O
             </remarks>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:EntityFramework.Caching.Evaluator.PartialEval(System.Linq.Expressions.Expression,System.Func{System.Linq.Expressions.Expression,System.Boolean})" -->
-        <!-- Badly formed XML comment ignored for member "M:EntityFramework.Caching.Evaluator.PartialEval(System.Linq.Expressions.Expression)" -->
-        <!-- Badly formed XML comment ignored for member "T:EntityFramework.Caching.Evaluator.SubtreeEvaluator" -->
+        <member name="M:EntityFramework.Caching.Evaluator.PartialEval(System.Linq.Expressions.Expression,System.Func{System.Linq.Expressions.Expression,System.Boolean})">
+            <summary>
+            Performs evaluation and replacement of independent sub-trees
+            </summary>
+            <param name="expression">The root of the expression tree.</param>
+            <param name="fnCanBeEvaluated">A function that decides whether a given expression node can be part of the local function.</param>
+            <returns>A new tree with sub-trees evaluated and replaced.</returns>
+        </member>
+        <member name="M:EntityFramework.Caching.Evaluator.PartialEval(System.Linq.Expressions.Expression)">
+            <summary>
+            Performs evaluation and replacement of independent sub-trees
+            </summary>
+            <param name="expression">The root of the expression tree.</param>
+            <returns>A new tree with sub-trees evaluated and replaced.</returns>
+        </member>
+        <member name="T:EntityFramework.Caching.Evaluator.SubtreeEvaluator">
+            <summary>
+            Evaluates and replaces sub-trees when first candidate is reached (top-down)
+            </summary>
+        </member>
         <member name="T:EntityFramework.Caching.Evaluator.Nominator">
             <summary>
             Performs bottom-up analysis to determine which nodes can possibly
@@ -1519,7 +1536,7 @@
             Executes a delete statement using the query to filter the rows to be deleted.
             </summary>
             <typeparam name="TEntity">The type of the entity.</typeparam>
-            <param name="source">The <see cref="!:IQueryable`1"/> used to generate the where clause for the delete statement.</param>
+            <param name="source">The <see cref="T:IQueryable`1"/> used to generate the where clause for the delete statement.</param>
             <returns>The number of row deleted.</returns>
             <example>Delete all users with email domain @test.com.
             <code><![CDATA[
@@ -1756,6 +1773,26 @@
             An <see cref="T:EntityFramework.Mapping.EntityMap"/> with the mapping data.
             </returns>
         </member>
+        <member name="M:EntityFramework.Mapping.MetadataMappingProvider.GetEntityMap(System.Type,System.Data.Entity.DbContext)">
+            <summary>
+            Gets the <see cref="T:EntityFramework.Mapping.EntityMap"/> for the specified <paramref name="type"/>.
+            </summary>
+            <param name="type">The type of the entity.</param>
+            <param name="dbContext">The database context to load metadata from.</param>
+            <returns>
+            An <see cref="T:EntityFramework.Mapping.EntityMap"/> with the mapping data.
+            </returns>
+        </member>
+        <member name="M:EntityFramework.Mapping.MetadataMappingProvider.GetEntityMap(System.Type,System.Data.Entity.Core.Objects.ObjectContext)">
+            <summary>
+            Gets the <see cref="T:EntityFramework.Mapping.EntityMap"/> for the specified <paramref name="type"/>.
+            </summary>
+            <param name="type">The type of the entity.</param>
+            <param name="objectContext">The object context to load metadata from.</param>
+            <returns>
+            An <see cref="T:EntityFramework.Mapping.EntityMap"/> with the mapping data.
+            </returns>
+        </member>
         <member name="T:EntityFramework.Mapping.MappingResolver">
             <summary>
             Static class to resolve Entity Framework mapping.
@@ -1950,10 +1987,12 @@
         </member>
         <member name="M:EntityFramework.Future.FutureValue`1.op_Implicit(EntityFramework.Future.FutureValue{`0})~`0">
             <summary>
-            Performs an implicit conversion from <see cref="T:EntityFramework.Future.FutureValue`1"/> to <see cref="!:T"/>.
+            Performs an implicit conversion from <see cref="T:EntityFramework.Future.FutureValue`1" /> to T.
             </summary>
             <param name="futureValue">The future value.</param>
-            <returns>The result of forcing this lazy value.</returns>
+            <returns>
+            The result of forcing this lazy value.
+            </returns>
         </member>
         <member name="P:EntityFramework.Future.FutureValue`1.Value">
             <summary>
@@ -2758,6 +2797,15 @@
             </summary>
             <param name="type">The type to create.</param>
             <returns>A new instance of the specified type.</returns>
+        </member>
+        <member name="M:EntityFramework.Reflection.LateBinder.InvokeMethod(System.Object,System.String,System.Object[])">
+            <summary>
+            Invokes a method by <paramref name="name"/>.
+            </summary>
+            <param name="target">The target instance to invoke the method on.</param>
+            <param name="name">The name of the method to invoke.</param>
+            <param name="arguments">The arguments for the method.</param>
+            <returns>The result of the method call</returns>
         </member>
         <member name="T:EntityFramework.Reflection.MethodAccessor">
             <summary>
