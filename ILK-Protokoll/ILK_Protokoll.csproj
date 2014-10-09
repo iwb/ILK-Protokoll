@@ -568,7 +568,6 @@
     <Content Include="Areas\Session\Views\Finalize\_ReportVotes.cshtml" />
     <Content Include="Areas\Administration\Views\Tags\_Create.cshtml" />
     <Content Include="Areas\Administration\Views\Tags\Delete.cshtml" />
-    <Content Include="Areas\Administration\Views\Tags\Details.cshtml" />
     <Content Include="Areas\Administration\Views\Tags\Edit.cshtml" />
     <Content Include="Areas\Administration\Views\Tags\Index.cshtml" />
     <None Include="Content\bootstrap\bootstrap.less" />

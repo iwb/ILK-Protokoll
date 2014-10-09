@@ -1,4 +1,5 @@
 ﻿@using ILK_Protokoll.Models
+@using ILK_Protokoll.util
 @model IEnumerable<ILK_Protokoll.Models.Tag>
 
 @{
@@ -12,17 +13,14 @@
 }
 <div style="margin-top: 40px;"></div>
 
-<table class="table">
+<table class="table table-hover table-striped table-sortable">
 	<thead>
 		<tr>
-			<th>
-				@Html.DisplayNameFor(model => model.Name)
+			<th class="col-xs-5">
+				Tag
 			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.BackgroundColor)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.TxtColor)
+			<th class="col-xs-2">
+				Verwendung
 			</th>
 			<th>Aktionen</th>
 		</tr>
@@ -32,13 +30,12 @@
 		{
 			<tr>
 				<td>
-					@Html.DisplayFor(modelItem => item.Name)
+					<span class="label" style="font-size: 100%; color: @item.FontColor.ToHex(); background-color: @item.BackgroundColor.ToHex();">
+						@item.Name
+					</span>
 				</td>
 				<td>
-					@Html.DisplayFor(modelItem => item.BackgroundColor)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.FontColor)
+					@Html.DisplayFor(model => item.Topics.Count) mal
 				</td>
 				<td>
 					@Html.ActionLink("Bearbeiten", "Edit", new {id = item.ID}) |

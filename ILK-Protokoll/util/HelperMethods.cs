@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
@@ -220,6 +221,11 @@ namespace ILK_Protokoll.util
 				attrbituesDictionary.Keys.Select(
 					key => String.Format("{0}=\"{1}\"", key,
 						htmlHelper.Encode(attrbituesDictionary[key])))));
+		}
+
+		public static MvcHtmlString ToHex(this Color c)
+		{
+			return new MvcHtmlString(ColorTranslator.ToHtml(c));
 		}
 	}
 }

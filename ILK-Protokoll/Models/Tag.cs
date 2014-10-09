@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Drawing;
+using ILK_Protokoll.Models;
 
 namespace ILK_Protokoll.Models
 {
@@ -39,7 +40,7 @@ namespace ILK_Protokoll.Models
 			set
 			{
 				_backgroundColor = value;
-				FontColor = value.GetBrightness() < 0.5 ? Color.White : Color.Black;
+				FontColor = GetContrastColor(value);
 			}
 		}
 
@@ -54,6 +55,12 @@ namespace ILK_Protokoll.Models
 		public Color FontColor { get; set; }
 
 		public virtual ICollection<TagTopic> Topics { get; set; }
+
+		private Color GetContrastColor(Color c)
+		{
+			var brightness = (299 * c.R + 587 * c.G + 114 * c.B)/1000;
+			return brightness >= 128 ? Color.Black : Color.White;
+		}
 	}
 
 	public class TagTopic

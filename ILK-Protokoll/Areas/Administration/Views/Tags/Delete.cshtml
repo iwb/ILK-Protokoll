@@ -1,48 +1,37 @@
 ﻿@model ILK_Protokoll.Models.Tag
 
 @{
-    ViewBag.Title = "Delete";
+	ViewBag.Title = "Tag Löschen";
 }
 
-<h2>Delete</h2>
+<h2>@ViewBag.Title</h2>
 
-<h3>Are you sure you want to delete this?</h3>
+<h4>Dieser Schritt kann nicht rückgängig gemacht werden!</h4>
 <div>
-    <h4>Tag</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
+	<dl class="dl-horizontal">
+		<dt>@Html.DisplayNameFor(model => model.Name)</dt>
+		<dd>
+			@Html.DisplayFor(model => model.Name)
+		</dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
+		<dt>@Html.DisplayNameFor(model => model.BackgroundColor)</dt>
+		<dd>
+			@Html.DisplayFor(model => model.BackgroundColor)
+		</dd>
+		 
+		<dt>Verwendung</dt>
+		<dd>
+			Dieser Tag wird @Html.DisplayFor(model => model.Topics.Count) mal verwendet.
+		</dd>
+	</dl>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.BGColor)
-        </dt>
+	@using (Html.BeginForm())
+	{
+		@Html.AntiForgeryToken()
 
-        <dd>
-            @Html.DisplayFor(model => model.BGColor)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.TxtColor)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.TxtColor)
-        </dd>
-
-    </dl>
-
-    @using (Html.BeginForm()) {
-        @Html.AntiForgeryToken()
-
-        <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
-        </div>
-    }
+		<div class="form-actions">
+			<input type="submit" value="Löschen" class="btn btn-danger" /> |
+			@Html.ActionLink("Zurück zum Index", "Index")
+		</div>
+	}
 </div>
