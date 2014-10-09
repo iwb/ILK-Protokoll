@@ -67,7 +67,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 		}
 
 		[HttpPost]
-		public ActionResult Edit(Dictionary<int, bool> selectedUsers,
+		public ActionResult Edit([Bind(Prefix = "Users")] Dictionary<int, bool> selectedUsers,
 			[Bind(Include = "AdditionalAttendees,Notes")] ActiveSession input)
 		{
 			var session = GetSession();
