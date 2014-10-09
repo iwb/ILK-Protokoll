@@ -393,6 +393,12 @@
     <Compile Include="ViewModels\VoteListViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\bootstrap-multiselect\bootstrap-multiselect.css">
+      <DependentUpon>bootstrap-multiselect.less</DependentUpon>
+    </Content>
+    <Content Include="Content\bootstrap-multiselect\bootstrap-multiselect.min.css">
+      <DependentUpon>bootstrap-multiselect.css</DependentUpon>
+    </Content>
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Content\images\animated-overlay.gif" />
     <Content Include="Content\images\ui-bg_flat_0_aaaaaa_40x100.png" />
@@ -570,6 +576,10 @@
     <Content Include="Areas\Administration\Views\Tags\Delete.cshtml" />
     <Content Include="Areas\Administration\Views\Tags\Edit.cshtml" />
     <Content Include="Areas\Administration\Views\Tags\Index.cshtml" />
+    <Content Include="Content\bootstrap-multiselect\bootstrap-multiselect.less" />
+    <Content Include="Content\bootstrap-multiselect\bootstrap-multiselect.css.map">
+      <DependentUpon>bootstrap-multiselect.css</DependentUpon>
+    </Content>
     <None Include="Content\bootstrap\bootstrap.less" />
     <Content Include="Content\iwbTheme.less" />
     <Content Include="Areas\Administration\Views\web.config" />
@@ -661,7 +671,7 @@
     <None Include="Content\variables_rmv.less" />
     <None Include="Content\variables.less" />
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />
-    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap-multiselect.js" />
     <Content Include="Scripts\jquery-2.1.1.js" />
     <Content Include="Scripts\jquery-ui-1.11.1.js" />
     <Content Include="Scripts\jquery.cookie.js" />
@@ -753,6 +763,7 @@
     <Content Include="Views\Topics\_EditProposal.cshtml" />
     <Content Include="Views\Home\_Topics.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\Color.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\Tag.cshtml" />
     <None Include="Web.Integration.config" />
     <None Include="Web.Production.config" />
     <None Include="Web.Testing.config" />

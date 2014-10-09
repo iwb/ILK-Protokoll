@@ -6585,6 +6585,10 @@ dl {
   padding: .3em .6em .3em;
   margin-right: 2px;
 }
+.largetags .label {
+  font-size: 100%;
+  margin-right: 10px;
+}
 .btn-hover-primary {
   color: #333333;
   background-color: #ffffff;

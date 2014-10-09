@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Bootstrap Multiselect v0.9.8 (https://github.com/davidstutz/bootstrap-multiselect)
  * 
  * Copyright 2012 - 2014 David Stutz
@@ -246,8 +246,8 @@
             // possible options: 'text', 'value', 'both'
             filterBehavior: 'text',
             preventInputChangeEvent: false,
-            nonSelectedText: 'None selected',
-            nSelectedText: 'selected',
+            nonSelectedText: 'Nichts gewählt',
+            nSelectedText: 'gewählt',
             numberDisplayed: 3,
             disableIfEmpty: false,
             templates: {

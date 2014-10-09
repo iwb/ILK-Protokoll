@@ -120,6 +120,7 @@ namespace ILK_Protokoll.Controllers
 				.Include(t => t.Decision.Report)
 				.Include(t => t.Lock)
 				.Include(t => t.Lock.Session.Manager)
+				.Include(t => t.Tags)
 				.Single(t => t.ID == id.Value);
 
 			if (topic == null)
@@ -132,6 +133,8 @@ namespace ILK_Protokoll.Controllers
 			ViewBag.TopicHistoryCount = db.TopicHistory.Count(t => t.TopicID == id.Value);
 			ViewBag.IsEditable = topic.IsEditableBy(GetCurrentUser(), GetSession()).IsAuthorized;
 			ViewBag.Reporting = reporting;
+			ViewBag.TagList = CreateTagSelectList(topic.Tags);
+
 			topic.IsLocked = IsTopicLocked(id.Value);
 
 			if (reporting)

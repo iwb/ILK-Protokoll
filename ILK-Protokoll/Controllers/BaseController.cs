@@ -104,6 +104,28 @@ namespace ILK_Protokoll.Controllers
 			return db.GetUserOrdered(GetCurrentUser()).ToDictionary(u => u, valueSelector);
 		}
 
+		protected IEnumerable<SelectListItem> CreateTagSelectList(IEnumerable<TagTopic> preselectedTags)
+		{
+			return CreateTagSelectList(preselectedTags.Select(tt => tt.TagID));
+		}
+
+		protected IEnumerable<SelectListItem> CreateTagSelectList(IEnumerable<int> preselectedTags)
+		{
+			var preselection = preselectedTags.ToArray();
+			var list = db.Tags.ToList();
+			var res = new List<SelectListItem>();
+			foreach (var tag in list)
+			{
+				res.Add(new SelectListItem()
+				{
+					Text = tag.Name,
+					Value = tag.ID.ToString(),
+					Selected = preselection.Contains(tag.ID)
+				});
+			}
+			return res;
+		}
+
 		public bool IsTopicLocked(int topicID)
 		{
 			return IsTopicLocked(db.Topics
@@ -114,7 +136,7 @@ namespace ILK_Protokoll.Controllers
 
 		protected bool IsTopicLocked(Topic t)
 		{
-			var tlock = db.TopicLocks.Where(tl => tl.TopicID == t.ID).Select(tl => new {tl.TopicID, tl.Session.ManagerID}).SingleOrDefault();
+			var tlock = db.TopicLocks.Where(tl => tl.TopicID == t.ID).Select(tl => new { tl.TopicID, tl.Session.ManagerID }).SingleOrDefault();
 			return tlock != null && tlock.ManagerID != GetCurrentUserID();
 		}
 
@@ -126,7 +148,7 @@ namespace ILK_Protokoll.Controllers
 				if (lazyusers.ContainsKey(user.ID))
 					lazyusers[user.ID].LatestChange = DateTime.Now;
 				else
-					topic.UnreadBy.Add(new UnreadState {TopicID = topic.ID, UserID = user.ID});
+					topic.UnreadBy.Add(new UnreadState { TopicID = topic.ID, UserID = user.ID });
 			}
 		}
 		protected void MarkAsRead(Topic topic)

@@ -19,7 +19,8 @@ namespace ILK_Protokoll
 				"~/Scripts/jquery.tablesorter.js",
 				"~/Scripts/jquery.json.js",
 				"~/Scripts/jquery.cookie.js",
-				"~/Scripts/persistentTablesorter.js"));
+				"~/Scripts/persistentTablesorter.js",
+				"~/Scripts/bootstrap-multiselect.js"));
 
 			bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
 				"~/Scripts/jquery.validate*"));
@@ -36,7 +37,8 @@ namespace ILK_Protokoll
 
 			bundles.Add(new StyleBundle("~/Content/css").Include(
 				"~/Content/themes/iwb/jquery-ui.*",
-				"~/Content/other/jquery.rtResponsiveTables.css"));
+				"~/Content/other/jquery.rtResponsiveTables.css",
+				"~/Content/bootstrap-multiselect/bootstrap-multiselect.css"));
 
 			// Festlegen von EnableOptimizations auf false für Debugzwecke. Weitere Informationen
 			// finden Sie unter http://go.microsoft.com/fwlink/?LinkId=301862

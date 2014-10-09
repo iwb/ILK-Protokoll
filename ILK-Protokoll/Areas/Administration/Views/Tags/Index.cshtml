@@ -13,7 +13,7 @@
 }
 <div style="margin-top: 40px;"></div>
 
-<table class="table table-hover table-striped table-sortable">
+<table class="table table-hover table-striped table-sortable largetags">
 	<thead>
 		<tr>
 			<th class="col-xs-5">
@@ -30,7 +30,7 @@
 		{
 			<tr>
 				<td>
-					<span class="label" style="font-size: 100%; color: @item.FontColor.ToHex(); background-color: @item.BackgroundColor.ToHex();">
+					<span class="label" style="color: @item.FontColor.ToHex(); background-color: @item.BackgroundColor.ToHex();">
 						@item.Name
 					</span>
 				</td>
@@ -38,8 +38,8 @@
 					@Html.DisplayFor(model => item.Topics.Count) mal
 				</td>
 				<td>
-					@Html.ActionLink("Bearbeiten", "Edit", new {id = item.ID}) |
-					@Html.ActionLink("Löschen", "Delete", new {id = item.ID})
+					@Html.ActionLink("Bearbeiten", "Edit", new { id = item.ID }) |
+					@Html.ActionLink("Löschen", "Delete", new { id = item.ID })
 				</td>
 			</tr>
 		}
