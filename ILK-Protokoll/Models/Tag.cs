@@ -14,7 +14,7 @@ namespace ILK_Protokoll.Models
 
 		public Tag()
 		{
-			BackgroundColor = Color.DarkRed;
+			BackgroundColor = Color.Firebrick;
 // ReSharper disable DoNotCallOverridableMethodsInConstructor
 			Topics = new List<TagTopic>();
 // ReSharper restore DoNotCallOverridableMethodsInConstructor

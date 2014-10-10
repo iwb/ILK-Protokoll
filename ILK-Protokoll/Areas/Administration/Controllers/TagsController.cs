@@ -20,21 +20,6 @@ namespace ILK_Protokoll.Areas.Administration.Controllers
             return View(db.Tags.ToList());
         }
 
-        // GET: Administration/Tags/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Tag tag = db.Tags.Find(id);
-            if (tag == null)
-            {
-                return HttpNotFound();
-            }
-            return View(tag);
-        }
-
         // POST: Administration/Tags/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -66,11 +51,9 @@ namespace ILK_Protokoll.Areas.Administration.Controllers
         }
 
         // POST: Administration/Tags/Edit/5
-        // Aktivieren Sie zum Schutz vor übermäßigem Senden von Angriffen die spezifischen Eigenschaften, mit denen eine Bindung erfolgen soll. Weitere Informationen 
-        // finden Sie unter http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,Name,BGColor,TxtColor")] Tag tag)
+        public ActionResult Edit(Tag tag)
         {
             if (ModelState.IsValid)
             {

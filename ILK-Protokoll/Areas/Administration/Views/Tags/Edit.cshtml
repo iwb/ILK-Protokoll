@@ -1,53 +1,95 @@
-﻿@model ILK_Protokoll.Models.Tag
+﻿@using ILK_Protokoll.util
+@model ILK_Protokoll.Models.Tag
 
 @{
-    ViewBag.Title = "Edit";
+	ViewBag.Title = "Edit";
 }
 
-<h2>Edit</h2>
+<h2>@ViewBag.Title</h2>
 
 @using (Html.BeginForm())
 {
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>Tag</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.ID)
+	@Html.AntiForgeryToken()
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
-            </div>
-        </div>
+	<div class="form-horizontal">
+		@Html.ValidationSummary(true, "", new {@class = "text-danger"})
+		@Html.HiddenFor(model => model.ID)
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.BGColor, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.BGColor, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.BGColor, "", new { @class = "text-danger" })
-            </div>
-        </div>
+		<div class="form-group">
+			@Html.LabelFor(model => model.Name, htmlAttributes: new {@class = "control-label col-sm-2"})
+			<div class="col-sm-3">
+				@Html.EditorFor(model => model.Name, new {htmlAttributes = new {@class = "form-control"}})
+				@Html.ValidationMessageFor(model => model.Name, "", new {@class = "text-danger"})
+			</div>
+		</div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.TxtColor, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.TxtColor, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.TxtColor, "", new { @class = "text-danger" })
-            </div>
-        </div>
+		<div class="form-group">
+			@Html.LabelFor(model => model.BackgroundColor, htmlAttributes: new {@class = "control-label col-sm-2"})
+			<div class="col-sm-3">
+				@Html.EditorFor(model => model.BackgroundColor, new {htmlAttributes = new {@class = "form-control", id = "bg-color-picker"}})
+				@Html.ValidationMessageFor(model => model.BackgroundColor, "", new {@class = "text-danger"})
+			</div>
+		</div>
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
-        </div>
-    </div>
+		<div class="form-group">
+			@Html.LabelFor(model => model.FontColor, htmlAttributes: new {@class = "control-label col-sm-2"})
+			<div class="col-sm-3">
+				@Html.EditorFor(model => model.FontColor, new {htmlAttributes = new {@class = "form-control", id = "font-color-picker"}})
+				@Html.ValidationMessageFor(model => model.FontColor, "", new {@class = "text-danger"})
+			</div>
+		</div>
+
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-3">
+				<div class="form-control-static">
+					<span class="label" id="color-preview">Vorschau</span>
+				</div>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<div class="col-md-offset-2 col-sm-3">
+				<input type="submit" value="Speichern" class="btn btn-primary" />
+			</div>
+		</div>
+	</div>
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+	@Html.ActionLink("Back to List", "Index")
 </div>
+
+@using (Html.Delayed(null, "ColorPreview"))
+{
+	<script type="text/javascript">
+		function getContrastYIQ(hexcolor) {
+			if (hexcolor[0] == '#') {
+				hexcolor = hexcolor.substr(1);
+			}
+			if (hexcolor.length < 3) {
+				return undefined;
+			} else if (hexcolor.length < 6) {
+				hexcolor = hexcolor[0] + hexcolor[0] + hexcolor[1] + hexcolor[1] + hexcolor[2] + hexcolor[2];
+			}
+			var r = parseInt(hexcolor.substr(0, 2), 16);
+			var g = parseInt(hexcolor.substr(2, 2), 16);
+			var b = parseInt(hexcolor.substr(4, 2), 16);
+			var yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
+			return (yiq >= 128) ? '#000000' : '#FFFFFF';
+		}
+
+		$('#bg-color-picker').on("change keyup", function() {
+			$('#color-preview').css("background-color", $(this)[0].value);
+			var ccolor = getContrastYIQ($(this)[0].value);
+			if (ccolor !== undefined) {
+				$('#font-color-picker')[0].value = ccolor;
+				$('#font-color-picker').change();
+			}
+		});
+
+		$('#font-color-picker').on("change keyup", function() {
+			$('#color-preview').css("color", $(this)[0].value);
+		});
+		$('#bg-color-picker').change();
+	</script>
+}
