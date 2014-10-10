@@ -11,7 +11,9 @@ namespace ILK_Protokoll.ViewModels
 		{
 			ShowReadonly = false;
 			ShowPriority = -1;
+
 // ReSharper disable once DoNotCallOverridableMethodsInConstructor
+			ShowTagsID = new List<int>();
 			Topics = new List<Topic>();
 		}
 
@@ -22,7 +24,7 @@ namespace ILK_Protokoll.ViewModels
 
 		[DisplayName("Schreibgeschützte")]
 		public bool ShowReadonly { get; set; }
-
+		
 		public int ShowPriority { get; set; }
 
 		public IEnumerable<SelectListItem> PriorityList { get; set; }
@@ -35,6 +37,10 @@ namespace ILK_Protokoll.ViewModels
 
 		public SelectList UserList { get; set; }
 
-		public virtual ICollection<Topic> Topics { get; set; }
+		public virtual ICollection<int> ShowTagsID { get; set; }
+
+		public IEnumerable<SelectListItem> TagList { get; set; }
+
+		public ICollection<Topic> Topics { get; set; }
 	}
 }

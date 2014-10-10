@@ -15,45 +15,62 @@
 	<div class="panel-body">
 		@using (Html.BeginForm("Index", "Topics", FormMethod.Get, new {@class = "form-inline"}))
 		{
-			<div class="col-sm-4">
+			<div class="col-sm-3">
 				<div class="row">
 					<div class="form-group">
-						@Html.EditorFor(model => model.ShowReadonly)
+						@Html.EditorFor(model => model.ShowReadonly, new { htmlAttributes = new { @class = "form-control" }})
 						@Html.LabelFor(model => model.ShowReadonly)
 					</div>
 				</div>
 				<div class="row">
 					<div class="form-group">
-						@Html.DropDownListFor(model => model.ShowPriority, Model.PriorityList, new {@class = "form-control", style = "min-width:180px;"})
+						@Html.ListBoxFor(model => model.ShowTagsID, Model.TagList, new { @class = "multiselect" })
+						<script type="text/javascript">
+							$(document).ready(function () {
+								$('#ShowTagsID.multiselect').multiselect({
+									nonSelectedText: 'Alle Themen'
+								});
+							});
+						</script>
 					</div>
 				</div>
 			</div>
 
-			<div class="col-sm-4">
+			<div class="col-sm-3">
 				<div class="row">
 					<div class="form-group">
-						@Html.DropDownListFor(model => model.SessionTypeID, Model.SessionTypeList, "(Alle Sitzungstypen)", new {@class = "form-control", style = "min-width:200px;"})
+						@Html.DropDownListFor(model => model.ShowPriority, Model.PriorityList, new { @class = "form-control", style = "min-width:180px;" })
 					</div>
 				</div>
 				<div class="row">
 					<div class="form-group">
-						@Html.DropDownListFor(model => model.Timespan, Model.TimespanList, "(Zeitraum beliebig)", new {@class = "form-control", style = "min-width:200px;"})
+						@Html.DropDownListFor(model => model.SessionTypeID, Model.SessionTypeList, "(Alle Sitzungstypen)", new {@class = "form-control", style = "min-width:180px;"})
 					</div>
 				</div>
 			</div>
 
-			<div class="col-sm-4">
+			<div class="col-sm-3">
+				<div class="row">
+					<div class="form-group">
+						@Html.DropDownListFor(model => model.Timespan, Model.TimespanList, "(Zeitraum beliebig)", new { @class = "form-control", style = "min-width:180px;" })
+					</div>
+				</div>
 				<div class="row">
 					<div class="form-group">
 						@Html.DropDownListFor(m => m.OwnerID, Model.UserList, "(Alle Besitzer)", new {@class = "form-control", style = "min-width:180px;"})
 					</div>
 				</div>
-				<div class="row">
-					<div class="form-group">
-						<input type="submit" value="Filtern" class="btn btn-primary" />
-					</div>
-				</div>
 			</div>
+
+	<div class="col-sm-2">
+		<div class="row">
+		</div>
+		<div class="row">
+			<div class="form-group">
+				<input type="submit" value="Filtern" class="btn btn-primary" />
+			</div>
+		</div>
+	</div>
 		}
 	</div>
 </div>

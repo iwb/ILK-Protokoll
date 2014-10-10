@@ -55,11 +55,22 @@ namespace ILK_Protokoll.Controllers
 			if (filter.OwnerID != 0)
 				query = query.Where(a => a.OwnerID == filter.OwnerID);
 
+			if (filter.ShowTagsID.Count > 0)
+			{
+				var desired = filter.ShowTagsID.ToArray();
+				query = query.Where(topic => topic.Tags.Any(tt => desired.Contains(tt.TagID)));
+			}
+			
 			filter.UserList = CreateUserSelectList();
 			filter.PriorityList = PriorityChoices(filter.ShowPriority);
 			filter.SessionTypeList = new SelectList(db.GetActiveSessionTypes(), "ID", "Name");
-
 			filter.TimespanList = TimespanChoices(filter.Timespan);
+			filter.TagList = db.Tags.Select(tag => new SelectListItem
+			{
+				Text = tag.Name,
+				Value = tag.ID.ToString()
+			}).ToList();
+
 			filter.Topics = query.OrderByDescending(t => t.Priority).ThenBy(t => t.Title).ToList();
 
 			return View(filter);
@@ -148,7 +159,7 @@ namespace ILK_Protokoll.Controllers
 		[HttpPost]
 		public ActionResult AddTag(int id, int tagid)
 		{
-			var relation = new TagTopic { TopicID = id, TagID = tagid};
+			var relation = new TagTopic { TopicID = id, TagID = tagid };
 			db.TagTopics.AddOrUpdate(t => new { t.TopicID, t.TagID }, relation);
 			try
 			{
@@ -314,7 +325,7 @@ namespace ILK_Protokoll.Controllers
 					return HTTPStatus(500, message);
 				}
 
-				return RedirectToAction("Details", new {Area = "", id = input.ID});
+				return RedirectToAction("Details", new { Area = "", id = input.ID });
 			}
 			input.SessionType = topic.SessionType;
 			input.SessionTypeList = new SelectList(db.GetActiveSessionTypes(), "ID", "Name", input.SessionTypeID);
