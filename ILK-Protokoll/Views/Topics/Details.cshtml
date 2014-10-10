@@ -5,6 +5,14 @@
 
 @{
 	ViewBag.Title = "Details (" + Model.Title + ")";
+	IDictionary<Tag, bool> tagDict = ViewBag.TagDict;
+	var selectList = tagDict.Select(kvp =>
+		new SelectListItem
+		{
+			Text = kvp.Key.Name,
+			Value = kvp.Key.ID.ToString(),
+			Selected = kvp.Value
+		});
 }
 
 @if (!ViewBag.Reporting)
@@ -12,10 +20,7 @@
 	<h2>
 		@ViewBag.Title
 		<span id="taglist">
-			@foreach (var tag in Model.Tags)
-			{
-				@Html.DisplayFor(model => tag.Tag)
-			}
+			@Html.DisplayFor(model => tagDict, "Dictionary_Tag_bool")
 		</span>
 	</h2>
 	@Html.ActionLink("Zurück zum Index", "Index")
@@ -23,11 +28,28 @@
 }
 <div style="margin-bottom: 20px;">
 	<b>Tags: </b>
-	@Html.ListBox("Tags", (IEnumerable<SelectListItem>)(ViewBag.TagList), new { multiple = "multiple", @class = "multiselect" })
-
+	@Html.ListBox("SelectedTags", selectList, new { @class = "multiselect" } )
+	<span id="successIndicator" class="text-success glyphicon glyphicon-ok" style="display: none;"></span>
 	<script type="text/javascript">
 		$(document).ready(function() {
-			$('#Tags.multiselect').multiselect({nonSelectedText: 'Keine Tags ausgewählt'});
+			$('#SelectedTags.multiselect').multiselect({
+				nonSelectedText: 'Keine Tags ausgewählt',
+				onChange: function(element, checked) {
+					var tagId = element.attr("value");
+					$('#taglist .label[data-tagid=' + tagId + ']').toggle(checked);
+					var targetUrl = checked ?
+						"@Url.Action("AddTag", "Topics", new {id = Model.ID})?tagid=" :
+						"@Url.Action("RemoveTag", "Topics", new {id = Model.ID})?tagid=";
+
+					$.ajax({
+						url: targetUrl + tagId,
+						type: 'POST',
+						success: function(result) {
+							$('#successIndicator').finish().slideDown(400).fadeOut(1000);
+						}
+					}); //end ajax
+				}
+			});
 		});
 	</script>
 </div>

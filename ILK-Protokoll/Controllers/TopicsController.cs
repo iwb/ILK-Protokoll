@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Migrations;
 using System.Data.Entity.Validation;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using EntityFramework.Extensions;
 using ILK_Protokoll.Models;
 using ILK_Protokoll.util;
 using ILK_Protokoll.ViewModels;
@@ -133,7 +135,7 @@ namespace ILK_Protokoll.Controllers
 			ViewBag.TopicHistoryCount = db.TopicHistory.Count(t => t.TopicID == id.Value);
 			ViewBag.IsEditable = topic.IsEditableBy(GetCurrentUser(), GetSession()).IsAuthorized;
 			ViewBag.Reporting = reporting;
-			ViewBag.TagList = CreateTagSelectList(topic.Tags);
+			ViewBag.TagDict = CreateTagDictionary(topic.Tags);
 
 			topic.IsLocked = IsTopicLocked(id.Value);
 
@@ -141,6 +143,29 @@ namespace ILK_Protokoll.Controllers
 				return PartialView(topic);
 			else
 				return View(topic);
+		}
+
+		[HttpPost]
+		public ActionResult AddTag(int id, int tagid)
+		{
+			var relation = new TagTopic { TopicID = id, TagID = tagid};
+			db.TagTopics.AddOrUpdate(t => new { t.TopicID, t.TagID }, relation);
+			try
+			{
+				db.SaveChanges();
+			}
+			catch (DbEntityValidationException e)
+			{
+				return HTTPStatus(500, ErrorMessageFromException(e));
+			}
+			return new HttpStatusCodeResult(HttpStatusCode.NoContent);
+		}
+
+		[HttpPost]
+		public ActionResult RemoveTag(int id, int tagid)
+		{
+			db.TagTopics.Where(tt => tt.TopicID == id && tt.TagID == tagid).Delete();
+			return new HttpStatusCodeResult(HttpStatusCode.NoContent);
 		}
 
 		// GET: Topics/Create

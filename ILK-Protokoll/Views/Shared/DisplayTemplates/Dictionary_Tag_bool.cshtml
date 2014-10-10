@@ -1,0 +1,7 @@
+﻿@using ILK_Protokoll.Models
+@using ILK_Protokoll.util
+@model Dictionary<Tag, bool>
+@foreach (var kvp in Model)
+{
+	<span class="label" style="color: @kvp.Key.FontColor.ToHex(); background-color: @kvp.Key.BackgroundColor.ToHex(); @(kvp.Value ? "" : "display: none;")" data-tagid="@kvp.Key.ID">@kvp.Key.Name</span>
+}

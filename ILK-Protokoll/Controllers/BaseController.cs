@@ -104,26 +104,10 @@ namespace ILK_Protokoll.Controllers
 			return db.GetUserOrdered(GetCurrentUser()).ToDictionary(u => u, valueSelector);
 		}
 
-		protected IEnumerable<SelectListItem> CreateTagSelectList(IEnumerable<TagTopic> preselectedTags)
+		protected IDictionary<Tag, bool> CreateTagDictionary(IEnumerable<TagTopic> preselectedTags)
 		{
-			return CreateTagSelectList(preselectedTags.Select(tt => tt.TagID));
-		}
-
-		protected IEnumerable<SelectListItem> CreateTagSelectList(IEnumerable<int> preselectedTags)
-		{
-			var preselection = preselectedTags.ToArray();
-			var list = db.Tags.ToList();
-			var res = new List<SelectListItem>();
-			foreach (var tag in list)
-			{
-				res.Add(new SelectListItem()
-				{
-					Text = tag.Name,
-					Value = tag.ID.ToString(),
-					Selected = preselection.Contains(tag.ID)
-				});
-			}
-			return res;
+			var preselection = preselectedTags.Select(tt => tt.TagID).ToArray();
+			return db.Tags.ToDictionary(t => t, t => preselection.Contains(t.ID));
 		}
 
 		public bool IsTopicLocked(int topicID)
