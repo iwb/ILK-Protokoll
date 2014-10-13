@@ -42,6 +42,14 @@
 		<div class="form-group">
 			<div class="col-sm-offset-2 col-sm-3">
 				<div class="form-control-static">
+					<a id="perform-autocolor">Textfarbe automatisch festlegen</a>
+				</div>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-3">
+				<div class="form-control-static">
 					<span class="label" id="color-preview">Vorschau</span>
 				</div>
 			</div>
@@ -56,7 +64,7 @@
 }
 
 <div>
-	@Html.ActionLink("Back to List", "Index")
+	@Html.ActionLink("Zurück zum Index", "Index")
 </div>
 
 @using (Html.Delayed(null, "ColorPreview"))
@@ -78,18 +86,28 @@
 			return (yiq >= 128) ? '#000000' : '#FFFFFF';
 		}
 
+		var userChoice = $('#font-color-picker')[0].value != getContrastYIQ($('#bg-color-picker')[0].value);
+
 		$('#bg-color-picker').on("change keyup", function() {
 			$('#color-preview').css("background-color", $(this)[0].value);
 			var ccolor = getContrastYIQ($(this)[0].value);
-			if (ccolor !== undefined) {
+			if (!userChoice && ccolor !== undefined) {
 				$('#font-color-picker')[0].value = ccolor;
-				$('#font-color-picker').change();
+				$('#color-preview').css("color", ccolor);
 			}
 		});
 
 		$('#font-color-picker').on("change keyup", function() {
 			$('#color-preview').css("color", $(this)[0].value);
+			userChoice = true;
 		});
-		$('#bg-color-picker').change();
+
+		$('#color-preview').css("background-color", $('#bg-color-picker')[0].value);
+		$('#color-preview').css("color", $('#font-color-picker')[0].value);
+
+		$('#perform-autocolor').click(function() {
+			userChoice = false;
+			$('#bg-color-picker').change();
+		});
 	</script>
 }
