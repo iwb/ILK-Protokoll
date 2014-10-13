@@ -458,7 +458,7 @@ namespace ILK_Protokoll.Controllers
 			{
 				// Änderungsverfolgung
 				db.TopicHistory.Add(TopicHistory.FromTopic(topic, GetCurrentUserID()));
-
+				topic.Proposal = proposal;
 				topic.ValidFrom = DateTime.Now;
 
 				// Ungelesen-Markierung aktualisieren
