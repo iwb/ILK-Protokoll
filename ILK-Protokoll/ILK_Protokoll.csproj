@@ -357,7 +357,7 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Assignment.cs" />
-    <Compile Include="Models\Attachment.cs" />
+    <Compile Include="Models\Document.cs" />
     <Compile Include="Models\Comment.cs" />
     <Compile Include="Models\Decision.cs" />
     <Compile Include="Models\PushNotification.cs" />
@@ -714,7 +714,7 @@
     <Content Include="Views\Comments\_CommentList.cshtml" />
     <Content Include="Views\Votes\_VoteList.cshtml" />
     <Content Include="Views\Attachments\_AttachmentTable.cshtml" />
-    <Content Include="Views\Attachments\_UploadForm.cshtml" />
+    <Content Include="Views\Attachments\_DocumentCreateForm.cshtml" />
     <Content Include="Views\Attachments\_AttachmentRow.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\DateTime.cshtml" />
     <Content Include="Views\Attachments\_AttachmentTile.cshtml" />

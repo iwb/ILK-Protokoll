@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data.Entity;
 using System.Data.Entity.Validation;
 using System.IO;
@@ -10,14 +11,13 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
-using ILK_Protokoll.DataLayer;
 using ILK_Protokoll.Models;
 
 namespace ILK_Protokoll.Controllers
 {
 	public class AttachmentsController : BaseController
 	{
-		public const string VirtualPath = "~/Attachments/Download/";
+		public const string VirtualPath = "~/Attatschments/Download/";
 		private static readonly Regex InvalidChars = new Regex(@"[^a-zA-Z0-9_-]");
 
 		private static readonly HashSet<string> OfficeExtensions = new HashSet<string>
@@ -45,41 +45,19 @@ namespace ILK_Protokoll.Controllers
 			get { return @"C:\ILK-Protokoll_Uploads\"; }
 		}
 
-		public string GetVirtualPath(int attachmentID)
+		// GET: Attatschments
+		public PartialViewResult _List(DocumentContainer entity, int id, bool makeList = false, bool showActions = true)
 		{
-			return GetVirtualPath(attachmentID, Request, db, Url);
-		}
+			var documents = db.Documents
+							.Where(a => a.Deleted == null)
+							.OrderBy(a => a.DisplayName)
+							.Include(a => a.LatestRevision);
 
-		public static string GetVirtualPath(int attachmentID, HttpRequestBase request, DataContext db, UrlHelper url)
-		{
-			string userAgent = request.UserAgent;
-			bool isInternetExplorer = !string.IsNullOrEmpty(userAgent) && userAgent.Contains("Trident");
-			if (Environment.MachineName.StartsWith("02MUCILK") && isInternetExplorer)
-			{
-				Attachment a = db.Attachments.Find(attachmentID);
-				bool isOfficeDocument = OfficeExtensions.Contains(a.Extension);
-				if (isOfficeDocument)
-				{
-					var host = Dns.GetHostName() + ".iwb.mw.tu-muenchen.de";
-					return "file://" + host + "/Uploads/" + a.FileName;
-				}
-			}
+			if (entity == DocumentContainer.Topic)
+				documents = documents.Where(a => a.TopicID == id);
+			else if (entity == DocumentContainer.EmployeePresentation)
+				documents = documents.Where(a => a.EmployeePresentationID == id);
 
-			return url.Content(VirtualPath + attachmentID);
-		}
-
-		// GET: Attachments
-		public PartialViewResult _List(AttachmentContainer entity, int id, bool makeList = false, bool showActions = true)
-		{
-			var files = db.Attachments
-				.Where(a => a.Deleted == null)
-				.OrderBy(a => a.DisplayName)
-				.Include(a => a.Uploader);
-
-			if (entity == AttachmentContainer.Topic)
-				files = files.Where(a => a.TopicID == id);
-			else if (entity == AttachmentContainer.EmployeePresentation)
-				files = files.Where(a => a.EmployeePresentationID == id);
 
 			KnownExtensions = new HashSet<string>(
 				from path in Directory.GetFiles(Server.MapPath("~/img/fileicons"), "*.png")
@@ -89,26 +67,26 @@ namespace ILK_Protokoll.Controllers
 			ViewBag.KnownExtensions = KnownExtensions;
 
 			if (makeList)
-				return PartialView("_AttachmentList", files.ToList());
+				return PartialView("_AttachmentList", documents.ToList());
 			else
 			{
 				return showActions
-					? PartialView("_AttachmentTable", files.ToList())
-					: PartialView("~/Areas/Session/Views/Finalize/_ReportAttachments.cshtml", files.ToList());
+					? PartialView("_AttachmentTable", documents.ToList())
+					: PartialView("~/Areas/Session/Views/Finalize/_ReportAttachments.cshtml", documents.ToList());
 			}
 		}
 
-		public ActionResult _UploadForm(AttachmentContainer entity, int id)
+		public ActionResult _UploadForm(IDocumentContainer entity, DocumentContainer kind)
 		{
-			if (entity == AttachmentContainer.Topic && IsTopicLocked(id))
+			if (entity is Topic && IsTopicLocked(entity.ID))
 				return Content("<div class=\"panel-footer\">Da das Thema gesperrt ist, können Sie keine Dateien hochladen.</div>");
 			else
-				return PartialView("_UploadForm", Tuple.Create(entity, id));
+				return PartialView("_DocumentCreateForm", Tuple.Create(kind, entity.ID));
 		}
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public ActionResult _Upload(AttachmentContainer entity, int id)
+		public ActionResult _CreateDocuments(DocumentContainer entityKind, int id)
 		{
 			if (Request.Files.Count == 0)
 				return HTTPStatus(HttpStatusCode.OK, "Es wurden keine Dateien empfangen.");
@@ -117,7 +95,7 @@ namespace ILK_Protokoll.Controllers
 				return HTTPStatus(HttpStatusCode.BadRequest, "Die Dateien können keinem Ziel zugeordnet werden.");
 
 			Topic topic = null;
-			if (entity == AttachmentContainer.Topic)
+			if (entityKind == DocumentContainer.Topic)
 			{
 				topic = db.Topics.Find(id);
 
@@ -158,32 +136,39 @@ namespace ILK_Protokoll.Controllers
 				if (!string.IsNullOrEmpty(fileext))
 					fileext = fileext.Substring(1);
 
-				var attachment = new Attachment
+				var revision = new Revision
 				{
-					Deleted = null,
-					DisplayName = fullName,
 					SafeName = InvalidChars.Replace(filename, ""),
-					Extension = fileext,
 					FileSize = file.ContentLength,
 					UploaderID = GetCurrentUserID(),
+					Extension = fileext,
+					GUID = Guid.NewGuid(),
 					Created = DateTime.Now
 				};
-
-				switch (entity)
+				
+				Document document = new Document(revision)
 				{
-					case AttachmentContainer.Topic:
-						attachment.TopicID = id;
+					Deleted = null, 
+					DisplayName = fullName
+				};
+
+				switch (entityKind)
+				{
+					case DocumentContainer.Topic:
+						document.TopicID = id;
 						break;
-					case AttachmentContainer.EmployeePresentation:
-						attachment.EmployeePresentationID = id;
+					case DocumentContainer.EmployeePresentation:
+						document.EmployeePresentationID = id;
 						break;
+					default:
+						throw new InvalidEnumArgumentException("entityKind", (int)entityKind, typeof(DocumentContainer));
 				}
 
 				try
 				{
-					db.Attachments.Add(attachment);
+					db.Documents.Add(document);
 					db.SaveChanges(); // Damit das Attachment seine ID bekommt. Diese wird anschließend im Dateinamen hinterlegt
-					string path = Path.Combine(Serverpath, attachment.FileName);
+					string path = Path.Combine(Serverpath, revision.FileName);
 					file.SaveAs(path);
 					successful++;
 				}
@@ -209,27 +194,28 @@ namespace ILK_Protokoll.Controllers
 
 			ViewBag.StatusMessage = statusMessage.ToString();
 
-			return _List(entity, id);
+			return _List(entityKind, id);
 		}
 
 		[HttpPost]
-		public ActionResult _Delete(int attachmentID)
+		public ActionResult _Delete(int documentID)
 		{
-			Attachment attachment = db.Attachments.Include(a => a.Uploader).Single(a => a.ID == attachmentID);
+			var document = db.Documents.Include(d => d.LatestRevision).Single(d => d.ID == documentID);
 
-			if (attachment.Deleted != null)
+			if (document.Deleted != null)
 				return HTTPStatus(422, "Das Objekt befindet sich bereits im Papierkorb.");
 
-			if (attachment.TopicID.HasValue && IsTopicLocked(attachment.TopicID.Value))
+			if (document.TopicID.HasValue && IsTopicLocked(document.TopicID.Value))
 				return HTTPStatus(HttpStatusCode.Forbidden, "Da das Thema gesperrt ist, können Sie keine Dateien bearbeiten.");
 
-			if (attachment.TopicID.HasValue && attachment.Topic.IsReadOnly)
+			if (document.TopicID.HasValue && document.Topic.IsReadOnly)
 			{
 				return HTTPStatus(HttpStatusCode.Forbidden,
 					"Da das Thema schreibgeschützt ist, können Sie keine Dateien bearbeiten.");
 			}
 
-			attachment.Deleted = DateTime.Now; // In den Papierkorb
+
+			document.Deleted = DateTime.Now; // In den Papierkorb
 			try
 			{
 				db.SaveChanges();
@@ -243,17 +229,17 @@ namespace ILK_Protokoll.Controllers
 			return new HttpStatusCodeResult(HttpStatusCode.NoContent);
 		}
 
-		public ActionResult _PermanentDelete(int attachmentID)
+		public ActionResult _PermanentDelete(int documentID)
 		{
-			Attachment attachment = db.Attachments.Include(a => a.Uploader).Single(a => a.ID == attachmentID);
+			var document = db.Documents.Include(d => d.LatestRevision).Single(d => d.ID == documentID);
 
-			if (attachment.Deleted == null) // In den Papierkorb
+			if (document.Deleted == null) // In den Papierkorb
 				return HTTPStatus(422, "Das Objekt befindet sich noch nicht im Papierkorb.");
 
-			if (attachment.TopicID.HasValue && IsTopicLocked(attachment.TopicID.Value))
+			if (document.TopicID.HasValue && IsTopicLocked(document.TopicID.Value))
 				return HTTPStatus(HttpStatusCode.Forbidden, "Da das Thema gesperrt ist, können Sie keine Dateien bearbeiten.");
 
-			if (attachment.TopicID.HasValue && attachment.Topic.IsReadOnly)
+			if (document.TopicID.HasValue && document.Topic.IsReadOnly)
 			{
 				return HTTPStatus(HttpStatusCode.Forbidden,
 					"Da das Thema schreibgeschützt ist, können Sie keine Dateien bearbeiten.");
@@ -261,13 +247,10 @@ namespace ILK_Protokoll.Controllers
 
 			try
 			{
-				string path = Path.Combine(Serverpath, attachment.FileName);
+				string path = Path.Combine(Serverpath, document.LatestRevision.FileName);
 				System.IO.File.Delete(path);
 
-				attachment.TopicID = null;
-				attachment.EmployeePresentationID = null;
-
-				db.Attachments.Remove(attachment);
+				db.Documents.Remove(document);
 			}
 			catch (IOException)
 			{
@@ -287,55 +270,90 @@ namespace ILK_Protokoll.Controllers
 			return new HttpStatusCodeResult(HttpStatusCode.NoContent);
 		}
 
-		public FileResult Download(int id)
+		/// <summary>
+		///    Download oder öffnen einer Datei. Öffnen von Dokumenten funktioniert nur im Internet Explorer.
+		/// </summary>
+		/// <param name="id">ID der Datei</param>
+		/// <returns></returns>
+		[AllowAnonymous]
+		public ActionResult Download(Guid id)
 		{
-			Attachment a = db.Attachments.Find(id);
+			var file = db.Revisions.Single(rev => rev.GUID == id);
 
-			var cd = new ContentDisposition
+			var userAgent = Request.UserAgent;
+			var isInternetExplorer = !string.IsNullOrEmpty(userAgent) && userAgent.Contains("Trident");
+			var isAuthenticated = User.Identity != null; // TODO: Testen
+			var isOfficeDocument = OfficeExtensions.Contains(file.Extension);
+
+			if (isAuthenticated && isOfficeDocument && isInternetExplorer)
 			{
-				FileName = a.DisplayName,
-				Inline = true,
-			};
-			Response.AppendHeader("Content-Disposition", cd.ToString());
+				var host = Dns.GetHostName() + ".iwb.mw.tu-muenchen.de";
+				return Redirect("file://" + host + "/Uploads/" + file.FileName);
+			}
+			else
+			{
+				var cd = new ContentDisposition
+				{
+					FileName = file.ParentDocument.DisplayName,
+					Inline = true,
+				};
+				Response.AppendHeader("Content-Disposition", cd.ToString());
 
-			return File(Path.Combine(Serverpath, a.FileName), MimeMapping.GetMimeMapping(a.FileName));
+				return File(Path.Combine(Serverpath, file.FileName), MimeMapping.GetMimeMapping(file.FileName));
+			}
+		}
+
+		/// <summary>
+		///    Download der neuesten Version eines Dokuments.
+		/// </summary>
+		/// <param name="id">ID des Dokuments</param>
+		/// <returns></returns>
+		[AllowAnonymous]
+		public ActionResult DownloadNewest(Guid id)
+		{
+			var document = db.Documents.Single(doc => doc.GUID == id);
+			return Download(document.LatestRevision.GUID);
 		}
 
 		public ActionResult Details(int id)
 		{
-			Attachment a = db.Attachments.Find(id);
-			if (a == null)
+			Document d = db.Documents.Find(id);
+			if (d == null)
 				return HTTPStatus(HttpStatusCode.NotFound, "Datei nicht gefunden");
-			return View(a);
+			return View(d);
 		}
 
-		public ActionResult _BeginEdit(int attachmentID)
+		public ActionResult _BeginEdit(int documentID)
 		{
-			var a = db.Attachments.Find(attachmentID);
+			var a = db.Documents.Find(documentID);
 			if (a.Topic != null && a.Topic.IsReadOnly)
 				return HTTPStatus(HttpStatusCode.Forbidden, "Das Thema ist gschreibgeschützt!");
 			return PartialView("_NameEditor", a);
 		}
 
-		public PartialViewResult _FetchDisplayName(int attachmentID)
+		public PartialViewResult _FetchDisplayName(int documentID)
 		{
-			var a = db.Attachments.Find(attachmentID);
-			return PartialView("_NameDisplay", Tuple.Create(GetVirtualPath(attachmentID), a.DisplayName));
+			var a = db.Documents.Find(documentID);
+
+			var url = new UrlHelper(ControllerContext.RequestContext).Action("DownloadNewest", "Attachments", null);
+			return PartialView("_NameDisplay", Tuple.Create(new MvcHtmlString(url), a.DisplayName));
 		}
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		public ActionResult _SubmitEdit(int id, string displayName)
 		{
-			var a = db.Attachments.Find(id);
+			var document = db.Documents.Find(id);
 
-			if (a.Topic != null && a.Topic.IsReadOnly)
-				return HTTPStatus(HttpStatusCode.Forbidden, "Das Thema ist gschreibgeschützt!");
+			if (document.Topic != null && document.Topic.IsReadOnly)
+				return HTTPStatus(HttpStatusCode.Forbidden, "Das Thema ist schreibgeschützt!");
 
-			displayName = Path.ChangeExtension(displayName, Path.GetExtension(a.FileName));
-			a.DisplayName = displayName;
+			displayName = Path.ChangeExtension(displayName, Path.GetExtension(document.LatestRevision.Extension));
+			document.DisplayName = displayName;
 			db.SaveChanges();
-			return PartialView("_NameDisplay", Tuple.Create(GetVirtualPath(id), a.DisplayName));
+
+			var url = new UrlHelper(ControllerContext.RequestContext).Action("DownloadNewest", "Attachments", null);
+			return PartialView("_NameDisplay", Tuple.Create(new MvcHtmlString(url), document.DisplayName));
 		}
 	}
 }

@@ -1,4 +1,5 @@
-﻿@model ILK_Protokoll.Models.Attachment
+﻿@using ILK_Protokoll.Models
+@model ILK_Protokoll.Models.Document
 @{
 	ViewBag.Title = "Details (" + Model.DisplayName + ")";
 }
@@ -13,25 +14,27 @@
 		</div>
 	}
 	<dl class="dl-horizontal">
-		@if (Model.TopicID != null)
+		@if (Model is TopicAttachment)
 		{
+			var attachment = (Model as TopicAttachment);
 			<dt>
-				@Html.DisplayNameFor(model => model.TopicID)
+				@Html.DisplayNameFor(model => attachment.TopicID)
 			</dt>
 			<dd>
-				@Html.ActionLink(Model.Topic.Title, "Details", "Topics", new {Area = "", id = Model.TopicID}, null)
+				@Html.ActionLink(attachment.Topic.Title, "Details", "Topics", new { Area = "", id = attachment.TopicID }, null)
 			</dd>
 		}
-		@if (Model.EmployeePresentationID != null)
+		@if (Model is EmployeePresentationAttachment)
 		{
+			var attachment = (Model as EmployeePresentationAttachment);
 			<dt>
-				@Html.DisplayNameFor(model => model.EmployeePresentationID)
+				@Html.DisplayNameFor(model => attachment.EmployeePresentationID)
 			</dt>
 			<dd>
 				@{
 					string url = Request.Url != null ? Request.Url.PathAndQuery : null;
 				}
-				@Html.ActionLink(Model.EmployeePresentation.ToString(), "Edit", "LEmployeePresentations", new {Area = "Session", id = Model.EmployeePresentationID, returnURL = url}, null)
+				@Html.ActionLink(attachment.EmployeePresentation.ToString(), "Edit", "LEmployeePresentations", new { Area = "Session", id = attachment.EmployeePresentationID, returnURL = url }, null)
 			</dd>
 		}
 
@@ -60,10 +63,10 @@
 		}
 
 		<dt>
-			@Html.DisplayNameFor(model => model.FileSize)
+			@Html.DisplayNameFor(model => model.LatestRevision.FileSize)
 		</dt>
 		<dd>
-			@Html.DisplayFor(model => model.FileSize)
+			@Html.DisplayFor(model => model.LatestRevision.FileSize)
 		</dd>
 	</dl>
 	<br />

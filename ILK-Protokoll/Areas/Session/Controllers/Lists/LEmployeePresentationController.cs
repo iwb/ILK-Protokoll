@@ -15,7 +15,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 		public LEmployeePresentationsController()
 		{
 			_dbSet = db.LEmployeePresentations;
-			Entities = _dbSet.Include(ep => ep.Attachments).OrderByDescending(x => x.Selected).ThenBy(x => x.LastPresentation);
+			Entities = _dbSet.Include(ep => ep.Documents).OrderByDescending(x => x.Selected).ThenBy(x => x.LastPresentation);
 		}
 
 		public override PartialViewResult _List(bool reporting = false)
@@ -26,8 +26,11 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 			var items = Entities.ToList();
 			foreach (var emp in items)
 			{
-				if (emp.Attachments.Count(a => a.Deleted == null) > 0)
-					emp.FileURL = AttachmentsController.GetVirtualPath(emp.Attachments.Where(a => a.Deleted == null).OrderByDescending(a => a.Created).First().ID, Request, db, Url);
+				if (emp.Documents.Count(a => a.Deleted == null) > 0)
+				{
+					var document = emp.Documents.Where(a => a.Deleted == null).OrderByDescending(a => a.Created).First();
+					emp.FileURL = Url.Action("DownloadNewest", "Attachments", document.GUID);
+				}
 			}
 			return PartialView(items);
 		}
@@ -49,7 +52,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 			if (id == null)
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-			EmployeePresentation presentation = _dbSet.Include(ep => ep.Attachments).Single(ep => ep.ID == id);
+			EmployeePresentation presentation = _dbSet.Include(ep => ep.Documents).Single(ep => ep.ID == id);
 			if (presentation == null)
 				return HttpNotFound();
 
@@ -85,7 +88,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 			if (ep == null)
 				return HttpNotFound();
 
-			var linkedFiles = db.Attachments.Include(a => a.Uploader).Where(a => a.EmployeePresentationID == id);
+			var linkedFiles = db.Documents.Include(d => d.LatestRevision).Where(a => a.EmployeePresentationID == id);
 
 			foreach (var file in linkedFiles)
 			{
@@ -102,7 +105,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 				return HTTPStatus(500, msg);
 			}
 
-			ep.Attachments.Clear();
+			ep.Documents.Clear();
 			_dbSet.Remove(_dbSet.Find(id));
 			db.SaveChanges();
 

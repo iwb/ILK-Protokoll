@@ -22,9 +22,9 @@ namespace ILK_Protokoll.DataLayer
 
 		public DbSet<ActiveSession> ActiveSessions { get; set; }
 		public DbSet<Assignment> Assignments { get; set; }
-		public DbSet<Attachment> Attachments { get; set; }
 		public DbSet<Comment> Comments { get; set; }
 		public DbSet<Decision> Decisions { get; set; }
+		public DbSet<Document> Documents { get; set; }
 		public DbSet<Conference> LConferences { get; set; }
 		public DbSet<EmployeePresentation> LEmployeePresentations { get; set; }
 		public DbSet<Event> LEvents { get; set; }

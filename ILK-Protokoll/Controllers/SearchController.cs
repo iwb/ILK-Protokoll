@@ -238,7 +238,7 @@ namespace ILK_Protokoll.Controllers
 
 		private void SearchAttachments(Regex pattern, ICollection<SearchResult> resultlist)
 		{
-			foreach (var attachment in db.Attachments)
+			foreach (var attachment in db.Documents)
 			{
 				var m = pattern.Matches(attachment.DisplayName);
 				if (m.Count > 0)

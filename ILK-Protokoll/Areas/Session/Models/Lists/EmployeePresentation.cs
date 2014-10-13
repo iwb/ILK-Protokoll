@@ -11,12 +11,12 @@ namespace ILK_Protokoll.Areas.Session.Models.Lists
 	///    Mitarbeiterpräsentation
 	/// </summary>
 	[Table("L_EmployeePresentation")]
-	public class EmployeePresentation : BaseItem
+	public class EmployeePresentation : BaseItem, IDocumentContainer
 	{
 		public EmployeePresentation()
 		{
 			LastPresentation = DateTime.Today;
-			Attachments = new List<Attachment>();
+			Documents = new List<Document>();
 		}
 
 		[Required]
@@ -38,7 +38,7 @@ namespace ILK_Protokoll.Areas.Session.Models.Lists
 		public DateTime LastPresentation { get; set; }
 
 		[DisplayName("Dateien")]
-		public ICollection<Attachment> Attachments { get; set; }
+		public ICollection<Document> Documents { get; set; }
 
 		[DisplayName("Vorgemerkt")]
 		public bool Selected { get; set; }

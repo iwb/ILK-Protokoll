@@ -10,9 +10,11 @@ namespace ILK_Protokoll.Models
 	public class Revision
 	{
 		public int ID { get; set; }
+		public Guid GUID { get; set; }
 
 		public Document ParentDocument { get; set; }
-				
+
+		[InverseProperty("Revisions")]
 		[ForeignKey("ParentDocument")]
 		public int ParentDocumentID { get; set; }
 
@@ -20,13 +22,18 @@ namespace ILK_Protokoll.Models
 		[Display(Name = "Uploaddatum")]
 		public DateTime Created { get; set; }
 
-		[Display(Name = "Ersteller")]
+		[Display(Name = "Autor")]
 		public virtual User Uploader { get; set; }
 
 		[ForeignKey("Uploader")]
 		public int UploaderID { get; set; }
 
-		public Guid Guid { get; set; }
+
+		[Required]
+		[Display(Name = "Dateigröße")]
+		[UIHint("FileSize")]
+		public int FileSize { get; set; }
+
 
 		/// <summary>
 		///    Enthält den sicheren Namen der für die Speicherung auf dem Server verwendet wird. Alle unsicheren Zeichen wurden

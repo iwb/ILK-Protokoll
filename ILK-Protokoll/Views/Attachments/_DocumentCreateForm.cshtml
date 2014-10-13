@@ -1,13 +1,13 @@
-﻿@model Tuple<ILK_Protokoll.Models.AttachmentContainer, int>
+﻿@model Tuple<ILK_Protokoll.Models.DocumentContainer, int>
 
 <div class="panel-footer">
-	@using (Html.BeginForm("_Upload", "Attachments",
+	@using (Html.BeginForm("_CreateDocuments", "Attachments",
 		FormMethod.Post,
 		new { id = "attachment_uploader", @class = "form-horizontal", enctype = "multipart/form-data" }))
 	{
 		<div class="row">
 			@Html.AntiForgeryToken()
-			@Html.Hidden("entity", Model.Item1.ToString())
+			@Html.Hidden("entityKind", Model.Item1.ToString())
 			@Html.Hidden("id", Model.Item2)
 			<label for="files" class="control-label col-sm-2">Datei auswählen:</label>
 			<div class="col-sm-8">

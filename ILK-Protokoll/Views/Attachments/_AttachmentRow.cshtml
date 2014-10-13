@@ -1,6 +1,6 @@
 ﻿@using ILK_Protokoll.Controllers
 @using ILK_Protokoll.util
-@model ILK_Protokoll.Models.Attachment
+@model ILK_Protokoll.Models.Document
 
 @{
 	string iconname = Model.Extension ?? "default";
@@ -9,7 +9,7 @@
 		iconname = "default";
 	}
 
-	string fileurl = ((AttachmentsController)ViewContext.Controller).GetVirtualPath(Model.ID);
+	var fileurl = Html.Action("DownloadNewest", "Attachments", new { id = Model.Guid });
 }
 <tr id="attachment_@Model.ID">
 	<td>
@@ -22,8 +22,8 @@
 			Html.RenderPartial("_NameDisplay", Tuple.Create(fileurl, Model.DisplayName));
 		}
 	</td>
-	<td>@Html.DisplayFor(model => model.FileSize)</td>
-	<td>@Model.Uploader.ShortName</td>
+	<td>@Html.DisplayFor(model => model.LatestRevision.FileSize)</td>
+	<td>@Model.LatestRevision.Uploader.LongName</td>
 	<td>@Html.DisplayFor(model => model.Created)</td>
 	<td class="actions">
 		<a data-ajax="true" data-ajax-method="POST" data-ajax-mode="replace" data-ajax-update="#attachmentName_@Model.ID" href="@Url.Action("_BeginEdit", new {attachmentID = Model.ID})"><span class="glyphicon glyphicon-edit" title="Name bearbeiten"></span></a>
