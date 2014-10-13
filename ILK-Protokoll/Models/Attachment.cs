@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using ILK_Protokoll.Areas.Session.Models.Lists;
@@ -6,28 +7,25 @@ using ILK_Protokoll.Areas.Session.Models.Lists;
 namespace ILK_Protokoll.Models
 {
 	[DisplayColumn("DisplayName")]
-	public class Attachment
+	public class Document
 	{
+		public Document()
+		{
+// ReSharper disable once DoNotCallOverridableMethodsInConstructor
+			Revisions = new List<Revision>();
+		}
 		public int ID { get; set; }
+		
+		public Guid Guid { get; set; }
 
-		//----------------------------------------------------------------------------------------------------
-		[Display(Name = "Diskussion")]
-		[InverseProperty("Attachments")]
-		public int? TopicID { get; set; }
+		/// <summary>
+		/// Enthält das Lockdatum, falls das Dokument gesperrt ist, sonst null.
+		/// </summary>
+		public DateTime? LockTime { get; set; }
 
-		[ForeignKey("TopicID")]
-		public virtual Topic Topic { get; set; }
-
-		//----------------------------------------------------------------------------------------------------
-
-		[Display(Name = "Präsentation")]
-		[InverseProperty("Attachments")]
-		public int? EmployeePresentationID { get; set; }
-
-		[ForeignKey("EmployeePresentationID")]
-		public virtual EmployeePresentation EmployeePresentation { get; set; }
-
-		//----------------------------------------------------------------------------------------------------
+		[Required]
+		[Display(Name = "Erstelldatum")]
+		public DateTime Created { get; set; }
 
 		/// <summary>
 		///    Enthält das Löschdatum, falls der Anhang gelöscht wurde, sonst null.
@@ -36,58 +34,40 @@ namespace ILK_Protokoll.Models
 		public DateTime? Deleted { get; set; }
 
 		/// <summary>
-		///    Enthält den Namen, der angezeigt wird. Dieser name kann Zeichen beinhalten, die nicht nicht in Dateinamen zugelassen
-		///    sind.
-		/// </summary>
-		[Required]
-		[Display(Name = "Name")]
-		public string DisplayName { get; set; }
-
-		/// <summary>
-		///    Enthält den sicheren Namen der für die Speicherung auf dem Server verwendet wird. Alle unsicheren Zeichen wurden
-		///    entfernt.
-		/// </summary>
-		[Required(AllowEmptyStrings = true)]
-		[ScaffoldColumn(false)]
-		public string SafeName { get; set; }
-
-		/// <summary>
 		///    Enthält die Dateiendung ohne führenden Punkt.
 		/// </summary>
 		[Required(AllowEmptyStrings = true)]
 		[ScaffoldColumn(false)]
 		public string Extension { get; set; }
 
-		[Display(Name = "Ersteller")]
-		public virtual User Uploader { get; set; }
-
-		[ForeignKey("Uploader")]
-		public int UploaderID { get; set; }
-
+		/// <summary>
+		///    Enthält den Namen, der angezeigt wird. Dieser Name kann Zeichen beinhalten,
+		///    die nicht nicht in Dateinamen zugelassen sind.
+		/// </summary>
 		[Required]
-		[Display(Name = "Uploaddatum")]
-		public DateTime Created { get; set; }
+		[Display(Name = "Name")]
+		public string DisplayName { get; set; }
 
-		[Required]
-		[Display(Name = "Dateigröße")]
-		[UIHint("FileSize")]
-		public int FileSize { get; set; }
-
-		public string FileName
-		{
-			get
-			{
-				if (string.IsNullOrWhiteSpace(Extension))
-					return ID + "_" + SafeName;
-				else
-					return ID + "_" + SafeName + '.' + Extension;
-			}
-		}
+		public virtual ICollection<Revision> Revisions { get; set; }
 	}
 
-	public enum AttachmentContainer
+	public class TopicAttachment : Document
 	{
-		Topic,
-		EmployeePresentation
+		[Display(Name = "Diskussion")]
+		[InverseProperty("Attachments")]
+		public int? TopicID { get; set; }
+
+		[ForeignKey("TopicID")]
+		public virtual Topic Topic { get; set; }
+	}
+
+	public class EmployeePresentationAttachment : Document
+	{
+		[Display(Name = "Präsentation")]
+		[InverseProperty("Attachments")]
+		public int? EmployeePresentationID { get; set; }
+
+		[ForeignKey("EmployeePresentationID")]
+		public virtual EmployeePresentation EmployeePresentation { get; set; }
 	}
 }

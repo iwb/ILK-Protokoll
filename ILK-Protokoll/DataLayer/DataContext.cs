@@ -34,6 +34,7 @@ namespace ILK_Protokoll.DataLayer
 		public DbSet<Holiday> LHolidays { get; set; }
 		public DbSet<Opening> LOpenings { get; set; }
 		public DbSet<PushNotification> PushNotifications { get; set; }
+		public DbSet<Revision> Revisions { get; set; }
 		public DbSet<SessionReport> SessionReports { get; set; }
 		public DbSet<SessionType> SessionTypes { get; set; }
 		public DbSet<Tag> Tags { get; set; }

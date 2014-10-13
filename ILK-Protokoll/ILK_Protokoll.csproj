@@ -361,6 +361,7 @@
     <Compile Include="Models\Comment.cs" />
     <Compile Include="Models\Decision.cs" />
     <Compile Include="Models\PushNotification.cs" />
+    <Compile Include="Models\Revision.cs" />
     <Compile Include="Models\SessionReport.cs" />
     <Compile Include="Models\Tag.cs" />
     <Compile Include="Models\TopicHistory.cs" />
