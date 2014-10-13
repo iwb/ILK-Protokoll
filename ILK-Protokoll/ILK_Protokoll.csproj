@@ -355,6 +355,10 @@
     <Compile Include="Migrations\201410091049526_tags_added.Designer.cs">
       <DependentUpon>201410091049526_tags_added.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201410131339480_document_revisions_added.cs" />
+    <Compile Include="Migrations\201410131339480_document_revisions_added.Designer.cs">
+      <DependentUpon>201410131339480_document_revisions_added.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Assignment.cs" />
     <Compile Include="Models\Document.cs" />
@@ -894,6 +898,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201410091049526_tags_added.resx">
       <DependentUpon>201410091049526_tags_added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201410131339480_document_revisions_added.resx">
+      <DependentUpon>201410131339480_document_revisions_added.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
