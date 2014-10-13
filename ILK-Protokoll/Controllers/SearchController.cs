@@ -22,24 +22,32 @@ namespace ILK_Protokoll.Controllers
 
 			var sw = new Stopwatch();
 			sw.Start();
+			IQueryable<Topic> query = db.Topics;
 
-			var words = Regex.Split(searchterm, @"\s+").Select(Regex.Escape);
+			var tokens = Tokenize(searchterm);
+			RestrictToAllTags(ref query, tokens["hasTag"]);
 
-			var searchpattern = @"\b(" + words.Aggregate((a, b) => a + "|" + b) + ")";
-			var regex = new Regex(searchpattern, RegexOptions.IgnoreCase);
 
+			if (tokens["has"].Contains("Decision", StringComparer.InvariantCultureIgnoreCase))
+				query = query.Where(t => t.HasDecision());
+
+			var searchTerms = tokens[""].Select(x => new Regex(Regex.Escape(x), RegexOptions.IgnoreCase)).ToArray();
 			var results = new List<SearchResult>();
 
-			SearchTopics(regex, results);
-			SearchComments(regex, results);
-			SearchAssignments(regex, results);
-			SearchAttachments(regex, results);
-			SearchDecisions(regex, results);
-			SearchLists(regex, results);
+			foreach (var topic in query)
+			{
+				SearchTopic(topic, searchTerms, results);
+				SearchComments(topic, searchTerms, results);
+				SearchAssignments(topic, searchTerms, results);
+				SearchAttachments(topic, searchTerms, results);
+				SearchDecisions(topic, searchTerms, results);
+			}
+			SearchLists(searchTerms, results);
 
+			
 			ViewBag.ElapsedMilliseconds = sw.ElapsedMilliseconds;
 			ViewBag.SearchTerm = searchterm;
-			ViewBag.SearchPattern = searchpattern;
+			ViewBag.SearchPattern = "";
 			results.Sort((a, b) => b.Score.CompareTo(a.Score)); // Absteigend sortieren
 			return View(results);
 		}
@@ -54,11 +62,33 @@ namespace ILK_Protokoll.Controllers
 				return ExtendendResults(input);
 		}
 
-		private static IEnumerable<string> Tokenize(string str)
+		private static ILookup<string, string> Tokenize(string str)
 		{
-			return Regex.Matches(str, @"(?<match>\w+)|\""(?<match>[\w\s]*)""")
+			return Regex.Matches(str, @"(?<=^|\s)((?<disc>\w+):)?((?<token>[^\s""]+)|""(?<token>[^""]+)"")")
 				.Cast<Match>()
-				.Select(m => m.Groups["match"].Value);
+				.ToLookup(match => match.Groups["disc"].ToString(),
+					match => match.Groups["token"].ToString(),
+					StringComparer.InvariantCultureIgnoreCase);
+		}
+
+		private void RestrictToAllTags(ref IQueryable<Topic> query, IEnumerable<string> tags)
+		{
+			var names = tags.ToArray();
+			var tagIDs = db.Tags.Where(t => names.Contains(t.Name)).Select(t => t.ID).ToArray();
+
+			query = query.Where(topic => (from tt in topic.Tags
+													where tagIDs.Contains(tt.TagID)
+													select tt).Count() == tagIDs.Count());
+		}
+
+		private void RestrictToAnyTag(ref IQueryable<Topic> query, IEnumerable<string> tags)
+		{
+			var names = tags.ToArray();
+			var tagIDs = db.Tags.Where(t => names.Contains(t.Name)).Select(t => t.ID).ToArray();
+
+			query = query.Where(topic => (from tt in topic.Tags
+													where tagIDs.Contains(tt.TagID)
+													select tt).Any());
 		}
 
 		private static IEnumerable<string> MakePatterns(IEnumerable<string> items, string delimiter)
@@ -82,64 +112,66 @@ namespace ILK_Protokoll.Controllers
 
 		private ActionResult ExtendendResults(ExtendedSearchVM input)
 		{
-			var sw = new Stopwatch();
-			sw.Start();
+			//var sw = new Stopwatch();
+			//sw.Start();
 
-			var tokens = Tokenize(input.Searchterm).ToList();
-			var searchpatterns = MakePatterns(tokens, "AND");
-			var regexes = searchpatterns.Select(pattern => new Regex(pattern, RegexOptions.IgnoreCase));
+			//var tokens = Tokenize(input.Searchterm).ToList();
+			//var searchpatterns = MakePatterns(tokens, "AND");
+			//var regexes = searchpatterns.Select(pattern => new Regex(pattern, RegexOptions.IgnoreCase));
 
-			var sets = new List<HashSet<SearchResult>>();
+			//var sets = new List<HashSet<SearchResult>>();
 
-			foreach (var regex in regexes)
-			{
-				var currentset = new HashSet<SearchResult>();
-				sets.Add(currentset);
+			//foreach (var regex in regexes)
+			//{
+			//	var currentset = new HashSet<SearchResult>();
+			//	sets.Add(currentset);
 
-				if (input.SearchTopics)
-					SearchTopics(regex, currentset);
-				if (input.SearchComments)
-					SearchComments(regex, currentset);
-				if (input.SearchAssignments)
-					SearchAssignments(regex, currentset);
-				if (input.SearchAttachments)
-					SearchAttachments(regex, currentset);
-				if (input.SearchDecisions)
-					SearchDecisions(regex, currentset);
-				if (input.SearchLists)
-					SearchLists(regex, currentset);
-			}
+			//	if (input.SearchTopics)
+			//		SearchTopics(regex, currentset);
+			//	if (input.SearchComments)
+			//		SearchComments(regex, currentset);
+			//	if (input.SearchAssignments)
+			//		SearchAssignments(regex, currentset);
+			//	if (input.SearchAttachments)
+			//		SearchAttachments(regex, currentset);
+			//	if (input.SearchDecisions)
+			//		SearchDecisions(regex, currentset);
+			//	if (input.SearchLists)
+			//		SearchLists(regex, currentset);
+			//}
 
-			var results = sets.Aggregate((a, b) =>
-			{
-				a.IntersectWith(b);
-				return a;
-			}).ToList();
+			//var results = sets.Aggregate((a, b) =>
+			//{
+			//	a.IntersectWith(b);
+			//	return a;
+			//}).ToList();
 
 
-			ViewBag.ElapsedMilliseconds = sw.ElapsedMilliseconds;
-			ViewBag.SearchTerm = input.Searchterm;
-			ViewBag.SearchPattern = @"\b(" + tokens.Where(x => x != "AND").Aggregate((a, b) => a + "|" + b) + ")";
-			results.Sort((a, b) => b.Score.CompareTo(a.Score)); // Absteigend sortieren
+			//ViewBag.ElapsedMilliseconds = sw.ElapsedMilliseconds;
+			//ViewBag.SearchTerm = input.Searchterm;
+			//ViewBag.SearchPattern = @"\b(" + tokens.Where(x => x != "AND").Aggregate((a, b) => a + "|" + b) + ")";
+			//results.Sort((a, b) => b.Score.CompareTo(a.Score)); // Absteigend sortieren
 
-			return View("Results", results);
+			return View("Results", null);
 		}
 
-		private void SearchTopics(Regex pattern, ICollection<SearchResult> resultlist)
+		private void SearchTopic(Topic topic, IEnumerable<Regex> searchterms, ICollection<SearchResult> resultlist)
 		{
-			foreach (var topic in db.Topics)
+			var sr = new SearchResult
 			{
-				var sr = new SearchResult
-				{
-					ID = topic.ID,
-					Score = topic.IsReadOnly ? -5 : 0,
-					EntityType = "Diskussion",
-					Title = topic.Title,
-					ActionURL = Url.Action("Details", "Topics", new {id = topic.ID}),
-					Timestamp = topic.Created
-				};
+				ID = topic.ID,
+				Score = topic.IsReadOnly ? -5 : 0,
+				EntityType = "Diskussion",
+				Title = topic.Title,
+				ActionURL = Url.Action("Details", "Topics", new { id = topic.ID }),
+				Timestamp = topic.Created
+			};
 
-				var m = pattern.Matches(topic.Title);
+			foreach (var pattern in searchterms)
+			{
+				var oldScore = sr.Score;
+
+				var m = pattern.Matches(topic.Proposal);
 				if (m.Count > 0)
 				{
 					sr.Score += ScoreMult(20, m.Count);
@@ -171,94 +203,112 @@ namespace ILK_Protokoll.Controllers
 						Text = topic.Description
 					});
 				}
-
-				if (sr.Score > 0)
-					resultlist.Add(sr);
+				if (sr.Score <= oldScore)
+					return;
 			}
+			if (sr.Score > 0)
+				resultlist.Add(sr);
 		}
 
-		private void SearchComments(Regex pattern, ICollection<SearchResult> resultlist)
+		private void SearchComments(Topic topic, IEnumerable<Regex> searchterms, ICollection<SearchResult> resultlist)
 		{
-			var query = from c in db.Comments
-				join t in db.Topics on c.TopicID equals t.ID
-				select new {commentID = c.ID, topicID = t.ID, Text = c.Content, t.Title, c.Created};
-
-			foreach (var comment in query)
+			foreach (var comment in topic.Comments)
 			{
-				var m = pattern.Matches(comment.Text);
-				if (m.Count > 0)
+				var score = 0.0f;
+				foreach (var pattern in searchterms)
 				{
-					resultlist.Add(new SearchResult(comment.Text)
+					var m = pattern.Matches(comment.Content);
+					if (m.Count > 0)
+						score += ScoreMult(2, m.Count);
+					else
+						score = float.NaN;
+				}
+				if (!float.IsNaN(score))
+				{
+					resultlist.Add(new SearchResult(comment.Content)
 					{
-						ID = comment.commentID,
-						Score = ScoreMult(2, m.Count),
+						ID = comment.ID,
+						Score = score,
 						EntityType = "Kommentar",
-						Title = comment.Title,
-						ActionURL = Url.Action("Details", "Topics", new {id = comment.topicID}),
+						Title = topic.Title,
+						ActionURL = Url.Action("Details", "Topics", new { id = topic.ID }),
 						Timestamp = comment.Created
 					});
 				}
 			}
 		}
 
-		private void SearchAssignments(Regex pattern, ICollection<SearchResult> resultlist)
+		private void SearchAssignments(Topic topic, IEnumerable<Regex> searchterms, ICollection<SearchResult> resultlist)
 		{
-			foreach (var assignment in db.Assignments)
+			foreach (var assignment in topic.Assignments)
 			{
-				var m = pattern.Matches(assignment.Title);
-				if (m.Count > 0)
+				var score = 0.0f;
+				foreach (var pattern in searchterms)
 				{
-					resultlist.Add(new SearchResult("Aufgabentitel", assignment.Title)
+					var m = pattern.Matches(assignment.Title);
+					if (m.Count > 0)
 					{
-						ID = assignment.ID,
-						Score = ScoreMult(9, m.Count),
-						EntityType = "Aufgabe",
-						Title = assignment.Title,
-						ActionURL = Url.Action("Details", "Assignments", new {id = assignment.ID}),
-						Timestamp = assignment.DueDate
-					});
-					continue;
-				}
+						score += ScoreMult(9, m.Count);
+						continue;
+					}
 
-				m = pattern.Matches(assignment.Description);
-				if (m.Count > 0)
+					m = pattern.Matches(assignment.Description);
+					if (m.Count > 0)
+					{
+						score += ScoreMult(7, m.Count);
+						continue;
+					}
+					score = float.NaN;
+				}
+				if (!float.IsNaN(score))
 				{
-					resultlist.Add(new SearchResult("Aufgabentext", assignment.Description)
+					resultlist.Add(new SearchResult("Aufgabe", assignment.Description)
 					{
 						ID = assignment.ID,
-						Score = ScoreMult(7, m.Count),
+						Score = score,
 						EntityType = "Aufgabe",
 						Title = assignment.Description,
-						ActionURL = Url.Action("Details", "Assignments", new {id = assignment.ID}),
+						ActionURL = Url.Action("Details", "Assignments", new { id = assignment.ID }),
 						Timestamp = assignment.DueDate
 					});
 				}
 			}
 		}
 
-		private void SearchAttachments(Regex pattern, ICollection<SearchResult> resultlist)
+		private void SearchAttachments(Topic topic, IEnumerable<Regex> searchterms, ICollection<SearchResult> resultlist)
 		{
-			foreach (var attachment in db.Attachments)
+			foreach (var attachment in topic.Attachments)
 			{
-				var m = pattern.Matches(attachment.DisplayName);
-				if (m.Count > 0)
+				var score = 0.0f;
+				foreach (var pattern in searchterms)
+				{
+					var m = pattern.Matches(attachment.DisplayName);
+					if (m.Count > 0)
+						score += ScoreMult(9, m.Count);
+					else
+						score = float.NaN;
+				}
+				if (!float.IsNaN(score))
 				{
 					resultlist.Add(new SearchResult("Dateiname", attachment.DisplayName)
 					{
 						ID = attachment.ID,
-						Score = ScoreMult(9, m.Count),
+						Score = score,
 						EntityType = "Datei",
 						Title = attachment.DisplayName,
-						ActionURL = Url.Action("Details", "Attachments", new {id = attachment.ID}),
+						ActionURL = Url.Action("Details", "Attachments", new { id = attachment.ID }),
 						Timestamp = attachment.Created
 					});
 				}
 			}
 		}
 
-		private void SearchDecisions(Regex pattern, ICollection<SearchResult> resultlist)
+		private void SearchDecisions(Topic topic, IEnumerable<Regex> searchterms, ICollection<SearchResult> resultlist)
 		{
-			foreach (var decision in db.Decisions.Include(d => d.OriginTopic).Include(d => d.Report))
+			var decision = topic.Decision;
+
+			var score = 0.0f;
+			foreach (var pattern in searchterms)
 			{
 				var sr = new SearchResult
 				{
@@ -266,7 +316,7 @@ namespace ILK_Protokoll.Controllers
 					Score = decision.Type == DecisionType.Resolution ? 0 : -11,
 					EntityType = decision.Type.DisplayName(),
 					Title = decision.OriginTopic.Title,
-					ActionURL = Url.Action("Details", "Topics", new {id = decision.OriginTopic.ID}),
+					ActionURL = Url.Action("Details", "Topics", new { id = decision.OriginTopic.ID }),
 					Timestamp = decision.Report.End
 				};
 
@@ -300,106 +350,106 @@ namespace ILK_Protokoll.Controllers
 			}
 		}
 
-		private void SearchLists(Regex pattern, ICollection<SearchResult> resultlist)
+		private void SearchLists(Regex[] searchterms, ICollection<SearchResult> resultlist)
 		{
-			foreach (var item in db.LEvents)
-			{
-				var m = pattern.Matches(item.Description);
-				if (m.Count > 0)
-				{
-					resultlist.Add(new SearchResult(item.Description)
-					{
-						ID = item.ID,
-						Score = 7,
-						EntityType = "Listeneintrag",
-						Title = "Termin",
-						ActionURL = Url.Content("~/ViewLists#event_table"),
-						Timestamp = item.Created
-					});
-					continue;
-				}
-				m = pattern.Matches(item.Place);
-				if (m.Count > 0)
-				{
-					resultlist.Add(new SearchResult(item.Place)
-					{
-						ID = item.ID,
-						Score = 5,
-						EntityType = "Listeneintrag",
-						Title = "Termin",
-						ActionURL = Url.Content("~/ViewLists#event_table"),
-						Timestamp = item.Created
-					});
-				}
-			}
+			//foreach (var item in db.LEvents)
+			//{
+			//	var m = pattern.Matches(item.Description);
+			//	if (m.Count > 0)
+			//	{
+			//		resultlist.Add(new SearchResult(item.Description)
+			//		{
+			//			ID = item.ID,
+			//			Score = 7,
+			//			EntityType = "Listeneintrag",
+			//			Title = "Termin",
+			//			ActionURL = Url.Content("~/ViewLists#event_table"),
+			//			Timestamp = item.Created
+			//		});
+			//		continue;
+			//	}
+			//	m = pattern.Matches(item.Place);
+			//	if (m.Count > 0)
+			//	{
+			//		resultlist.Add(new SearchResult(item.Place)
+			//		{
+			//			ID = item.ID,
+			//			Score = 5,
+			//			EntityType = "Listeneintrag",
+			//			Title = "Termin",
+			//			ActionURL = Url.Content("~/ViewLists#event_table"),
+			//			Timestamp = item.Created
+			//		});
+			//	}
+			//}
 
-			foreach (var item in db.LConferences)
-			{
-				var m = pattern.Matches(item.Description);
-				if (m.Count > 0)
-				{
-					resultlist.Add(new SearchResult(item.Description)
-					{
-						ID = item.ID,
-						Score = 7,
-						EntityType = "Listeneintrag",
-						Title = "Auslandskonferenz",
-						ActionURL = Url.Content("~/ViewLists#conference_table"),
-						Timestamp = item.Created
-					});
-				}
-			}
+			//foreach (var item in db.LConferences)
+			//{
+			//	var m = pattern.Matches(item.Description);
+			//	if (m.Count > 0)
+			//	{
+			//		resultlist.Add(new SearchResult(item.Description)
+			//		{
+			//			ID = item.ID,
+			//			Score = 7,
+			//			EntityType = "Listeneintrag",
+			//			Title = "Auslandskonferenz",
+			//			ActionURL = Url.Content("~/ViewLists#conference_table"),
+			//			Timestamp = item.Created
+			//		});
+			//	}
+			//}
 
-			foreach (var item in db.LIlkDays)
-			{
-				var m = pattern.Matches(item.Topics);
-				if (m.Count > 0)
-				{
-					resultlist.Add(new SearchResult(item.Topics)
-					{
-						ID = item.ID,
-						Score = 7,
-						EntityType = "Listeneintrag",
-						Title = "ILK-Tag",
-						ActionURL = Url.Content("~/ViewLists#ilkDay_table"),
-						Timestamp = item.Created
-					});
-				}
-			}
+			//foreach (var item in db.LIlkDays)
+			//{
+			//	var m = pattern.Matches(item.Topics);
+			//	if (m.Count > 0)
+			//	{
+			//		resultlist.Add(new SearchResult(item.Topics)
+			//		{
+			//			ID = item.ID,
+			//			Score = 7,
+			//			EntityType = "Listeneintrag",
+			//			Title = "ILK-Tag",
+			//			ActionURL = Url.Content("~/ViewLists#ilkDay_table"),
+			//			Timestamp = item.Created
+			//		});
+			//	}
+			//}
 
-			foreach (var item in db.LIlkMeetings)
-			{
-				var m = pattern.Matches(item.Comments);
-				if (m.Count > 0)
-				{
-					resultlist.Add(new SearchResult(item.Comments)
-					{
-						ID = item.ID,
-						Score = 7,
-						EntityType = "Listeneintrag",
-						Title = "ILK-Regeltermin",
-						ActionURL = Url.Content("~/ViewLists#ilkMeeting_table"),
-						Timestamp = item.Created
-					});
-				}
-			}
+			//foreach (var item in db.LIlkMeetings)
+			//{
+			//	var m = pattern.Matches(item.Comments);
+			//	if (m.Count > 0)
+			//	{
+			//		resultlist.Add(new SearchResult(item.Comments)
+			//		{
+			//			ID = item.ID,
+			//			Score = 7,
+			//			EntityType = "Listeneintrag",
+			//			Title = "ILK-Regeltermin",
+			//			ActionURL = Url.Content("~/ViewLists#ilkMeeting_table"),
+			//			Timestamp = item.Created
+			//		});
+			//	}
+			//}
 
-			foreach (var item in db.LOpenings)
-			{
-				var m = pattern.Matches(item.Description);
-				if (m.Count > 0)
-				{
-					resultlist.Add(new SearchResult(item.Description)
-					{
-						ID = item.ID,
-						Score = 6.5f,
-						EntityType = "Listeneintrag",
-						Title = "Vakante Stelle",
-						ActionURL = Url.Content("~/ViewLists#opening_table"),
-						Timestamp = item.Created
-					});
-				}
-			}
+			//foreach (var item in db.LOpenings)
+			//{
+			//	var m = pattern.Matches(item.Description);
+			//	if (m.Count > 0)
+			//	{
+			//		resultlist.Add(new SearchResult(item.Description)
+			//		{
+			//			ID = item.ID,
+			//			Score = 6.5f,
+			//			EntityType = "Listeneintrag",
+			//			Title = "Vakante Stelle",
+			//			ActionURL = Url.Content("~/ViewLists#opening_table"),
+			//			Timestamp = item.Created
+			//		});
+			//	}
+			//}
 		}
 
 		private static float ScoreMult(int baseScore, int count)
