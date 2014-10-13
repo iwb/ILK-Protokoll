@@ -12,13 +12,14 @@ namespace ILK_Protokoll
 				"~/Scripts/jquery.unobtrusive-ajax.js",
 				"~/Scripts/jquery-ui-{version}.js"));
 
-			bundles.Add(new Bundle("~/bundles/other").Include( // No minifiaction
+			bundles.Add(new Bundle("~/bundles/other").Include( // No minification
 				"~/Scripts/jquery.timeago.js",
 				"~/Scripts/spin.js",
 				"~/Scripts/jquery.highlight.js",
 				"~/Scripts/jquery.tablesorter.js",
 				"~/Scripts/jquery.json.js",
 				"~/Scripts/jquery.cookie.js",
+				"~/Scripts/jquery.colpick.js",
 				"~/Scripts/persistentTablesorter.js",
 				"~/Scripts/bootstrap-multiselect.js"));
 
@@ -38,6 +39,7 @@ namespace ILK_Protokoll
 			bundles.Add(new StyleBundle("~/Content/css").Include(
 				"~/Content/themes/iwb/jquery-ui.*",
 				"~/Content/other/jquery.rtResponsiveTables.css",
+				"~/Content/other/colpick.css",
 				"~/Content/bootstrap-multiselect/bootstrap-multiselect.css"));
 
 			// Festlegen von EnableOptimizations auf false für Debugzwecke. Weitere Informationen

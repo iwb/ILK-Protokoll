@@ -415,6 +415,7 @@
     <Content Include="Content\images\ui-icons_888888_256x240.png" />
     <Content Include="Content\images\ui-icons_AF0331_256x240.png" />
     <Content Include="Content\images\ui-icons_DDD_256x240.png" />
+    <Content Include="Content\other\colpick.css" />
     <Content Include="Content\other\jquery.rtResponsiveTables.css" />
     <Content Include="Content\rmvTheme.css">
       <DependentUpon>rmvTheme.less</DependentUpon>
@@ -675,6 +676,7 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\jquery-2.1.1.js" />
     <Content Include="Scripts\jquery-ui-1.11.1.js" />
+    <Content Include="Scripts\jquery.colpick.js" />
     <Content Include="Scripts\jquery.cookie.js" />
     <Content Include="Scripts\jquery.form.js" />
     <Content Include="Scripts\jquery.highlight.js" />
