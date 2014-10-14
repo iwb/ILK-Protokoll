@@ -110,6 +110,35 @@ namespace ILK_Protokoll.Migrations
 			DropForeignKey("dbo.Revision", "UploaderID", "dbo.User");
 			DropForeignKey("dbo.Revision", "ParentDocumentID", "dbo.Document");
 
+			Sql(@"TRUNCATE TABLE [dbo].[Attachment]
+					SET IDENTITY_INSERT [ILK-Protokoll].[dbo].[Attachment] ON
+
+					INSERT INTO [ILK-Protokoll].[dbo].[Attachment]
+								  ([ID]
+								  ,[TopicID]
+								  ,[Deleted]
+								  ,[DisplayName]
+								  ,[SafeName]
+								  ,[Extension]
+								  ,[Created]
+								  ,[FileSize]
+								  ,[UploaderID]
+								  ,[EmployeePresentationID])
+						  SELECT        
+								rev.[ID]
+								  ,doc.[TopicID]
+								  ,doc.[Deleted]
+								  ,doc.[DisplayName]
+								  ,rev.[SafeName]
+								  ,rev.[Extension]
+								  ,rev.[Created]
+								  ,rev.[FileSize]
+								  ,rev.[UploaderID]
+								  ,doc.[EmployeePresentationID] FROM [dbo].Document as doc
+						  JOIN [dbo].Revision as rev ON doc.LatestRevisionID = rev.ID
+
+					SET IDENTITY_INSERT [ILK-Protokoll].[dbo].[Attachment] OFF");
+
 			DropIndex("dbo.Document", new[] {"LatestRevisionID"});
 			DropIndex("dbo.Document", new[] {"EmployeePresentationID"});
 			DropIndex("dbo.Document", new[] {"TopicID"});
