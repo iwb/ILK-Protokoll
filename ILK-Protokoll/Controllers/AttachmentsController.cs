@@ -17,7 +17,7 @@ namespace ILK_Protokoll.Controllers
 {
 	public class AttachmentsController : BaseController
 	{
-		public const string VirtualPath = "~/Attatschments/Download/";
+		public const string VirtualPath = "~/Attachments/Download/";
 		private static readonly Regex InvalidChars = new Regex(@"[^a-zA-Z0-9_-]");
 
 		private static readonly HashSet<string> OfficeExtensions = new HashSet<string>
@@ -45,7 +45,7 @@ namespace ILK_Protokoll.Controllers
 			get { return @"C:\ILK-Protokoll_Uploads\"; }
 		}
 
-		// GET: Attatschments
+		// GET: Attachments
 		public PartialViewResult _List(DocumentContainer entity, int id, bool makeList = false, bool showActions = true)
 		{
 			var documents = db.Documents
