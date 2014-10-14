@@ -1,4 +1,3 @@
-using System;
 using System.Data.Entity.Migrations;
 
 namespace ILK_Protokoll.Migrations
@@ -98,7 +97,7 @@ namespace ILK_Protokoll.Migrations
 								  ,Extension
 								  ,(SELECT ID FROM [ILK-Protokoll].[dbo].[Document] AS doc WHERE doc.LatestRevisionID = attachment.ID)
 					FROM [ILK-Protokoll].[dbo].Attachment as attachment");
-			
+
 			Sql(@"SET IDENTITY_INSERT [ILK-Protokoll].[dbo].[Revision] OFF");
 		}
 
@@ -127,25 +126,6 @@ namespace ILK_Protokoll.Migrations
 			AddForeignKey("dbo.Attachment", "UploaderID", "dbo.User", "ID", cascadeDelete: false);
 			AddForeignKey("dbo.Attachment", "TopicID", "dbo.Topic", "ID");
 			AddForeignKey("dbo.Attachment", "EmployeePresentationID", "dbo.L_EmployeePresentation", "ID");
-
-			return;
-
-			CreateTable(
-				"dbo.Attachment",
-				c => new
-				{
-					ID = c.Int(nullable: false, identity: true),
-					TopicID = c.Int(),
-					EmployeePresentationID = c.Int(),
-					Deleted = c.DateTime(),
-					DisplayName = c.String(nullable: false),
-					SafeName = c.String(nullable: false),
-					Extension = c.String(nullable: false),
-					UploaderID = c.Int(nullable: false),
-					Created = c.DateTime(nullable: false),
-					FileSize = c.Int(nullable: false),
-				})
-				.PrimaryKey(t => t.ID);
 		}
 	}
 }
