@@ -411,16 +411,17 @@ namespace ILK_Protokoll.Controllers
 		{
 			var a = db.Documents.Find(documentID);
 			if (a.Topic != null && a.Topic.IsReadOnly)
-				return HTTPStatus(HttpStatusCode.Forbidden, "Das Thema ist gschreibgeschützt!");
+				return HTTPStatus(HttpStatusCode.Forbidden, "Das Thema ist schreibgeschützt!");
 			return PartialView("_NameEditor", a);
 		}
 
 		public PartialViewResult _FetchDisplayName(int documentID)
 		{
-			var a = db.Documents.Find(documentID);
+			var document = db.Documents.Find(documentID);
 
-			var url = new UrlHelper(ControllerContext.RequestContext).Action("DownloadNewest", "Attachments", null);
-			return PartialView("_NameDisplay", Tuple.Create(new MvcHtmlString(url), a.DisplayName));
+			var url = new UrlHelper(ControllerContext.RequestContext).Action("DownloadNewest", "Attachments",
+				new {id = document.GUID});
+			return PartialView("_NameDisplay", Tuple.Create(new MvcHtmlString(url), document.DisplayName));
 		}
 
 		[HttpPost]
@@ -432,11 +433,12 @@ namespace ILK_Protokoll.Controllers
 			if (document.Topic != null && document.Topic.IsReadOnly)
 				return HTTPStatus(HttpStatusCode.Forbidden, "Das Thema ist schreibgeschützt!");
 
-			displayName = Path.ChangeExtension(displayName, Path.GetExtension(document.LatestRevision.Extension));
+			displayName = Path.ChangeExtension(displayName, Path.GetExtension(document.LatestRevision.FileName));
 			document.DisplayName = displayName;
 			db.SaveChanges();
 
-			var url = new UrlHelper(ControllerContext.RequestContext).Action("DownloadNewest", "Attachments", null);
+			var url = new UrlHelper(ControllerContext.RequestContext).Action("DownloadNewest", "Attachments",
+				new {id = document.GUID});
 			return PartialView("_NameDisplay", Tuple.Create(new MvcHtmlString(url), document.DisplayName));
 		}
 	}
