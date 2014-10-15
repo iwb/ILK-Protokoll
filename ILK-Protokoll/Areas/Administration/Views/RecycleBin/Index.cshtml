@@ -46,14 +46,14 @@ else
 						@if (item.TopicID != null)
 						{
 							<h6>@Html.DisplayNameFor(model => model.TopicID)</h6>
-							@Html.ActionLink(item.Topic.Title, "Details", "Topics", new { Area = "", id = item.TopicID }, null)
+							@Html.ActionLink(item.Topic.Title, "Details", "Topics", new {Area = "", id = item.TopicID}, null)
 						}
 						else if (item.EmployeePresentationID != null)
 						{
 							<h6>@Html.DisplayNameFor(model => model.EmployeePresentationID)</h6>
-							@Html.ActionLink(item.EmployeePresentation.ToString(), "Edit", "LEmployeePresentations", new { Area = "Session", id = item.EmployeePresentationID }, null)
+							@Html.ActionLink(item.EmployeePresentation.ToString(), "Edit", "LEmployeePresentations", new {Area = "Session", id = item.EmployeePresentationID}, null)
 						}
-						</td>
+					</td>
 					<td>
 						@Html.DisplayFor(modelItem => item.Deleted)
 					</td>
@@ -70,13 +70,13 @@ else
 						@if ((item.TopicID != null) && !item.Topic.IsReadOnly || item.EmployeePresentationID != null)
 						{
 							@Ajax.ActionLink("Wiederherstellen", "_Restore", "RecycleBin",
-								new {attachmentID = item.ID},
+								new {documentID = item.ID},
 								new AjaxOptions {HttpMethod = "POST", OnSuccess = "removeFile('#attachment_" + @item.ID + "');"},
 								new {@class = "text-success"})
 							<br />
 						}
 						@Ajax.ActionLink("Löschen", "_PermanentDelete", "Attachments",
-							new {area = "", attachmentID = item.ID},
+							new {area = "", documentID = item.ID},
 							new AjaxOptions {Confirm = "Datei endgültig löschen?", HttpMethod = "POST", OnSuccess = "removeFile('#attachment_" + @item.ID + "');"},
 							new {@class = "text-danger"})
 					</td>

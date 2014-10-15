@@ -22,7 +22,6 @@ namespace ILK_Protokoll.Models
 // ReSharper disable DoNotCallOverridableMethodsInConstructor
 			GUID = Guid.NewGuid();
 			Revisions.Add(file);
-			LatestRevision = file;
 			Created = DateTime.Now;
 			file.ParentDocument = this;
 // ReSharper restore DoNotCallOverridableMethodsInConstructor

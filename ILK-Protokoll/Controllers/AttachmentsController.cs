@@ -51,8 +51,9 @@ namespace ILK_Protokoll.Controllers
 			var documents = db.Documents
 				.Where(a => a.Deleted == null)
 				.OrderBy(a => a.DisplayName)
+				.Include(a => a.Revisions)
 				.Include(a => a.LatestRevision)
-				.Include(a => a.Revisions);
+				.Include(a => a.LatestRevision.Uploader);
 
 			if (entityKind == DocumentContainer.Topic)
 				documents = documents.Where(a => a.TopicID == id);
@@ -169,6 +170,8 @@ namespace ILK_Protokoll.Controllers
 				{
 					db.Documents.Add(document);
 					db.SaveChanges(); // Damit die Revision die ID bekommt. Diese wird anschließend im Dateinamen hinterlegt
+					document.LatestRevision = revision;
+					db.SaveChanges();
 					string path = Path.Combine(Serverpath, revision.FileName);
 					file.SaveAs(path);
 					successful++;

@@ -101,7 +101,7 @@
 			</div>
 		</div>
 		<div class="panel-footer">
-			@if (@Model.Documents.Count == 0)
+			@if (@Model.Documents.Count(doc => doc.Deleted == null) == 0)
 			{
 				@:Keine Dateien vorhanden
 			}
