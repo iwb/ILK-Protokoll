@@ -78,7 +78,7 @@ namespace ILK_Protokoll.Models
 
 		public virtual Revision LatestRevision { get; set; }
 		[ForeignKey("LatestRevision")]
-		public int LatestRevisionID { get; set; }
+		public int? LatestRevisionID { get; set; }
 	}
 
 	public interface IDocumentContainer
