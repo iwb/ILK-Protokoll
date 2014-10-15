@@ -101,13 +101,13 @@
 			</div>
 		</div>
 		<div class="panel-footer">
-			@if (@Model.Attachments.Count == 0)
+			@if (@Model.Documents.Count == 0)
 			{
 				@:Keine Dateien vorhanden
 			}
 			else
 			{
-				@Html.Action("_List", "Attachments", new {entity = AttachmentContainer.Topic, id = Model.ID, makeList = true, Area = ""})
+				@Html.Action("_List", "Attachments", new {entityKind = DocumentContainer.Topic, id = Model.ID, makeList = true, Area = ""})
 			}
 		</div>
 	</div>
