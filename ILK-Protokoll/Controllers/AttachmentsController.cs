@@ -46,16 +46,16 @@ namespace ILK_Protokoll.Controllers
 		}
 
 		// GET: Attachments
-		public PartialViewResult _List(DocumentContainer entity, int id, bool makeList = false, bool showActions = true)
+		public PartialViewResult _List(int id, DocumentContainer entityKind, bool makeList = false, bool showActions = true)
 		{
 			var documents = db.Documents
-							.Where(a => a.Deleted == null)
-							.OrderBy(a => a.DisplayName)
-							.Include(a => a.LatestRevision);
+				.Where(a => a.Deleted == null)
+				.OrderBy(a => a.DisplayName)
+				.Include(a => a.LatestRevision);
 
-			if (entity == DocumentContainer.Topic)
+			if (entityKind == DocumentContainer.Topic)
 				documents = documents.Where(a => a.TopicID == id);
-			else if (entity == DocumentContainer.EmployeePresentation)
+			else if (entityKind == DocumentContainer.EmployeePresentation)
 				documents = documents.Where(a => a.EmployeePresentationID == id);
 
 
@@ -76,12 +76,12 @@ namespace ILK_Protokoll.Controllers
 			}
 		}
 
-		public ActionResult _UploadForm(IDocumentContainer entity, DocumentContainer kind)
+		public ActionResult _UploadForm(int id, DocumentContainer entityKind)
 		{
-			if (entity is Topic && IsTopicLocked(entity.ID))
+			if (entityKind == DocumentContainer.Topic && IsTopicLocked(id))
 				return Content("<div class=\"panel-footer\">Da das Thema gesperrt ist, können Sie keine Dateien hochladen.</div>");
 			else
-				return PartialView("_DocumentCreateForm", Tuple.Create(kind, entity.ID));
+				return PartialView("_DocumentCreateForm", Tuple.Create(entityKind, id));
 		}
 
 		[HttpPost]
@@ -145,10 +145,10 @@ namespace ILK_Protokoll.Controllers
 					GUID = Guid.NewGuid(),
 					Created = DateTime.Now
 				};
-				
+
 				Document document = new Document(revision)
 				{
-					Deleted = null, 
+					Deleted = null,
 					DisplayName = fullName
 				};
 
@@ -194,7 +194,83 @@ namespace ILK_Protokoll.Controllers
 
 			ViewBag.StatusMessage = statusMessage.ToString();
 
-			return _List(entityKind, id);
+			return _List(id, entityKind);
+		}
+
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public ActionResult CreateNewRevision(int id, HttpPostedFileBase file)
+		{
+			if (file == null)
+				return HTTPStatus(HttpStatusCode.BadRequest, "Keine Datei empfangen" + Request.Files.Count);
+
+			if (id <= 0)
+				return HTTPStatus(HttpStatusCode.BadRequest, "Die Dateien können keinem Ziel zugeordnet werden.");
+
+			var document = db.Documents.Find(id);
+
+			Topic topic = null;
+			if (document.TopicID != null)
+			{
+				topic = db.Topics.Find(document.TopicID.Value);
+
+				if (IsTopicLocked(document.TopicID.Value))
+					return HTTPStatus(HttpStatusCode.Forbidden, "Da das Thema gesperrt ist, können Sie keine Dateien hochladen.");
+
+				if (topic.IsReadOnly)
+				{
+					return HTTPStatus(HttpStatusCode.Forbidden,
+						"Da das Thema schreibgeschützt ist, können Sie keine Dateien bearbeiten.");
+				}
+			}
+
+			if (string.IsNullOrWhiteSpace(file.FileName))
+				return HTTPStatus(HttpStatusCode.BadRequest, "Die Datei hat einen ungültigen Dateinamen.");
+
+			var fullName = Path.GetFileName(file.FileName);
+			if (file.ContentLength == 0)
+				return HTTPStatus(HttpStatusCode.BadRequest, "Datei " + fullName + " hat keinen Inhalt.");
+
+			string filename = Path.GetFileNameWithoutExtension(file.FileName);
+			string fileext = Path.GetExtension(file.FileName);
+			if (!string.IsNullOrEmpty(fileext))
+				fileext = fileext.Substring(1);
+
+			var revision = new Revision
+			{
+				ParentDocument = document,
+				SafeName = InvalidChars.Replace(filename, ""),
+				FileSize = file.ContentLength,
+				UploaderID = GetCurrentUserID(),
+				Extension = fileext,
+				GUID = Guid.NewGuid(),
+				Created = DateTime.Now
+			};
+			document.Revisions.Add(revision);
+			document.LatestRevision = revision;
+			document.DisplayName = fullName;
+
+			try
+			{
+				db.SaveChanges(); // Damit die Revision seine ID bekommt. Diese wird anschließend im Dateinamen hinterlegt
+				string path = Path.Combine(Serverpath, revision.FileName);
+				file.SaveAs(path);
+				//db.SaveChanges();
+			}
+			catch (DbEntityValidationException ex)
+			{
+				return HTTPStatus(HttpStatusCode.InternalServerError, ErrorMessageFromException(ex));
+			}
+			catch (IOException ex)
+			{
+				return HTTPStatus(HttpStatusCode.InternalServerError, "Dateisystemfehler: " + ex.Message);
+			}
+
+			// Ungelesen-Markierung aktualisieren
+			if (topic != null)
+				MarkAsUnread(topic);
+
+			return RedirectToAction("Details", new {id});
 		}
 
 		[HttpPost]
@@ -278,7 +354,7 @@ namespace ILK_Protokoll.Controllers
 		[AllowAnonymous]
 		public ActionResult Download(Guid id)
 		{
-			var file = db.Revisions.Single(rev => rev.GUID == id);
+			var file = db.Revisions.Include(rev => rev.ParentDocument).Single(rev => rev.GUID == id);
 
 			var userAgent = Request.UserAgent;
 			var isInternetExplorer = !string.IsNullOrEmpty(userAgent) && userAgent.Contains("Trident");
@@ -320,6 +396,14 @@ namespace ILK_Protokoll.Controllers
 			Document d = db.Documents.Find(id);
 			if (d == null)
 				return HTTPStatus(HttpStatusCode.NotFound, "Datei nicht gefunden");
+
+			ViewBag.ShowUpload = true;
+			if (d.TopicID != null)
+			{
+				var topic = db.Topics.Find(d.TopicID.Value);
+				ViewBag.ShowUpload = !topic.IsReadOnly && !IsTopicLocked(d.TopicID.Value);
+			}
+
 			return View(d);
 		}
 

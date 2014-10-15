@@ -15,15 +15,15 @@
 	<tbody>
 		@foreach (var document in Model)
 		{
-			string iconname = document.Extension ?? "default";
+			string iconname = document.LatestRevision.Extension ?? "default";
 			if (!AttachmentsController.KnownExtensions.Contains(iconname))
 			{
 				iconname = "default";
 			}
 
-			string fileurl = Url.Content(AttachmentsController.VirtualPath + file.ID);
+			string fileurl = Url.Action("Download", "Attachments", new {id = document.LatestRevision.GUID});
 
-			<tr id="attachment_@file.ID">
+			<tr id="attachment_@document.ID">
 				<td>
 					<a href="@fileurl">
 						<img src="~/img/fileicons/@(iconname).png" height="32" />

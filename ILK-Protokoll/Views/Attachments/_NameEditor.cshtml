@@ -1,4 +1,4 @@
-﻿@model ILK_Protokoll.Models.Attachment
+﻿@model ILK_Protokoll.Models.Document
 
 @using (Ajax.BeginForm("_SubmitEdit", new AjaxOptions() {HttpMethod = "POST", InsertionMode = InsertionMode.Replace, UpdateTargetId = "attachmentName_" + Model.ID}))
 {

@@ -71,17 +71,17 @@
 	<div class="col-md-10 col-md-offset-1">
 		<div class="panel panel-primary">
 			<div class="panel-heading">
-				<h3 class="panel-title">@Html.DisplayNameFor(model => model.Attachments)</h3>
+				<h3 class="panel-title">@Html.DisplayNameFor(model => model.Documents)</h3>
 			</div>
-			@if (Model.Attachments.Count(a => a.Deleted == null) == 0)
+			@if (Model.Documents.Count(a => a.Deleted == null) == 0)
 			{
 				<div class="panel-body" id="attachments_@Model.ID">Keine Dateianhänge vorhanden.</div>
 			}
 			else
 			{
-				@Html.Action("_List", "Attachments", new {Area = "", entity = AttachmentContainer.EmployeePresentation, id = Model.ID})
+				@Html.Action("_List", "Attachments", new {Area = "", entityKind = DocumentContainer.EmployeePresentation, id = Model.ID})
 			}
-			@Html.Action("_UploadForm", "Attachments", new {Area = "", entity = AttachmentContainer.EmployeePresentation, id = Model.ID})
+			@Html.Action("_UploadForm", "Attachments", new {Area = "", entityKind = DocumentContainer.EmployeePresentation, id = Model.ID})
 		</div>
 	</div>
 </div>

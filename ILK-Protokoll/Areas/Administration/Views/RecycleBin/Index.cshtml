@@ -1,5 +1,5 @@
 ﻿@using ILK_Protokoll.Models
-@model IEnumerable<ILK_Protokoll.Models.Attachment>
+@model IEnumerable<ILK_Protokoll.Models.Document>
 
 @{
 	ViewBag.Title = "Papierkorb";
@@ -33,13 +33,13 @@ else
 					@Html.DisplayNameFor(model => model.Created)
 				</th>
 				<th>
-					@Html.DisplayNameFor(model => model.FileSize)
+					@Html.DisplayNameFor(model => model.LatestRevision.FileSize)
 				</th>
 				<th></th>
 			</tr>
 		</thead>
 		<tbody>
-			@foreach (Attachment item in Model)
+			@foreach (Document item in Model)
 			{
 				<tr id="attachment_@item.ID">
 					<td>
@@ -64,7 +64,7 @@ else
 						@Html.DisplayFor(modelItem => item.Created)
 					</td>
 					<td>
-						@Html.DisplayFor(modelItem => item.FileSize)
+						@Html.DisplayFor(modelItem => item.Revisions.Sum(rev => rev.FileSize))
 					</td>
 					<td>
 						@if ((item.TopicID != null) && !item.Topic.IsReadOnly || item.EmployeePresentationID != null)
