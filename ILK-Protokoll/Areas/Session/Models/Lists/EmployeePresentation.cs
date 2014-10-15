@@ -45,6 +45,8 @@ namespace ILK_Protokoll.Areas.Session.Models.Lists
 
 		[NotMapped]
 		public string FileURL { get; set; }
+		[NotMapped]
+		public int FileCount { get; set; }
 
 		public override string ToString()
 		{

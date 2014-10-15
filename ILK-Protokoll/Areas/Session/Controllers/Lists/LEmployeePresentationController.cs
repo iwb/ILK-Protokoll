@@ -4,9 +4,7 @@ using System.Data.Entity.Validation;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
-using EntityFramework.Extensions;
 using ILK_Protokoll.Areas.Session.Models.Lists;
-using ILK_Protokoll.Controllers;
 
 namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 {
@@ -26,10 +24,11 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 			var items = Entities.ToList();
 			foreach (var emp in items)
 			{
-				if (emp.Documents.Count(a => a.Deleted == null) > 0)
+				emp.FileCount = emp.Documents.Count(a => a.Deleted == null);
+				if (emp.FileCount > 0)
 				{
 					var document = emp.Documents.Where(a => a.Deleted == null).OrderByDescending(a => a.Created).First();
-					emp.FileURL = Url.Action("DownloadNewest", "Attachments", document.GUID);
+					emp.FileURL = Url.Action("DownloadNewest", "Attachments", new {id = document.GUID});
 				}
 			}
 			return PartialView(items);
@@ -75,7 +74,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 					return Redirect(returnURL);
 			}
 			ViewBag.UserList = CreateUserSelectList();
-			ViewBag.ReturnURL = returnURL ?? Url.Action("Index", "Lists", new { Area = "Session" });
+			ViewBag.ReturnURL = returnURL ?? Url.Action("Index", "Lists", new {Area = "Session"});
 			return View(input);
 		}
 
