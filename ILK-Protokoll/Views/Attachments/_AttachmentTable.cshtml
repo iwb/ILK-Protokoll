@@ -41,7 +41,7 @@
 	<script type="text/javascript">
 		function removeAttachment(element) {
 			if ($(element).siblings().length == 0) {
-				$(element).parent().parent().replaceWith("<div class=\"panel-body\" id=\"attachments_@ViewBag.EntityID\">Keine Dateianhänge vorhanden.</div>"); // Remove the whole table
+				$(element).parent().parent().replaceWith("<div class=\"panel-body\" id=\"attachments_@ViewBag.EntityID\">Keine Dokumente vorhanden.</div>"); // Remove the whole table
 			} else {
 				$(element).remove();
 				$("table.table-sortable").trigger("update");

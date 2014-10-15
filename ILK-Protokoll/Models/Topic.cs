@@ -93,7 +93,7 @@ namespace ILK_Protokoll.Models
 		[Required]
 		public Priority Priority { get; set; }
 
-		[Display(Name = "Dateianhänge")]
+		[Display(Name = "Dokumente")]
 		public virtual ICollection<Document> Documents { get; set; }
 
 		[Display(Name = "Erstellt")]

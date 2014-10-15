@@ -37,7 +37,7 @@ namespace ILK_Protokoll.Areas.Session.Models.Lists
 		[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
 		public DateTime LastPresentation { get; set; }
 
-		[DisplayName("Dateien")]
+		[DisplayName("Dokumente")]
 		public ICollection<Document> Documents { get; set; }
 
 		[DisplayName("Vorgemerkt")]
