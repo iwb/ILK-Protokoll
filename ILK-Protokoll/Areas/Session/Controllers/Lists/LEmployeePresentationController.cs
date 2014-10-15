@@ -78,6 +78,26 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 			return View(input);
 		}
 
+		public override PartialViewResult _FetchRow(int id)
+		{
+			var emp = Entities.Single(m => m.ID == id);
+			var session = GetSession();
+			if (session != null && emp.LockSessionID == session.ID) // ggf. lock entfernen
+			{
+				emp.LockSessionID = null;
+				db.SaveChanges();
+			}
+			ViewBag.Reporting = false;
+			emp.FileCount = emp.Documents.Count(a => a.Deleted == null);
+			if (emp.FileCount > 0)
+			{
+				var document = emp.Documents.Where(a => a.Deleted == null).OrderByDescending(a => a.Created).First();
+				emp.FileURL = Url.Action("DownloadNewest", "Attachments", new { id = document.GUID });
+			}
+
+			return PartialView("_Row", emp);
+		}
+
 		public override ActionResult _Delete(int? id)
 		{
 			if (id == null)
