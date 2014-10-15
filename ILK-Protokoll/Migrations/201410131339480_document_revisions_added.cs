@@ -58,7 +58,7 @@ namespace ILK_Protokoll.Migrations
 				.Index(t => t.Document_ID);
 
 			// Migrate Data
-			Sql(@"INSERT INTO [ILK-Protokoll].[dbo].[Document]
+			Sql(@"INSERT INTO [dbo].[Document]
 								  ([GUID]
 								  ,[TopicID]
 								  ,[EmployeePresentationID]
@@ -73,11 +73,11 @@ namespace ILK_Protokoll.Migrations
 						        ,Deleted
 						        ,DisplayName
 						        ,ID
-					FROM [ILK-Protokoll].[dbo].Attachment
+					FROM [dbo].Attachment
 
-					SET IDENTITY_INSERT [ILK-Protokoll].[dbo].[Revision] ON
+					SET IDENTITY_INSERT [dbo].[Revision] ON
 
-					INSERT INTO [ILK-Protokoll].[dbo].[Revision]
+					INSERT INTO [dbo].[Revision]
 								  ([ID]
 								  ,[GUID]
 								  ,[ParentDocumentID]
@@ -89,16 +89,16 @@ namespace ILK_Protokoll.Migrations
 								  ,[Document_ID])
 						  SELECT ID
 								  ,NEWID()
-								  ,(SELECT ID FROM [ILK-Protokoll].[dbo].[Document] AS doc WHERE doc.LatestRevisionID = attachment.ID)
+								  ,(SELECT ID FROM [dbo].[Document] AS doc WHERE doc.LatestRevisionID = attachment.ID)
 								  ,Created
 								  ,UploaderID
 								  ,FileSize
 								  ,SafeName
 								  ,Extension
-								  ,(SELECT ID FROM [ILK-Protokoll].[dbo].[Document] AS doc WHERE doc.LatestRevisionID = attachment.ID)
-					FROM [ILK-Protokoll].[dbo].Attachment as attachment");
+								  ,(SELECT ID FROM [dbo].[Document] AS doc WHERE doc.LatestRevisionID = attachment.ID)
+					FROM [dbo].Attachment as attachment");
 
-			Sql(@"SET IDENTITY_INSERT [ILK-Protokoll].[dbo].[Revision] OFF");
+			Sql(@"SET IDENTITY_INSERT [dbo].[Revision] OFF");
 		}
 
 		public override void Down()
@@ -111,9 +111,9 @@ namespace ILK_Protokoll.Migrations
 			DropForeignKey("dbo.Revision", "ParentDocumentID", "dbo.Document");
 
 			Sql(@"TRUNCATE TABLE [dbo].[Attachment]
-					SET IDENTITY_INSERT [ILK-Protokoll].[dbo].[Attachment] ON
+					SET IDENTITY_INSERT [dbo].[Attachment] ON
 
-					INSERT INTO [ILK-Protokoll].[dbo].[Attachment]
+					INSERT INTO [dbo].[Attachment]
 								  ([ID]
 								  ,[TopicID]
 								  ,[Deleted]
@@ -137,7 +137,7 @@ namespace ILK_Protokoll.Migrations
 								  ,doc.[EmployeePresentationID] FROM [dbo].Document as doc
 						  JOIN [dbo].Revision as rev ON doc.LatestRevisionID = rev.ID
 
-					SET IDENTITY_INSERT [ILK-Protokoll].[dbo].[Attachment] OFF");
+					SET IDENTITY_INSERT [dbo].[Attachment] OFF");
 
 			DropIndex("dbo.Document", new[] {"LatestRevisionID"});
 			DropIndex("dbo.Document", new[] {"EmployeePresentationID"});
