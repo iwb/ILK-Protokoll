@@ -51,7 +51,8 @@ namespace ILK_Protokoll.Controllers
 			var documents = db.Documents
 				.Where(a => a.Deleted == null)
 				.OrderBy(a => a.DisplayName)
-				.Include(a => a.LatestRevision);
+				.Include(a => a.LatestRevision)
+				.Include(a => a.Revisions);
 
 			if (entityKind == DocumentContainer.Topic)
 				documents = documents.Where(a => a.TopicID == id);
@@ -89,7 +90,7 @@ namespace ILK_Protokoll.Controllers
 		public ActionResult _CreateDocuments(DocumentContainer entityKind, int id)
 		{
 			if (Request.Files.Count == 0)
-				return HTTPStatus(HttpStatusCode.OK, "Es wurden keine Dateien empfangen.");
+				return HTTPStatus(HttpStatusCode.BadRequest, "Es wurden keine Dateien empfangen.");
 
 			if (id <= 0)
 				return HTTPStatus(HttpStatusCode.BadRequest, "Die Dateien können keinem Ziel zugeordnet werden.");
@@ -167,7 +168,7 @@ namespace ILK_Protokoll.Controllers
 				try
 				{
 					db.Documents.Add(document);
-					db.SaveChanges(); // Damit das Attachment seine ID bekommt. Diese wird anschließend im Dateinamen hinterlegt
+					db.SaveChanges(); // Damit die Revision die ID bekommt. Diese wird anschließend im Dateinamen hinterlegt
 					string path = Path.Combine(Serverpath, revision.FileName);
 					file.SaveAs(path);
 					successful++;
