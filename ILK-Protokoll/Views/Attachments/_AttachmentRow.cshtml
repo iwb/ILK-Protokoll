@@ -26,9 +26,7 @@
 	<td class="actions">
 		<a data-ajax="true" data-ajax-method="POST" data-ajax-mode="replace" data-ajax-update="#attachmentName_@Model.ID" href="@Url.Action("_BeginEdit", new {documentID = Model.ID})"><span class="glyphicon glyphicon-edit" title="Name bearbeiten"></span></a>
 		&nbsp;
-		<a href="@Url.Action("Details", "Attachments", new {id = Model.ID})">
-			<span class="glyphicon glyphicon-new-window" title="Detailseite aufrufen"></span>
-		</a>
+		<a href="@Url.Action("Details", "Attachments", new {id = Model.ID})"><span class="glyphicon glyphicon-new-window" title="Detailseite aufrufen"></span></a>
 		&nbsp;
 		<a data-ajax="true" data-ajax-method="POST" data-ajax-success="removeAttachment('#attachment_@Model.ID');"
 		   href="@Url.Action("_Delete", new {documentID = Model.ID})">
