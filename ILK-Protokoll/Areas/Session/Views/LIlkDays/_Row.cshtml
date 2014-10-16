@@ -7,7 +7,7 @@
 	@if (Model.Start.Date == Model.End.Date)
 	{
 		<td>
-			@Model.Start.ToString("d") ( @Model.Start.ToString("t")&#8239;&#8211;&#8239;@Model.End.ToString("t") )
+			@Model.Start.ToString("d") (&#8202;@Model.Start.ToString("t")&#8239;&#8211;&#8239;@(Model.End.ToString("t"))&#8202;)
 		</td>
 	}
 	else
