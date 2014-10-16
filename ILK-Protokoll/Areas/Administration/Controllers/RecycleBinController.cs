@@ -63,8 +63,11 @@ namespace ILK_Protokoll.Areas.Administration.Controllers
 		[ValidateAntiForgeryToken]
 		public ActionResult PurgeConfirmed()
 		{
-			db.Documents.RemoveRange(db.Documents.Where(a => a.Deleted != null));
-			db.SaveChanges();
+			var ac = new AttachmentsController();
+			foreach (var doc in db.Documents.Where(a => a.Deleted != null))
+			{
+				ac._PermanentDelete(doc.ID);
+			}
 			return RedirectToAction("Index");
 		}
 	}

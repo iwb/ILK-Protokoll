@@ -77,7 +77,7 @@ else
 						}
 						@Ajax.ActionLink("Löschen", "_PermanentDelete", "Attachments",
 							new {area = "", documentID = item.ID},
-							new AjaxOptions {Confirm = "Datei endgültig löschen?", HttpMethod = "POST", OnSuccess = "removeFile('#attachment_" + @item.ID + "');"},
+							new AjaxOptions {Confirm = "Dokument endgültig löschen?", HttpMethod = "POST", OnSuccess = "removeFile('#attachment_" + @item.ID + "');"},
 							new {@class = "text-danger"})
 					</td>
 				</tr>

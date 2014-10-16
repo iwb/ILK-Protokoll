@@ -316,35 +316,31 @@ namespace ILK_Protokoll.Controllers
 			if (document.Deleted == null) // In den Papierkorb
 				return HTTPStatus(422, "Das Objekt befindet sich noch nicht im Papierkorb.");
 
-			if (document.TopicID.HasValue && IsTopicLocked(document.TopicID.Value))
-				return HTTPStatus(HttpStatusCode.Forbidden, "Da das Thema gesperrt ist, können Sie keine Dateien bearbeiten.");
-
-			if (document.TopicID.HasValue && document.Topic.IsReadOnly)
+			try
 			{
-				return HTTPStatus(HttpStatusCode.Forbidden,
-					"Da das Thema schreibgeschützt ist, können Sie keine Dateien bearbeiten.");
+				foreach (var revision in document.Revisions)
+				{
+					string path = Path.Combine(Serverpath, revision.FileName);
+					System.IO.File.Delete(path);
+				}
+			}
+			catch (IOException ex)
+			{
+				return HTTPStatus(HttpStatusCode.InternalServerError, ex.Message);
 			}
 
 			try
 			{
-				string path = Path.Combine(Serverpath, document.LatestRevision.FileName);
-				System.IO.File.Delete(path);
-
+				document.LatestRevisionID = null;
+				db.Revisions.RemoveRange(document.Revisions);
+				db.SaveChanges();
 				db.Documents.Remove(document);
-			}
-			catch (IOException)
-			{
-				return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
-			}
-
-			try
-			{
 				db.SaveChanges();
 			}
 			catch (DbEntityValidationException e)
 			{
 				var message = ErrorMessageFromException(e);
-				return HTTPStatus(500, message);
+				return HTTPStatus(HttpStatusCode.InternalServerError, message);
 			}
 
 			return new HttpStatusCodeResult(HttpStatusCode.NoContent);
