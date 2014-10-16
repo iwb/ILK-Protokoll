@@ -10,7 +10,7 @@ using ILK_Protokoll.ViewModels;
 
 namespace ILK_Protokoll.Models
 {
-	public class Topic : IDocumentContainer
+	public class Topic
 	{
 		public Topic()
 		{

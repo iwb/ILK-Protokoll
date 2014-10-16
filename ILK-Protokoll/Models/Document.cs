@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 using ILK_Protokoll.Areas.Session.Models.Lists;
-using Microsoft.Ajax.Utilities;
 
 namespace ILK_Protokoll.Models
 {
@@ -28,7 +28,7 @@ namespace ILK_Protokoll.Models
 		}
 
 		public int ID { get; set; }
-		
+
 		public Guid GUID { get; set; }
 
 		//----------------------------------------------------------------------------------------------------
@@ -51,7 +51,7 @@ namespace ILK_Protokoll.Models
 		//----------------------------------------------------------------------------------------------------
 
 		/// <summary>
-		/// Enthält das Lockdatum, falls das Dokument gesperrt ist, sonst null.
+		///    Enthält das Lockdatum, falls das Dokument gesperrt ist, sonst null.
 		/// </summary>
 		public DateTime? LockTime { get; set; }
 
@@ -76,14 +76,17 @@ namespace ILK_Protokoll.Models
 		public virtual ICollection<Revision> Revisions { get; set; }
 
 		public virtual Revision LatestRevision { get; set; }
+
 		[ForeignKey("LatestRevision")]
 		public int? LatestRevisionID { get; set; }
-	}
 
-	public interface IDocumentContainer
-	{
-		int ID { get; }
-		ICollection<Document> Documents { get; }
+		[NotMapped]
+		[UIHint("FileSize")]
+		[Display(Name = "Gesamtgröße")]
+		public int FileSizeSum
+		{
+			get { return Revisions.Sum(rev => rev.FileSize); }
+		}
 	}
 
 	public enum DocumentContainer

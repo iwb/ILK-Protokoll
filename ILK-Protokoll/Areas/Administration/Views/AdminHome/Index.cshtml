@@ -1,8 +1,33 @@
-﻿@using ILK_Protokoll.Models
+﻿@using ILK_Protokoll.Areas.Administration.Controllers
+@using ILK_Protokoll.Models
+@using ILK_Protokoll.util
 @{
 	ViewBag.Title = "Verwaltung";
 }
 
 <h2>@ViewBag.Title</h2>
 
-<p>In der Verwaltung können Sie einerseits ihre persönlichen Einstellungen anpassen, oder generelle Änderungen vornehmen.</p>
+<p>In der Verwaltung können Sie einige Einstellungen treffen, und selten benötige Aufgaben durchführen.</p>
+
+<dl class="dl-horizontal">
+	<dt>@(Html.GetDisplayName<SettingsController>())</dt>
+	<dd>
+		Persönliche Einstellungen, die das Aussehen oder das Verhalten des ILK-Protokolls verändern
+	</dd>
+	<dt>@(Html.GetDisplayName<SessionTypesController>())</dt>
+	<dd>
+		Bearbeitungsmöglichkeiten für Sitzungstypen
+	</dd>
+	<dt>@(Html.GetDisplayName<TagsController>())</dt>
+	<dd>
+		Verwaltung der bunten Tags
+	</dd>
+	<dt>@(Html.GetDisplayName<RecycleBinController>())</dt>
+	<dd>
+		Wiederherstellen und Löschen von Dateien
+	</dd>
+	<dt>@(Html.GetDisplayName<UserController>())</dt>
+	<dd>
+		Übersicht über die bekannten Benutzer
+	</dd>
+</dl>

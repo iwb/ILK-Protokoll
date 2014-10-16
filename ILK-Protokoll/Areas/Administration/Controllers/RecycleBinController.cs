@@ -1,6 +1,6 @@
-﻿using System.Data.Entity;
+﻿using System.ComponentModel;
+using System.Data.Entity;
 using System.Data.Entity.Validation;
-using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
@@ -8,6 +8,7 @@ using ILK_Protokoll.Controllers;
 
 namespace ILK_Protokoll.Areas.Administration.Controllers
 {
+	[DisplayName("Papierkorb")]
 	public class RecycleBinController : BaseController
 	{
 		protected override void OnActionExecuting(ActionExecutingContext filterContext)

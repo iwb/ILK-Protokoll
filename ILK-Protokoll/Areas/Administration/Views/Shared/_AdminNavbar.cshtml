@@ -1,4 +1,6 @@
-﻿<div class="navbar navbar-default navbar-secondary navbar-fixed-top nav-justified">
+﻿@using ILK_Protokoll.Areas.Administration.Controllers
+@using ILK_Protokoll.util
+<div class="navbar navbar-default navbar-secondary navbar-fixed-top nav-justified">
 	<div class="container">
 		<div class="navbar-header">
 			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#secondaryNavbarContent">
@@ -11,11 +13,11 @@
 
 		<div class="navbar-collapse collapse" id="secondaryNavbarContent">
 			<ul class="nav navbar-nav">
-				<li class="@ViewBag.ASettingsStyle">@Html.ActionLink("Einstellungen", "Index", "Settings", new { Area = "Administration" }, null)</li>
-				<li class="@ViewBag.ASTStyle">@Html.ActionLink("Sitzungstypen", "Index", "SessionTypes", new { Area = "Administration" }, null)</li>
-				<li class="@ViewBag.ARBStyle">@Html.ActionLink("Tags", "Index", "Tags", new { Area = "Administration" }, null)</li>
-				<li class="@ViewBag.ARBStyle">@Html.ActionLink("Papierkorb", "Index", "RecycleBin", new { Area = "Administration" }, null)</li>
-				<li class="@ViewBag.AUserStyle">@Html.ActionLink("Benutzer", "Index", "User", new { Area = "Administration" }, null)</li>
+				<li class="@ViewBag.ASettingsStyle">@Html.ActionLink(Html.GetDisplayName<SettingsController>(), "Index", "Settings", new { Area = "Administration" }, null)</li>
+				<li class="@ViewBag.ASTStyle">@Html.ActionLink(Html.GetDisplayName<SessionTypesController>(), "Index", "SessionTypes", new { Area = "Administration" }, null)</li>
+				<li class="@ViewBag.ATagStyle">@Html.ActionLink(Html.GetDisplayName<TagsController>(), "Index", "Tags", new { Area = "Administration" }, null)</li>
+				<li class="@ViewBag.ARBStyle">@Html.ActionLink(Html.GetDisplayName<RecycleBinController>(), "Index", "RecycleBin", new { Area = "Administration" }, null)</li>
+				<li class="@ViewBag.AUserStyle">@Html.ActionLink(Html.GetDisplayName<UserController>(), "Index", "User", new { Area = "Administration" }, null)</li
 			</ul>
 		</div>
 	</div>
