@@ -126,7 +126,8 @@
 			new
 			{
 				@class = "form-horizontal",
-				enctype = "multipart/form-data"
+				enctype = "multipart/form-data",
+				id = "revisionUploadForm"
 			}))
 		{
 			<div class="row">
@@ -138,7 +139,50 @@
 				<div class="col-sm-2">
 					<button type="submit" class="btn btn-primary form-control">Hochladen</button>
 				</div>
+				<div id="attachment_uploader_status" class="col-sm-2 col-sm-offset-10"></div>
 			</div>
+		}
+
+		using (Html.Delayed(null, "RevisionUpload"))
+		{
+			<script type="text/javascript">
+				$('#revisionUploadForm').submit(function (e) {
+					var formdata = new FormData(); //FormData object
+					var fileInput = $('#file')[0];
+					var hidden = $(this).children().children('input');
+
+					// Iterating through the hidden fields
+					for (var i = 0; i < hidden.length; i++) {
+						formdata.append(hidden[i].name, hidden[i].value);
+					}
+
+					//Iterating through each files selected in fileInput
+					for (i = 0; i < fileInput.files.length; i++) {
+						//Appending each file to FormData object
+						formdata.append(fileInput.files[i].name, fileInput.files[i]);
+					}
+					//Creating an XMLHttpRequest and sending
+					var xhr = new XMLHttpRequest();
+					xhr.open('POST', $(this).attr('action'));
+					xhr.onreadystatechange = function() {
+						if (xhr.readyState == 4) {
+							if (xhr.status == 201) {
+								window.location = xhr.responseText;
+							} else {
+								if (xhr.responseText.length > 0) {
+									$('#attachment_uploader_status').html('<span class="text-danger">' + xhr.responseText + '</span>');
+								} else {
+									$('#attachment_uploader_status').html('<span class="text-danger">' + xhr.statusText + '</span>');
+								}
+							}
+						}
+					};
+					xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+					xhr.send(formdata);
+					e.preventDefault();
+					e.stopImmediatePropagation();
+				});
+			</script>
 		}
 	}
 	else

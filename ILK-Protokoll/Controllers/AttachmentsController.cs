@@ -203,10 +203,12 @@ namespace ILK_Protokoll.Controllers
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public ActionResult CreateNewRevision(int id, HttpPostedFileBase file)
+		public ActionResult CreateNewRevision(int id)
 		{
-			if (file == null)
-				return HTTPStatus(HttpStatusCode.BadRequest, "Keine Datei empfangen" + Request.Files.Count);
+			if (Request.Files.Count != 1)
+				return HTTPStatus(HttpStatusCode.BadRequest, "Keine Datei empfangen");
+
+			var file = Request.Files[0];
 
 			if (id <= 0)
 				return HTTPStatus(HttpStatusCode.BadRequest, "Die Dateien können keinem Ziel zugeordnet werden.");
@@ -274,7 +276,7 @@ namespace ILK_Protokoll.Controllers
 			if (topic != null)
 				MarkAsUnread(topic);
 
-			return RedirectToAction("Details", new {id});
+			return HTTPStatus(HttpStatusCode.Created, Url.Action("Details", "Attachments", new {Area = "", id}));
 		}
 
 		[HttpPost]

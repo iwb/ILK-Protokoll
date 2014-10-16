@@ -28,7 +28,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 				if (emp.FileCount > 0)
 				{
 					var document = emp.Documents.Where(a => a.Deleted == null).OrderByDescending(a => a.Created).First();
-					emp.FileURL = Url.Action("DownloadNewest", "Attachments", new {id = document.GUID});
+					emp.FileURL = Url.Action("DownloadNewest", "Attachments", new {Area = "", id = document.GUID});
 				}
 			}
 			return PartialView(items);
@@ -56,7 +56,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 				return HttpNotFound();
 
 			ViewBag.UserList = CreateUserSelectList();
-			ViewBag.ReturnURL = returnURL ?? Url.Action("Index", "Lists", new {Area = "Session"});
+			ViewBag.ReturnURL = returnURL ?? Url.Action("Index", "ViewLists", new {Area = ""});
 			return View(presentation);
 		}
 
@@ -74,7 +74,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 					return Redirect(returnURL);
 			}
 			ViewBag.UserList = CreateUserSelectList();
-			ViewBag.ReturnURL = returnURL ?? Url.Action("Index", "Lists", new {Area = "Session"});
+			ViewBag.ReturnURL = returnURL ?? Url.Action("Index", "ViewLists", new {Area = ""});
 			return View(input);
 		}
 
@@ -92,7 +92,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 			if (emp.FileCount > 0)
 			{
 				var document = emp.Documents.Where(a => a.Deleted == null).OrderByDescending(a => a.Created).First();
-				emp.FileURL = Url.Action("DownloadNewest", "Attachments", new { id = document.GUID });
+				emp.FileURL = Url.Action("DownloadNewest", "Attachments", new {Area = "", id = document.GUID});
 			}
 
 			return PartialView("_Row", emp);
