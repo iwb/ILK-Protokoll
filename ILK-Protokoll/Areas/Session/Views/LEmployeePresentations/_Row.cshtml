@@ -34,13 +34,7 @@
 	@if (!ViewBag.Reporting)
 	{
 		<td class="actions">
-		
-			@{
-				string url = Request.Url != null ? Request.Url.PathAndQuery : null;
-			}
-
-			<a href="@Url.Action("Edit", "LEmployeePresentations", new {Area = "Session", id = Model.ID, returnURL = url})" target="empPres"><span class="glyphicon glyphicon-new-window" title="Eintrag ausführlich bearbeiten"></span></a>
-		
+			<a href="@Url.Action("Edit", "LEmployeePresentations", new {Area = "Session", id = Model.ID})" target="empPres"><span class="glyphicon glyphicon-new-window" title="Eintrag ausführlich bearbeiten"></span></a>
 
 			<a data-ajax="true"
 			   data-ajax-method="POST"
@@ -54,6 +48,11 @@
 			   href="@Url.Action("_Delete", "LEmployeePresentations", new {Area = "Session", id = Model.ID})">
 				<span class="glyphicon glyphicon-remove" title="Eintrag löschen"></span>
 			</a>
+			<script type="text/javascript">
+				$('#employeePresentation_@Model.ID a[target="empPres"]').each(function() {
+					$(this).attr("href", $(this).attr("href") + "?returnURL=" + returnURL + "%23employeePresentation_table");
+				})
+			</script>
 		</td>
 	}
 </tr>
