@@ -520,7 +520,6 @@
     <Content Include="Areas\Administration\Views\SessionTypes\Index.cshtml" />
     <Content Include="Areas\Session\Views\web.config" />
     <Content Include="Areas\Session\Views\Shared\_SessionNavbar.cshtml" />
-    <Content Include="Areas\Session\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\Session\Views\Master\Edit.cshtml" />
     <Content Include="Areas\Session\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Session\Views\Lists\Index.cshtml" />

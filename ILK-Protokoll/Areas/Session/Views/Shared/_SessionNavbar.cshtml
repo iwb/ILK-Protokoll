@@ -2,7 +2,7 @@
 @{
 	var session = ViewBag.CurrentSession as ActiveSession;
 }
-<div class="navbar navbar-inverse navbar-fixed-top nav-justified">
+<div class="navbar navbar-default navbar-secondary navbar-fixed-top nav-justified">
 	<div class="container">
 		<div class="navbar-header">
 			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -20,16 +20,11 @@
 				<li class="@ViewBag.SDiscussionStyle">@Html.ActionLink("Diskussion", "Index", "Discussion", new { Area = "Session" }, null)</li>
 				<li class="@ViewBag.SFinalizeStyle">@Html.ActionLink("Beenden", "Index", "Finalize", new { Area = "Session" }, null)</li>
 			</ul>
-			
-			<p class="navbar-right navbar-text">
-				<span class="visible-xs">Eingeloggt als <b>@User.Identity.Name</b></span>
-				<span class="hidden-xs usertile">@User.Identity.Name.Split('\\').Last()</span>
-			</p>
 
 			@if (session != null)
 			{
-				<div class="navbar-right navbar-text" style="margin-right: 20px;">
-					@session.SessionType.Name
+				<div class="navbar-right navbar-text">
+					<b>@session.SessionType.Name</b>
 				</div>
 			}
 		</div>
