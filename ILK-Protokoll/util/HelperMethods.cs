@@ -10,6 +10,7 @@ using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
 using System.Web.Routing;
+using JetBrains.Annotations;
 using TuesPechkin;
 
 namespace ILK_Protokoll.util
@@ -24,36 +25,73 @@ namespace ILK_Protokoll.util
 			new Regex(
 				@"(?<!=)([""']|&quot;|&#39;)((http|ftp|https|file):\/\/[\d\w\-_]+(\.[\w\-_]+)*([\w\-\.,@?^=%&amp;:/~\+# ])*)\1");
 
-		public static T GetAttribute<T>(this Enum value)
+		/// <summary>
+		/// Liefert das Attribut des angegebenen Typs zurück, das mit dem Enumwert assizoiert ist. 
+		/// </summary>
+		/// <typeparam name="T">Gesuchter Attributtyp</typeparam>
+		/// <param name="value">Enumwert, dessen Attribut ermittelt werden soll.</param>
+		/// <returns>Die Instanz des Attributtyps, die dem Attribut am Enum entspricht.</returns>
+		/// <exception cref="System.Reflection.AmbiguousMatchException">Es gibt mehrere Attribute dieses Typs.</exception>
+		private static T GetAttribute<T>(this Enum value)
 			where T : Attribute
 		{
 			var field = value.GetType().GetField(value.ToString());
 			return Attribute.GetCustomAttribute(field, typeof(T)) as T;
 		}
 
+		/// <summary>
+		/// Liefert die Beschreibung (DescriptionAttribute.Description) des Enumwerts.
+		/// </summary>
+		/// <param name="value">Ein gültiger Enumwert.</param>
+		/// <returns>Die Beschreibung falls vorhanden, ansonsten value.ToString().</returns>
 		public static string GetDescription(this Enum value)
 		{
 			var attribute = value.GetAttribute<DescriptionAttribute>();
 			return attribute == null ? value.ToString() : attribute.Description;
 		}
 
+		/// <summary>
+		/// Ermittelt den Anzeigenamen (DisplayAttribute.Name) des Enumwerts.
+		/// </summary>
+		/// <param name="value">Ein gültiger Enumwert.</param>
+		/// <returns>Den Anzeigenamen falls vorhanden, ansonsten value.ToString().</returns>
 		public static string DisplayName(this Enum value)
 		{
 			var attribute = value.GetAttribute<DisplayAttribute>();
 			return attribute == null ? value.ToString() : attribute.Name;
 		}
 
+		/// <summary>
+		/// Ermittelt die Anzeigereihenfolge (DisplayAttribute.Order) des Enumwerts.
+		/// </summary>
+		/// <param name="value">Ein gültiger Enumwert.</param>
+		/// <returns>Die Reiehnfolge falls vorhanden, ansonsten den Ordinalwert von value.</returns>
 		public static int DisplayOrder(this Enum value)
 		{
 			var attribute = value.GetAttribute<DisplayAttribute>();
 			return attribute == null ? (int)Convert.ChangeType(value, typeof(int)) : attribute.Order;
 		}
 
+		/// <summary>
+		/// Verpackt den angegebenen Wert in eine Enumeration mit einem Element.
+		/// </summary>
+		/// <typeparam name="T">Ein beliebiger Typ.</typeparam>
+		/// <param name="item">Der Wert, der verpackt werden soll.</param>
+		/// <returns>Eine Enumeration, die genau einen Wert enthält.</returns>
+		[NotNull]
 		public static IEnumerable<T> ToEnumerable<T>(this T item)
 		{
 			yield return item;
 		}
 
+		/// <summary>
+		/// Liefert zu einer Enumeration alle Paare zurück. Eine Enumeration mit n Elementen hat genau n-1 Paare.
+		/// Die Quelle wird nur einmal durchlaufen. Für jedes Paar wird ein neues Tupel generiert.
+		/// Item1 ist stets das Element, dass in der Quelle zuerst vorkommt.
+		/// </summary>
+		/// <param name="source">Die Quelle, die paarweise enumeriert werden soll.</param>
+		/// <returns>Eine Enumeration mit n-1 überschneidenden Tupeln. Gibt eine leere Enumeration zurück, wenn die Quelle aus weniger als zwei ELmenten besteht.</returns>
+		[NotNull]
 		public static IEnumerable<Tuple<T, T>> Pairwise<T>(this IEnumerable<T> source)
 		{
 			using (var it = source.GetEnumerator())
@@ -68,6 +106,12 @@ namespace ILK_Protokoll.util
 			}
 		}
 
+		/// <summary>
+		/// Kürzt den String auf eine Länge ein und versieht das Ergebnis mit einer Ellipse als Endzeichen. Wenn möglich, wid an einer Wortgrenze abgeschnitten. Ist <paramref name="str"/> nach Entfernung von mehrfachen Leerraumzeichen kürzer als <paramref name="maxLength"/> wird der String (verändert) zurückgegeben.
+		/// </summary>
+		/// <param name="str">Der Eingabestring</param>
+		/// <param name="maxLength">Die maximale Länge (in Zeichen) des Ausgabestrings</param>
+		/// <returns>Ein String, der maximal <paramref name="maxLength"/> Zeichen lang ist.</returns>
 		public static string Shorten(this string str, int maxLength)
 		{
 			var stripped = Regex.Replace(str.Trim(), @"\s+", " ");
@@ -83,6 +127,9 @@ namespace ILK_Protokoll.util
 				return stripped;
 		}
 
+		/// <summary>
+		/// Zeigt den Text so an, dass URLs verlinkt werden.
+		/// </summary>
 		public static MvcHtmlString DisplayWithLinksFor<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper,
 			Expression<Func<TModel, TProperty>> expression,
 			string templateName = null)
@@ -191,7 +238,7 @@ namespace ILK_Protokoll.util
 				},
 				Objects =
 				{
-					new ObjectSettings()
+					new ObjectSettings
 					{
 						HtmlText = sourceHTML,
 						WebSettings =
@@ -215,12 +262,12 @@ namespace ILK_Protokoll.util
 		public static MvcHtmlString RenderHtmlAttributes<TModel>(
 			this HtmlHelper<TModel> htmlHelper, object htmlAttributes)
 		{
-			var attrbituesDictionary = new RouteValueDictionary(htmlAttributes);
+			var attributesDictionary = new RouteValueDictionary(htmlAttributes);
 
 			return MvcHtmlString.Create(String.Join(" ",
-				attrbituesDictionary.Keys.Select(
+				attributesDictionary.Keys.Select(
 					key => String.Format("{0}=\"{1}\"", key,
-						htmlHelper.Encode(attrbituesDictionary[key])))));
+						htmlHelper.Encode(attributesDictionary[key])))));
 		}
 
 		public static MvcHtmlString ToHex(this Color c)
