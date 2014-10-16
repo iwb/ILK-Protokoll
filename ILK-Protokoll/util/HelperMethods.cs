@@ -6,6 +6,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
@@ -37,6 +38,12 @@ namespace ILK_Protokoll.util
 		{
 			var field = value.GetType().GetField(value.ToString());
 			return Attribute.GetCustomAttribute(field, typeof(T)) as T;
+		}
+
+		private static TAttr GetAttribute<TAttr, TTarget>()
+		where TAttr : Attribute
+		{
+			return typeof(TTarget).GetCustomAttribute(typeof(TAttr), true) as TAttr;
 		}
 
 		/// <summary>
@@ -183,6 +190,12 @@ namespace ILK_Protokoll.util
 			var metaData = ModelMetadata.FromLambdaExpression(expression, htmlHelper.ViewData);
 			string value = metaData.DisplayName ?? (metaData.PropertyName ?? ExpressionHelper.GetExpressionText(expression));
 			return MvcHtmlString.Create(value);
+		}
+
+		public static string GetDisplayName<TClass>(this HtmlHelper htmlHelper)
+		{
+			var attr = GetAttribute<DisplayNameAttribute, TClass>();
+			return attr != null ? attr.DisplayName : typeof(TClass).Name;
 		}
 
 		public static string RenderViewAsString(ControllerContext controllerContext, string viewName, object model)
