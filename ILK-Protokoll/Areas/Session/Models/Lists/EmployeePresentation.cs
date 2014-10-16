@@ -11,7 +11,7 @@ namespace ILK_Protokoll.Areas.Session.Models.Lists
 	///    Mitarbeiterpräsentation
 	/// </summary>
 	[Table("L_EmployeePresentation")]
-	public class EmployeePresentation : BaseItem, IDocumentContainer
+	public class EmployeePresentation : BaseItem
 	{
 		public EmployeePresentation()
 		{

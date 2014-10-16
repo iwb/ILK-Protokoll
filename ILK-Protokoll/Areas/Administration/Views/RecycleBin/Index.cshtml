@@ -33,7 +33,7 @@ else
 					@Html.DisplayNameFor(model => model.Created)
 				</th>
 				<th>
-					@Html.DisplayNameFor(model => model.LatestRevision.FileSize)
+					@Html.DisplayNameFor(model => model.FileSizeSum)
 				</th>
 				<th></th>
 			</tr>
@@ -58,13 +58,13 @@ else
 						@Html.DisplayFor(modelItem => item.Deleted)
 					</td>
 					<td>
-						@Html.DisplayFor(modelItem => item.DisplayName)
+						@Html.ActionLink(item.DisplayName, "Details", "Attachments", new { id = item.ID, Area = "" }, null)
 					</td>
 					<td>
 						@Html.DisplayFor(modelItem => item.Created)
 					</td>
 					<td>
-						@Html.DisplayFor(modelItem => item.Revisions.Sum(rev => rev.FileSize))
+						@Html.DisplayFor(modelItem => item.FileSizeSum)
 					</td>
 					<td>
 						@if ((item.TopicID != null) && !item.Topic.IsReadOnly || item.EmployeePresentationID != null)
