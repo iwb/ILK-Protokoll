@@ -1,5 +1,5 @@
 ﻿@using ILK_Protokoll.Models
-@model IEnumerable<ILK_Protokoll.Models.Attachment>
+@model IEnumerable<ILK_Protokoll.Models.Document>
 
 @{
 	ViewBag.Title = "Papierkorb";
@@ -9,7 +9,7 @@
 
 <h2>@ViewBag.Title</h2>
 
-<p>Der Papierkorb enthält Dateien, die an anderer Stelle gelöscht wurden. Hier können Sie diese wiederherstellen, oder endgültig löschen.</p>
+<p>Der Papierkorb enthält Dokumente, die an anderer Stelle gelöscht wurden. Hier können Sie diese wiederherstellen, oder endgültig löschen.</p>
 
 @if (!Model.Any())
 {
@@ -33,27 +33,27 @@ else
 					@Html.DisplayNameFor(model => model.Created)
 				</th>
 				<th>
-					@Html.DisplayNameFor(model => model.FileSize)
+					@Html.DisplayNameFor(model => model.LatestRevision.FileSize)
 				</th>
 				<th></th>
 			</tr>
 		</thead>
 		<tbody>
-			@foreach (Attachment item in Model)
+			@foreach (Document item in Model)
 			{
 				<tr id="attachment_@item.ID">
 					<td>
 						@if (item.TopicID != null)
 						{
 							<h6>@Html.DisplayNameFor(model => model.TopicID)</h6>
-							@Html.ActionLink(item.Topic.Title, "Details", "Topics", new { Area = "", id = item.TopicID }, null)
+							@Html.ActionLink(item.Topic.Title, "Details", "Topics", new {Area = "", id = item.TopicID}, null)
 						}
 						else if (item.EmployeePresentationID != null)
 						{
 							<h6>@Html.DisplayNameFor(model => model.EmployeePresentationID)</h6>
-							@Html.ActionLink(item.EmployeePresentation.ToString(), "Edit", "LEmployeePresentations", new { Area = "Session", id = item.EmployeePresentationID }, null)
+							@Html.ActionLink(item.EmployeePresentation.ToString(), "Edit", "LEmployeePresentations", new {Area = "Session", id = item.EmployeePresentationID}, null)
 						}
-						</td>
+					</td>
 					<td>
 						@Html.DisplayFor(modelItem => item.Deleted)
 					</td>
@@ -64,19 +64,19 @@ else
 						@Html.DisplayFor(modelItem => item.Created)
 					</td>
 					<td>
-						@Html.DisplayFor(modelItem => item.FileSize)
+						@Html.DisplayFor(modelItem => item.Revisions.Sum(rev => rev.FileSize))
 					</td>
 					<td>
 						@if ((item.TopicID != null) && !item.Topic.IsReadOnly || item.EmployeePresentationID != null)
 						{
 							@Ajax.ActionLink("Wiederherstellen", "_Restore", "RecycleBin",
-								new {attachmentID = item.ID},
+								new {documentID = item.ID},
 								new AjaxOptions {HttpMethod = "POST", OnSuccess = "removeFile('#attachment_" + @item.ID + "');"},
 								new {@class = "text-success"})
 							<br />
 						}
 						@Ajax.ActionLink("Löschen", "_PermanentDelete", "Attachments",
-							new {area = "", attachmentID = item.ID},
+							new {area = "", documentID = item.ID},
 							new AjaxOptions {Confirm = "Datei endgültig löschen?", HttpMethod = "POST", OnSuccess = "removeFile('#attachment_" + @item.ID + "');"},
 							new {@class = "text-danger"})
 					</td>

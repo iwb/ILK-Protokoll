@@ -135,15 +135,15 @@
 	<div class="col-md-12">
 		<div class="panel panel-primary">
 			<div class="panel-heading">
-				<h3 class="panel-title">@Html.DisplayNameFor(model => model.Attachments)</h3>
+				<h3 class="panel-title">@Html.DisplayNameFor(model => model.Documents)</h3>
 			</div>
-			@if (Model.Attachments.Count(a => a.Deleted == null) == 0)
+			@if (Model.Documents.Count(a => a.Deleted == null) == 0)
 			{
-				<div class="panel-body" id="attachments_@Model.ID">Keine Dateianhänge vorhanden.</div>
+				<div class="panel-body" id="attachments_@Model.ID">Keine Dokumente vorhanden.</div>
 			}
 			else
 			{
-				Html.RenderPartial("_ReportAttachments", Model.Attachments.Where(a => a.Deleted == null));
+				Html.RenderPartial("_ReportAttachments", Model.Documents.Where(a => a.Deleted == null));
 			}
 		</div>
 	</div>

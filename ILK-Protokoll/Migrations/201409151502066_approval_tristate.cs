@@ -15,11 +15,11 @@ namespace ILK_Protokoll.Migrations
 
 		public override void Down()
 		{
-			RenameColumn("dbo.L_Extension", name: "Approval", newName: "Approved");
 			AlterColumn("dbo.L_Extension", "Approval", c => c.Boolean(nullable: false));
+			RenameColumn("dbo.L_Extension", name: "Approval", newName: "Approved");
 
-			RenameColumn("dbo.L_Conference", name: "Approval", newName: "Approved");
 			AlterColumn("dbo.L_Conference", "Approval", c => c.Boolean(nullable: false));
+			RenameColumn("dbo.L_Conference", name: "Approval", newName: "Approved");
 		}
 	}
 }

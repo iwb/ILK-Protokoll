@@ -1,13 +1,13 @@
-﻿@model Tuple<ILK_Protokoll.Models.AttachmentContainer, int>
+﻿@model Tuple<ILK_Protokoll.Models.DocumentContainer, int>
 
 <div class="panel-footer">
-	@using (Html.BeginForm("_Upload", "Attachments",
+	@using (Html.BeginForm("_CreateDocuments", "Attachments",
 		FormMethod.Post,
-		new { id = "attachment_uploader", @class = "form-horizontal", enctype = "multipart/form-data" }))
+		new {id = "attachment_uploader", @class = "form-horizontal", enctype = "multipart/form-data"}))
 	{
 		<div class="row">
 			@Html.AntiForgeryToken()
-			@Html.Hidden("entity", Model.Item1.ToString())
+			@Html.Hidden("entityKind", Model.Item1.ToString())
 			@Html.Hidden("id", Model.Item2)
 			<label for="files" class="control-label col-sm-2">Datei auswählen:</label>
 			<div class="col-sm-8">
@@ -22,8 +22,8 @@
 </div>
 
 <script type="text/javascript">
-	$(document).ready(function () {
-		$('#attachment_uploader').submit(function (e) {
+	$(document).ready(function() {
+		$('#attachment_uploader').submit(function(e) {
 			var formdata = new FormData(); //FormData object
 			var fileInput = $('#files')[0];
 			var hidden = $(this).children().children('input');
@@ -41,7 +41,7 @@
 			//Creating an XMLHttpRequest and sending
 			var xhr = new XMLHttpRequest();
 			xhr.open('POST', $(this).attr('action'));
-			xhr.onreadystatechange = function () {
+			xhr.onreadystatechange = function() {
 				if (xhr.readyState == 4) {
 					if (xhr.status == 200) {
 						$('#attachments_@Model.Item2').replaceWith(xhr.responseText);
@@ -50,7 +50,11 @@
 						$('#attachments_@Model.Item2').tablesorter();
 						$('#attachments_@Model.Item2').timeago();
 					} else {
-						$('#attachment_uploader_status').html('<span class="text-danger">' + xhr.statusText + '</span>');
+						if (xhr.responseText.length > 0) {
+							$('#attachment_uploader_status').html('<span class="text-danger">' + xhr.responseText + '</span>');
+						} else {
+							$('#attachment_uploader_status').html('<span class="text-danger">' + xhr.statusText + '</span>');
+						}
 					}
 				}
 			};

@@ -1,4 +1,4 @@
-﻿@model ILK_Protokoll.Models.Attachment
+﻿@model ILK_Protokoll.Models.Document
 
 @using (Ajax.BeginForm("_SubmitEdit", new AjaxOptions() {HttpMethod = "POST", InsertionMode = InsertionMode.Replace, UpdateTargetId = "attachmentName_" + Model.ID}))
 {
@@ -7,7 +7,7 @@
 	@Html.EditorFor(model => model.DisplayName)
 	<button type="submit" class="btn btn-sm btn-primary"><span class="glyphicon glyphicon-check"></span></button>
 
-	<a data-ajax="true" data-ajax-method="POST" data-ajax-mode="replace" data-ajax-update="#attachmentName_@Model.ID" href="@Url.Action("_FetchDisplayName", new {attachmentID = Model.ID})">
+	<a data-ajax="true" data-ajax-method="POST" data-ajax-mode="replace" data-ajax-update="#attachmentName_@Model.ID" href="@Url.Action("_FetchDisplayName", new {documentID = Model.ID})">
 		<span class="glyphicon glyphicon-remove" title="Bearbeitung abbrechen"></span>
 	</a>	
 }

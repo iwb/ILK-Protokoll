@@ -18,10 +18,9 @@
 	</td>
 	<td>
 		@{
-			var count = Model.Attachments.Count(a => a.Deleted == null);
-			if (count > 0)
+			if (Model.FileCount > 0)
 			{
-				<a href="@Model.FileURL">@count</a>
+				<a href="@Model.FileURL">@Model.FileCount</a>
 			}
 			else
 			{

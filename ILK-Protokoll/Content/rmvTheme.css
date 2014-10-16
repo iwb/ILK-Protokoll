@@ -6483,7 +6483,8 @@ p.panel-title {
   background-color: #DDD;
   border-top: 1px solid #605E5C;
 }
-.actions a:link {
+.actions a:link,
+.actions a:visited {
   color: #000;
 }
 .actions a:hover {
