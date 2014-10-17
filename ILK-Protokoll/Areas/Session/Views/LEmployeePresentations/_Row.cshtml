@@ -40,7 +40,7 @@
 				string url = Request.Url != null ? Request.Url.PathAndQuery : null;
 			}
 
-			<a href="@Url.Action("Edit", "LEmployeePresentations", new {Area = "Session", id = Model.ID, returnURL = url})" target="empPres"><span class="glyphicon glyphicon-new-window" title="Eintrag ausführlich bearbeiten"></span></a>
+			<a href="@Url.Action("Edit", "LEmployeePresentations", new {Area = "Session", id = Model.ID, returnURL = url})" target="_blank"><span class="glyphicon glyphicon-new-window" title="Eintrag ausführlich bearbeiten"></span></a>
 		
 
 			<a data-ajax="true"

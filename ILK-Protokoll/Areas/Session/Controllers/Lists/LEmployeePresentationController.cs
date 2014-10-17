@@ -44,7 +44,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 			return base._BeginEdit(id);
 		}
 
-		public ActionResult Edit(int? id, string returnURL = null)
+		public ActionResult Edit(int? id, string returnURL = null, string statusMessage = null)
 		{
 			if (id == null)
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -55,6 +55,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 
 			ViewBag.UserList = CreateUserSelectList();
 			ViewBag.ReturnURL = returnURL ?? Url.Action("Index", "Lists", new {Area = "Session"});
+			ViewBag.StatusMessage = statusMessage;
 			return View(presentation);
 		}
 
@@ -62,18 +63,21 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 		[ValidateAntiForgeryToken]
 		public virtual ActionResult Edit([Bind(Exclude = "Created")] EmployeePresentation input, string returnURL = null)
 		{
-			if (ModelState.IsValid)
-			{
-				db.Entry(input).State = EntityState.Modified;
-				db.SaveChanges();
-				if (returnURL == null)
-					return RedirectToAction("Index", "Lists", new {Area = "Session"});
-				else
-					return Redirect(returnURL);
-			}
 			ViewBag.UserList = CreateUserSelectList();
-			ViewBag.ReturnURL = returnURL ?? Url.Action("Index", "Lists", new { Area = "Session" });
-			return View(input);
+			ViewBag.ReturnURL = returnURL ?? Url.Action("Index", "Lists", new {Area = "Session"});
+
+			if (!ModelState.IsValid)
+				return View(input);
+
+			db.Entry(input).State = EntityState.Modified;
+			db.SaveChanges();
+			return RedirectToAction("Edit", "LEmployeePresentations", new
+			{
+				Area = "Session",
+				id = input.ID,
+				returnURL,
+				statusMessage = "Daten erfolgreich gespeichert."
+			});
 		}
 
 		public override ActionResult _Delete(int? id)
