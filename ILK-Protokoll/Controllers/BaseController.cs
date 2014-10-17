@@ -120,21 +120,29 @@ namespace ILK_Protokoll.Controllers
 
 		protected bool IsTopicLocked(Topic t)
 		{
-			var tlock = db.TopicLocks.Where(tl => tl.TopicID == t.ID).Select(tl => new { tl.TopicID, tl.Session.ManagerID }).SingleOrDefault();
+			var tlock =
+				db.TopicLocks.Where(tl => tl.TopicID == t.ID).Select(tl => new {tl.TopicID, tl.Session.ManagerID}).SingleOrDefault();
 			return tlock != null && tlock.ManagerID != GetCurrentUserID();
 		}
 
-		protected void MarkAsUnread(Topic topic)
+		protected void MarkAsUnread(Topic topic, bool skipCurrentUser = true)
 		{
 			var lazyusers = topic.UnreadBy.ToDictionary(u => u.UserID);
-			foreach (var user in db.GetActiveUsers())
+			var users = db.GetActiveUsers();
+			if (skipCurrentUser)
+			{
+				var cuid = GetCurrentUserID();
+				users = users.Where(u => u.ID != cuid);
+			}
+			foreach (var user in users)
 			{
 				if (lazyusers.ContainsKey(user.ID))
 					lazyusers[user.ID].LatestChange = DateTime.Now;
 				else
-					topic.UnreadBy.Add(new UnreadState { TopicID = topic.ID, UserID = user.ID });
+					topic.UnreadBy.Add(new UnreadState {TopicID = topic.ID, UserID = user.ID});
 			}
 		}
+
 		protected void MarkAsRead(Topic topic)
 		{
 			var item = topic.UnreadBy.FirstOrDefault(u => u.UserID == GetCurrentUserID());
