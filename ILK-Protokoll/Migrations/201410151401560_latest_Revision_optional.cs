@@ -21,7 +21,7 @@ namespace ILK_Protokoll.Migrations
 			DropIndex("dbo.Document", new[] {"LatestRevisionID"});
 			AlterColumn("dbo.Document", "LatestRevisionID", c => c.Int(nullable: false));
 			CreateIndex("dbo.Document", "LatestRevisionID");
-			AddForeignKey("dbo.Document", "LatestRevisionID", "dbo.Revision", "ID", cascadeDelete: true);
+			AddForeignKey("dbo.Document", "LatestRevisionID", "dbo.Revision", "ID", cascadeDelete: false);
 
 			CreateTable("dbo.Attachment",
 				c => new
