@@ -31,3 +31,7 @@
 		Übersicht über die bekannten Benutzer
 	</dd>
 </dl>
+<h3>Statistik</h3>
+<div class="col-sm-offset-1 col-sm-6 col-md-4">
+	@{ Html.RenderAction("_Table", "Statistics", new { Area = "" }); }
+</div>

@@ -6,16 +6,6 @@
 
 <h2>@ViewBag.Title</h2>
 
-<div>
-	<dl class="dl-horizontal">
-		@foreach (var kvp in Model)
-		{
-			<dt>
-				@kvp.Key
-			</dt>
-			<dd>
-				@kvp.Value
-			</dd>
-		}
-	</dl>
+<div class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
+	@Html.Partial("_Table", Model)
 </div>

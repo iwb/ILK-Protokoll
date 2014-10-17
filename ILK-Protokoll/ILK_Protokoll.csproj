@@ -768,6 +768,7 @@
     <Content Include="Views\Shared\DisplayTemplates\Color.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\Tag.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\Dictionary_Tag_bool.cshtml" />
+    <Content Include="Views\Statistics\_Table.cshtml" />
     <None Include="Web.Integration.config" />
     <None Include="Web.Production.config" />
     <None Include="Web.Testing.config" />

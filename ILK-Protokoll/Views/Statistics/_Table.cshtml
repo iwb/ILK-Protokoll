@@ -1,0 +1,27 @@
+﻿@model Dictionary<string, double>
+
+<table class="table table-striped">
+	<thead>
+		<tr>
+			<th>
+				Größe
+			</th>
+			<th>
+				Wert
+			</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var kvp in Model)
+		{
+			<tr>
+				<td>
+					@kvp.Key
+				</td>
+				<td>
+					@kvp.Value
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>
