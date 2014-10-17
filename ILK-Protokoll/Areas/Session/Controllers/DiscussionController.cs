@@ -80,6 +80,11 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 			return View(filter);
 		}
 
+		public ActionResult Index2(FilteredTopics filter)
+		{
+			return Index(filter);
+		}
+
 		[HttpPost]
 		public ActionResult _ChangeState(int id, TopicAction state)
 		{

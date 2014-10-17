@@ -1,0 +1,130 @@
+﻿@using ILK_Protokoll.Areas.Session.Models
+@using ILK_Protokoll.Models
+@using ILK_Protokoll.util
+@model ILK_Protokoll.ViewModels.FilteredTopics
+
+@{
+	ViewBag.Title = "Diskussion";
+	var session = (ActiveSession)ViewBag.CurrentSession;
+}
+
+<div class="index-action">
+	<a class="btn btn-default" onclick=" collapseTopicsOut(); "> Alle Themen ausklappen</a>
+	<a class="btn btn-default" onclick=" collapseTopicsIn(); "> Alle Themen einklappen</a>
+	@Html.ActionLink("Zurück", "Index", "Lists", new {Area = "Session"}, new {@class = "btn btn-default"})
+	@Html.ActionLink("Weiter", "Index", "Finalize", new {Area = "Session"}, new {@class = "btn btn-primary"})
+</div>
+
+<h2>@ViewBag.Title</h2>
+
+<div class="panel panel-primary">
+	<div class="panel-heading">
+		<h4 class="panel-title">Filter</h4>
+	</div>
+	<div class="panel-body">
+		@using (Html.BeginForm("Index", "Discussion", new {Area = "Session"}, FormMethod.Get, new {@class = "form-inline"}))
+		{
+			<div class="col-sm-4">
+				<div class="row">
+					<div class="form-group">
+						@Html.DropDownListFor(model => model.ShowPriority, Model.PriorityList, new {@class = "form-control", style = "min-width:200px;"})
+					</div>
+				</div>
+				<div class="row">
+					<div class="form-group">
+						@Html.DropDownListFor(model => model.Timespan, Model.TimespanList, "(Zeitraum beliebig)", new {@class = "form-control", style = "min-width:200px;"})
+					</div>
+				</div>
+			</div>
+
+			<div class="col-sm-4">
+				<div class="row">
+					<div class="form-group">
+						@Html.DropDownListFor(m => m.OwnerID, Model.UserList, "(Alle Besitzer)", new {@class = "form-control", style = "min-width:180px;"})
+					</div>
+				</div>
+				<div class="row">
+					<div class="form-group">
+						<input type="submit" value="Filtern" class="btn btn-primary" />
+					</div>
+				</div>
+			</div>
+		}
+	</div>
+</div>
+
+<table class="table table-striped table-hover table-sortable">
+	<thead>
+		<tr>
+			<th class="col-sm-1">
+				Status
+			</th>
+			<th class="col-sm-1">
+				@Html.DisplayColumnNameFor(Model.Topics, model => model.Time)
+			</th>
+			<th class="col-sm-1">
+				@Html.DisplayColumnNameFor(Model.Topics, model => model.Priority)
+			</th>
+			<th>
+				@Html.DisplayColumnNameFor(Model.Topics, model => model.Title)
+			</th>
+			<th class="col-sm-1">
+				@Html.DisplayColumnNameFor(Model.Topics, model => model.Votes)
+			</th>
+			<th class="col-sm-1">
+				ToDos
+			</th>
+			<th class="col-sm-1">
+				@Html.DisplayColumnNameFor(Model.Topics, model => model.Comments)
+			</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (Topic item in Model.Topics)
+		{
+			<tr>
+				<td>
+					@if (item.IsUnreadBy(ViewBag.CurrentUser.ID))
+					{
+						<span style="color: #D48625; display: inline-block; float: left; font-size: 180%; margin: 2px 16px 0 0;">
+							<span class="glyphicon glyphicon-asterisk"></span>
+						</span>
+					}
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Time)
+				</td>
+				<td>
+					@item.Priority.DisplayName()
+				</td>
+				<td>
+					<a href="@Url.Action("Details", "Topics", new {Area = "", id = item.ID})">@item.Title.Shorten(60)</a>
+					@foreach (var tag in item.Tags)
+					{
+						@Html.DisplayFor(model => tag.Tag)
+					}
+				</td>
+				@{
+					var votesApproved = item.Votes.Count(v => v.Kind == VoteKind.Approved);
+					var votesOverall = item.Votes.Count;
+					var cellclass = votesApproved == votesOverall ? "success" : null;
+				}
+				<td class="@cellclass text-center">
+					@(votesApproved)&#8202;/&#8202;@votesOverall
+				</td>
+				@{
+					var todoList = item.Assignments.Where(a => a.Type == AssignmentType.ToDo && a.IsActive)
+						.Select(a => a.IsDone).ToList();
+					var doneToDo = todoList.Count(t => t);
+					cellclass = doneToDo == todoList.Count ? "success" : null;
+				}
+				<td class="@cellclass text-center">
+					@(doneToDo)&#8202;/&#8202;@todoList.Count
+				</td>
+				<td>
+					@item.Comments.Count
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>
