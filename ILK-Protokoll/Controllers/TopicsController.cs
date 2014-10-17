@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using EntityFramework.Extensions;
+using ILK_Protokoll.DataLayer;
 using ILK_Protokoll.Models;
 using ILK_Protokoll.util;
 using ILK_Protokoll.ViewModels;
@@ -134,7 +135,7 @@ namespace ILK_Protokoll.Controllers
 				.Include(t => t.Lock)
 				.Include(t => t.Lock.Session.Manager)
 				.Include(t => t.Tags)
-				.Single(t => t.ID == id.Value);
+				.SingleOrDefault(t => t.ID == id.Value);
 
 			if (topic == null)
 				return HttpNotFound();
