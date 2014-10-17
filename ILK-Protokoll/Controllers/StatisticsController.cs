@@ -34,7 +34,9 @@ namespace ILK_Protokoll.Controllers
 					db.LConferences.Count() + db.LEmployeePresentations.Count() + db.LEvents.Count() + db.LExtensions.Count() +
 					db.LHolidays.Count() + db.LIlkDays.Count() + db.LIlkMeetings.Count() + db.LOpenings.Count()
 				},
-				{"Benutzer", db.Users.Count(u => u.IsActive)}
+				{"Benutzer", db.Users.Count(u => u.IsActive)},
+				{"Anzahl Dokumente", db.Documents.Count()},
+				{"Anzahl Dateien", db.Revisions.Count()}
 			};
 		}
 	}
