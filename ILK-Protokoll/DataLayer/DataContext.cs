@@ -85,5 +85,22 @@ namespace ILK_Protokoll.DataLayer
 		{
 			return SessionTypes.Where(st => st.Active).OrderBy(st => st.Name);
 		}
+
+		public void DeleteTopic(int topicID)
+		{
+			var topic = Topics.Find(topicID);
+
+			// Dokumente separat löschen, damit keine verwaisten Dateien übrig bleiben
+			foreach (var document in topic.Documents)
+			{
+				document.Deleted = document.Deleted ?? DateTime.Now;
+				document.TopicID = null;
+			}
+			SaveChanges();
+
+			Votes.RemoveRange(Votes.Where(v => v.Topic.ID == topicID));
+			Topics.Remove(topic);
+			SaveChanges();
+		}
 	}
 }

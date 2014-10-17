@@ -351,10 +351,7 @@ namespace ILK_Protokoll.Controllers
 		[ValidateAntiForgeryToken]
 		public ActionResult DeleteConfirmed(int id)
 		{
-			Topic topic = db.Topics.Find(id);
-			db.Votes.RemoveRange(db.Votes.Where(v => v.Topic.ID == id));
-			db.Topics.Remove(topic);
-			db.SaveChanges();
+			db.DeleteTopic(id);
 			return RedirectToAction("Index");
 		}
 
