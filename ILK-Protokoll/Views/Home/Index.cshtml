@@ -110,9 +110,18 @@
 			};
 			var ajaxspinner = new Spinner(opts).spin($('#topicsSpinner .ajax-spinner')[0]);
 
-			$('#topicsContainer').load("@Url.Action("_FetchTopics", "Home")", function() {
-				msnry.reloadItems();
-				PerformMasonryLayout();
+			var topicsxhr = $.ajax({
+				url: '@Url.Action("_FetchTopics", "Home")',
+				success: function(data) {
+					$("#topicsContainer").html(data);
+					msnry.reloadItems();
+					PerformMasonryLayout();
+				}
+			});
+
+			//if needed, abort the request later..
+			$('.navbar a').click(function() {
+				topicsxhr.abort();
 			});
 		</script>
 	}
