@@ -378,9 +378,11 @@
     <Compile Include="Models\UserSettings.cs" />
     <Compile Include="ProfilingActionFilter.cs" />
     <Compile Include="ProfilingViewEngine.cs" />
+    <Compile Include="util\AttributeHelperMethods.cs" />
     <Compile Include="util\DelayedRenderExtensions.cs" />
     <Compile Include="util\DiffMatchPatch.cs" />
     <Compile Include="util\FutureDateAttribute.cs" />
+    <Compile Include="util\HtmlHelperMethods.cs" />
     <Compile Include="util\ResharperAnnotations.cs" />
     <Compile Include="util\HelperMethods.cs" />
     <Compile Include="Models\Priority.cs" />
