@@ -91,9 +91,14 @@
 				<td>
 					@if (item.IsUnreadBy(ViewBag.CurrentUser.ID))
 					{
+						<span class="sr-only">Unbearbeitet</span>
 						<span style="color: #D48625; display: inline-block; float: left; font-size: 180%; margin: 2px 16px 0 0;">
 							<span class="glyphicon glyphicon-asterisk"></span>
 						</span>
+					}
+					else
+					{
+						<span class="sr-only">z Bearbeitet</span>
 					}
 				</td>
 				<td>

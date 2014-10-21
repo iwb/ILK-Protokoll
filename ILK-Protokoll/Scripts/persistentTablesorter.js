@@ -15,7 +15,7 @@
 			var sortList = table.config.sortList;
 			var tableId = $(table).attr('id');
 			var cookieExists = (typeof (cookie) != "undefined"
-				 && cookie != null);
+				 && cookie != null) && (typeof (tableId) != "undefined");
 
 			// If the existing sortList isn't empty, set it into the cookie
 			// and get out
