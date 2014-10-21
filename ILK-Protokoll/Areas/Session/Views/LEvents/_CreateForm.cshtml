@@ -25,7 +25,16 @@
 					@Html.TextEditorFor(model => model.Place, "evt_create_place")
 				</div>
 				<div class="col-sm-4">
-					@Html.TextEditorFor(model => model.Description, "evt_create_desc")
+					@Html.EditorFor(model => model.Description, new
+					{
+						htmlAttributes = new
+						{
+							@class = "form-control",
+							id = "evt_create_desc",
+							rows = "2",
+							placeholder = Html.DisplayNameFor(model => model.Description)
+						}
+					})
 				</div>
 				<div class="col-sm-1">
 					@Html.TextEditorFor(model => model.Organizer, "evt_create_orga")
