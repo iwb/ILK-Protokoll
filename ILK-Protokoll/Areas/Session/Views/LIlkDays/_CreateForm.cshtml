@@ -60,19 +60,19 @@
 				</div>
 
 				<div class="col-sm-1">
-					@Html.EditorFor(model => model.Place, new {htmlAttributes = new {@class = "form-control", id = "ilkd_create_place"}})
+					@Html.TextEditorFor(model => model.Place, "ilkd_create_place")
 				</div>
 				<div class="col-sm-2">
 					@Html.DropDownListFor(m => m.SessionTypeID, (SelectList)ViewBag.SessionTypeList, "(bitte auswählen)", new {@class = "form-control", id = "ilkd_create_st"})
 				</div>
 				<div class="col-sm-3">
-					@Html.EditorFor(model => model.Topics, new {htmlAttributes = new {@class = "form-control", id = "ilkd_create_top"}})
+					@Html.TextEditorFor(model => model.Topics, "ilkd_create_top")
 				</div>
 				<div class="col-sm-1">
 					@Html.DropDownListFor(m => m.OrganizerID, (SelectList)ViewBag.UserList, new {@class = "form-control", id = "ilkd_create_orga"})
 				</div>
 				<div class="col-sm-1">
-					@Html.EditorFor(model => model.Participants, new {htmlAttributes = new {@class = "form-control", id = "ilkd_create_part"}})
+					@Html.TextEditorFor(model => model.Participants, "ilkd_create_part")
 				</div>
 				<div class="col-sm-1">
 					<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-check"></span></button>
@@ -85,11 +85,11 @@
 @using (Html.Delayed(null, "ilkd_date_sync"))
 {
 	<script type="text/javascript">
-		$('#ilkDayCreation_Start_date').change(function () {
+		$('#ilkDayCreation_Start_date').change(function() {
 			$('#ilkDayCreation_End_date').val($('#ilkDayCreation_Start_date').val());
 			CopyIlkDayEndDate();
 		});
-		$('#ilkDayCreation_Start_date_display').change(function () {
+		$('#ilkDayCreation_Start_date_display').change(function() {
 			$('#ilkDayCreation_End_date_display').val($('#ilkDayCreation_Start_date_display').val());
 			$('#ilkDayCreation_End_date').val($('#ilkDayCreation_Start_date').val());
 			CopyIlkDayEndDate();
