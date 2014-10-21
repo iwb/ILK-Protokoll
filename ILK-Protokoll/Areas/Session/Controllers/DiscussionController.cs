@@ -21,13 +21,25 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 		}
 
 		// GET: Session/Topic
-		public ActionResult Index(FilteredTopics filter)
+		public ActionResult Index(FilteredTopics filter, string viewPref)
 		{
 			ActiveSession session = GetSession();
 			if (session == null)
 				return RedirectToAction("Index", "Master");
 
+			if (viewPref == "Table" || viewPref == "Panels")
+				Session["DiscussionView"] = viewPref;
 
+			PrepareTopics(filter, session);
+
+			if ((Session["DiscussionView"] as string) == "Table")
+				return View("IndexTable", filter);
+			else
+				return View("IndexPanels", filter); // Default
+		}
+
+		private void PrepareTopics(FilteredTopics filter, ActiveSession session)
+		{
 			IQueryable<Topic> query = db.Topics
 				.Include(t => t.SessionType)
 				.Include(t => t.TargetSessionType)
@@ -76,13 +88,6 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 
 			foreach (var topic in filter.Topics)
 				topic.IsLocked = topic.Lock != null;
-
-			return View(filter);
-		}
-
-		public ActionResult Index2(FilteredTopics filter)
-		{
-			return Index(filter);
 		}
 
 		[HttpPost]

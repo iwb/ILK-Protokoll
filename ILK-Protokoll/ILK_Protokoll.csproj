@@ -526,7 +526,7 @@
     <Content Include="Areas\Session\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Session\Views\Lists\Index.cshtml" />
     <Content Include="Areas\Session\Views\Finalize\Index.cshtml" />
-    <Content Include="Areas\Session\Views\Discussion\Index.cshtml" />
+    <Content Include="Areas\Session\Views\Discussion\IndexPanels.cshtml" />
     <Content Include="Areas\Administration\Views\Settings\Index.cshtml" />
     <Content Include="Areas\Session\Views\Master\Create.cshtml" />
     <Content Include="Areas\Session\Views\Master\Index.cshtml" />
@@ -582,7 +582,7 @@
     <Content Include="Content\bootstrap-multiselect\bootstrap-multiselect.css.map">
       <DependentUpon>bootstrap-multiselect.css</DependentUpon>
     </Content>
-    <Content Include="Areas\Session\Views\Discussion\Index2.cshtml" />
+    <Content Include="Areas\Session\Views\Discussion\IndexTable.cshtml" />
     <None Include="Content\bootstrap\bootstrap.less" />
     <Content Include="Content\iwbTheme.less" />
     <Content Include="Areas\Administration\Views\web.config" />
