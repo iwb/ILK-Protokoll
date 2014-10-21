@@ -1,21 +1,27 @@
-﻿@model ILK_Protokoll.Areas.Session.Models.Lists.%%CLASSNAME%%
-@using (Ajax.BeginForm("_Create", "L%%CLASSNAME%%s", new {Area = "Session"}, new AjaxOptions
-{
-	HttpMethod = "POST",
-	OnSuccess = "AddRow('%%classname%%', data);",
-	OnFailure = "DisplayErrorMessage('#%%classname%%_form', '<br />' + xhr.responseText);"
-}, new {id = "%%classname%%_form"}))
-{
-	@Html.AntiForgeryToken()
-	<tr id="%%classname%%_createform">
-		<td>
-			@Html.EditorFor(model => model.StartDate, new {htmlAttributes = new {@class = "form-control", id = "%%_create_"}})
-		</td>
-		<td>
-			@Html.EditorFor(model => model.Organizer, new {htmlAttributes = new {@class = "form-control", id = "%%_create_"}})
-		</td>
-		<td>
-			<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-check"></span></button>
-		</td>
-	</tr>
-}
+﻿@using ILK_Protokoll.util
+@model ILK_Protokoll.Areas.Session.Models.Lists.%%CLASSNAME%%
+
+<tr id="%%classname%%_createform">
+	<td colspan="1">
+		@using (Ajax.BeginForm("_Create", "L%%CLASSNAME%%s", new {Area = "Session"}, new AjaxOptions
+		{
+			HttpMethod = "POST",
+			OnSuccess = "AddRow('%%classname%%', data);",
+			OnFailure = "DisplayErrorMessage('#%%classname%%_form', '<br />' + xhr.responseText);"
+		}, new {id = "%%classname%%_form"}))
+		{
+			@Html.AntiForgeryToken()
+			<div class="row">
+				<div class="col-sm-2">
+					@Html.TextEditorFor(model => model.Project, "id_short")
+				</div>
+				<div class="col-sm-2">
+					@Html.EditorFor(model => model.Start, new {htmlAttributes = new {@class = "form-control", id = "ididid"}})
+				</div>
+				<div class="col-sm-2">
+					@Html.EnumDropDownListFor(model => model.Prof, new {@class = "form-control", id = "open_create_prof"})
+				</div>
+			</div>
+		}
+	</td>
+</tr>
