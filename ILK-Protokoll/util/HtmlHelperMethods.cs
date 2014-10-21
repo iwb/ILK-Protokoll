@@ -64,6 +64,15 @@ namespace ILK_Protokoll.util
 			return MvcHtmlString.Create(ReplaceUrlsWithLinks(encodedHTML.ToHtmlString()));
 		}
 
+		public static MvcHtmlString TextEditorFor<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper,
+			Expression<Func<TModel, TProperty>> expression,
+			string id)
+		{
+		// (model => model.EndDate, new {htmlAttributes = new {@class = "form-control", id = "conf_create_end"}})	
+			var name = htmlHelper.DisplayNameFor(expression);
+			return htmlHelper.EditorFor(expression, new {htmlAttributes = new {@class = "form-control", id, placeholder = name}});
+		}
+
 
 		private static string ReplaceUrlsWithLinks(string input)
 		{

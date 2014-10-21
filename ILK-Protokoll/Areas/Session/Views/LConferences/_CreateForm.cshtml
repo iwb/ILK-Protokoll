@@ -19,16 +19,16 @@
 					@Html.EditorFor(model => model.EndDate, new {htmlAttributes = new {@class = "form-control", id = "conf_create_end"}})
 				</div>
 				<div class="col-sm-3">
-					@Html.EditorFor(model => model.Description, new {htmlAttributes = new {@class = "form-control", id = "conf_create_descr"}})
+					@Html.TextEditorFor(model => model.Description, "conf_create_descr")
 				</div>
 				<div class="col-sm-1">
 					@Html.DropDownListFor(m => m.IlkID, (SelectList)ViewBag.UserList, new {@class = "form-control", id = "conf_create_ilk"})
 				</div>
 				<div class="col-sm-1">
-					@Html.EditorFor(model => model.Employee, new {htmlAttributes = new {@class = "form-control", id = "conf_create_emp"}})
+					@Html.TextEditorFor(model => model.Employee, "conf_create_emp")
 				</div>
 				<div class="col-sm-1">
-					@Html.EditorFor(model => model.Funding, new {htmlAttributes = new {@class = "form-control", id = "conf_create_fund"}})
+					@Html.TextEditorFor(model => model.Funding, "conf_create_fund" )
 				</div>
 				<div class="col-sm-1">
 					@Html.EnumDropDownListFor(model => model.Approval, new {@class = "form-control", id = "conf_create_app"})
