@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices.ComTypes;
+using ILK_Protokoll.Models;
 
 namespace ILK_Protokoll.ViewModels
 {
@@ -10,6 +11,7 @@ namespace ILK_Protokoll.ViewModels
 		public SearchResult()
 		{
 			Hits = new List<Hit>();
+			Tags = new List<Tag>();
 		}
 
 		public SearchResult(string hittext) : this()
@@ -36,6 +38,8 @@ namespace ILK_Protokoll.ViewModels
 		public string ActionURL { get; set; }
 
 		public DateTime? Timestamp { get; set; }
+
+		public IEnumerable<Tag> Tags { get; set; }
 
 		public bool Equals(SearchResult other)
 		{

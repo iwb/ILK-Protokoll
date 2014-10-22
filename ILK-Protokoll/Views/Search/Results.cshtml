@@ -38,6 +38,10 @@ else
 					<h3 class="panel-title">
 						<a href="@result.ActionURL"><span class="divlink"></span></a>
 						@result.EntityType: @result.Title
+						@foreach (var tag in result.Tags)
+						{
+							@Html.DisplayFor(model => tag)
+						}
 					</h3>
 				</div>
 				<div class="panel-body">

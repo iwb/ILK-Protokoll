@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -29,7 +28,7 @@ namespace ILK_Protokoll.Controllers
 
 
 			if (tokens["has"].Contains("Decision", StringComparer.InvariantCultureIgnoreCase))
-				query = query.Where(t => t.HasDecision());
+				query = query.Where(t => t.Decision != null);
 
 			var searchTerms = tokens[""].Select(x => new Regex(Regex.Escape(x), RegexOptions.IgnoreCase)).ToArray();
 			var results = new List<SearchResult>();
@@ -44,7 +43,7 @@ namespace ILK_Protokoll.Controllers
 			}
 			SearchLists(searchTerms, results);
 
-			
+
 			ViewBag.ElapsedMilliseconds = sw.ElapsedMilliseconds;
 			ViewBag.SearchTerm = searchterm;
 			ViewBag.SearchPattern = "";
@@ -77,8 +76,8 @@ namespace ILK_Protokoll.Controllers
 			var tagIDs = db.Tags.Where(t => names.Contains(t.Name)).Select(t => t.ID).ToArray();
 
 			query = query.Where(topic => (from tt in topic.Tags
-													where tagIDs.Contains(tt.TagID)
-													select tt).Count() == tagIDs.Count());
+				where tagIDs.Contains(tt.TagID)
+				select tt).Count() == tagIDs.Count());
 		}
 
 		private void RestrictToAnyTag(ref IQueryable<Topic> query, IEnumerable<string> tags)
@@ -87,8 +86,8 @@ namespace ILK_Protokoll.Controllers
 			var tagIDs = db.Tags.Where(t => names.Contains(t.Name)).Select(t => t.ID).ToArray();
 
 			query = query.Where(topic => (from tt in topic.Tags
-													where tagIDs.Contains(tt.TagID)
-													select tt).Any());
+				where tagIDs.Contains(tt.TagID)
+				select tt).Any());
 		}
 
 		private static IEnumerable<string> MakePatterns(IEnumerable<string> items, string delimiter)
@@ -157,25 +156,18 @@ namespace ILK_Protokoll.Controllers
 
 		private void SearchTopic(Topic topic, IEnumerable<Regex> searchterms, ICollection<SearchResult> resultlist)
 		{
-			var sr = new SearchResult
-			{
-				ID = topic.ID,
-				Score = topic.IsReadOnly ? -5 : 0,
-				EntityType = "Diskussion",
-				Title = topic.Title,
-				ActionURL = Url.Action("Details", "Topics", new { id = topic.ID }),
-				Timestamp = topic.Created
-			};
+			var score = topic.IsReadOnly ? -5 : 0.0f;
+			var hitlist = new List<Hit>();
 
 			foreach (var pattern in searchterms)
 			{
-				var oldScore = sr.Score;
+				var oldScore = score;
 
 				var m = pattern.Matches(topic.Proposal);
 				if (m.Count > 0)
 				{
-					sr.Score += ScoreMult(20, m.Count);
-					sr.Hits.Add(new Hit
+					score += ScoreMult(20, m.Count);
+					hitlist.Add(new Hit
 					{
 						Property = "Titel",
 						Text = topic.Title
@@ -185,8 +177,8 @@ namespace ILK_Protokoll.Controllers
 				m = pattern.Matches(topic.Proposal);
 				if (m.Count > 0)
 				{
-					sr.Score += ScoreMult(8, m.Count);
-					sr.Hits.Add(new Hit
+					score += ScoreMult(8, m.Count);
+					hitlist.Add(new Hit
 					{
 						Property = "Beschlussvorschlag",
 						Text = topic.Proposal
@@ -196,21 +188,34 @@ namespace ILK_Protokoll.Controllers
 				m = pattern.Matches(topic.Description);
 				if (m.Count > 0)
 				{
-					sr.Score += ScoreMult(6, m.Count);
-					sr.Hits.Add(new Hit
+					score += ScoreMult(6, m.Count);
+					hitlist.Add(new Hit
 					{
 						Property = "Beschreibung",
 						Text = topic.Description
 					});
 				}
-				if (sr.Score <= oldScore)
+				if (score <= oldScore)
 					return;
 			}
-			if (sr.Score > 0)
-				resultlist.Add(sr);
+			if (score > 0)
+			{
+				// Späte Instanziierung, um Zeit zu sparen
+				resultlist.Add(new SearchResult
+				{
+					ID = topic.ID,
+					Score = score,
+					EntityType = "Diskussion",
+					Title = topic.Title,
+					ActionURL = Url.Action("Details", "Topics", new {id = topic.ID}),
+					Timestamp = topic.Created,
+					Hits = hitlist,
+					Tags = topic.Tags.Select(tt => tt.Tag).ToArray()
+				});
+			}
 		}
 
-		private void SearchComments(Topic topic, IEnumerable<Regex> searchterms, ICollection<SearchResult> resultlist)
+		private void SearchComments(Topic topic, Regex[] searchterms, ICollection<SearchResult> resultlist)
 		{
 			foreach (var comment in topic.Comments)
 			{
@@ -231,8 +236,9 @@ namespace ILK_Protokoll.Controllers
 						Score = score,
 						EntityType = "Kommentar",
 						Title = topic.Title,
-						ActionURL = Url.Action("Details", "Topics", new { id = topic.ID }),
-						Timestamp = comment.Created
+						ActionURL = Url.Action("Details", "Topics", new {id = topic.ID}),
+						Timestamp = comment.Created,
+						Tags = topic.Tags.Select(tt => tt.Tag).ToArray()
 					});
 				}
 			}
@@ -268,8 +274,9 @@ namespace ILK_Protokoll.Controllers
 						Score = score,
 						EntityType = "Aufgabe",
 						Title = assignment.Description,
-						ActionURL = Url.Action("Details", "Assignments", new { id = assignment.ID }),
-						Timestamp = assignment.DueDate
+						ActionURL = Url.Action("Details", "Assignments", new {id = assignment.ID}),
+						Timestamp = assignment.DueDate,
+						Tags = topic.Tags.Select(tt => tt.Tag).ToArray()
 					});
 				}
 			}
@@ -296,8 +303,9 @@ namespace ILK_Protokoll.Controllers
 						Score = score,
 						EntityType = "Datei",
 						Title = attachment.DisplayName,
-						ActionURL = Url.Action("Details", "Attachments", new { id = attachment.ID }),
-						Timestamp = attachment.Created
+						ActionURL = Url.Action("Details", "Attachments", new {id = attachment.ID}),
+						Timestamp = attachment.Created,
+						Tags = topic.Tags.Select(tt => tt.Tag).ToArray()
 					});
 				}
 			}
@@ -306,25 +314,21 @@ namespace ILK_Protokoll.Controllers
 		private void SearchDecisions(Topic topic, IEnumerable<Regex> searchterms, ICollection<SearchResult> resultlist)
 		{
 			var decision = topic.Decision;
+			if (decision == null)
+				return;
 
-			var score = 0.0f;
+			var score = decision.Type == DecisionType.Resolution ? 0.0f : -5;
+			var hitlist = new List<Hit>();
+
 			foreach (var pattern in searchterms)
 			{
-				var sr = new SearchResult
-				{
-					ID = decision.ID,
-					Score = decision.Type == DecisionType.Resolution ? 0 : -11,
-					EntityType = decision.Type.DisplayName(),
-					Title = decision.OriginTopic.Title,
-					ActionURL = Url.Action("Details", "Topics", new { id = decision.OriginTopic.ID }),
-					Timestamp = decision.Report.End
-				};
+				var oldScore = score;
 
 				var m = pattern.Matches(decision.OriginTopic.Title);
 				if (m.Count > 0)
 				{
-					sr.Score += ScoreMult(21, m.Count);
-					sr.Hits.Add(new Hit
+					score += ScoreMult(21, m.Count);
+					hitlist.Add(new Hit
 					{
 						Property = "Titel",
 						Text = decision.OriginTopic.Title
@@ -334,20 +338,29 @@ namespace ILK_Protokoll.Controllers
 				m = pattern.Matches(decision.Text);
 				if (m.Count > 0)
 				{
-					sr.Score += 16;
-					sr.Hits.Add(new Hit
+					score += 16;
+					hitlist.Add(new Hit
 					{
 						Property = "Beschlusstext",
 						Text = decision.Text
 					});
 				}
 
-				if (sr.Score <= 0)
-					continue;
-
-				sr.Score += 11;
-				resultlist.Add(sr);
+				if (score <= oldScore)
+					return;
 			}
+
+			if (score > 0)
+				resultlist.Add(new SearchResult
+			{
+				ID = decision.ID,
+				Score = score,
+				EntityType = decision.Type.DisplayName(),
+				Title = decision.OriginTopic.Title,
+				ActionURL = Url.Action("Details", "Topics", new {id = decision.OriginTopic.ID}),
+				Timestamp = decision.Report.End,
+				Tags = topic.Tags.Select(tt => tt.Tag).ToArray()
+			});
 		}
 
 		private void SearchLists(Regex[] searchterms, ICollection<SearchResult> resultlist)
