@@ -35,8 +35,11 @@
 					<div style="position: relative;">
 						<a href="@Url.Action("Details", "Topics", new {id = item.OriginTopic.ID})">
 							@Html.DisplayFor(modelItem => item.OriginTopic.Title)
-							<span class="divlink"></span>
-						</a>
+							<span class="divlink"></span></a>
+						@foreach (var tag in item.OriginTopic.Tags)
+						{
+							@Html.DisplayFor(model => tag.Tag)
+						}
 					</div>
 				</td>
 				@{

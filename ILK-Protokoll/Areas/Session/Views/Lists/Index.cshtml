@@ -20,6 +20,20 @@ else
 {
 	<p>Eine Sitzung dieses Typs wird zum ersten Mal durchgeführt.</p>
 }
+
+<script type="text/javascript">
+	function collapseListsOut() {
+		$('.panel-collapse').collapse('show');
+		$('.panel-collapse-heading a').removeClass("collapsed");
+	}
+
+	function collapseListsIn() {
+		$('.panel-collapse').collapse('hide');
+		$('.panel-collapse-heading a').addClass("collapsed");
+	}
+
+	var returnURL = "@(Request.Url != null ? Request.Url.AbsolutePath : "")";
+</script>
 		
 @Html.Action("_List", "LEvents", new {Area = "Session"})
 
@@ -36,18 +50,3 @@ else
 @Html.Action("_List", "LOpenings", new { Area = "Session" })
 
 @Html.Action("_List", "LHolidays", new { Area = "Session" })
-
-@using (Html.Delayed(null, "CollapseLists"))
-{
-	<script type="text/javascript">
-		function collapseListsOut() {
-			$('.panel-collapse').collapse('show');
-			$('.panel-collapse-heading a').removeClass("collapsed");
-		}
-
-		function collapseListsIn() {
-			$('.panel-collapse').collapse('hide');
-			$('.panel-collapse-heading a').addClass("collapsed");
-		}
-	</script>
-}

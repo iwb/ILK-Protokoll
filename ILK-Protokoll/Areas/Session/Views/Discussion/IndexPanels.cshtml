@@ -8,6 +8,11 @@
 	var session = (ActiveSession)ViewBag.CurrentSession;
 }
 
+<ul class="nav nav-pills" style="margin-top: 15px;">
+	<li class="active">@Html.ActionLink("Paneele", "Index", "Discussion", new { Area = "Session", viewPref = "Panels" }, null)</li>
+	<li>@Html.ActionLink("Tabelle", "Index", "Discussion", new { Area = "Session", viewPref = "Table" }, null)</li>
+</ul>
+
 <div class="index-action">
 	<a class="btn btn-default" onclick="collapseTopicsOut();"> Alle Themen ausklappen</a>
 	<a class="btn btn-default" onclick="collapseTopicsIn();"> Alle Themen einklappen</a>

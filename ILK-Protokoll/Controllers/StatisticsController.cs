@@ -11,7 +11,17 @@ namespace ILK_Protokoll.Controllers
 		[AllowAnonymous]
 		public ActionResult Index()
 		{
-			var stats = new Dictionary<string, double>
+			return View(GetStats());
+		}
+
+		public PartialViewResult _Table()
+		{
+			return PartialView("_Table", GetStats());
+		}
+
+		private Dictionary<string, double> GetStats()
+		{
+			return new Dictionary<string, double>
 			{
 				{"Diskutierte Themen", db.Topics.Count()},
 				{"Gefällte Beschlüsse", db.Decisions.Count(d => d.Type == DecisionType.Resolution)},
@@ -24,10 +34,10 @@ namespace ILK_Protokoll.Controllers
 					db.LConferences.Count() + db.LEmployeePresentations.Count() + db.LEvents.Count() + db.LExtensions.Count() +
 					db.LHolidays.Count() + db.LIlkDays.Count() + db.LIlkMeetings.Count() + db.LOpenings.Count()
 				},
-				{"User", db.Users.Count(u => u.IsActive)}
+				{"Benutzer", db.Users.Count(u => u.IsActive)},
+				{"Anzahl Dokumente", db.Documents.Count()},
+				{"Anzahl Dateien", db.Revisions.Count()}
 			};
-
-			return View(stats);
 		}
 	}
 }

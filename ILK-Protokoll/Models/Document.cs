@@ -1,14 +1,35 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 using ILK_Protokoll.Areas.Session.Models.Lists;
 
 namespace ILK_Protokoll.Models
 {
 	[DisplayColumn("DisplayName")]
-	public class Attachment
+	public class Document
 	{
+		public Document()
+		{
+			LockTime = null;
+// ReSharper disable once DoNotCallOverridableMethodsInConstructor
+			Revisions = new List<Revision>();
+		}
+
+		public Document(Revision file) : this()
+		{
+// ReSharper disable DoNotCallOverridableMethodsInConstructor
+			GUID = Guid.NewGuid();
+			Revisions.Add(file);
+			Created = DateTime.Now;
+			file.ParentDocument = this;
+// ReSharper restore DoNotCallOverridableMethodsInConstructor
+		}
+
 		public int ID { get; set; }
+
+		public Guid GUID { get; set; }
 
 		//----------------------------------------------------------------------------------------------------
 		[Display(Name = "Diskussion")]
@@ -30,62 +51,45 @@ namespace ILK_Protokoll.Models
 		//----------------------------------------------------------------------------------------------------
 
 		/// <summary>
+		///    Enthält das Lockdatum, falls das Dokument gesperrt ist, sonst null.
+		/// </summary>
+		public DateTime? LockTime { get; set; }
+
+		[Required]
+		[Display(Name = "Erstelldatum")]
+		public DateTime Created { get; set; }
+
+		/// <summary>
 		///    Enthält das Löschdatum, falls der Anhang gelöscht wurde, sonst null.
 		/// </summary>
 		[Display(Name = "Gelöscht")]
 		public DateTime? Deleted { get; set; }
 
 		/// <summary>
-		///    Enthält den Namen, der angezeigt wird. Dieser name kann Zeichen beinhalten, die nicht nicht in Dateinamen zugelassen
-		///    sind.
+		///    Enthält den Namen, der angezeigt wird. Dieser Name kann Zeichen beinhalten,
+		///    die nicht nicht in Dateinamen zugelassen sind.
 		/// </summary>
 		[Required]
 		[Display(Name = "Name")]
 		public string DisplayName { get; set; }
 
-		/// <summary>
-		///    Enthält den sicheren Namen der für die Speicherung auf dem Server verwendet wird. Alle unsicheren Zeichen wurden
-		///    entfernt.
-		/// </summary>
-		[Required(AllowEmptyStrings = true)]
-		[ScaffoldColumn(false)]
-		public string SafeName { get; set; }
+		public virtual ICollection<Revision> Revisions { get; set; }
 
-		/// <summary>
-		///    Enthält die Dateiendung ohne führenden Punkt.
-		/// </summary>
-		[Required(AllowEmptyStrings = true)]
-		[ScaffoldColumn(false)]
-		public string Extension { get; set; }
+		public virtual Revision LatestRevision { get; set; }
 
-		[Display(Name = "Ersteller")]
-		public virtual User Uploader { get; set; }
+		[ForeignKey("LatestRevision")]
+		public int? LatestRevisionID { get; set; }
 
-		[ForeignKey("Uploader")]
-		public int UploaderID { get; set; }
-
-		[Required]
-		[Display(Name = "Uploaddatum")]
-		public DateTime Created { get; set; }
-
-		[Required]
-		[Display(Name = "Dateigröße")]
+		[NotMapped]
 		[UIHint("FileSize")]
-		public int FileSize { get; set; }
-
-		public string FileName
+		[Display(Name = "Gesamtgröße")]
+		public int FileSizeSum
 		{
-			get
-			{
-				if (string.IsNullOrWhiteSpace(Extension))
-					return ID + "_" + SafeName;
-				else
-					return ID + "_" + SafeName + '.' + Extension;
-			}
+			get { return Revisions.Sum(rev => rev.FileSize); }
 		}
 	}
 
-	public enum AttachmentContainer
+	public enum DocumentContainer
 	{
 		Topic,
 		EmployeePresentation

@@ -1,8 +1,10 @@
 ﻿@model int
 @{
-	string[] prefixArray = {"Byte", "KB", "MB", "GB"};
+	string[] prefixArray = {"Byte", "KB", "MB", "GB", "TB"};
 	int magnitude = (int)Math.Log(Model, 1000);
 	var suffix = prefixArray[magnitude];
-	var result = string.Format("{0:0}{1}{2}", Model / Math.Pow(1000, magnitude), '\xA0', suffix);
+	var displaynumber = Model / Math.Pow(1000, magnitude);
+	var formatstring = displaynumber < 10 ? "{0:0.0}{1}{2}" : "{0:0}{1}{2}";
+	var displaystring = string.Format(formatstring, displaynumber, '\xA0', suffix);
 }
-<filesize bytes="@Model">@result</filesize>
+<filesize bytes="@Model">@displaystring</filesize>

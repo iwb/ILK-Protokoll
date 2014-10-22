@@ -18,10 +18,9 @@
 	</td>
 	<td>
 		@{
-			var count = Model.Attachments.Count(a => a.Deleted == null);
-			if (count > 0)
+			if (Model.FileCount > 0)
 			{
-				<a href="@Model.FileURL">@count</a>
+				<a href="@Model.FileURL">@Model.FileCount</a>
 			}
 			else
 			{
@@ -35,13 +34,7 @@
 	@if (!ViewBag.Reporting)
 	{
 		<td class="actions">
-		
-			@{
-				string url = Request.Url != null ? Request.Url.PathAndQuery : null;
-			}
-
-			<a href="@Url.Action("Edit", "LEmployeePresentations", new {Area = "Session", id = Model.ID, returnURL = url})" target="empPres"><span class="glyphicon glyphicon-new-window" title="Eintrag ausführlich bearbeiten"></span></a>
-		
+			<a href="@Url.Action("Edit", "LEmployeePresentations", new {Area = "Session", id = Model.ID})" target="_blank"><span class="glyphicon glyphicon-new-window" title="Eintrag ausführlich bearbeiten"></span></a>
 
 			<a data-ajax="true"
 			   data-ajax-method="POST"
@@ -55,6 +48,11 @@
 			   href="@Url.Action("_Delete", "LEmployeePresentations", new {Area = "Session", id = Model.ID})">
 				<span class="glyphicon glyphicon-remove" title="Eintrag löschen"></span>
 			</a>
+			<script type="text/javascript">
+				$('#employeePresentation_@Model.ID .actions a').each(function() {
+					$(this).attr("href", $(this).attr("href") + "?returnURL=" + returnURL + "%23employeePresentation_table");
+				})
+			</script>
 		</td>
 	}
 </tr>

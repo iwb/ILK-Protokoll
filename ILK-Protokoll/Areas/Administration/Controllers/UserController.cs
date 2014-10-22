@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.DirectoryServices.AccountManagement;
 using System.Linq;
 using System.Net;
@@ -13,6 +14,7 @@ using ILK_Protokoll.Models;
 
 namespace ILK_Protokoll.Areas.Administration.Controllers
 {
+	[DisplayName("Benutzer")]
 	public class UserController : BaseController
 	{
 		private const string DomainName = "iwbmuc";

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
@@ -10,6 +11,7 @@ using ILK_Protokoll.Models;
 
 namespace ILK_Protokoll.Areas.Administration.Controllers
 {
+	[DisplayName("Sitzungstypen")]
 	public class SessionTypesController : BaseController
 	{
 		protected override void OnActionExecuting(ActionExecutingContext filterContext)

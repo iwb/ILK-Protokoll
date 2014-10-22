@@ -22,9 +22,9 @@ namespace ILK_Protokoll.DataLayer
 
 		public DbSet<ActiveSession> ActiveSessions { get; set; }
 		public DbSet<Assignment> Assignments { get; set; }
-		public DbSet<Attachment> Attachments { get; set; }
 		public DbSet<Comment> Comments { get; set; }
 		public DbSet<Decision> Decisions { get; set; }
+		public DbSet<Document> Documents { get; set; }
 		public DbSet<Conference> LConferences { get; set; }
 		public DbSet<EmployeePresentation> LEmployeePresentations { get; set; }
 		public DbSet<Event> LEvents { get; set; }
@@ -34,6 +34,7 @@ namespace ILK_Protokoll.DataLayer
 		public DbSet<Holiday> LHolidays { get; set; }
 		public DbSet<Opening> LOpenings { get; set; }
 		public DbSet<PushNotification> PushNotifications { get; set; }
+		public DbSet<Revision> Revisions { get; set; }
 		public DbSet<SessionReport> SessionReports { get; set; }
 		public DbSet<SessionType> SessionTypes { get; set; }
 		public DbSet<Tag> Tags { get; set; }
@@ -83,6 +84,23 @@ namespace ILK_Protokoll.DataLayer
 		public IEnumerable<SessionType> GetActiveSessionTypes()
 		{
 			return SessionTypes.Where(st => st.Active).OrderBy(st => st.Name);
+		}
+
+		public void DeleteTopic(int topicID)
+		{
+			var topic = Topics.Find(topicID);
+
+			// Dokumente separat löschen, damit keine verwaisten Dateien übrig bleiben
+			foreach (var document in topic.Documents)
+			{
+				document.Deleted = document.Deleted ?? DateTime.Now;
+				document.TopicID = null;
+			}
+			SaveChanges();
+
+			Votes.RemoveRange(Votes.Where(v => v.Topic.ID == topicID));
+			Topics.Remove(topic);
+			SaveChanges();
 		}
 	}
 }

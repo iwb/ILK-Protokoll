@@ -86,7 +86,8 @@ namespace ILK_Protokoll.Mailers
 						x.To.Add(user.EmailAddress);
 				}
 			});
-			mail.Send();
+			if (mail.To.Count > 0)
+				mail.Send();
 		}
 	}
 }

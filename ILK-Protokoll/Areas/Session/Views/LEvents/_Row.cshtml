@@ -1,4 +1,5 @@
-﻿@model ILK_Protokoll.Areas.Session.Models.Lists.Event
+﻿@using ILK_Protokoll.util
+@model ILK_Protokoll.Areas.Session.Models.Lists.Event
 @{
 	string trclass = Model.Created > ViewBag.LastSession ? "newlistitem" : null;
 }
@@ -16,9 +17,7 @@
 	<td>
 		@Html.DisplayFor(model => model.Place)
 	</td>
-	<td>
-		@Html.DisplayFor(model => model.Description)
-	</td>
+	<td class="shorten">@Html.DisplayFor(model => model.Description)</td>
 	<td>
 		@Html.DisplayFor(model => model.Organizer)
 	</td>
@@ -46,3 +45,32 @@
 		</td>
 	}
 </tr>
+
+@using (Html.Delayed(null, "ShortenEvents"))
+{
+	<script type="text/javascript">
+		function shortenText(element, maxLength) {
+			var lastspace = element.innerText.lastIndexOf(" ", maxLength - 1);
+			var splitPos = (lastspace >= maxLength - 12) ? lastspace - 1 : maxLength - 1;
+
+			var content = element.innerHTML;
+			content = $('<span class="overflow" style="display: none; white-space: pre-wrap;">' + content + '</span>');
+
+			var excerpt = element.firstChild.textContent.substr(0, splitPos);
+			excerpt = $('<span class="overflow">' + excerpt + '…</span>');
+
+			$(element).html(excerpt);
+			$(element).append(content);
+			
+			$(element).click(function () {
+				$(this).children('.overflow').toggle();
+			});
+		}
+
+		$("#event_table td.shorten").each(function () {
+			if (this.innerText.length > 60) {
+				shortenText(this, 60);
+			}
+		});
+	</script>
+}

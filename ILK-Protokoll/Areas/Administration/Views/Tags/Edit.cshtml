@@ -2,7 +2,7 @@
 @model ILK_Protokoll.Models.Tag
 
 @{
-	ViewBag.Title = "Edit";
+	ViewBag.Title = "Tag bearbeiten";
 }
 
 <h2>@ViewBag.Title</h2>
@@ -30,12 +30,30 @@
 				@Html.ValidationMessageFor(model => model.BackgroundColor, "", new {@class = "text-danger"})
 			</div>
 		</div>
+		
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-3" id="bg-jspicker">
+			</div>
+		</div>
 
 		<div class="form-group">
 			@Html.LabelFor(model => model.FontColor, htmlAttributes: new {@class = "control-label col-sm-2"})
 			<div class="col-sm-3">
 				@Html.EditorFor(model => model.FontColor, new {htmlAttributes = new {@class = "form-control", id = "font-color-picker"}})
 				@Html.ValidationMessageFor(model => model.FontColor, "", new {@class = "text-danger"})
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-3" id="font-jspicker">
+			</div>
+		</div>
+
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-3">
+				<div class="form-control-static">
+					<a id="perform-autocolor">Textfarbe automatisch festlegen</a>
+				</div>
 			</div>
 		</div>
 
@@ -56,7 +74,7 @@
 }
 
 <div>
-	@Html.ActionLink("Back to List", "Index")
+	@Html.ActionLink("Zurück zum Index", "Index")
 </div>
 
 @using (Html.Delayed(null, "ColorPreview"))
@@ -78,18 +96,56 @@
 			return (yiq >= 128) ? '#000000' : '#FFFFFF';
 		}
 
+		var userChoice = $('#font-color-picker')[0].value != getContrastYIQ($('#bg-color-picker')[0].value);
+
 		$('#bg-color-picker').on("change keyup", function() {
 			$('#color-preview').css("background-color", $(this)[0].value);
+			$('#bg-jspicker').colpickSetColor($(this)[0].value, false);
 			var ccolor = getContrastYIQ($(this)[0].value);
-			if (ccolor !== undefined) {
+			if (!userChoice && ccolor !== undefined) {
 				$('#font-color-picker')[0].value = ccolor;
-				$('#font-color-picker').change();
+				$('#color-preview').css("color", ccolor);
+				$('#font-jspicker').colpickSetColor(ccolor, false);
 			}
 		});
 
 		$('#font-color-picker').on("change keyup", function() {
 			$('#color-preview').css("color", $(this)[0].value);
+			userChoice = true;
+			$('#font-jspicker').colpickSetColor($(this)[0].value, false);
 		});
-		$('#bg-color-picker').change();
+
+		$('#color-preview').css("background-color", $('#bg-color-picker')[0].value);
+		$('#color-preview').css("color", $('#font-color-picker')[0].value);
+
+		$('#perform-autocolor').click(function() {
+			userChoice = false;
+			$('#bg-color-picker').change();
+		});
+
+		// Colorpicker für Internet Explorer
+		// Dieser unterstützt leider noch nicht <input type="color" />
+		function enableColorPicker(pickerdiv, formfield) {
+
+			$(pickerdiv).colpick({
+				flat: true,
+				submit: false,
+					colorScheme: 'dark',
+					color: $(formfield)[0].value,
+					onChange: function (hsb, hex, rgb, el, bySetColor) {
+						if (!bySetColor) {
+							$(formfield)[0].value = '#' + hex;
+							$(formfield).change();
+						}
+					}
+				}).
+				keyup(function() {
+					$(this).colpickSetColor(this.value);
+				});
+		}
+
+		enableColorPicker('#bg-jspicker', '#bg-color-picker');
+		enableColorPicker('#font-jspicker', '#font-color-picker');
+
 	</script>
 }

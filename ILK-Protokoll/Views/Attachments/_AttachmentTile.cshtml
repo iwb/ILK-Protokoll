@@ -1,14 +1,12 @@
 ﻿@using ILK_Protokoll.Controllers
-@model ILK_Protokoll.Models.Attachment
+@model ILK_Protokoll.Models.Document
 @{
-	string iconname = Model.Extension ?? "default";
+	string iconname = Model.LatestRevision.Extension ?? "default";
 	if (!((HashSet<string>) ViewBag.KnownExtensions).Contains(iconname))
 	{
 		iconname = "default";
 	}
-
-	string fileurl = ((AttachmentsController)ViewContext.Controller).GetVirtualPath(Model.ID);
-}<a href="@fileurl" target="_blank" class="btn btn-default">
+}<a href="@Url.Action("DownloadNewest", "Attachments", new {id = Model.GUID})" target="_blank" class="btn btn-default">
 	<img src="~/img/fileicons/@(iconname).png" height="16" />
 	@Model.DisplayName
 </a>

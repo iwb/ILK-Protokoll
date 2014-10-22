@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using EntityFramework.Extensions;
+using ILK_Protokoll.DataLayer;
 using ILK_Protokoll.Models;
 using ILK_Protokoll.util;
 using ILK_Protokoll.ViewModels;
@@ -134,7 +135,7 @@ namespace ILK_Protokoll.Controllers
 				.Include(t => t.Lock)
 				.Include(t => t.Lock.Session.Manager)
 				.Include(t => t.Tags)
-				.Single(t => t.ID == id.Value);
+				.SingleOrDefault(t => t.ID == id.Value);
 
 			if (topic == null)
 				return HttpNotFound();
@@ -350,10 +351,7 @@ namespace ILK_Protokoll.Controllers
 		[ValidateAntiForgeryToken]
 		public ActionResult DeleteConfirmed(int id)
 		{
-			Topic topic = db.Topics.Find(id);
-			db.Votes.RemoveRange(db.Votes.Where(v => v.Topic.ID == id));
-			db.Topics.Remove(topic);
-			db.SaveChanges();
+			db.DeleteTopic(id);
 			return RedirectToAction("Index");
 		}
 
@@ -458,7 +456,7 @@ namespace ILK_Protokoll.Controllers
 			{
 				// Änderungsverfolgung
 				db.TopicHistory.Add(TopicHistory.FromTopic(topic, GetCurrentUserID()));
-
+				topic.Proposal = proposal;
 				topic.ValidFrom = DateTime.Now;
 
 				// Ungelesen-Markierung aktualisieren

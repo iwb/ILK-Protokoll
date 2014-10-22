@@ -59,6 +59,11 @@ namespace ILK_Protokoll.Controllers
 			return PartialView("~/Views/Home/_Topics.cshtml", topics);
 		}
 
+		public ActionResult _FetchSingleTopic(int id)
+		{
+			return PartialView("~/Views/Topics/_Topic.cshtml", db.Topics.Find(id));
+		}
+
 		public ActionResult About()
 		{
 			ViewBag.Message = "Your application description page.";

@@ -44,6 +44,7 @@ namespace ILK_Protokoll.Areas.Session.Models.Lists
 
 		[Required]
 		[DisplayName("Besucher / Thema")]
+		[DataType(DataType.MultilineText)]
 		public string Description { get; set; }
 	}
 }

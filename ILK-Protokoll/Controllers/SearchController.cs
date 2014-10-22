@@ -277,7 +277,7 @@ namespace ILK_Protokoll.Controllers
 
 		private void SearchAttachments(Topic topic, IEnumerable<Regex> searchterms, ICollection<SearchResult> resultlist)
 		{
-			foreach (var attachment in topic.Attachments)
+			foreach (var attachment in topic.Documents)
 			{
 				var score = 0.0f;
 				foreach (var pattern in searchterms)

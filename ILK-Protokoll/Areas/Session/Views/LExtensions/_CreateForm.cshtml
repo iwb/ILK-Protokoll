@@ -1,4 +1,5 @@
-﻿@model ILK_Protokoll.Areas.Session.Models.Lists.Extension
+﻿@using ILK_Protokoll.util
+@model ILK_Protokoll.Areas.Session.Models.Lists.Extension
 
 <tr id="extension_createform">
 	<td colspan="6">
@@ -12,7 +13,7 @@
 			@Html.AntiForgeryToken()
 			<div class="row">
 				<div class="col-sm-2">
-					@Html.EditorFor(model => model.Employee, new {htmlAttributes = new {@class = "form-control", id = "ext_create_emp"}})
+					@Html.TextEditorFor(model => model.Employee, "ext_create_emp")
 				</div>
 				<div class="col-sm-2">
 					@Html.EditorFor(model => model.EndDate, new {htmlAttributes = new {@class = "form-control", id = "ext_create_end"}})
@@ -21,10 +22,10 @@
 					@Html.EditorFor(model => model.ExtensionNumber, new {htmlAttributes = new {@class = "form-control", id = "ext_create_ext"}})
 				</div>
 				<div class="col-sm-4">
-					@Html.EditorFor(model => model.Comment, new {htmlAttributes = new {@class = "form-control", id = "ext_create_comm"}})
+					@Html.TextEditorFor(model => model.Comment, "ext_create_comm")
 				</div>
 				<div class="col-sm-1">
-					@Html.EnumDropDownListFor(model => model.Approval, new { @class = "form-control", id = "ext_create_app" })
+					@Html.EnumDropDownListFor(model => model.Approval, new {@class = "form-control", id = "ext_create_app"})
 				</div>
 				<div class="col-sm-1">
 					<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-check"></span></button>

@@ -72,6 +72,10 @@
 				</td>
 				<td>
 					<a href="@Url.Action("Details", new {id = item.ID})">@item.Title.Shorten(60)</a>
+					@foreach (var tag in item.Tags)
+					{
+						@Html.DisplayFor(model => tag.Tag)
+					}
 				</td>
 				<td class="hidden-xs">
 					@item.Time.Shorten(40)

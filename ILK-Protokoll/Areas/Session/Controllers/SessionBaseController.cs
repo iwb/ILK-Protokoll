@@ -41,7 +41,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 
 			foreach (var topic in topics)
 			{
-				MarkAsUnread(topic);
+				MarkAsUnread(topic, skipCurrentUser: false);
 				session.LockedTopics.Add(new TopicLock()
 				{
 					Topic = topic,
@@ -67,7 +67,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 
 			foreach (var tlock in session.LockedTopics)
 			{
-				MarkAsUnread(tlock.Topic);
+				MarkAsUnread(tlock.Topic, skipCurrentUser: false);
 			}
 			db.SaveChanges();
 			return session;

@@ -1,6 +1,6 @@
-﻿using System.Data.Entity;
+﻿using System.ComponentModel;
+using System.Data.Entity;
 using System.Data.Entity.Validation;
-using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
@@ -8,6 +8,7 @@ using ILK_Protokoll.Controllers;
 
 namespace ILK_Protokoll.Areas.Administration.Controllers
 {
+	[DisplayName("Papierkorb")]
 	public class RecycleBinController : BaseController
 	{
 		protected override void OnActionExecuting(ActionExecutingContext filterContext)
@@ -21,14 +22,14 @@ namespace ILK_Protokoll.Areas.Administration.Controllers
 		public ActionResult Index()
 		{
 			var items =
-				db.Attachments.Where(a => a.Deleted != null).Include(a => a.Topic).OrderByDescending(a => a.Created).ToList();
+				db.Documents.Where(a => a.Deleted != null).OrderByDescending(a => a.Created).ToList();
 			return View(items);
 		}
 
 
-		public ActionResult _Restore(int attachmentID)
+		public ActionResult _Restore(int documentID)
 		{
-			var attachment = db.Attachments.Include(a => a.Uploader).Single(a => a.ID == attachmentID);
+			var attachment = db.Documents.Include(a => a.LatestRevision).Single(d => d.ID == documentID);
 
 			if (attachment.TopicID == null && attachment.EmployeePresentationID == null) // Verwaist
 				return HTTPStatus(422, "Wiederherstellungsziel ist nicht mehr vorhanden");
@@ -54,7 +55,7 @@ namespace ILK_Protokoll.Areas.Administration.Controllers
 		[HttpGet]
 		public ActionResult Purge()
 		{
-			var itemcount = db.Attachments.Count(a => a.Deleted != null);
+			var itemcount = db.Documents.Count(a => a.Deleted != null);
 			return View(itemcount);
 		}
 
@@ -62,8 +63,11 @@ namespace ILK_Protokoll.Areas.Administration.Controllers
 		[ValidateAntiForgeryToken]
 		public ActionResult PurgeConfirmed()
 		{
-			db.Attachments.RemoveRange(db.Attachments.Where(a => a.Deleted != null));
-			db.SaveChanges();
+			var ac = new AttachmentsController();
+			foreach (var doc in db.Documents.Where(a => a.Deleted != null))
+			{
+				ac._PermanentDelete(doc.ID);
+			}
 			return RedirectToAction("Index");
 		}
 	}

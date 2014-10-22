@@ -16,7 +16,7 @@ namespace ILK_Protokoll.Areas.Session.Models.Lists
 		public EmployeePresentation()
 		{
 			LastPresentation = DateTime.Today;
-			Attachments = new List<Attachment>();
+			Documents = new List<Document>();
 		}
 
 		[Required]
@@ -37,14 +37,16 @@ namespace ILK_Protokoll.Areas.Session.Models.Lists
 		[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
 		public DateTime LastPresentation { get; set; }
 
-		[DisplayName("Dateien")]
-		public ICollection<Attachment> Attachments { get; set; }
+		[DisplayName("Dokumente")]
+		public ICollection<Document> Documents { get; set; }
 
 		[DisplayName("Vorgemerkt")]
 		public bool Selected { get; set; }
 
 		[NotMapped]
 		public string FileURL { get; set; }
+		[NotMapped]
+		public int FileCount { get; set; }
 
 		public override string ToString()
 		{

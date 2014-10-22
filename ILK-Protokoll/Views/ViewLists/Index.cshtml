@@ -10,7 +10,20 @@
 
 <h2>@ViewBag.Title</h2>
 
-		
+<script type="text/javascript">
+	function collapseListsOut() {
+		$('.panel-collapse').collapse('show');
+		$('.panel-collapse-heading a').removeClass("collapsed");
+	}
+
+	function collapseListsIn() {
+		$('.panel-collapse').collapse('hide');
+		$('.panel-collapse-heading a').addClass("collapsed");
+	}
+
+	var returnURL = "@(Request.Url != null ? Request.Url.AbsolutePath : "")";
+</script>
+	
 @Html.Action("_List", "LEvents", new { Area = "Session" })
 
 @Html.Action("_List", "LConferences", new { Area = "Session" })
@@ -26,18 +39,3 @@
 @Html.Action("_List", "LOpenings", new { Area = "Session" })
 
 @Html.Action("_List", "LHolidays", new { Area = "Session" })
-
-@using (Html.Delayed(null, "CollapseLists"))
-{
-	<script type="text/javascript">
-		function collapseListsOut() {
-			$('.panel-collapse').collapse('show');
-			$('.panel-collapse-heading a').removeClass("collapsed");
-		}
-
-		function collapseListsIn() {
-			$('.panel-collapse').collapse('hide');
-			$('.panel-collapse-heading a').addClass("collapsed");
-		}
-	</script>
-}

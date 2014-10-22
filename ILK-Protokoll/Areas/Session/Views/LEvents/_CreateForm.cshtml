@@ -19,16 +19,25 @@
 					@Html.EditorFor(model => model.EndDate, new {htmlAttributes = new {@class = "form-control", id = "evt_create_end"}})
 				</div>
 				<div class="col-sm-1">
-					@Html.EditorFor(model => model.Time, new {htmlAttributes = new {@class = "form-control", id = "evt_create_time"}})
+					@Html.TextEditorFor(model => model.Time, "evt_create_time")
 				</div>
 				<div class="col-sm-1">
-					@Html.EditorFor(model => model.Place, new {htmlAttributes = new {@class = "form-control", id = "evt_create_place"}})
+					@Html.TextEditorFor(model => model.Place, "evt_create_place")
 				</div>
 				<div class="col-sm-4">
-					@Html.EditorFor(model => model.Description, new {htmlAttributes = new {@class = "form-control", id = "evt_create_desc"}})
+					@Html.EditorFor(model => model.Description, new
+					{
+						htmlAttributes = new
+						{
+							@class = "form-control",
+							id = "evt_create_desc",
+							rows = "2",
+							placeholder = Html.DisplayNameFor(model => model.Description)
+						}
+					})
 				</div>
 				<div class="col-sm-1">
-					@Html.EditorFor(model => model.Organizer, new {htmlAttributes = new {@class = "form-control", id = "evt_create_orga"}})
+					@Html.TextEditorFor(model => model.Organizer, "evt_create_orga")
 				</div>
 				<div class="col-sm-1">
 					<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-check"></span></button>
@@ -41,10 +50,10 @@
 @using (Html.Delayed(null, "evt_date_sync"))
 {
 	<script type="text/javascript">
-		$('#evt_create_start').change(function () {
+		$('#evt_create_start').change(function() {
 			$('#evt_create_end').val($('#evt_create_start').val());
 		});
-		$('#evt_create_start_display').change(function () {
+		$('#evt_create_start_display').change(function() {
 			$('#evt_create_end').val($('#evt_create_start').val());
 			$('#evt_create_end_display').val($('#evt_create_start_display').val());
 		});

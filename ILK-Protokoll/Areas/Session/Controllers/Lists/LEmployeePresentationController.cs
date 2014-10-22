@@ -4,9 +4,7 @@ using System.Data.Entity.Validation;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
-using EntityFramework.Extensions;
 using ILK_Protokoll.Areas.Session.Models.Lists;
-using ILK_Protokoll.Controllers;
 
 namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 {
@@ -15,7 +13,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 		public LEmployeePresentationsController()
 		{
 			_dbSet = db.LEmployeePresentations;
-			Entities = _dbSet.Include(ep => ep.Attachments).OrderByDescending(x => x.Selected).ThenBy(x => x.LastPresentation);
+			Entities = _dbSet.Include(ep => ep.Documents).OrderByDescending(x => x.Selected).ThenBy(x => x.LastPresentation);
 		}
 
 		public override PartialViewResult _List(bool reporting = false)
@@ -26,8 +24,12 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 			var items = Entities.ToList();
 			foreach (var emp in items)
 			{
-				if (emp.Attachments.Count(a => a.Deleted == null) > 0)
-					emp.FileURL = AttachmentsController.GetVirtualPath(emp.Attachments.Where(a => a.Deleted == null).OrderByDescending(a => a.Created).First().ID, Request, db, Url);
+				emp.FileCount = emp.Documents.Count(a => a.Deleted == null);
+				if (emp.FileCount > 0)
+				{
+					var document = emp.Documents.Where(a => a.Deleted == null).OrderByDescending(a => a.Created).First();
+					emp.FileURL = Url.Action("DownloadNewest", "Attachments", new {Area = "", id = document.GUID});
+				}
 			}
 			return PartialView(items);
 		}
@@ -44,17 +46,18 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 			return base._BeginEdit(id);
 		}
 
-		public ActionResult Edit(int? id, string returnURL = null)
+		public ActionResult Edit(int? id, string returnURL = null, string statusMessage = null)
 		{
 			if (id == null)
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-			EmployeePresentation presentation = _dbSet.Include(ep => ep.Attachments).Single(ep => ep.ID == id);
+			EmployeePresentation presentation = _dbSet.Include(ep => ep.Documents).Single(ep => ep.ID == id);
 			if (presentation == null)
 				return HttpNotFound();
 
 			ViewBag.UserList = CreateUserSelectList();
-			ViewBag.ReturnURL = returnURL ?? Url.Action("Index", "Lists", new {Area = "Session"});
+			ViewBag.ReturnURL = returnURL ?? Url.Action("Index", "ViewLists", new {Area = ""});
+			ViewBag.StatusMessage = statusMessage;
 			return View(presentation);
 		}
 
@@ -62,18 +65,41 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 		[ValidateAntiForgeryToken]
 		public virtual ActionResult Edit([Bind(Exclude = "Created")] EmployeePresentation input, string returnURL = null)
 		{
-			if (ModelState.IsValid)
-			{
-				db.Entry(input).State = EntityState.Modified;
-				db.SaveChanges();
-				if (returnURL == null)
-					return RedirectToAction("Index", "Lists", new {Area = "Session"});
-				else
-					return Redirect(returnURL);
-			}
 			ViewBag.UserList = CreateUserSelectList();
-			ViewBag.ReturnURL = returnURL ?? Url.Action("Index", "Lists", new { Area = "Session" });
+			ViewBag.ReturnURL = returnURL ?? Url.Action("Index", "ViewLists", new {Area = ""});
+
+			if (!ModelState.IsValid)
 			return View(input);
+
+			db.Entry(input).State = EntityState.Modified;
+			db.SaveChanges();
+			return RedirectToAction("Edit", "LEmployeePresentations", new
+			{
+				Area = "Session",
+				id = input.ID,
+				returnURL,
+				statusMessage = "Daten erfolgreich gespeichert."
+			});
+		}
+
+		public override PartialViewResult _FetchRow(int id)
+		{
+			var emp = Entities.Single(m => m.ID == id);
+			var session = GetSession();
+			if (session != null && emp.LockSessionID == session.ID) // ggf. lock entfernen
+			{
+				emp.LockSessionID = null;
+				db.SaveChanges();
+			}
+			ViewBag.Reporting = false;
+			emp.FileCount = emp.Documents.Count(a => a.Deleted == null);
+			if (emp.FileCount > 0)
+			{
+				var document = emp.Documents.Where(a => a.Deleted == null).OrderByDescending(a => a.Created).First();
+				emp.FileURL = Url.Action("DownloadNewest", "Attachments", new {Area = "", id = document.GUID});
+			}
+
+			return PartialView("_Row", emp);
 		}
 
 		public override ActionResult _Delete(int? id)
@@ -85,7 +111,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 			if (ep == null)
 				return HttpNotFound();
 
-			var linkedFiles = db.Attachments.Include(a => a.Uploader).Where(a => a.EmployeePresentationID == id);
+			var linkedFiles = db.Documents.Include(d => d.LatestRevision).Where(a => a.EmployeePresentationID == id);
 
 			foreach (var file in linkedFiles)
 			{
@@ -102,7 +128,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 				return HTTPStatus(500, msg);
 			}
 
-			ep.Attachments.Clear();
+			ep.Documents.Clear();
 			_dbSet.Remove(_dbSet.Find(id));
 			db.SaveChanges();
 

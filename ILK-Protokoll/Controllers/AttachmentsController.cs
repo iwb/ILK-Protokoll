@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data.Entity;
 using System.Data.Entity.Validation;
 using System.IO;
@@ -10,7 +11,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
-using ILK_Protokoll.DataLayer;
 using ILK_Protokoll.Models;
 
 namespace ILK_Protokoll.Controllers
@@ -45,41 +45,21 @@ namespace ILK_Protokoll.Controllers
 			get { return @"C:\ILK-Protokoll_Uploads\"; }
 		}
 
-		public string GetVirtualPath(int attachmentID)
-		{
-			return GetVirtualPath(attachmentID, Request, db, Url);
-		}
-
-		public static string GetVirtualPath(int attachmentID, HttpRequestBase request, DataContext db, UrlHelper url)
-		{
-			string userAgent = request.UserAgent;
-			bool isInternetExplorer = !string.IsNullOrEmpty(userAgent) && userAgent.Contains("Trident");
-			if (Environment.MachineName.StartsWith("02MUCILK") && isInternetExplorer)
-			{
-				Attachment a = db.Attachments.Find(attachmentID);
-				bool isOfficeDocument = OfficeExtensions.Contains(a.Extension);
-				if (isOfficeDocument)
-				{
-					var host = Dns.GetHostName() + ".iwb.mw.tu-muenchen.de";
-					return "file://" + host + "/Uploads/" + a.FileName;
-				}
-			}
-
-			return url.Content(VirtualPath + attachmentID);
-		}
-
 		// GET: Attachments
-		public PartialViewResult _List(AttachmentContainer entity, int id, bool makeList = false, bool showActions = true)
+		public PartialViewResult _List(int id, DocumentContainer entityKind, bool makeList = false, bool showActions = true)
 		{
-			var files = db.Attachments
+			var documents = db.Documents
 				.Where(a => a.Deleted == null)
 				.OrderBy(a => a.DisplayName)
-				.Include(a => a.Uploader);
+				.Include(a => a.Revisions)
+				.Include(a => a.LatestRevision)
+				.Include(a => a.LatestRevision.Uploader);
 
-			if (entity == AttachmentContainer.Topic)
-				files = files.Where(a => a.TopicID == id);
-			else if (entity == AttachmentContainer.EmployeePresentation)
-				files = files.Where(a => a.EmployeePresentationID == id);
+			if (entityKind == DocumentContainer.Topic)
+				documents = documents.Where(a => a.TopicID == id);
+			else if (entityKind == DocumentContainer.EmployeePresentation)
+				documents = documents.Where(a => a.EmployeePresentationID == id);
+
 
 			KnownExtensions = new HashSet<string>(
 				from path in Directory.GetFiles(Server.MapPath("~/img/fileicons"), "*.png")
@@ -89,35 +69,35 @@ namespace ILK_Protokoll.Controllers
 			ViewBag.KnownExtensions = KnownExtensions;
 
 			if (makeList)
-				return PartialView("_AttachmentList", files.ToList());
+				return PartialView("_AttachmentList", documents.ToList());
 			else
 			{
 				return showActions
-					? PartialView("_AttachmentTable", files.ToList())
-					: PartialView("~/Areas/Session/Views/Finalize/_ReportAttachments.cshtml", files.ToList());
+					? PartialView("_AttachmentTable", documents.ToList())
+					: PartialView("~/Areas/Session/Views/Finalize/_ReportAttachments.cshtml", documents.ToList());
 			}
 		}
 
-		public ActionResult _UploadForm(AttachmentContainer entity, int id)
+		public ActionResult _UploadForm(int id, DocumentContainer entityKind)
 		{
-			if (entity == AttachmentContainer.Topic && IsTopicLocked(id))
+			if (entityKind == DocumentContainer.Topic && IsTopicLocked(id))
 				return Content("<div class=\"panel-footer\">Da das Thema gesperrt ist, können Sie keine Dateien hochladen.</div>");
 			else
-				return PartialView("_UploadForm", Tuple.Create(entity, id));
+				return PartialView("_DocumentCreateForm", Tuple.Create(entityKind, id));
 		}
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public ActionResult _Upload(AttachmentContainer entity, int id)
+		public ActionResult _CreateDocuments(DocumentContainer entityKind, int id)
 		{
 			if (Request.Files.Count == 0)
-				return HTTPStatus(HttpStatusCode.OK, "Es wurden keine Dateien empfangen.");
+				return HTTPStatus(HttpStatusCode.BadRequest, "Es wurden keine Dateien empfangen.");
 
 			if (id <= 0)
 				return HTTPStatus(HttpStatusCode.BadRequest, "Die Dateien können keinem Ziel zugeordnet werden.");
 
 			Topic topic = null;
-			if (entity == AttachmentContainer.Topic)
+			if (entityKind == DocumentContainer.Topic)
 			{
 				topic = db.Topics.Find(id);
 
@@ -158,32 +138,41 @@ namespace ILK_Protokoll.Controllers
 				if (!string.IsNullOrEmpty(fileext))
 					fileext = fileext.Substring(1);
 
-				var attachment = new Attachment
+				var revision = new Revision
 				{
-					Deleted = null,
-					DisplayName = fullName,
 					SafeName = InvalidChars.Replace(filename, ""),
-					Extension = fileext,
 					FileSize = file.ContentLength,
 					UploaderID = GetCurrentUserID(),
+					Extension = fileext,
+					GUID = Guid.NewGuid(),
 					Created = DateTime.Now
 				};
 
-				switch (entity)
+				Document document = new Document(revision)
 				{
-					case AttachmentContainer.Topic:
-						attachment.TopicID = id;
+					Deleted = null,
+					DisplayName = fullName
+				};
+
+				switch (entityKind)
+				{
+					case DocumentContainer.Topic:
+						document.TopicID = id;
 						break;
-					case AttachmentContainer.EmployeePresentation:
-						attachment.EmployeePresentationID = id;
+					case DocumentContainer.EmployeePresentation:
+						document.EmployeePresentationID = id;
 						break;
+					default:
+						throw new InvalidEnumArgumentException("entityKind", (int)entityKind, typeof(DocumentContainer));
 				}
 
 				try
 				{
-					db.Attachments.Add(attachment);
-					db.SaveChanges(); // Damit das Attachment seine ID bekommt. Diese wird anschließend im Dateinamen hinterlegt
-					string path = Path.Combine(Serverpath, attachment.FileName);
+					db.Documents.Add(document);
+					db.SaveChanges(); // Damit die Revision die ID bekommt. Diese wird anschließend im Dateinamen hinterlegt
+					document.LatestRevision = revision;
+					db.SaveChanges();
+					string path = Path.Combine(Serverpath, revision.FileName);
 					file.SaveAs(path);
 					successful++;
 				}
@@ -209,27 +198,106 @@ namespace ILK_Protokoll.Controllers
 
 			ViewBag.StatusMessage = statusMessage.ToString();
 
-			return _List(entity, id);
+			return _List(id, entityKind);
 		}
 
 		[HttpPost]
-		public ActionResult _Delete(int attachmentID)
+		[ValidateAntiForgeryToken]
+		public ActionResult CreateNewRevision(int id)
 		{
-			Attachment attachment = db.Attachments.Include(a => a.Uploader).Single(a => a.ID == attachmentID);
+			if (Request.Files.Count != 1)
+				return HTTPStatus(HttpStatusCode.BadRequest, "Keine Datei empfangen");
 
-			if (attachment.Deleted != null)
+			var file = Request.Files[0];
+
+			if (id <= 0)
+				return HTTPStatus(HttpStatusCode.BadRequest, "Die Dateien können keinem Ziel zugeordnet werden.");
+
+			var document = db.Documents.Find(id);
+
+			Topic topic = null;
+			if (document.TopicID != null)
+			{
+				topic = db.Topics.Find(document.TopicID.Value);
+
+				if (IsTopicLocked(document.TopicID.Value))
+					return HTTPStatus(HttpStatusCode.Forbidden, "Da das Thema gesperrt ist, können Sie keine Dateien hochladen.");
+
+				if (topic.IsReadOnly)
+				{
+					return HTTPStatus(HttpStatusCode.Forbidden,
+						"Da das Thema schreibgeschützt ist, können Sie keine Dateien bearbeiten.");
+				}
+			}
+
+			if (string.IsNullOrWhiteSpace(file.FileName))
+				return HTTPStatus(HttpStatusCode.BadRequest, "Die Datei hat einen ungültigen Dateinamen.");
+
+			var fullName = Path.GetFileName(file.FileName);
+			if (file.ContentLength == 0)
+				return HTTPStatus(HttpStatusCode.BadRequest, "Datei " + fullName + " hat keinen Inhalt.");
+
+			string filename = Path.GetFileNameWithoutExtension(file.FileName);
+			string fileext = Path.GetExtension(file.FileName);
+			if (!string.IsNullOrEmpty(fileext))
+				fileext = fileext.Substring(1);
+
+			var revision = new Revision
+			{
+				ParentDocument = document,
+				SafeName = InvalidChars.Replace(filename, ""),
+				FileSize = file.ContentLength,
+				UploaderID = GetCurrentUserID(),
+				Extension = fileext,
+				GUID = Guid.NewGuid(),
+				Created = DateTime.Now
+			};
+			document.Revisions.Add(revision);
+			document.LatestRevision = revision;
+			document.DisplayName = fullName;
+
+			try
+			{
+				db.SaveChanges(); // Damit die Revision seine ID bekommt. Diese wird anschließend im Dateinamen hinterlegt
+				string path = Path.Combine(Serverpath, revision.FileName);
+				file.SaveAs(path);
+				//db.SaveChanges();
+			}
+			catch (DbEntityValidationException ex)
+			{
+				return HTTPStatus(HttpStatusCode.InternalServerError, ErrorMessageFromException(ex));
+			}
+			catch (IOException ex)
+			{
+				return HTTPStatus(HttpStatusCode.InternalServerError, "Dateisystemfehler: " + ex.Message);
+			}
+
+			// Ungelesen-Markierung aktualisieren
+			if (topic != null)
+				MarkAsUnread(topic);
+
+			return HTTPStatus(HttpStatusCode.Created, Url.Action("Details", "Attachments", new {Area = "", id}));
+		}
+
+		[HttpPost]
+		public ActionResult _Delete(int documentID)
+		{
+			var document = db.Documents.Include(d => d.LatestRevision).Single(d => d.ID == documentID);
+
+			if (document.Deleted != null)
 				return HTTPStatus(422, "Das Objekt befindet sich bereits im Papierkorb.");
 
-			if (attachment.TopicID.HasValue && IsTopicLocked(attachment.TopicID.Value))
+			if (document.TopicID.HasValue && IsTopicLocked(document.TopicID.Value))
 				return HTTPStatus(HttpStatusCode.Forbidden, "Da das Thema gesperrt ist, können Sie keine Dateien bearbeiten.");
 
-			if (attachment.TopicID.HasValue && attachment.Topic.IsReadOnly)
+			if (document.TopicID.HasValue && document.Topic.IsReadOnly)
 			{
 				return HTTPStatus(HttpStatusCode.Forbidden,
 					"Da das Thema schreibgeschützt ist, können Sie keine Dateien bearbeiten.");
 			}
 
-			attachment.Deleted = DateTime.Now; // In den Papierkorb
+
+			document.Deleted = DateTime.Now; // In den Papierkorb
 			try
 			{
 				db.SaveChanges();
@@ -243,99 +311,137 @@ namespace ILK_Protokoll.Controllers
 			return new HttpStatusCodeResult(HttpStatusCode.NoContent);
 		}
 
-		public ActionResult _PermanentDelete(int attachmentID)
+		public ActionResult _PermanentDelete(int documentID)
 		{
-			Attachment attachment = db.Attachments.Include(a => a.Uploader).Single(a => a.ID == attachmentID);
+			var document = db.Documents.Include(d => d.LatestRevision).Single(d => d.ID == documentID);
 
-			if (attachment.Deleted == null) // In den Papierkorb
+			if (document.Deleted == null) // In den Papierkorb
 				return HTTPStatus(422, "Das Objekt befindet sich noch nicht im Papierkorb.");
 
-			if (attachment.TopicID.HasValue && IsTopicLocked(attachment.TopicID.Value))
-				return HTTPStatus(HttpStatusCode.Forbidden, "Da das Thema gesperrt ist, können Sie keine Dateien bearbeiten.");
-
-			if (attachment.TopicID.HasValue && attachment.Topic.IsReadOnly)
+			try
 			{
-				return HTTPStatus(HttpStatusCode.Forbidden,
-					"Da das Thema schreibgeschützt ist, können Sie keine Dateien bearbeiten.");
+				foreach (var revision in document.Revisions)
+				{
+					string path = Path.Combine(Serverpath, revision.FileName);
+					System.IO.File.Delete(path);
+				}
+			}
+			catch (IOException ex)
+			{
+				return HTTPStatus(HttpStatusCode.InternalServerError, ex.Message);
 			}
 
 			try
 			{
-				string path = Path.Combine(Serverpath, attachment.FileName);
-				System.IO.File.Delete(path);
-
-				attachment.TopicID = null;
-				attachment.EmployeePresentationID = null;
-
-				db.Attachments.Remove(attachment);
-			}
-			catch (IOException)
-			{
-				return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
-			}
-
-			try
-			{
+				document.LatestRevisionID = null;
+				db.Revisions.RemoveRange(document.Revisions);
+				db.SaveChanges();
+				db.Documents.Remove(document);
 				db.SaveChanges();
 			}
 			catch (DbEntityValidationException e)
 			{
 				var message = ErrorMessageFromException(e);
-				return HTTPStatus(500, message);
+				return HTTPStatus(HttpStatusCode.InternalServerError, message);
 			}
 
 			return new HttpStatusCodeResult(HttpStatusCode.NoContent);
 		}
 
-		public FileResult Download(int id)
+		/// <summary>
+		///    Download oder öffnen einer Datei. Öffnen von Dokumenten funktioniert nur im Internet Explorer.
+		/// </summary>
+		/// <param name="id">ID der Datei</param>
+		/// <returns></returns>
+		[AllowAnonymous]
+		public ActionResult Download(Guid id)
 		{
-			Attachment a = db.Attachments.Find(id);
+			var file = db.Revisions.Include(rev => rev.ParentDocument).Single(rev => rev.GUID == id);
 
-			var cd = new ContentDisposition
+			var userAgent = Request.UserAgent;
+			var isInternetExplorer = !string.IsNullOrEmpty(userAgent) && userAgent.Contains("Trident");
+			var isAuthenticated = User.Identity != null; // TODO: Testen
+			var isOfficeDocument = OfficeExtensions.Contains(file.Extension);
+
+			if (isAuthenticated && isOfficeDocument && isInternetExplorer)
 			{
-				FileName = a.DisplayName,
-				Inline = true,
-			};
-			Response.AppendHeader("Content-Disposition", cd.ToString());
+				var host = Dns.GetHostName() + ".iwb.mw.tu-muenchen.de";
+				return Redirect("file://" + host + "/Uploads/" + file.FileName);
+			}
+			else
+			{
+				var cd = new ContentDisposition
+				{
+					FileName = file.ParentDocument.DisplayName,
+					Inline = true,
+				};
+				Response.AppendHeader("Content-Disposition", cd.ToString());
 
-			return File(Path.Combine(Serverpath, a.FileName), MimeMapping.GetMimeMapping(a.FileName));
+				return File(Path.Combine(Serverpath, file.FileName), MimeMapping.GetMimeMapping(file.FileName));
+			}
+		}
+
+		/// <summary>
+		///    Download der neuesten Version eines Dokuments.
+		/// </summary>
+		/// <param name="id">ID des Dokuments</param>
+		/// <returns></returns>
+		[AllowAnonymous]
+		public ActionResult DownloadNewest(Guid id)
+		{
+			var document = db.Documents.Single(doc => doc.GUID == id);
+			return Download(document.LatestRevision.GUID);
 		}
 
 		public ActionResult Details(int id)
 		{
-			Attachment a = db.Attachments.Find(id);
-			if (a == null)
+			Document d = db.Documents.Find(id);
+			if (d == null)
 				return HTTPStatus(HttpStatusCode.NotFound, "Datei nicht gefunden");
-			return View(a);
+
+			ViewBag.ShowUpload = true;
+			if (d.TopicID != null)
+			{
+				var topic = db.Topics.Find(d.TopicID.Value);
+				ViewBag.ShowUpload = !topic.IsReadOnly && !IsTopicLocked(d.TopicID.Value);
+			}
+
+			return View(d);
 		}
 
-		public ActionResult _BeginEdit(int attachmentID)
+		public ActionResult _BeginEdit(int documentID)
 		{
-			var a = db.Attachments.Find(attachmentID);
+			var a = db.Documents.Find(documentID);
 			if (a.Topic != null && a.Topic.IsReadOnly)
-				return HTTPStatus(HttpStatusCode.Forbidden, "Das Thema ist gschreibgeschützt!");
+				return HTTPStatus(HttpStatusCode.Forbidden, "Das Thema ist schreibgeschützt!");
 			return PartialView("_NameEditor", a);
 		}
 
-		public PartialViewResult _FetchDisplayName(int attachmentID)
+		public PartialViewResult _FetchDisplayName(int documentID)
 		{
-			var a = db.Attachments.Find(attachmentID);
-			return PartialView("_NameDisplay", Tuple.Create(GetVirtualPath(attachmentID), a.DisplayName));
+			var document = db.Documents.Find(documentID);
+
+			var url = new UrlHelper(ControllerContext.RequestContext).Action("DownloadNewest", "Attachments",
+				new {id = document.GUID});
+			return PartialView("_NameDisplay", Tuple.Create(new MvcHtmlString(url), document.DisplayName));
 		}
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		public ActionResult _SubmitEdit(int id, string displayName)
 		{
-			var a = db.Attachments.Find(id);
+			var document = db.Documents.Find(id);
 
-			if (a.Topic != null && a.Topic.IsReadOnly)
-				return HTTPStatus(HttpStatusCode.Forbidden, "Das Thema ist gschreibgeschützt!");
+			if (document.Topic != null && document.Topic.IsReadOnly)
+				return HTTPStatus(HttpStatusCode.Forbidden, "Das Thema ist schreibgeschützt!");
 
-			displayName = Path.ChangeExtension(displayName, Path.GetExtension(a.FileName));
-			a.DisplayName = displayName;
+			displayName = Path.ChangeExtension(displayName, Path.GetExtension(document.LatestRevision.FileName));
+			document.DisplayName = displayName;
 			db.SaveChanges();
-			return PartialView("_NameDisplay", Tuple.Create(GetVirtualPath(id), a.DisplayName));
+
+			var url = new UrlHelper(ControllerContext.RequestContext).Action("DownloadNewest", "Attachments",
+				new {id = document.GUID});
+			return PartialView("_NameDisplay", Tuple.Create(new MvcHtmlString(url), document.DisplayName));
 		}
 	}
 }

@@ -9,6 +9,7 @@ using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using ILK_Protokoll.Areas.Session.Models;
+using ILK_Protokoll.Controllers;
 using ILK_Protokoll.Mailers;
 using ILK_Protokoll.Models;
 using ILK_Protokoll.util;
@@ -163,8 +164,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 						};
 						break;
 					case TopicAction.Delete:
-						db.Votes.RemoveRange(db.Votes.Where(v => v.Topic.ID == t.ID));
-						db.Topics.Remove(t);
+						db.DeleteTopic(t.ID);
 						break;
 					default:
 						throw new ArgumentOutOfRangeException();

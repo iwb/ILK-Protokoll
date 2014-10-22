@@ -355,12 +355,21 @@
     <Compile Include="Migrations\201410091049526_tags_added.Designer.cs">
       <DependentUpon>201410091049526_tags_added.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201410131339480_document_revisions_added.cs" />
+    <Compile Include="Migrations\201410131339480_document_revisions_added.Designer.cs">
+      <DependentUpon>201410131339480_document_revisions_added.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201410151401560_latest_Revision_optional.cs" />
+    <Compile Include="Migrations\201410151401560_latest_Revision_optional.Designer.cs">
+      <DependentUpon>201410151401560_latest_Revision_optional.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Assignment.cs" />
-    <Compile Include="Models\Attachment.cs" />
+    <Compile Include="Models\Document.cs" />
     <Compile Include="Models\Comment.cs" />
     <Compile Include="Models\Decision.cs" />
     <Compile Include="Models\PushNotification.cs" />
+    <Compile Include="Models\Revision.cs" />
     <Compile Include="Models\SessionReport.cs" />
     <Compile Include="Models\Tag.cs" />
     <Compile Include="Models\TopicHistory.cs" />
@@ -369,9 +378,11 @@
     <Compile Include="Models\UserSettings.cs" />
     <Compile Include="ProfilingActionFilter.cs" />
     <Compile Include="ProfilingViewEngine.cs" />
+    <Compile Include="util\AttributeHelperMethods.cs" />
     <Compile Include="util\DelayedRenderExtensions.cs" />
     <Compile Include="util\DiffMatchPatch.cs" />
     <Compile Include="util\FutureDateAttribute.cs" />
+    <Compile Include="util\HtmlHelperMethods.cs" />
     <Compile Include="util\ResharperAnnotations.cs" />
     <Compile Include="util\HelperMethods.cs" />
     <Compile Include="Models\Priority.cs" />
@@ -415,6 +426,7 @@
     <Content Include="Content\images\ui-icons_888888_256x240.png" />
     <Content Include="Content\images\ui-icons_AF0331_256x240.png" />
     <Content Include="Content\images\ui-icons_DDD_256x240.png" />
+    <Content Include="Content\other\colpick.css" />
     <Content Include="Content\other\jquery.rtResponsiveTables.css" />
     <Content Include="Content\rmvTheme.css">
       <DependentUpon>rmvTheme.less</DependentUpon>
@@ -437,28 +449,19 @@
     <Content Include="Content\themes\base\datepicker.css" />
     <Content Include="Content\themes\base\dialog.css" />
     <Content Include="Content\themes\base\draggable.css" />
-    <Content Include="Content\themes\base\images\animated-overlay.gif" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
-    <Content Include="Content\themes\base\images\ui-bg_glass_15_001A4A_1x400.png" />
     <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
-    <Content Include="Content\themes\base\images\ui-bg_glass_55_FFFFD3_1x400.png" />
     <Content Include="Content\themes\base\images\ui-bg_glass_65_ffffff_1x400.png" />
     <Content Include="Content\themes\base\images\ui-bg_glass_75_dadada_1x400.png" />
     <Content Include="Content\themes\base\images\ui-bg_glass_75_e6e6e6_1x400.png" />
     <Content Include="Content\themes\base\images\ui-bg_glass_95_fef1ec_1x400.png" />
-    <Content Include="Content\themes\base\images\ui-bg_highlight-hard_75_B7BCD6_1x100.png" />
-    <Content Include="Content\themes\base\images\ui-bg_highlight-soft_25_001A4A_1x100.png" />
-    <Content Include="Content\themes\base\images\ui-bg_highlight-soft_25_DDD_1x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
     <Content Include="Content\themes\base\images\ui-icons_222222_256x240.png" />
     <Content Include="Content\themes\base\images\ui-icons_2e83ff_256x240.png" />
     <Content Include="Content\themes\base\images\ui-icons_454545_256x240.png" />
-    <Content Include="Content\themes\base\images\ui-icons_79BBDD_256x240.png" />
     <Content Include="Content\themes\base\images\ui-icons_888888_256x240.png" />
-    <Content Include="Content\themes\base\images\ui-icons_AF0331_256x240.png" />
     <Content Include="Content\themes\base\images\ui-icons_cd0a0a_256x240.png" />
-    <Content Include="Content\themes\base\images\ui-icons_DDD_256x240.png" />
     <Content Include="Content\themes\base\menu.css" />
     <Content Include="Content\themes\base\progressbar.css" />
     <Content Include="Content\themes\base\resizable.css" />
@@ -519,12 +522,11 @@
     <Content Include="Areas\Administration\Views\SessionTypes\Index.cshtml" />
     <Content Include="Areas\Session\Views\web.config" />
     <Content Include="Areas\Session\Views\Shared\_SessionNavbar.cshtml" />
-    <Content Include="Areas\Session\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\Session\Views\Master\Edit.cshtml" />
     <Content Include="Areas\Session\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Session\Views\Lists\Index.cshtml" />
     <Content Include="Areas\Session\Views\Finalize\Index.cshtml" />
-    <Content Include="Areas\Session\Views\Discussion\Index.cshtml" />
+    <Content Include="Areas\Session\Views\Discussion\IndexPanels.cshtml" />
     <Content Include="Areas\Administration\Views\Settings\Index.cshtml" />
     <Content Include="Areas\Session\Views\Master\Create.cshtml" />
     <Content Include="Areas\Session\Views\Master\Index.cshtml" />
@@ -580,6 +582,7 @@
     <Content Include="Content\bootstrap-multiselect\bootstrap-multiselect.css.map">
       <DependentUpon>bootstrap-multiselect.css</DependentUpon>
     </Content>
+    <Content Include="Areas\Session\Views\Discussion\IndexTable.cshtml" />
     <None Include="Content\bootstrap\bootstrap.less" />
     <Content Include="Content\iwbTheme.less" />
     <Content Include="Areas\Administration\Views\web.config" />
@@ -672,9 +675,11 @@
     <None Include="Content\variables.less" />
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />
     <Content Include="Scripts\bootstrap-multiselect.js" />
+    <Content Include="Scripts\bootstrap-validation.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\jquery-2.1.1.js" />
     <Content Include="Scripts\jquery-ui-1.11.1.js" />
+    <Content Include="Scripts\jquery.colpick.js" />
     <Content Include="Scripts\jquery.cookie.js" />
     <Content Include="Scripts\jquery.form.js" />
     <Content Include="Scripts\jquery.highlight.js" />
@@ -713,7 +718,7 @@
     <Content Include="Views\Comments\_CommentList.cshtml" />
     <Content Include="Views\Votes\_VoteList.cshtml" />
     <Content Include="Views\Attachments\_AttachmentTable.cshtml" />
-    <Content Include="Views\Attachments\_UploadForm.cshtml" />
+    <Content Include="Views\Attachments\_DocumentCreateForm.cshtml" />
     <Content Include="Views\Attachments\_AttachmentRow.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\DateTime.cshtml" />
     <Content Include="Views\Attachments\_AttachmentTile.cshtml" />
@@ -766,6 +771,7 @@
     <Content Include="Views\Shared\DisplayTemplates\Color.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\Tag.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\Dictionary_Tag_bool.cshtml" />
+    <Content Include="Views\Statistics\_Table.cshtml" />
     <None Include="Web.Integration.config" />
     <None Include="Web.Production.config" />
     <None Include="Web.Testing.config" />
@@ -893,6 +899,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201410091049526_tags_added.resx">
       <DependentUpon>201410091049526_tags_added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201410131339480_document_revisions_added.resx">
+      <DependentUpon>201410131339480_document_revisions_added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201410151401560_latest_Revision_optional.resx">
+      <DependentUpon>201410151401560_latest_Revision_optional.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

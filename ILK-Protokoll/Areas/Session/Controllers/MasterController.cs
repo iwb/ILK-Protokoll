@@ -20,8 +20,12 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 		// GET: Session/Master
 		public ActionResult Index()
 		{
+			var session = GetSession();
+			if (session != null)
+				return RedirectToAction("Edit");
+
 			ViewBag.SessionTypes = new SelectList(db.GetActiveSessionTypes(), "ID", "Name");
-			return View(db.ActiveSessions.Include(session => session.Manager).ToList());
+			return View(db.ActiveSessions.Include(s => s.Manager).ToList());
 		}
 
 		public ActionResult Create(int SessionTypeID)

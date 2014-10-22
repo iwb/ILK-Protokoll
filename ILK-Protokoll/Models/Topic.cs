@@ -19,7 +19,7 @@ namespace ILK_Protokoll.Models
 			Comments = new List<Comment>();
 			Votes = new List<Vote>();
 			Assignments = new List<Assignment>();
-			Attachments = new List<Attachment>();
+			Documents = new List<Document>();
 			Created = DateTime.Now;
 			ValidFrom = DateTime.Now;
 			UnreadBy = new List<UnreadState>();
@@ -93,8 +93,8 @@ namespace ILK_Protokoll.Models
 		[Required]
 		public Priority Priority { get; set; }
 
-		[Display(Name = "Dateianhänge")]
-		public virtual ICollection<Attachment> Attachments { get; set; }
+		[Display(Name = "Dokumente")]
+		public virtual ICollection<Document> Documents { get; set; }
 
 		[Display(Name = "Erstellt")]
 		[Required]

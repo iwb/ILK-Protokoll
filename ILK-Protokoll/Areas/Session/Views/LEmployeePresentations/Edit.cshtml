@@ -21,6 +21,8 @@
 			@Html.LabelFor(model => model.Employee, new {@class = "control-label col-md-2"})
 			<div class="col-md-5">
 				@Html.EditorFor(model => model.Employee, new {htmlAttributes = new {@class = "form-control"}})
+			</div>
+			<div class="col-md-5">
 				@Html.ValidationMessageFor(model => model.Employee, "", new {@class = "text-danger"})
 			</div>
 		</div>
@@ -29,6 +31,8 @@
 			@Html.LabelFor(model => model.IlkID, "Ilk", new {@class = "control-label col-md-2"})
 			<div class="col-md-5">
 				@Html.DropDownListFor(m => m.IlkID, (SelectList)ViewBag.UserList, new {@class = "form-control"})
+			</div>
+			<div class="col-md-5">
 				@Html.ValidationMessageFor(model => model.IlkID, "", new {@class = "text-danger"})
 			</div>
 		</div>
@@ -37,6 +41,8 @@
 			@Html.LabelFor(model => model.Prof, new {@class = "control-label col-md-2"})
 			<div class="col-md-5">
 				@Html.EnumDropDownListFor(model => model.Prof, new {@class = "form-control"})
+			</div>
+			<div class="col-md-5">
 				@Html.ValidationMessageFor(model => model.Prof, "", new {@class = "text-danger"})
 			</div>
 		</div>
@@ -45,6 +51,8 @@
 			@Html.LabelFor(model => model.LastPresentation, new {@class = "control-label col-md-2"})
 			<div class="col-md-5">
 				@Html.EditorFor(model => model.LastPresentation, new {htmlAttributes = new {@class = "form-control"}})
+			</div>
+			<div class="col-md-5">
 				@Html.ValidationMessageFor(model => model.LastPresentation, "", new {@class = "text-danger"})
 			</div>
 		</div>
@@ -54,8 +62,10 @@
 			<div class="col-md-5">
 				<div class="checkbox">
 					@Html.EditorFor(model => model.Selected)
-					@Html.ValidationMessageFor(model => model.Selected, "", new {@class = "text-danger"})
 				</div>
+			</div>
+			<div class="col-md-5">
+				@Html.ValidationMessageFor(model => model.Selected, "", new {@class = "text-danger"})
 			</div>
 		</div>
 
@@ -63,7 +73,21 @@
 			<div class="col-md-offset-2 col-md-5">
 				<input type="submit" value="Speichern" class="btn btn-default" />
 			</div>
+			<div class="col-md-5">
+				@Html.ValidationSummary(false, "", new { @class = "text-danger" })
+			</div>
 		</div>
+		@if (ViewBag.StatusMessage != null)
+		{
+			<div class="form-group">
+				<div class="col-md-offset-2 col-md-5">
+					<span class="text-info" id="status-message">@ViewBag.StatusMessage</span>&nbsp;
+				</div>
+			</div>
+			<script type="text/javascript">
+				$('#status-message').delay(1000).fadeOut();
+			</script>
+		}
 	</div>
 }
 
@@ -71,17 +95,17 @@
 	<div class="col-md-10 col-md-offset-1">
 		<div class="panel panel-primary">
 			<div class="panel-heading">
-				<h3 class="panel-title">@Html.DisplayNameFor(model => model.Attachments)</h3>
+				<h3 class="panel-title">@Html.DisplayNameFor(model => model.Documents)</h3>
 			</div>
-			@if (Model.Attachments.Count(a => a.Deleted == null) == 0)
+			@if (Model.Documents.Count(a => a.Deleted == null) == 0)
 			{
-				<div class="panel-body" id="attachments_@Model.ID">Keine Dateianhänge vorhanden.</div>
+				<div class="panel-body" id="attachments_@Model.ID">Keine Dokumente vorhanden.</div>
 			}
 			else
 			{
-				@Html.Action("_List", "Attachments", new {Area = "", entity = AttachmentContainer.EmployeePresentation, id = Model.ID})
+				@Html.Action("_List", "Attachments", new {Area = "", entityKind = DocumentContainer.EmployeePresentation, id = Model.ID})
 			}
-			@Html.Action("_UploadForm", "Attachments", new {Area = "", entity = AttachmentContainer.EmployeePresentation, id = Model.ID})
+			@Html.Action("_UploadForm", "Attachments", new {Area = "", entityKind = DocumentContainer.EmployeePresentation, id = Model.ID})
 		</div>
 	</div>
 </div>

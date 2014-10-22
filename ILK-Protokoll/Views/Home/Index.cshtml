@@ -1,6 +1,4 @@
-﻿@using System.Linq
-@using ILK_Protokoll.Models
-@using ILK_Protokoll.util
+﻿@using ILK_Protokoll.util
 @model ILK_Protokoll.ViewModels.DashBoard
 
 @{
@@ -75,8 +73,8 @@
 </div>
 <hr />
 <div class="index-subaction">
-	<a class="btn btn-default" onclick="collapseTopicsOut();"> Alle Themen ausklappen</a>
-	<a class="btn btn-default" onclick="collapseTopicsIn();"> Alle Themen einklappen</a>
+	<a class="btn btn-default" onclick="collapseTopicsOut();">Alle Themen ausklappen</a>
+	<a class="btn btn-default" onclick="collapseTopicsIn();">Alle Themen einklappen</a>
 </div>
 <h2>Diskussionspunkte</h2>
 <div class="row" id="topicsContainer">
@@ -86,37 +84,46 @@
 	}
 	else
 	{
-		<div style="width: 34px; height: 34px;" id="topicsSpinner">
+		<div style="height: 34px; width: 34px;" id="topicsSpinner">
 			<span class="ajax-spinner"></span>
 		</div>
 
-	<script type="text/javascript" src="~/Scripts/spin.js"></script>
-	<script type="text/javascript">
-		var opts = {
-			lines: 11, // The number of lines to draw
-			length: 4, // The length of each line
-			width: 2, // The line thickness
-			radius: 5, // The radius of the inner circle
-			corners: 1, // Corner roundness (0..1)
-			rotate: 0, // The rotation offset
-			direction: 1, // 1: clockwise, -1: counterclockwise
-			color: '#000', // #rgb or #rrggbb or array of colors
-			speed: 1, // Rounds per second
-			trail: 60, // Afterglow percentage
-			shadow: false, // Whether to render a shadow
-			hwaccel: true, // Whether to use hardware acceleration
-			className: 'spinner', // The CSS class to assign to the spinner
-			zIndex: 2e9, // The z-index (defaults to 2000000000)
-			top: '50%', // Top position relative to parent
-			left: '50%' // Left position relative to parent
-		};
-		var ajaxspinner = new Spinner(opts).spin($('#topicsSpinner .ajax-spinner')[0]);
+		<script type="text/javascript" src="~/Scripts/spin.js"></script>
+		<script type="text/javascript">
+			var opts = {
+				lines: 11, // The number of lines to draw
+				length: 4, // The length of each line
+				width: 2, // The line thickness
+				radius: 5, // The radius of the inner circle
+				corners: 1, // Corner roundness (0..1)
+				rotate: 0, // The rotation offset
+				direction: 1, // 1: clockwise, -1: counterclockwise
+				color: '#000', // #rgb or #rrggbb or array of colors
+				speed: 1, // Rounds per second
+				trail: 60, // Afterglow percentage
+				shadow: false, // Whether to render a shadow
+				hwaccel: true, // Whether to use hardware acceleration
+				className: 'spinner', // The CSS class to assign to the spinner
+				zIndex: 2e9, // The z-index (defaults to 2000000000)
+				top: '50%', // Top position relative to parent
+				left: '50%' // Left position relative to parent
+			};
+			var ajaxspinner = new Spinner(opts).spin($('#topicsSpinner .ajax-spinner')[0]);
 
-		$('#topicsContainer').load("@Url.Action("_FetchTopics", "Home")", function () {
-			msnry.reloadItems();
-			PerformMasonryLayout();
-		});
-	</script>
+			var topicsxhr = $.ajax({
+				url: '@Url.Action("_FetchTopics", "Home")',
+				success: function(data) {
+					$("#topicsContainer").html(data);
+					msnry.reloadItems();
+					PerformMasonryLayout();
+				}
+			});
+
+			//if needed, abort the request later..
+			$('.navbar a').click(function() {
+				topicsxhr.abort();
+			});
+		</script>
 	}
 </div>
 
@@ -128,21 +135,21 @@
 			resizeable: true,
 		});
 
-			var siteMuted = false;
+		var siteMuted = false;
 
-			function muteColors() {
-				if (siteMuted) {
-					$('.body-content').css("background-color", "#FFF");
-					$('.topic-panel').css("margin-bottom", "");
-					siteMuted = false;
-				} else {
-					$('.body-content').css("transition", "background 500ms").css("background-color", "#333");
-					$('.topic-panel').css("margin-bottom", "120px");
-					siteMuted = true;
-				}
-				PerformMasonryLayout();
+		function muteColors() {
+			if (siteMuted) {
+				$('.body-content').css("background-color", "#FFF");
+				$('.topic-panel').css("margin-bottom", "");
+				siteMuted = false;
+			} else {
+				$('.body-content').css("transition", "background 500ms").css("background-color", "#333");
+				$('.topic-panel').css("margin-bottom", "120px");
+				siteMuted = true;
 			}
-		</script>
+			PerformMasonryLayout();
+		}
+	</script>
 }
 
 @using (Html.Delayed(null, "CollapseTopics"))
@@ -154,7 +161,7 @@
 			PerformMasonryLayout();
 			$('.topic-content').hide();
 
-			$('.topic-panel').each(function () {
+			$('.topic-panel').each(function() {
 				var link = $(this).find('.panel-heading .panel-collapse-heading a');
 				var content = $(this).find('.topic-content');
 				collapseTopicOut(link, content);
@@ -162,7 +169,7 @@
 		}
 
 		function collapseTopicsIn() {
-			$('.topic-panel').each(function () {
+			$('.topic-panel').each(function() {
 				var link = $(this).find('.panel-heading .panel-collapse-heading a');
 				var content = $(this).find('.topic-content');
 				collapseTopicIn(link, content);
