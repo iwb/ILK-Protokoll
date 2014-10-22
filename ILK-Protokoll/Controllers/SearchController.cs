@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -7,6 +8,7 @@ using System.Web.Mvc;
 using ILK_Protokoll.Models;
 using ILK_Protokoll.util;
 using ILK_Protokoll.ViewModels;
+using WebGrease.Css.Extensions;
 
 namespace ILK_Protokoll.Controllers
 {
@@ -30,7 +32,7 @@ namespace ILK_Protokoll.Controllers
 			if (tokens["has"].Contains("Decision", StringComparer.InvariantCultureIgnoreCase))
 				query = query.Where(t => t.Decision != null);
 
-			var searchTerms = tokens[""].Select(x => new Regex(Regex.Escape(x), RegexOptions.IgnoreCase)).ToArray();
+			var searchTerms = MakePatterns(tokens[""]).Select(x => new Regex(x, RegexOptions.IgnoreCase)).ToArray();
 			var results = new List<SearchResult>();
 
 			foreach (var topic in query)
@@ -90,23 +92,54 @@ namespace ILK_Protokoll.Controllers
 				select tt).Any());
 		}
 
-		private static IEnumerable<string> MakePatterns(IEnumerable<string> items, string delimiter)
+		/// <summary>
+		/// Generiert aus einer Menge von Tokens eine Menge von Patterns. Die Tokens werden nach "or" durchsucht,
+		/// und die benachbarten Tokens werden schließlich in einem kombinierten Regex zurückgegeben. Die Tokens
+		/// werden für den Regex passend escapet.
+		/// </summary>
+		/// <param name="items">Die Token, aus denen die Patterns erzeugt werden sollen.</param>
+		/// <returns>Patterns, die sich aus den Tokens ergeben.</returns>
+		private static IEnumerable<string> MakePatterns(IEnumerable<string> items)
 		{
+			const string delimiter = "or";
 			Func<IEnumerable<string>, string> escapeAndJoin = x => x.Select(Regex.Escape).Aggregate((a, b) => a + "|" + b);
 
-			var currentItems = new List<string>();
+			var orItems = new List<string>();
+			string lastToken = null;
 			foreach (var item in items)
 			{
-				if (item == delimiter && currentItems.Count > 0)
+				if (string.Equals(item, delimiter, StringComparison.OrdinalIgnoreCase))
 				{
-					yield return @"\b(" + escapeAndJoin(currentItems) + ")";
-					currentItems.Clear();
+					if (lastToken != null)
+						orItems.Add(lastToken);
+					lastToken = null;
 				}
 				else
-					currentItems.Add(item);
+				{
+					if (lastToken != null)
+					{
+						if (orItems.Count > 0)
+						{
+							orItems.Add(lastToken);
+							yield return @"\b(" + escapeAndJoin(orItems) + ")";
+							orItems.Clear();
+						}
+						else
+							yield return @"\b" + lastToken;
+					}
+					lastToken = item;
+				}
 			}
-			if (currentItems.Count > 0)
-				yield return @"\b(" + escapeAndJoin(currentItems) + ")";
+
+			if (orItems.Count > 0)
+			{
+				if (lastToken != null)
+					orItems.Add(lastToken);
+
+				yield return @"\b(" + escapeAndJoin(orItems) + ")";
+			}
+			else if (lastToken != null)
+				yield return @"\b" + lastToken;
 		}
 
 		private ActionResult ExtendendResults(ExtendedSearchVM input)
@@ -154,16 +187,16 @@ namespace ILK_Protokoll.Controllers
 			return View("Results", null);
 		}
 
-		private void SearchTopic(Topic topic, IEnumerable<Regex> searchterms, ICollection<SearchResult> resultlist)
+		private void SearchTopic(Topic topic, Regex[] searchterms, ICollection<SearchResult> resultlist)
 		{
 			var score = topic.IsReadOnly ? -5 : 0.0f;
-			var hitlist = new List<Hit>();
+			var hitlist = new HashSet<Hit>();
 
 			foreach (var pattern in searchterms)
 			{
 				var oldScore = score;
 
-				var m = pattern.Matches(topic.Proposal);
+				var m = pattern.Matches(topic.Title);
 				if (m.Count > 0)
 				{
 					score += ScoreMult(20, m.Count);
@@ -226,7 +259,7 @@ namespace ILK_Protokoll.Controllers
 					if (m.Count > 0)
 						score += ScoreMult(2, m.Count);
 					else
-						score = float.NaN;
+						return;
 				}
 				if (!float.IsNaN(score))
 				{
@@ -244,7 +277,7 @@ namespace ILK_Protokoll.Controllers
 			}
 		}
 
-		private void SearchAssignments(Topic topic, IEnumerable<Regex> searchterms, ICollection<SearchResult> resultlist)
+		private void SearchAssignments(Topic topic, Regex[] searchterms, ICollection<SearchResult> resultlist)
 		{
 			foreach (var assignment in topic.Assignments)
 			{
@@ -282,7 +315,7 @@ namespace ILK_Protokoll.Controllers
 			}
 		}
 
-		private void SearchAttachments(Topic topic, IEnumerable<Regex> searchterms, ICollection<SearchResult> resultlist)
+		private void SearchAttachments(Topic topic, Regex[] searchterms, ICollection<SearchResult> resultlist)
 		{
 			foreach (var attachment in topic.Documents)
 			{
@@ -311,14 +344,14 @@ namespace ILK_Protokoll.Controllers
 			}
 		}
 
-		private void SearchDecisions(Topic topic, IEnumerable<Regex> searchterms, ICollection<SearchResult> resultlist)
+		private void SearchDecisions(Topic topic, Regex[] searchterms, ICollection<SearchResult> resultlist)
 		{
 			var decision = topic.Decision;
 			if (decision == null)
 				return;
 
 			var score = decision.Type == DecisionType.Resolution ? 0.0f : -5;
-			var hitlist = new List<Hit>();
+			var hitlist = new HashSet<Hit>();
 
 			foreach (var pattern in searchterms)
 			{
