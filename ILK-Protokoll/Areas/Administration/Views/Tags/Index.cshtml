@@ -30,9 +30,7 @@
 		{
 			<tr>
 				<td>
-					<span class="label" style="color: @item.FontColor.ToHex(); background-color: @item.BackgroundColor.ToHex();">
-						@item.Name
-					</span>
+					@Html.DisplayFor(model => item)
 				</td>
 				<td>
 					@Html.DisplayFor(model => item.Topics.Count) mal
