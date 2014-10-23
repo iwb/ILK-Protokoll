@@ -3,5 +3,5 @@
 @model Dictionary<Tag, bool>
 @foreach (var kvp in Model)
 {
-	<span class="label" style="color: @kvp.Key.FontColor.ToHex(); background-color: @kvp.Key.BackgroundColor.ToHex(); @(kvp.Value ? "" : "display: none;")" data-tagid="@kvp.Key.ID">@kvp.Key.Name</span>
+	<a href="@Url.Action("Results", "Search", new { Area = "", searchterm = "hasTag:" + kvp.Key.Name})" class="label" style="color: @kvp.Key.FontColor.ToHex(); background-color: @kvp.Key.BackgroundColor.ToHex(); @(kvp.Value ? "" : "display: none;")" data-tagid="@kvp.Key.ID">@kvp.Key.Name</a>
 }

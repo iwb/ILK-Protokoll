@@ -1,5 +1,6 @@
-﻿@using ILK_Protokoll.util
-@model ICollection<ILK_Protokoll.ViewModels.SearchResult>
+﻿@using System.Text.RegularExpressions
+@using ILK_Protokoll.util
+@model ILK_Protokoll.ViewModels.SearchResultList
 
 @{
 	ViewBag.Title = "Suchergebnisse";
@@ -38,6 +39,10 @@ else
 					<h3 class="panel-title">
 						<a href="@result.ActionURL"><span class="divlink"></span></a>
 						@result.EntityType: @result.Title
+						@foreach (var tag in result.Tags)
+						{
+							@Html.DisplayFor(model => tag)
+						}
 					</h3>
 				</div>
 				<div class="panel-body">
@@ -50,7 +55,7 @@ else
 							classname = "col-sm-offset-1";
 						}
 						<div class="@classname">
-							@hit.Text
+							@Html.DisplayWithLinksFor(model => hit.Text, "String_Multiline")
 						</div>
 					}
 				</div>
@@ -63,8 +68,11 @@ else
 @using (Html.Delayed(null, "Masonry_Tiles"))
 {
 	<script type="text/javascript">
-		var regex = /@(ViewBag.SearchPattern)/i;
-		$('#searchresults').highlight(regex);
+		@foreach (Regex pattern in ViewBag.SearchPatterns)
+		{
+			@:var regex = /@(pattern)/i;
+			@:$('#searchresults').highlight(regex);
+		}
 
 		var msnry = new Masonry('#searchresults', {
 			itemSelector: '.col-lg-6',

@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.InteropServices.ComTypes;
+using ILK_Protokoll.Models;
 
 namespace ILK_Protokoll.ViewModels
 {
@@ -10,17 +9,18 @@ namespace ILK_Protokoll.ViewModels
 		public SearchResult()
 		{
 			Hits = new List<Hit>();
+			Tags = new List<Tag>();
 		}
 
 		public SearchResult(string hittext) : this()
 		{
-			Hits.Add(new Hit {Property = "", Text = hittext});
+			Hits.Add(new Hit(hittext));
 		}
 
 		public SearchResult(string hitname, string hittext)
 			: this()
 		{
-			Hits.Add(new Hit { Property = hitname, Text = hittext });
+			Hits.Add(new Hit(hitname, hittext));
 		}
 
 		public int ID { get; set; }
@@ -32,10 +32,12 @@ namespace ILK_Protokoll.ViewModels
 		public string Title { get; set; }
 
 		public ICollection<Hit> Hits { get; set; }
-		
+
 		public string ActionURL { get; set; }
 
 		public DateTime? Timestamp { get; set; }
+
+		public IEnumerable<Tag> Tags { get; set; }
 
 		public bool Equals(SearchResult other)
 		{
@@ -70,7 +72,20 @@ namespace ILK_Protokoll.ViewModels
 
 	public struct Hit
 	{
-		public string Property;
-		public string Text;
+		public readonly string Property;
+		public readonly string Text;
+
+		public Hit(string text) : this()
+		{
+			Property = "";
+			Text = text;
+		}
+
+		public Hit(string property, string text)
+			: this()
+		{
+			Property = property;
+			Text = text;
+		}
 	}
 }

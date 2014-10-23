@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Web;
+using ILK_Protokoll.Models;
 
 namespace ILK_Protokoll.ViewModels
 {
@@ -10,12 +11,14 @@ namespace ILK_Protokoll.ViewModels
 	{
 		public ExtendedSearchVM()
 		{
-			SearchTopics = true;
-			SearchComments = true;
-			SearchAssignments = true;
-			SearchAttachments = true;
-			SearchDecisions = true;
-			SearchLists = true;
+			SearchTopics = false;
+			SearchComments = false;
+			SearchAssignments = false;
+			SearchAttachments = false;
+			SearchDecisions = false;
+			SearchLists = false;
+
+			Tags = new Dictionary<Tag, bool>();
 		}
 
 		[DisplayName("Suchbegriff")]
@@ -38,5 +41,7 @@ namespace ILK_Protokoll.ViewModels
 
 		[DisplayName("Listeneinträge")]
 		public bool SearchLists { get; set; }
+
+		public Dictionary<Tag, bool> Tags { get; set; }
 	}
 }

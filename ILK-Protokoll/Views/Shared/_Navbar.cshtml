@@ -20,11 +20,11 @@
 				<span class="hidden-xs usertile">@shortname</span>
 			</p>
 
-			@using (Html.BeginForm("Results", "Search", FormMethod.Get, new {@class = "navbar-form navbar-right"}))
+			@using (Html.BeginForm("Results", "Search", new {Area = ""}, FormMethod.Get, new {@class = "navbar-form navbar-right"}))
 			{
 				<div class="form-group">
 					<div class="input-group">
-						<input type="search" class="form-control" placeholder="Suche" name="searchterm">
+						<input type="search" class="form-control" placeholder="Suche" name="searchterm" value="@ViewBag.SearchTerm">
 						<div class="input-group-btn">
 							<button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
 						</div>

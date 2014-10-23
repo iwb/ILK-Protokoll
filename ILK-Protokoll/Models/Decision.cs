@@ -10,7 +10,7 @@ namespace ILK_Protokoll.Models
 		public int ID { get; set; }
 
 		[Required]
-		public SessionReport Report { get; set; }
+		public virtual SessionReport Report { get; set; }
 
 		[DisplayName("Art")]
 		public DecisionType Type { get; set; }
