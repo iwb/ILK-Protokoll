@@ -29,12 +29,14 @@ namespace ILK_Protokoll.ViewModels
 			_results.Add(item);
 		}
 
-		public void AddHit(int topicID, Hit item)
+		public void Amend(int topicID, float score, Hit item)
 		{
+			_topics[topicID].Score += score;
 			_topics[topicID].Hits.Add(item);
 		}
-		public void AddHits(int topicID, IEnumerable<Hit> items)
+		public void Amend(int topicID, float score, IEnumerable<Hit> items)
 		{
+			_topics[topicID].Score += score;
 			foreach (var item in items)
 				_topics[topicID].Hits.Add(item);
 		}

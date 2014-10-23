@@ -54,7 +54,7 @@ else
 							classname = "col-sm-offset-1";
 						}
 						<div class="@classname">
-							@hit.Text
+							@Html.DisplayWithLinksFor(model => hit.Text, "String_Multiline")
 						</div>
 					}
 				</div>

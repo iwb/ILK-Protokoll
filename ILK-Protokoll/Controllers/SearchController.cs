@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -7,6 +8,7 @@ using System.Web.Mvc;
 using ILK_Protokoll.Models;
 using ILK_Protokoll.util;
 using ILK_Protokoll.ViewModels;
+using StackExchange.Profiling;
 
 namespace ILK_Protokoll.Controllers
 {
@@ -33,21 +35,28 @@ namespace ILK_Protokoll.Controllers
 			Regex[] searchTerms = MakePatterns(tokens[""]).Select(x => new Regex(x, RegexOptions.IgnoreCase)).ToArray();
 			var results = new SearchResultList();
 
-			foreach (Topic topic in query)
-			{
-				SearchDecision(topic, searchTerms, results);
-				SearchTopic(topic, searchTerms, results);
-				SearchComments(topic, searchTerms, results);
-				SearchAssignments(topic, searchTerms, results);
-				SearchAttachments(topic, searchTerms, results);
-			}
-			SearchLists(searchTerms, results);
+			var profiler = MiniProfiler.Current;
 
+			using (profiler.Step("Suche in Themen"))
+			{
+				foreach (Topic topic in query)
+				{
+					SearchDecision(topic, searchTerms, results);
+					SearchTopic(topic, searchTerms, results);
+					SearchComments(topic, searchTerms, results);
+					SearchAssignments(topic, searchTerms, results);
+					SearchAttachments(topic, searchTerms, results);
+				}
+			}
+			using (profiler.Step("Suche in Listen"))
+			{
+				SearchLists(searchTerms, results);
+			}
 
 			ViewBag.ElapsedMilliseconds = sw.ElapsedMilliseconds;
 			ViewBag.SearchTerm = searchterm;
-			ViewBag.SearchPattern = "";
-			results.Sort(); // Absteigend sortieren
+			ViewBag.SearchPatterns = searchTerms;
+			results.Sort(); // Absteigend sortieren nach Score
 			return View(results);
 		}
 
@@ -202,22 +211,14 @@ namespace ILK_Protokoll.Controllers
 				if (m.Count > 0)
 				{
 					score += ScoreMult(21, m.Count);
-					hitlist.Add(new Hit
-					{
-						Property = "Titel",
-						Text = decision.OriginTopic.Title
-					});
+					hitlist.Add(new Hit("Titel", decision.OriginTopic.Title));
 				}
 
 				m = pattern.Matches(decision.Text);
 				if (m.Count > 0)
 				{
 					score += 16;
-					hitlist.Add(new Hit
-					{
-						Property = "Beschlusstext",
-						Text = decision.Text
-					});
+					hitlist.Add(new Hit("Beschlusstext", decision.Text));
 				}
 
 				if (score <= oldScore)
@@ -226,7 +227,7 @@ namespace ILK_Protokoll.Controllers
 
 			if (score > 0)
 			{
-				resultlist.Add(new SearchResult
+				resultlist.Add(topic.ID, new SearchResult
 				{
 					ID = decision.ID,
 					Score = score,
@@ -234,6 +235,7 @@ namespace ILK_Protokoll.Controllers
 					Title = decision.OriginTopic.Title,
 					ActionURL = Url.Action("Details", "Topics", new {id = decision.OriginTopic.ID}),
 					Timestamp = decision.Report.End,
+					Hits = hitlist.ToList(),
 					Tags = topic.Tags.Select(tt => tt.Tag).ToArray()
 				});
 			}
@@ -248,37 +250,29 @@ namespace ILK_Protokoll.Controllers
 			{
 				float oldScore = score;
 
-				MatchCollection m = pattern.Matches(topic.Title);
-				if (m.Count > 0)
+				MatchCollection m;
+				if (!resultlist.Contains(topic.ID)) // Duplikat Beschlussvorschlag/Beschlusstext vermeiden
 				{
-					score += ScoreMult(20, m.Count);
-					hitlist.Add(new Hit
+					m = pattern.Matches(topic.Title);
+					if (m.Count > 0)
 					{
-						Property = "Titel",
-						Text = topic.Title
-					});
-				}
+						score += ScoreMult(20, m.Count);
+						hitlist.Add(new Hit("Titel", topic.Title));
+					}
 
-				m = pattern.Matches(topic.Proposal);
-				if (m.Count > 0)
-				{
-					score += ScoreMult(8, m.Count);
-					hitlist.Add(new Hit
+					m = pattern.Matches(topic.Proposal);
+					if (m.Count > 0)
 					{
-						Property = "Beschlussvorschlag",
-						Text = topic.Proposal
-					});
+						score += ScoreMult(8, m.Count);
+						hitlist.Add(new Hit("Beschlusstext", topic.Proposal));
+					}
 				}
 
 				m = pattern.Matches(topic.Description);
 				if (m.Count > 0)
 				{
 					score += ScoreMult(6, m.Count);
-					hitlist.Add(new Hit
-					{
-						Property = "Beschreibung",
-						Text = topic.Description
-					});
+					hitlist.Add(new Hit("Beschreibung", topic.Description));
 				}
 				if (score <= oldScore)
 					return;
@@ -287,18 +281,18 @@ namespace ILK_Protokoll.Controllers
 				return;
 
 			if (resultlist.Contains(topic.ID))
-				resultlist.AddHits(topic.ID, hitlist);
+				resultlist.Amend(topic.ID, score, hitlist);
 			else
 			{
 				resultlist.Add(topic.ID, new SearchResult
 				{
 					ID = topic.ID,
 					Score = score,
-					EntityType = "Diskussion",
+					EntityType = topic.HasDecision() ? topic.Decision.Type.DisplayName() : "Diskussion",
 					Title = topic.Title,
 					ActionURL = Url.Action("Details", "Topics", new {id = topic.ID}),
 					Timestamp = topic.Created,
-					Hits = hitlist,
+					Hits = hitlist.ToList(),
 					Tags = topic.Tags.Select(tt => tt.Tag).ToArray()
 				});
 			}
@@ -321,7 +315,7 @@ namespace ILK_Protokoll.Controllers
 					continue;
 
 				if (resultlist.Contains(topic.ID))
-					resultlist.AddHit(topic.ID, new Hit {Text = comment.Content});
+					resultlist.Amend(topic.ID, score, new Hit("Kommentar", comment.Content));
 				else
 				{
 					resultlist.Add(new SearchResult(comment.Content)
@@ -340,6 +334,7 @@ namespace ILK_Protokoll.Controllers
 
 		private void SearchAssignments(Topic topic, Regex[] searchterms, SearchResultList resultlist)
 		{
+			var hitlist = new HashSet<Hit>(new HitPropertyComparer());
 			foreach (Assignment assignment in topic.Assignments)
 			{
 				float score = 0.0f;
@@ -349,6 +344,7 @@ namespace ILK_Protokoll.Controllers
 					if (m.Count > 0)
 					{
 						score += ScoreMult(9, m.Count);
+						hitlist.Add(new Hit("Aufgabentitel", assignment.Title));
 						continue;
 					}
 
@@ -356,11 +352,17 @@ namespace ILK_Protokoll.Controllers
 					if (m.Count > 0)
 					{
 						score += ScoreMult(7, m.Count);
+						hitlist.Add(new Hit("Aufgabentext", assignment.Title));
 						continue;
 					}
 					score = float.NaN;
 				}
-				if (!float.IsNaN(score))
+				if (float.IsNaN(score))
+					continue;
+
+				if (resultlist.Contains(topic.ID))
+					resultlist.Amend(topic.ID, score, hitlist);
+				else
 				{
 					resultlist.Add(new SearchResult("Aufgabe", assignment.Description)
 					{
@@ -370,9 +372,11 @@ namespace ILK_Protokoll.Controllers
 						Title = assignment.Description,
 						ActionURL = Url.Action("Details", "Assignments", new {id = assignment.ID}),
 						Timestamp = assignment.DueDate,
+						Hits = hitlist.ToList(),
 						Tags = topic.Tags.Select(tt => tt.Tag).ToArray()
 					});
 				}
+				hitlist.Clear();
 			}
 		}
 
@@ -389,13 +393,18 @@ namespace ILK_Protokoll.Controllers
 					else
 						score = float.NaN;
 				}
-				if (!float.IsNaN(score))
+				if (float.IsNaN(score))
+					continue;
+
+				if (resultlist.Contains(topic.ID))
+					resultlist.Amend(topic.ID, score, new Hit("Dateiname", attachment.DisplayName));
+				else
 				{
 					resultlist.Add(new SearchResult("Dateiname", attachment.DisplayName)
 					{
 						ID = attachment.ID,
 						Score = score,
-						EntityType = "Datei",
+						EntityType = "Dokument",
 						Title = attachment.DisplayName,
 						ActionURL = Url.Action("Details", "Attachments", new {id = attachment.ID}),
 						Timestamp = attachment.Created,
@@ -407,104 +416,151 @@ namespace ILK_Protokoll.Controllers
 
 		private void SearchLists(Regex[] searchterms, SearchResultList resultlist)
 		{
-			//foreach (var item in db.LEvents)
-			//{
-			//	var m = pattern.Matches(item.Description);
-			//	if (m.Count > 0)
-			//	{
-			//		resultlist.Add(new SearchResult(item.Description)
-			//		{
-			//			ID = item.ID,
-			//			Score = 7,
-			//			EntityType = "Listeneintrag",
-			//			Title = "Termin",
-			//			ActionURL = Url.Content("~/ViewLists#event_table"),
-			//			Timestamp = item.Created
-			//		});
-			//		continue;
-			//	}
-			//	m = pattern.Matches(item.Place);
-			//	if (m.Count > 0)
-			//	{
-			//		resultlist.Add(new SearchResult(item.Place)
-			//		{
-			//			ID = item.ID,
-			//			Score = 5,
-			//			EntityType = "Listeneintrag",
-			//			Title = "Termin",
-			//			ActionURL = Url.Content("~/ViewLists#event_table"),
-			//			Timestamp = item.Created
-			//		});
-			//	}
-			//}
+			foreach (var item in db.LEvents)
+			{
+				float score = 0.0f;
+				foreach (Regex pattern in searchterms)
+				{
+					var m = pattern.Matches(item.Description);
+					if (m.Count > 0)
+					{
+						score += 7;
+						continue;
+					}
+					m = pattern.Matches(item.Place);
+					if (m.Count > 0)
+					{
+						score += 5;
+						continue;
+					}
+					score = float.NaN;
+				}
+				if (!float.IsNaN(score))
+				{
+					resultlist.Add(new SearchResult(item.Description)
+					{
+						ID = item.ID,
+						Score = score,
+						EntityType = "Listeneintrag",
+						Title = "Termin",
+						ActionURL = Url.Content("~/ViewLists#event_table"),
+						Timestamp = item.StartDate
+					});
+				}
+			}
 
-			//foreach (var item in db.LConferences)
-			//{
-			//	var m = pattern.Matches(item.Description);
-			//	if (m.Count > 0)
-			//	{
-			//		resultlist.Add(new SearchResult(item.Description)
-			//		{
-			//			ID = item.ID,
-			//			Score = 7,
-			//			EntityType = "Listeneintrag",
-			//			Title = "Auslandskonferenz",
-			//			ActionURL = Url.Content("~/ViewLists#conference_table"),
-			//			Timestamp = item.Created
-			//		});
-			//	}
-			//}
+			foreach (var item in db.LConferences)
+			{
+				if (searchterms.All(pattern => pattern.IsMatch(item.Description)))
+				{
+					resultlist.Add(new SearchResult(item.Description)
+					{
+						ID = item.ID,
+						Score = 7,
+						EntityType = "Listeneintrag",
+						Title = "Auslandskonferenz",
+						ActionURL = Url.Content("~/ViewLists#conference_table"),
+						Timestamp = item.Created
+					});
+				}
+			}
+			
+			foreach (var item in db.LExtensions)
+			{
+				if (searchterms.All(pattern => pattern.IsMatch(item.Comment)))
+				{
+					resultlist.Add(new SearchResult(item.Comment)
+					{
+						ID = item.ID,
+						Score = 7,
+						EntityType = "Listeneintrag",
+						Title = "Vertragsverlängerung",
+						ActionURL = Url.Content("~/ViewLists#conference_table"),
+						Timestamp = item.Created
+					});
+				}
+			}
 
-			//foreach (var item in db.LIlkDays)
-			//{
-			//	var m = pattern.Matches(item.Topics);
-			//	if (m.Count > 0)
-			//	{
-			//		resultlist.Add(new SearchResult(item.Topics)
-			//		{
-			//			ID = item.ID,
-			//			Score = 7,
-			//			EntityType = "Listeneintrag",
-			//			Title = "ILK-Tag",
-			//			ActionURL = Url.Content("~/ViewLists#ilkDay_table"),
-			//			Timestamp = item.Created
-			//		});
-			//	}
-			//}
+			//-----------------------------------------------------------------------------------------------------
+			foreach (var item in db.LEmployeePresentations)
+			{
+				if (searchterms.Any(pattern => pattern.IsMatch(item.Employee)))
+				{
+					resultlist.Add(new SearchResult("Mitarbeiter", item.Employee)
+					{
+						ID = item.ID,
+						Score = 7,
+						EntityType = "Listeneintrag",
+						Title = "Mitarbeiterpräsentation",
+						ActionURL = Url.Content("~/ViewLists#conference_table"),
+						Timestamp = item.Created
+					});
+				}
+			}
+			foreach (var doc in db.Documents.Where(doc => doc.EmployeePresentationID != null))
+			{
+				if (searchterms.All(pattern => pattern.IsMatch(doc.DisplayName)))
+				{
+					resultlist.Add(new SearchResult("Dateiname", doc.DisplayName)
+					{
+						ID = doc.ID,
+						Score = 7,
+						EntityType = "Dokument",
+						Title = doc.DisplayName,
+						ActionURL = Url.Action("Details", "Attachments", new { id = doc.ID }),
+						Timestamp = doc.Created
+					});
+				}
+			}
+			//-----------------------------------------------------------------------------------------------------
 
-			//foreach (var item in db.LIlkMeetings)
-			//{
-			//	var m = pattern.Matches(item.Comments);
-			//	if (m.Count > 0)
-			//	{
-			//		resultlist.Add(new SearchResult(item.Comments)
-			//		{
-			//			ID = item.ID,
-			//			Score = 7,
-			//			EntityType = "Listeneintrag",
-			//			Title = "ILK-Regeltermin",
-			//			ActionURL = Url.Content("~/ViewLists#ilkMeeting_table"),
-			//			Timestamp = item.Created
-			//		});
-			//	}
-			//}
+			foreach (var item in db.LIlkDays)
+			{
+				if (searchterms.All(pattern => pattern.IsMatch(item.Topics)))
+				{
+					resultlist.Add(new SearchResult(item.Topics)
+					{
+						ID = item.ID,
+						Score = 7,
+						EntityType = "Listeneintrag",
+						Title = "ILK-Tag",
+						ActionURL = Url.Content("~/ViewLists#ilkDay_table"),
+						Timestamp = item.Created
+					});
+				}
+			}
 
-			//foreach (var item in db.LOpenings)
-			//{
-			//	var m = pattern.Matches(item.Description);
-			//	if (m.Count > 0)
-			//	{
-			//		resultlist.Add(new SearchResult(item.Description)
-			//		{
-			//			ID = item.ID,
-			//			Score = 6.5f,
-			//			EntityType = "Listeneintrag",
-			//			Title = "Vakante Stelle",
-			//			ActionURL = Url.Content("~/ViewLists#opening_table"),
-			//			Timestamp = item.Created
-			//		});
-			//	}
-			//}
+			foreach (var item in db.LIlkMeetings)
+			{
+				if (searchterms.All(pattern => pattern.IsMatch(item.Comments)))
+				{
+					resultlist.Add(new SearchResult(item.Comments)
+					{
+						ID = item.ID,
+						Score = 7,
+						EntityType = "Listeneintrag",
+						Title = "ILK-Regeltermin",
+						ActionURL = Url.Content("~/ViewLists#ilkMeeting_table"),
+						Timestamp = item.Created
+					});
+				}
+			}
+
+			foreach (var item in db.LOpenings)
+			{
+				if (searchterms.All(pattern => pattern.IsMatch(item.Description)))
+				{
+					resultlist.Add(new SearchResult(item.Description)
+					{
+						ID = item.ID,
+						Score = 6.5f,
+						EntityType = "Listeneintrag",
+						Title = "Vakante Stelle",
+						ActionURL = Url.Content("~/ViewLists#opening_table"),
+						Timestamp = item.Created
+					});
+				}
+			}
 		}
 
 		private static float ScoreMult(int baseScore, int count)
