@@ -23,7 +23,12 @@ namespace ILK_Protokoll.Controllers
 
 			var sw = new Stopwatch();
 			sw.Start();
-			IQueryable<Topic> query = db.Topics;
+			IQueryable<Topic> query = db.Topics
+				.Include(t => t.Assignments)
+				.Include(t => t.Comments)
+				.Include(t => t.Decision)
+				.Include(t => t.Documents)
+				.Include(t => t.Tags);
 
 			ILookup<string, string> tokens = Tokenize(searchterm);
 			RestrictToAllTags(ref query, tokens["hasTag"]);
