@@ -60,7 +60,6 @@ namespace ILK_Protokoll.Controllers
 		}
 
 		// GET: Results
-		// Einfache Suche über die Navbar
 		public ActionResult Results(string searchterm)
 		{
 			if (string.IsNullOrWhiteSpace(searchterm))
@@ -212,26 +211,34 @@ namespace ILK_Protokoll.Controllers
 			float score = decision.Type == DecisionType.Resolution ? 0.0f : -5;
 			var hitlist = new HashSet<Hit>(new HitPropertyComparer());
 
-			foreach (Regex pattern in searchterms)
+			if (searchterms.Length == 0)
 			{
-				float oldScore = score;
-
-				MatchCollection m = pattern.Matches(decision.OriginTopic.Title);
-				if (m.Count > 0)
+				score = ScoreAge(25, decision.Report.End);
+				hitlist.Add(new Hit("Beschlusstext", decision.Text));
+			}
+			else
+			{
+				foreach (Regex pattern in searchterms)
 				{
-					score += ScoreMult(21, m.Count);
-					hitlist.Add(new Hit("Titel", decision.OriginTopic.Title));
-				}
+					float oldScore = score;
 
-				m = pattern.Matches(decision.Text);
-				if (m.Count > 0)
-				{
-					score += 16;
-					hitlist.Add(new Hit("Beschlusstext", decision.Text));
-				}
+					MatchCollection m = pattern.Matches(decision.OriginTopic.Title);
+					if (m.Count > 0)
+					{
+						score += ScoreMult(21, m.Count);
+						hitlist.Add(new Hit("Titel", decision.OriginTopic.Title));
+					}
 
-				if (score <= oldScore)
-					return;
+					m = pattern.Matches(decision.Text);
+					if (m.Count > 0)
+					{
+						score += 16;
+						hitlist.Add(new Hit("Beschlusstext", decision.Text));
+					}
+
+					if (score <= oldScore)
+						return;
+				}
 			}
 
 			if (score > 0)
@@ -255,36 +262,45 @@ namespace ILK_Protokoll.Controllers
 			float score = topic.IsReadOnly ? -5 : 0.0f;
 			var hitlist = new HashSet<Hit>(new HitPropertyComparer());
 
-			foreach (Regex pattern in searchterms)
+			if (searchterms.Length == 0)
 			{
-				float oldScore = score;
-
-				MatchCollection m;
-				if (!resultlist.Contains(topic.ID)) // Duplikat Beschlussvorschlag/Beschlusstext vermeiden
+				score = ScoreAge(20, topic.ValidFrom);
+				hitlist.Add(new Hit("Titel", topic.Title));
+				hitlist.Add(new Hit("Beschreibung", topic.Description));
+			}
+			else
+			{
+				foreach (Regex pattern in searchterms)
 				{
-					m = pattern.Matches(topic.Title);
-					if (m.Count > 0)
+					float oldScore = score;
+
+					MatchCollection m;
+					if (!resultlist.Contains(topic.ID)) // Duplikat Beschlussvorschlag/Beschlusstext vermeiden
 					{
-						score += ScoreMult(20, m.Count);
-						hitlist.Add(new Hit("Titel", topic.Title));
+						m = pattern.Matches(topic.Title);
+						if (m.Count > 0)
+						{
+							score += ScoreMult(20, m.Count);
+							hitlist.Add(new Hit("Titel", topic.Title));
+						}
+
+						m = pattern.Matches(topic.Proposal);
+						if (m.Count > 0)
+						{
+							score += ScoreMult(8, m.Count);
+							hitlist.Add(new Hit("Beschlusstext", topic.Proposal));
+						}
 					}
 
-					m = pattern.Matches(topic.Proposal);
+					m = pattern.Matches(topic.Description);
 					if (m.Count > 0)
 					{
-						score += ScoreMult(8, m.Count);
-						hitlist.Add(new Hit("Beschlusstext", topic.Proposal));
+						score += ScoreMult(6, m.Count);
+						hitlist.Add(new Hit("Beschreibung", topic.Description));
 					}
+					if (score <= oldScore)
+						return;
 				}
-
-				m = pattern.Matches(topic.Description);
-				if (m.Count > 0)
-				{
-					score += ScoreMult(6, m.Count);
-					hitlist.Add(new Hit("Beschreibung", topic.Description));
-				}
-				if (score <= oldScore)
-					return;
 			}
 			if (score <= 0)
 				return;
@@ -300,7 +316,7 @@ namespace ILK_Protokoll.Controllers
 					EntityType = topic.HasDecision() ? topic.Decision.Type.DisplayName() : "Diskussion",
 					Title = topic.Title,
 					ActionURL = Url.Action("Details", "Topics", new {id = topic.ID}),
-					Timestamp = topic.Created,
+					Timestamp = topic.ValidFrom,
 					Hits = hitlist.ToList(),
 					Tags = topic.Tags.Select(tt => tt.Tag).ToArray()
 				});
@@ -578,6 +594,12 @@ namespace ILK_Protokoll.Controllers
 				return 0;
 			else
 				return baseScore * (float)(5 - 4 * Math.Pow(0.8, count - 1));
+		}
+
+		private static float ScoreAge(int baseScore, DateTime lastChange)
+		{
+			var age = (DateTime.Now - lastChange).TotalDays;
+			return baseScore * (float)Math.Exp(-age/1000) + 7;
 		}
 	}
 

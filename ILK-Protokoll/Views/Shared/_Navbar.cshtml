@@ -20,7 +20,7 @@
 				<span class="hidden-xs usertile">@shortname</span>
 			</p>
 
-			@using (Html.BeginForm("Results", "Search", FormMethod.Get, new {@class = "navbar-form navbar-right"}))
+			@using (Html.BeginForm("Results", "Search", new {Area = ""}, FormMethod.Get, new {@class = "navbar-form navbar-right"}))
 			{
 				<div class="form-group">
 					<div class="input-group">
