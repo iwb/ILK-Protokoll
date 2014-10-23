@@ -20,7 +20,8 @@
 	</div>
 
 	<div class="form-group">
-		<div class="col-md-offset-2 col-xs-6 col-sm-4 col-md-2">
+		<b class="control-label col-md-2">Beschränken auf</b>
+		<div class="col-xs-6 col-sm-4 col-md-2">
 			<div class="form-group">
 				@Html.EditorFor(model => model.SearchTopics, new { htmlAttributes = new { @class = "check-box" } })
 				@Html.LabelFor(model => model.SearchTopics, new { @class = "control-label" })
@@ -50,6 +51,31 @@
 				@Html.LabelFor(model => model.SearchLists, new { @class = "control-label" })
 			</div>
 		</div>
+	</div>
+
+	<div class="form-group">
+		<b class="control-label col-md-2">Ausgewählte Tags</b>
+		<div class="col-md-6">
+			<div class="row">
+				@{ int index = 0; }
+				@foreach (var kvp in Model.Tags)
+				{
+					<div class="col-xs-6 col-sm-4">
+						<div class="form-group largetags">
+							@{
+								var preset = kvp.Value ? "checked" : null;
+							}
+							<input type="checkbox" checked="@preset" class="check-box" id="Tags_@(index)_Value" name="Tags[@(index)].Value" value="true">
+							<label for="Tags_@(index)_Value" class="control-label">@Html.DisplayFor(model => kvp.Key)</label>
+							<input type="hidden" name="Tags[@(index)].Key" value="@kvp.Key.ID">
+							<input type="hidden" name="Tags[@(index)].Value" value="false">
+						</div>
+					</div>
+					index++;
+				}
+			</div>
+		</div>
+
 	</div>
 
 	<div class="form-group">

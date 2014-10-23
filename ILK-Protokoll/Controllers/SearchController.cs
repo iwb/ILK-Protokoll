@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Diagnostics;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using ILK_Protokoll.Models;
@@ -14,6 +15,50 @@ namespace ILK_Protokoll.Controllers
 {
 	public class SearchController : BaseController
 	{
+		// GET: /Search
+		// Erweiterte Suche 
+		public ActionResult Index(ExtendedSearchVM input, [Bind(Prefix = "Tags")] Dictionary<int, bool> selectedTags)
+		{
+			if (selectedTags == null)
+				selectedTags = db.Tags.ToDictionary(x => x.ID, x => false);
+
+			if (string.IsNullOrWhiteSpace(input.Searchterm))
+			{
+				input.Tags = db.Tags.ToDictionary(x => x, x => selectedTags[x.ID]);
+				return View("SearchMask", input);
+			}
+			else
+				return ExtendendResults(input, selectedTags);
+		}
+
+		private ActionResult ExtendendResults(ExtendedSearchVM input, Dictionary<int, bool> selectedTags)
+		{
+			var query = new StringBuilder(input.Searchterm);
+
+			if (input.SearchTopics)
+				query.Append(" is:Topic");
+			if (input.SearchComments)
+				query.Append(" is:Commment");
+			if (input.SearchAssignments)
+				query.Append(" is:Task");
+			if (input.SearchAttachments)
+				query.Append(" is:File");
+			if (input.SearchDecisions)
+				query.Append(" is:Decision");
+			if (input.SearchLists)
+				query.Append(" is:Item");
+
+			var ids = selectedTags.Where(kvp => kvp.Value).Select(kvp => kvp.Key).ToArray();
+			foreach (var tagname in db.Tags.Where(x => ids.Contains(x.ID)).Select(tag => tag.Name))
+			{
+				if (Regex.IsMatch(tagname, @"\s", RegexOptions.IgnoreCase))
+					query.Append(" hasTag:\"" + tagname + "\"");
+				else
+					query.Append(" hasTag:" + tagname);
+			}
+			return Results(query.ToString());
+		}
+
 		// GET: Results
 		// Einfache Suche über die Navbar
 		public ActionResult Results(string searchterm)
@@ -21,8 +66,10 @@ namespace ILK_Protokoll.Controllers
 			if (string.IsNullOrWhiteSpace(searchterm))
 				return RedirectToAction("Index");
 
+			var profiler = MiniProfiler.Current;
 			var sw = new Stopwatch();
 			sw.Start();
+
 			IQueryable<Topic> query = db.Topics
 				.Include(t => t.Assignments)
 				.Include(t => t.Comments)
@@ -33,46 +80,41 @@ namespace ILK_Protokoll.Controllers
 			ILookup<string, string> tokens = Tokenize(searchterm);
 			RestrictToAllTags(ref query, tokens["hasTag"]);
 
-
 			if (tokens["has"].Contains("Decision", StringComparer.InvariantCultureIgnoreCase))
 				query = query.Where(t => t.Decision != null);
 
 			Regex[] searchTerms = MakePatterns(tokens[""]).Select(x => new Regex(x, RegexOptions.IgnoreCase)).ToArray();
 			var results = new SearchResultList();
 
-			var profiler = MiniProfiler.Current;
+			var selector = ParseDiscriminators(tokens["is"]);
 
 			using (profiler.Step("Suche in Themen"))
 			{
 				foreach (Topic topic in query)
 				{
-					SearchDecision(topic, searchTerms, results);
-					SearchTopic(topic, searchTerms, results);
-					SearchComments(topic, searchTerms, results);
-					SearchAssignments(topic, searchTerms, results);
-					SearchAttachments(topic, searchTerms, results);
+					if (selector["decision"])
+						SearchDecision(topic, searchTerms, results);
+					if (selector["topic"])
+						SearchTopic(topic, searchTerms, results);
+					if (selector["comment"])
+						SearchComments(topic, searchTerms, results);
+					if (selector["task"])
+						SearchAssignments(topic, searchTerms, results);
+					if (selector["file"])
+						SearchAttachments(topic, searchTerms, results);
 				}
 			}
-			using (profiler.Step("Suche in Listen"))
+			if (selector["item"])
 			{
-				SearchLists(searchTerms, results);
+				using (profiler.Step("Suche in Listen"))
+					SearchLists(searchTerms, results);
 			}
 
 			ViewBag.ElapsedMilliseconds = sw.ElapsedMilliseconds;
 			ViewBag.SearchTerm = searchterm;
 			ViewBag.SearchPatterns = searchTerms;
 			results.Sort(); // Absteigend sortieren nach Score
-			return View(results);
-		}
-
-		// GET: /Search
-		// Erweiterte Suche 
-		public ActionResult Index(ExtendedSearchVM input)
-		{
-			if (string.IsNullOrWhiteSpace(input.Searchterm))
-				return View("SearchMask", input);
-			else
-				return ExtendendResults(input);
+			return View("Results", results);
 		}
 
 		private static ILookup<string, string> Tokenize(string str)
@@ -82,6 +124,13 @@ namespace ILK_Protokoll.Controllers
 				.ToLookup(match => match.Groups["disc"].ToString(),
 					match => match.Groups["token"].ToString(),
 					StringComparer.InvariantCultureIgnoreCase);
+		}
+
+		private static Dictionary<string, bool> ParseDiscriminators(IEnumerable<string> tokens)
+		{
+			var any = tokens.Any();
+			return new[] {"topic", "task", "decision", "comment", "file", "item"}.ToDictionary(s => s,
+				s => !any || tokens.Contains(s, StringComparer.OrdinalIgnoreCase));
 		}
 
 		private void RestrictToAllTags(ref IQueryable<Topic> query, IEnumerable<string> tags)
@@ -152,51 +201,6 @@ namespace ILK_Protokoll.Controllers
 			}
 			else if (lastToken != null)
 				yield return @"\b" + lastToken;
-		}
-
-		private ActionResult ExtendendResults(ExtendedSearchVM input)
-		{
-			//var sw = new Stopwatch();
-			//sw.Start();
-
-			//var tokens = Tokenize(input.Searchterm).ToList();
-			//var searchpatterns = MakePatterns(tokens, "AND");
-			//var regexes = searchpatterns.Select(pattern => new Regex(pattern, RegexOptions.IgnoreCase));
-
-			//var sets = new List<HashSet<SearchResult>>();
-
-			//foreach (var regex in regexes)
-			//{
-			//	var currentset = new HashSet<SearchResult>();
-			//	sets.Add(currentset);
-
-			//	if (input.SearchTopics)
-			//		SearchTopics(regex, currentset);
-			//	if (input.SearchComments)
-			//		SearchComments(regex, currentset);
-			//	if (input.SearchAssignments)
-			//		SearchAssignments(regex, currentset);
-			//	if (input.SearchAttachments)
-			//		SearchAttachments(regex, currentset);
-			//	if (input.SearchDecisions)
-			//		SearchDecisions(regex, currentset);
-			//	if (input.SearchLists)
-			//		SearchLists(regex, currentset);
-			//}
-
-			//var results = sets.Aggregate((a, b) =>
-			//{
-			//	a.IntersectWith(b);
-			//	return a;
-			//}).ToList();
-
-
-			//ViewBag.ElapsedMilliseconds = sw.ElapsedMilliseconds;
-			//ViewBag.SearchTerm = input.Searchterm;
-			//ViewBag.SearchPattern = @"\b(" + tokens.Where(x => x != "AND").Aggregate((a, b) => a + "|" + b) + ")";
-			//results.Sort((a, b) => b.Score.CompareTo(a.Score)); // Absteigend sortieren
-
-			return View("Results", null);
 		}
 
 		private void SearchDecision(Topic topic, Regex[] searchterms, SearchResultList resultlist)
@@ -469,7 +473,7 @@ namespace ILK_Protokoll.Controllers
 					});
 				}
 			}
-			
+
 			foreach (var item in db.LExtensions)
 			{
 				if (searchterms.All(pattern => pattern.IsMatch(item.Comment)))
@@ -512,7 +516,7 @@ namespace ILK_Protokoll.Controllers
 						Score = 7,
 						EntityType = "Dokument",
 						Title = doc.DisplayName,
-						ActionURL = Url.Action("Details", "Attachments", new { id = doc.ID }),
+						ActionURL = Url.Action("Details", "Attachments", new {id = doc.ID}),
 						Timestamp = doc.Created
 					});
 				}
