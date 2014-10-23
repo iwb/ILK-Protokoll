@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -8,7 +7,6 @@ using System.Web.Mvc;
 using ILK_Protokoll.Models;
 using ILK_Protokoll.util;
 using ILK_Protokoll.ViewModels;
-using WebGrease.Css.Extensions;
 
 namespace ILK_Protokoll.Controllers
 {
@@ -25,23 +23,23 @@ namespace ILK_Protokoll.Controllers
 			sw.Start();
 			IQueryable<Topic> query = db.Topics;
 
-			var tokens = Tokenize(searchterm);
+			ILookup<string, string> tokens = Tokenize(searchterm);
 			RestrictToAllTags(ref query, tokens["hasTag"]);
 
 
 			if (tokens["has"].Contains("Decision", StringComparer.InvariantCultureIgnoreCase))
 				query = query.Where(t => t.Decision != null);
 
-			var searchTerms = MakePatterns(tokens[""]).Select(x => new Regex(x, RegexOptions.IgnoreCase)).ToArray();
-			var results = new List<SearchResult>();
+			Regex[] searchTerms = MakePatterns(tokens[""]).Select(x => new Regex(x, RegexOptions.IgnoreCase)).ToArray();
+			var results = new SearchResultList();
 
-			foreach (var topic in query)
+			foreach (Topic topic in query)
 			{
+				SearchDecision(topic, searchTerms, results);
 				SearchTopic(topic, searchTerms, results);
 				SearchComments(topic, searchTerms, results);
 				SearchAssignments(topic, searchTerms, results);
 				SearchAttachments(topic, searchTerms, results);
-				SearchDecisions(topic, searchTerms, results);
 			}
 			SearchLists(searchTerms, results);
 
@@ -49,7 +47,7 @@ namespace ILK_Protokoll.Controllers
 			ViewBag.ElapsedMilliseconds = sw.ElapsedMilliseconds;
 			ViewBag.SearchTerm = searchterm;
 			ViewBag.SearchPattern = "";
-			results.Sort((a, b) => b.Score.CompareTo(a.Score)); // Absteigend sortieren
+			results.Sort(); // Absteigend sortieren
 			return View(results);
 		}
 
@@ -74,8 +72,8 @@ namespace ILK_Protokoll.Controllers
 
 		private void RestrictToAllTags(ref IQueryable<Topic> query, IEnumerable<string> tags)
 		{
-			var names = tags.ToArray();
-			var tagIDs = db.Tags.Where(t => names.Contains(t.Name)).Select(t => t.ID).ToArray();
+			string[] names = tags.ToArray();
+			int[] tagIDs = db.Tags.Where(t => names.Contains(t.Name)).Select(t => t.ID).ToArray();
 
 			query = query.Where(topic => (from tt in topic.Tags
 				where tagIDs.Contains(tt.TagID)
@@ -84,8 +82,8 @@ namespace ILK_Protokoll.Controllers
 
 		private void RestrictToAnyTag(ref IQueryable<Topic> query, IEnumerable<string> tags)
 		{
-			var names = tags.ToArray();
-			var tagIDs = db.Tags.Where(t => names.Contains(t.Name)).Select(t => t.ID).ToArray();
+			string[] names = tags.ToArray();
+			int[] tagIDs = db.Tags.Where(t => names.Contains(t.Name)).Select(t => t.ID).ToArray();
 
 			query = query.Where(topic => (from tt in topic.Tags
 				where tagIDs.Contains(tt.TagID)
@@ -93,9 +91,9 @@ namespace ILK_Protokoll.Controllers
 		}
 
 		/// <summary>
-		/// Generiert aus einer Menge von Tokens eine Menge von Patterns. Die Tokens werden nach "or" durchsucht,
-		/// und die benachbarten Tokens werden schließlich in einem kombinierten Regex zurückgegeben. Die Tokens
-		/// werden für den Regex passend escapet.
+		///    Generiert aus einer Menge von Tokens eine Menge von Patterns. Die Tokens werden nach "or" durchsucht,
+		///    und die benachbarten Tokens werden schließlich in einem kombinierten Regex zurückgegeben. Die Tokens
+		///    werden für den Regex passend escapet.
 		/// </summary>
 		/// <param name="items">Die Token, aus denen die Patterns erzeugt werden sollen.</param>
 		/// <returns>Patterns, die sich aus den Tokens ergeben.</returns>
@@ -106,7 +104,7 @@ namespace ILK_Protokoll.Controllers
 
 			var orItems = new List<string>();
 			string lastToken = null;
-			foreach (var item in items)
+			foreach (string item in items)
 			{
 				if (string.Equals(item, delimiter, StringComparison.OrdinalIgnoreCase))
 				{
@@ -187,16 +185,70 @@ namespace ILK_Protokoll.Controllers
 			return View("Results", null);
 		}
 
-		private void SearchTopic(Topic topic, Regex[] searchterms, ICollection<SearchResult> resultlist)
+		private void SearchDecision(Topic topic, Regex[] searchterms, SearchResultList resultlist)
 		{
-			var score = topic.IsReadOnly ? -5 : 0.0f;
-			var hitlist = new HashSet<Hit>();
+			Decision decision = topic.Decision;
+			if (decision == null)
+				return;
 
-			foreach (var pattern in searchterms)
+			float score = decision.Type == DecisionType.Resolution ? 0.0f : -5;
+			var hitlist = new HashSet<Hit>(new HitPropertyComparer());
+
+			foreach (Regex pattern in searchterms)
 			{
-				var oldScore = score;
+				float oldScore = score;
 
-				var m = pattern.Matches(topic.Title);
+				MatchCollection m = pattern.Matches(decision.OriginTopic.Title);
+				if (m.Count > 0)
+				{
+					score += ScoreMult(21, m.Count);
+					hitlist.Add(new Hit
+					{
+						Property = "Titel",
+						Text = decision.OriginTopic.Title
+					});
+				}
+
+				m = pattern.Matches(decision.Text);
+				if (m.Count > 0)
+				{
+					score += 16;
+					hitlist.Add(new Hit
+					{
+						Property = "Beschlusstext",
+						Text = decision.Text
+					});
+				}
+
+				if (score <= oldScore)
+					return;
+			}
+
+			if (score > 0)
+			{
+				resultlist.Add(new SearchResult
+				{
+					ID = decision.ID,
+					Score = score,
+					EntityType = decision.Type.DisplayName(),
+					Title = decision.OriginTopic.Title,
+					ActionURL = Url.Action("Details", "Topics", new {id = decision.OriginTopic.ID}),
+					Timestamp = decision.Report.End,
+					Tags = topic.Tags.Select(tt => tt.Tag).ToArray()
+				});
+			}
+		}
+
+		private void SearchTopic(Topic topic, Regex[] searchterms, SearchResultList resultlist)
+		{
+			float score = topic.IsReadOnly ? -5 : 0.0f;
+			var hitlist = new HashSet<Hit>(new HitPropertyComparer());
+
+			foreach (Regex pattern in searchterms)
+			{
+				float oldScore = score;
+
+				MatchCollection m = pattern.Matches(topic.Title);
 				if (m.Count > 0)
 				{
 					score += ScoreMult(20, m.Count);
@@ -231,10 +283,14 @@ namespace ILK_Protokoll.Controllers
 				if (score <= oldScore)
 					return;
 			}
-			if (score > 0)
+			if (score <= 0)
+				return;
+
+			if (resultlist.Contains(topic.ID))
+				resultlist.AddHits(topic.ID, hitlist);
+			else
 			{
-				// Späte Instanziierung, um Zeit zu sparen
-				resultlist.Add(new SearchResult
+				resultlist.Add(topic.ID, new SearchResult
 				{
 					ID = topic.ID,
 					Score = score,
@@ -248,20 +304,25 @@ namespace ILK_Protokoll.Controllers
 			}
 		}
 
-		private void SearchComments(Topic topic, Regex[] searchterms, ICollection<SearchResult> resultlist)
+		private void SearchComments(Topic topic, Regex[] searchterms, SearchResultList resultlist)
 		{
-			foreach (var comment in topic.Comments)
+			foreach (Comment comment in topic.Comments)
 			{
-				var score = 0.0f;
-				foreach (var pattern in searchterms)
+				float score = 0.0f;
+				foreach (Regex pattern in searchterms)
 				{
-					var m = pattern.Matches(comment.Content);
+					MatchCollection m = pattern.Matches(comment.Content);
 					if (m.Count > 0)
 						score += ScoreMult(2, m.Count);
 					else
-						return;
+						score = float.NaN;
 				}
-				if (!float.IsNaN(score))
+				if (float.IsNaN(score))
+					continue;
+
+				if (resultlist.Contains(topic.ID))
+					resultlist.AddHit(topic.ID, new Hit {Text = comment.Content});
+				else
 				{
 					resultlist.Add(new SearchResult(comment.Content)
 					{
@@ -277,14 +338,14 @@ namespace ILK_Protokoll.Controllers
 			}
 		}
 
-		private void SearchAssignments(Topic topic, Regex[] searchterms, ICollection<SearchResult> resultlist)
+		private void SearchAssignments(Topic topic, Regex[] searchterms, SearchResultList resultlist)
 		{
-			foreach (var assignment in topic.Assignments)
+			foreach (Assignment assignment in topic.Assignments)
 			{
-				var score = 0.0f;
-				foreach (var pattern in searchterms)
+				float score = 0.0f;
+				foreach (Regex pattern in searchterms)
 				{
-					var m = pattern.Matches(assignment.Title);
+					MatchCollection m = pattern.Matches(assignment.Title);
 					if (m.Count > 0)
 					{
 						score += ScoreMult(9, m.Count);
@@ -315,14 +376,14 @@ namespace ILK_Protokoll.Controllers
 			}
 		}
 
-		private void SearchAttachments(Topic topic, Regex[] searchterms, ICollection<SearchResult> resultlist)
+		private void SearchAttachments(Topic topic, Regex[] searchterms, SearchResultList resultlist)
 		{
-			foreach (var attachment in topic.Documents)
+			foreach (Document attachment in topic.Documents)
 			{
-				var score = 0.0f;
-				foreach (var pattern in searchterms)
+				float score = 0.0f;
+				foreach (Regex pattern in searchterms)
 				{
-					var m = pattern.Matches(attachment.DisplayName);
+					MatchCollection m = pattern.Matches(attachment.DisplayName);
 					if (m.Count > 0)
 						score += ScoreMult(9, m.Count);
 					else
@@ -344,59 +405,7 @@ namespace ILK_Protokoll.Controllers
 			}
 		}
 
-		private void SearchDecisions(Topic topic, Regex[] searchterms, ICollection<SearchResult> resultlist)
-		{
-			var decision = topic.Decision;
-			if (decision == null)
-				return;
-
-			var score = decision.Type == DecisionType.Resolution ? 0.0f : -5;
-			var hitlist = new HashSet<Hit>();
-
-			foreach (var pattern in searchterms)
-			{
-				var oldScore = score;
-
-				var m = pattern.Matches(decision.OriginTopic.Title);
-				if (m.Count > 0)
-				{
-					score += ScoreMult(21, m.Count);
-					hitlist.Add(new Hit
-					{
-						Property = "Titel",
-						Text = decision.OriginTopic.Title
-					});
-				}
-
-				m = pattern.Matches(decision.Text);
-				if (m.Count > 0)
-				{
-					score += 16;
-					hitlist.Add(new Hit
-					{
-						Property = "Beschlusstext",
-						Text = decision.Text
-					});
-				}
-
-				if (score <= oldScore)
-					return;
-			}
-
-			if (score > 0)
-				resultlist.Add(new SearchResult
-			{
-				ID = decision.ID,
-				Score = score,
-				EntityType = decision.Type.DisplayName(),
-				Title = decision.OriginTopic.Title,
-				ActionURL = Url.Action("Details", "Topics", new {id = decision.OriginTopic.ID}),
-				Timestamp = decision.Report.End,
-				Tags = topic.Tags.Select(tt => tt.Tag).ToArray()
-			});
-		}
-
-		private void SearchLists(Regex[] searchterms, ICollection<SearchResult> resultlist)
+		private void SearchLists(Regex[] searchterms, SearchResultList resultlist)
 		{
 			//foreach (var item in db.LEvents)
 			//{
@@ -504,6 +513,39 @@ namespace ILK_Protokoll.Controllers
 				return 0;
 			else
 				return baseScore * (float)(5 - 4 * Math.Pow(0.8, count - 1));
+		}
+	}
+
+	public class HitPropertyComparer : IEqualityComparer<Hit>
+	{
+		public bool Equals(Hit x, Hit y)
+		{
+			return string.Equals(x.Property, y.Property);
+		}
+
+		public int GetHashCode(Hit obj)
+		{
+			return obj.Property.GetHashCode();
+		}
+	}
+
+	public class SREntityComparer : IEqualityComparer<SearchResult>
+	{
+		private readonly string _entity;
+
+		public SREntityComparer(string entity)
+		{
+			_entity = entity;
+		}
+
+		public bool Equals(SearchResult x, SearchResult y)
+		{
+			return x.EntityType == _entity && y.EntityType == _entity && x.ID == y.ID;
+		}
+
+		public int GetHashCode(SearchResult obj)
+		{
+			return obj.ID;
 		}
 	}
 }
