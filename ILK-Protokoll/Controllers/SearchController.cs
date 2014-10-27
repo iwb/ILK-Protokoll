@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
+using ILK_Protokoll.Areas.Session.Models.Lists;
 using ILK_Protokoll.Models;
 using ILK_Protokoll.util;
 using ILK_Protokoll.ViewModels;
@@ -462,14 +463,20 @@ namespace ILK_Protokoll.Controllers
 				}
 				if (!float.IsNaN(score))
 				{
-					resultlist.Add(new SearchResult(item.Description)
+					resultlist.Add(new SearchResult()
 					{
 						ID = item.ID,
 						Score = score,
 						EntityType = "Listeneintrag",
 						Title = "Termin",
 						ActionURL = Url.Content("~/ViewLists#event_table"),
-						Timestamp = item.StartDate
+						Timestamp = item.StartDate,
+						Hits = new List<Hit>
+						{
+							new Hit("Datum", item.StartDate.ToShortDateString()),
+							Hit.FromProperty(item, x => x.Place),
+							Hit.FromProperty(item, x => x.Description)
+						}
 					});
 				}
 			}
@@ -478,14 +485,20 @@ namespace ILK_Protokoll.Controllers
 			{
 				if (searchterms.All(pattern => pattern.IsMatch(item.Description)))
 				{
-					resultlist.Add(new SearchResult(item.Description)
+					resultlist.Add(new SearchResult()
 					{
 						ID = item.ID,
 						Score = 7,
 						EntityType = "Listeneintrag",
 						Title = "Auslandskonferenz",
 						ActionURL = Url.Content("~/ViewLists#conference_table"),
-						Timestamp = item.Created
+						Timestamp = item.Created,
+						Hits = new List<Hit>
+						{
+							new Hit("Datum", item.StartDate.ToShortDateString()),
+							Hit.FromProperty(item, x => x.Description),
+							Hit.FromProperty(item, x => x.Employee)
+						}
 					});
 				}
 			}
@@ -494,14 +507,20 @@ namespace ILK_Protokoll.Controllers
 			{
 				if (searchterms.All(pattern => pattern.IsMatch(item.Comment)))
 				{
-					resultlist.Add(new SearchResult(item.Comment)
+					resultlist.Add(new SearchResult()
 					{
 						ID = item.ID,
 						Score = 7,
 						EntityType = "Listeneintrag",
 						Title = "Vertragsverlängerung",
 						ActionURL = Url.Content("~/ViewLists#conference_table"),
-						Timestamp = item.Created
+						Timestamp = item.Created,
+						Hits = new List<Hit>
+						{
+							Hit.FromProperty(item, x => x.Employee),
+							new Hit("Vertragsende", item.EndDate.ToShortDateString()),
+							Hit.FromProperty(item, x => x.Comment)
+						}
 					});
 				}
 			}
@@ -511,14 +530,19 @@ namespace ILK_Protokoll.Controllers
 			{
 				if (searchterms.Any(pattern => pattern.IsMatch(item.Employee)))
 				{
-					resultlist.Add(new SearchResult("Mitarbeiter", item.Employee)
+					resultlist.Add(new SearchResult("Mitarbeiter")
 					{
 						ID = item.ID,
 						Score = 7,
 						EntityType = "Listeneintrag",
 						Title = "Mitarbeiterpräsentation",
 						ActionURL = Url.Content("~/ViewLists#conference_table"),
-						Timestamp = item.Created
+						Timestamp = item.Created,
+						Hits = new List<Hit>
+						{
+							Hit.FromProperty(item, x => x.Employee),
+							Hit.FromProperty<EmployeePresentation>(x => x.Ilk, item.Ilk.ShortName)
+						}
 					});
 				}
 			}
@@ -543,14 +567,20 @@ namespace ILK_Protokoll.Controllers
 			{
 				if (searchterms.All(pattern => pattern.IsMatch(item.Topics)))
 				{
-					resultlist.Add(new SearchResult(item.Topics)
+					resultlist.Add(new SearchResult
 					{
 						ID = item.ID,
 						Score = 7,
 						EntityType = "Listeneintrag",
 						Title = "ILK-Tag",
 						ActionURL = Url.Content("~/ViewLists#ilkDay_table"),
-						Timestamp = item.Created
+						Timestamp = item.Created,
+						Hits = new List<Hit>
+						{
+							Hit.FromProperty<IlkDay>(x => x.Start, item.Start.ToShortDateString()),
+							Hit.FromProperty(item, x => x.Place),
+							Hit.FromProperty(item, x => x.Topics),
+						}
 					});
 				}
 			}
@@ -559,30 +589,42 @@ namespace ILK_Protokoll.Controllers
 			{
 				if (searchterms.All(pattern => pattern.IsMatch(item.Comments)))
 				{
-					resultlist.Add(new SearchResult(item.Comments)
+					resultlist.Add(new SearchResult
 					{
 						ID = item.ID,
 						Score = 7,
 						EntityType = "Listeneintrag",
 						Title = "ILK-Regeltermin",
 						ActionURL = Url.Content("~/ViewLists#ilkMeeting_table"),
-						Timestamp = item.Created
+						Timestamp = item.Created,
+						Hits = new List<Hit>
+						{
+							Hit.FromProperty<IlkDay>(x => x.Start, item.Start.ToShortDateString()),
+							Hit.FromProperty(item, x => x.Place),
+							Hit.FromProperty(item, x => x.Comments),
+						}
 					});
 				}
 			}
 
 			foreach (var item in db.LOpenings)
 			{
-				if (searchterms.All(pattern => pattern.IsMatch(item.Description)))
+				if (searchterms.All(pattern => pattern.IsMatch(item.Description) || pattern.IsMatch(item.Project)))
 				{
-					resultlist.Add(new SearchResult(item.Description)
+					resultlist.Add(new SearchResult
 					{
 						ID = item.ID,
 						Score = 6.5f,
 						EntityType = "Listeneintrag",
 						Title = "Vakante Stelle",
 						ActionURL = Url.Content("~/ViewLists#opening_table"),
-						Timestamp = item.Created
+						Timestamp = item.Created,
+						Hits = new List<Hit>
+						{
+							Hit.FromProperty(item, x => x.Project),
+							Hit.FromProperty<IlkDay>(x => x.Start, item.Start.ToShortDateString()),
+							Hit.FromProperty(item, x => x.Description),
+						}
 					});
 				}
 			}
@@ -599,7 +641,7 @@ namespace ILK_Protokoll.Controllers
 		private static float ScoreAge(int baseScore, DateTime lastChange)
 		{
 			var age = (DateTime.Now - lastChange).TotalDays;
-			return baseScore * (float)Math.Exp(-age/1000) + 7;
+			return baseScore * (float)Math.Exp(-age / 1000) + 7;
 		}
 	}
 

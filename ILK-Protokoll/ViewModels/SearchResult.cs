@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using ILK_Protokoll.Models;
+using ILK_Protokoll.util;
 
 namespace ILK_Protokoll.ViewModels
 {
@@ -86,6 +88,23 @@ namespace ILK_Protokoll.ViewModels
 		{
 			Property = property;
 			Text = text;
+		}
+
+		public static Hit FromProperty<T>(T item, Expression<Func<T, string>> propertyExpression)
+			where T : class
+		{
+			Expression converted = Expression.Convert(propertyExpression.Body, typeof(object));
+			var expression = Expression.Lambda<Func<T, object>>(converted, propertyExpression.Parameters);
+
+			var func = propertyExpression.Compile();
+			return FromProperty(expression, func(item));
+		}
+
+		public static Hit FromProperty<T>(Expression<Func<T, object>> propertyExpression, string text)
+			where T : class
+		{
+			var name = AttributeHelperMethods.GetPropertyDisplayName(propertyExpression);
+			return new Hit(name, text);
 		}
 	}
 }
