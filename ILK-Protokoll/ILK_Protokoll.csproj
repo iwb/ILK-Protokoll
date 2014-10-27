@@ -584,6 +584,7 @@
       <DependentUpon>bootstrap-multiselect.css</DependentUpon>
     </Content>
     <Content Include="Areas\Session\Views\Discussion\IndexTable.cshtml" />
+    <Content Include="Areas\Session\Views\Shared\_StateDropdown.cshtml" />
     <None Include="Content\bootstrap\bootstrap.less" />
     <Content Include="Content\iwbTheme.less" />
     <Content Include="Areas\Administration\Views\web.config" />

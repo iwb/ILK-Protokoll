@@ -79,8 +79,14 @@
 			<th class="col-sm-1">
 				ToDos
 			</th>
-			<th class="col-sm-1">
+			<th class="col-sm-1 hidden-xs">
 				@Html.DisplayColumnNameFor(Model.Topics, model => model.Comments)
+			</th>
+			<th class="col-sm-1">
+				Aktion
+			</th>
+			<th class="hidden-xs">
+				WVD
 			</th>
 		</tr>
 	</thead>
@@ -131,8 +137,18 @@
 				<td class="@cellclass text-center">
 					@(doneToDo)&#8202;/&#8202;@todoList.Count
 				</td>
-				<td>
+				<td class="hidden-xs">
 					@item.Comments.Count
+				</td>
+				<td>
+					@{ Html.RenderPartial("_StateDropdown", item.Lock); }
+				</td>
+				<td class="hidden-xs" style="text-align: right;">
+					@if (item.ResubmissionDate != null)
+					{
+						@item.ResubmissionDate.Value.ToString("dd.MM");
+					}
+					<a ><span class="glyphicon glyphicon-calendar"></span></a>
 				</td>
 			</tr>
 		}

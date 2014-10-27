@@ -1,0 +1,76 @@
+﻿@using ILK_Protokoll.Models
+@using ILK_Protokoll.util
+@model ILK_Protokoll.Models.TopicLock
+@{
+	string btnClass;
+	var selected = new string[4];
+	selected[(int)Model.Action] = "selected";
+
+	switch (Model.Action)
+	{
+		case TopicAction.None:
+			btnClass = "btn btn-primary";
+			break;
+		case TopicAction.Decide:
+			btnClass = "btn btn-success";
+			break;
+		case TopicAction.Close:
+			btnClass = "btn btn-warning";
+			break;
+		case TopicAction.Delete:
+			btnClass = "btn btn-danger";
+			break;
+		default:
+			btnClass = "btn btn-default";
+			break;
+	}
+}
+
+<div id="state_dropdown_@Model.TopicID">
+	<select>
+		<option selected="@selected[0]" value="@(TopicAction.None)">Wiedervorlage</option>
+		<option selected="@selected[1]" value="@(TopicAction.Decide)">Beschluss</option>
+		<option selected="@selected[2]" value="@(TopicAction.Close)">Kein Beschluss</option>
+		<option selected="@selected[3]" value="@(TopicAction.Delete)">Löschen</option>
+	</select>
+
+	<script type="text/javascript">
+	$('#state_dropdown_@Model.TopicID select').multiselect({
+		buttonClass: '@btnClass',
+		onChange: function (element, checked) {
+			var topicState = element.attr("value");
+			var targetUrl = "@Url.Action("_ChangeState", "Discussion", new {id = Model.TopicID})?state=" + topicState;
+
+			$.ajax({
+				url: targetUrl,
+				type: 'POST',
+				success: function (responseData) {
+					$('#state_dropdown_@Model.TopicID').replaceWith(responseData);
+				},
+				error: function (xhr, errorType) {
+					resetMultiselect('@Model.TopicID', '@Model.Action');
+					DisplayErrorMessage(null, xhr.responseText);
+				}
+			}); //end ajax
+		}
+	});
+	@if (!string.IsNullOrWhiteSpace(Model.Message))
+		{
+			@:DisplayErrorMessage(null, '@Model.Message');
+				}
+	</script>
+</div>
+
+
+@using (Html.Delayed(null, "Ajax-Spinner"))
+{
+	<script type="text/javascript">
+
+		function resetMultiselect(id, value) {
+			$('#state_dropdown_' + id + ' select option').each(function() {
+				$(this).prop('selected', this.value == value);
+			});
+			$('#state_dropdown_' + id + ' select').multiselect('refresh');
+		}
+	</script>
+}
