@@ -509,6 +509,7 @@
     <Content Include="img\fileicons\xlsm.png" />
     <Content Include="img\fileicons\xlsx.png" />
     <Content Include="img\fileicons\xltx.png" />
+    <Content Include="img\icon_calendar.png" />
     <Content Include="img\iwbLogo_inv_small.png" />
     <Content Include="img\rmvLogo.png" />
     <Content Include="img\rmvLogo_small.png" />
