@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Web.Mvc;
+using EntityFramework.Extensions;
 using ILK_Protokoll.Mailers;
 
 namespace ILK_Protokoll.Controllers
@@ -13,6 +14,11 @@ namespace ILK_Protokoll.Controllers
 		[AllowAnonymous]
 		public string Index()
 		{
+			var cutoff = DateTime.Now;
+			foreach (var topic in db.Topics.Where(t => t.ResubmissionDate < cutoff))
+				topic.ResubmissionDate = null;
+			db.SaveChanges();
+
 			int mailsSent = AssignmentsController.SendReminders(db);
 
 			return string.Format("Es wurden {0} E-Mails verschickt.", mailsSent);

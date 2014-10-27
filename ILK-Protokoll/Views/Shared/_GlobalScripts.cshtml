@@ -34,15 +34,13 @@
 	// Datepicker für Internet Explorer und Firefox
 	// Diese unterstützen leider noch nicht <input type="date" />
 	function enableDatePicker(selector) {
-		if (!Modernizr.inputtypes.date) {
-			$.datepicker.setDefaults($.datepicker.regional["de"]);
+		$.datepicker.setDefaults($.datepicker.regional["de"]);
 
+		if (!Modernizr.inputtypes.date) {
 			if (!selector)
 				selector = 'input[type=date]:not(.hasDatepicker)';
 
-			var datefields = $(selector);
-
-			datefields.each(function() {
+			$(selector).each(function () {
 
 				var clone = $(this).clone();
 				clone.insertAfter(this);

@@ -35,29 +35,29 @@
 	</select>
 
 	<script type="text/javascript">
-	$('#state_dropdown_@Model.TopicID select').multiselect({
-		buttonClass: '@btnClass',
-		onChange: function (element, checked) {
-			var topicState = element.attr("value");
-			var targetUrl = "@Url.Action("_ChangeState", "Discussion", new {id = Model.TopicID})?state=" + topicState;
+		$('#state_dropdown_@Model.TopicID select').multiselect({
+			buttonClass: '@btnClass',
+			onChange: function(element, checked) {
+				var topicState = element.attr("value");
+				var targetUrl = "@Url.Action("_ChangeState", "Discussion", new {id = Model.TopicID})?state=" + topicState;
 
-			$.ajax({
-				url: targetUrl,
-				type: 'POST',
-				success: function (responseData) {
-					$('#state_dropdown_@Model.TopicID').replaceWith(responseData);
-				},
-				error: function (xhr, errorType) {
-					resetMultiselect('@Model.TopicID', '@Model.Action');
-					DisplayErrorMessage(null, xhr.responseText);
-				}
-			}); //end ajax
-		}
-	});
-	@if (!string.IsNullOrWhiteSpace(Model.Message))
+				$.ajax({
+					url: targetUrl,
+					type: 'POST',
+					success: function(responseData) {
+						$('#state_dropdown_@Model.TopicID').replaceWith(responseData);
+					},
+					error: function(xhr, errorType) {
+						resetMultiselect('@Model.TopicID', '@Model.Action');
+						DisplayErrorMessage(null, xhr.responseText);
+					}
+				}); //end ajax
+			}
+		});
+		@if (!string.IsNullOrWhiteSpace(Model.Message))
 		{
 			@:DisplayErrorMessage(null, '@Model.Message');
-				}
+		}
 	</script>
 </div>
 
@@ -65,7 +65,6 @@
 @using (Html.Delayed(null, "Ajax-Spinner"))
 {
 	<script type="text/javascript">
-
 		function resetMultiselect(id, value) {
 			$('#state_dropdown_' + id + ' select option').each(function() {
 				$(this).prop('selected', this.value == value);

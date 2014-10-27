@@ -9,8 +9,8 @@
 }
 
 <ul class="nav nav-pills" style="margin-top: 15px;">
-	<li>@Html.ActionLink("Paneele", "Index", "Discussion", new { Area = "Session", viewPref = "Panels"}, null)</li>
-	<li class="active">@Html.ActionLink("Tabelle", "Index", "Discussion", new { Area = "Session", viewPref = "Table" }, null)</li>
+	<li>@Html.ActionLink("Paneele", "Index", "Discussion", new {Area = "Session", viewPref = "Panels"}, null)</li>
+	<li class="active">@Html.ActionLink("Tabelle", "Index", "Discussion", new {Area = "Session", viewPref = "Table"}, null)</li>
 </ul>
 
 <div class="index-action">
@@ -143,14 +143,76 @@
 				<td>
 					@{ Html.RenderPartial("_StateDropdown", item.Lock); }
 				</td>
-				<td class="hidden-xs" style="text-align: right;">
-					@if (item.ResubmissionDate != null)
-					{
-						@item.ResubmissionDate.Value.ToString("dd.MM");
-					}
-					<a ><span class="glyphicon glyphicon-calendar"></span></a>
+				<td class="hidden-xs" style="text-align: right;" id="resubmissionCell_@item.ID">
+					<span class="datestr">
+						@if (item.ResubmissionDate != null)
+						{
+							@item.ResubmissionDate.Value.ToString("dd.MM")
+						}
+					</span>
+					<br />
+					<span class="text-success glyphicon glyphicon-ok" style="display: none;"></span>
+					<span class="text-danger glyphicon glyphicon-remove" style="display: none;"></span>
+					<input type="hidden" name="resubmissionDate" id="resubmissionDate_@item.ID" data-topicid="@item.ID" />
 				</td>
 			</tr>
 		}
 	</tbody>
 </table>
+
+<script type="text/javascript">
+	$('input[name="resubmissionDate"]').each(function() {
+		var topicId = $(this).data("topicid");
+
+		$(this).datepicker({
+			buttonImage: '../img/icon_calendar.png',
+			buttonImageOnly: true,
+			buttonText: "Wiedervorlagedatum auswählen",
+			showOn: 'both',
+
+			dateFormat: "dd.mm.yy",
+			constrainInput: false,
+			showOtherMonths: true,
+			selectOtherMonths: true,
+			numberOfMonths: 2,
+			showWeek: true,
+			firstDay: 1,
+			monthNames: [
+				'Januar', 'Februar', 'M&auml;rz', 'April', 'Mai', 'Juni',
+				'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'
+			],
+			monthNamesShort: [
+				'Jan', 'Feb', 'M&auml;r', 'Apr', 'Mai', 'Jun',
+				'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'
+			],
+			dayNames: ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'],
+			dayNamesShort: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
+			dayNamesMin: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
+			weekHeader: 'KW',
+			onClose: function (dateText, inst) {
+				var month = (parseInt(inst.selectedMonth) + 1).toString();
+				var datestr = inst.selectedYear + '-' + month + '-' + inst.selectedDay;
+
+				$.ajax({
+					url: '@Url.Action("_ChangeResubmissionDate", "Discussion", new {Area = "Session"})',
+					type: 'POST',
+					data: {
+						topicID: topicId,
+						resubmissionDate: datestr,
+						"X-Requested-With": "XMLHttpRequest"
+					},
+					success: function(responseData) {
+						$('#resubmissionCell_' + topicId + ' .glyphicon-remove').hide();
+						$('#resubmissionCell_' + topicId + ' .glyphicon-ok').finish().slideDown(400).fadeOut(1000);
+						$('#resubmissionCell_' + topicId + ' .datestr').text(inst.selectedDay + '.' + month + '.');
+					},
+					error: function(xhr, errorType) {
+						$('#resubmissionCell_' + topicId + ' .glyphicon-ok').hide();
+						$('#resubmissionCell_' + topicId + ' .glyphicon-remove').finish().slideDown(400);
+						DisplayErrorMessage(null, xhr.responseText);
+					}
+				}); //end ajax
+			}
+		});
+	});
+</script>
