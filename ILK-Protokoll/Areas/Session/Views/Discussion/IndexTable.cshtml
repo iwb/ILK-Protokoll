@@ -144,16 +144,20 @@
 					@{ Html.RenderPartial("_StateDropdown", item.Lock); }
 				</td>
 				<td class="hidden-xs" style="text-align: right;" id="resubmissionCell_@item.ID">
+					@{
+						string valuestr = null;
+					}
 					<span class="datestr">
 						@if (item.ResubmissionDate != null)
 						{
 							@item.ResubmissionDate.Value.ToString("dd.MM")
+							valuestr = item.ResubmissionDate.Value.ToString("yyyy-MM-dd");
 						}
 					</span>
 					<br />
 					<span class="text-success glyphicon glyphicon-ok" style="display: none;"></span>
 					<span class="text-danger glyphicon glyphicon-remove" style="display: none;"></span>
-					<input type="hidden" name="resubmissionDate" id="resubmissionDate_@item.ID" data-topicid="@item.ID" />
+					<input type="hidden" name="resubmissionDate" id="resubmissionDate_@item.ID" data-topicid="@item.ID" value="@valuestr" />
 				</td>
 			</tr>
 		}
@@ -170,7 +174,7 @@
 			buttonText: "Wiedervorlagedatum auswählen",
 			showOn: 'both',
 
-			dateFormat: "dd.mm.yy",
+			dateFormat: "yy-mm-dd",
 			constrainInput: false,
 			showOtherMonths: true,
 			selectOtherMonths: true,
