@@ -189,9 +189,16 @@
 			dayNamesShort: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
 			dayNamesMin: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
 			weekHeader: 'KW',
-			onClose: function (dateText, inst) {
-				var month = (parseInt(inst.selectedMonth) + 1).toString();
-				var datestr = inst.selectedYear + '-' + month + '-' + inst.selectedDay;
+			onSelect: function (dateText, inst) {
+				var date = $(this).datepicker("getDate");
+
+				var datestr = 'null';
+				var localestr = '';
+
+				if (date > new Date()) {
+					datestr = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+					localestr = date.getDate() + '.' + (date.getMonth() + 1) + '.';
+				}
 
 				$.ajax({
 					url: '@Url.Action("_ChangeResubmissionDate", "Discussion", new {Area = "Session"})',
@@ -204,7 +211,7 @@
 					success: function(responseData) {
 						$('#resubmissionCell_' + topicId + ' .glyphicon-remove').hide();
 						$('#resubmissionCell_' + topicId + ' .glyphicon-ok').finish().slideDown(400).fadeOut(1000);
-						$('#resubmissionCell_' + topicId + ' .datestr').text(inst.selectedDay + '.' + month + '.');
+						$('#resubmissionCell_' + topicId + ' .datestr').text(localestr);
 					},
 					error: function(xhr, errorType) {
 						$('#resubmissionCell_' + topicId + ' .glyphicon-ok').hide();
