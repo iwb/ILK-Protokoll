@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Data.Entity.Validation;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
@@ -69,7 +70,7 @@ namespace ILK_Protokoll.Controllers
 			filter.TagList = db.Tags.Select(tag => new SelectListItem
 			{
 				Text = tag.Name,
-				Value = tag.ID.ToString()
+				Value = tag.ID.ToString(CultureInfo.InvariantCulture)
 			}).ToList();
 
 			filter.Topics = query.OrderByDescending(t => t.Priority).ThenBy(t => t.Title).ToList();
@@ -90,7 +91,7 @@ namespace ILK_Protokoll.Controllers
 				.Select(p => new SelectListItem
 				{
 					Text = p.DisplayName(),
-					Value = ((int)p).ToString()
+					Value = ((int)p).ToString(CultureInfo.InvariantCulture)
 				});
 
 			return placeholder.Concat(items);
@@ -117,7 +118,7 @@ namespace ILK_Protokoll.Controllers
 					Text = "Älter als 30 Tage",
 					Value = "-30",
 					Selected = preselect == -30
-				},
+				}
 			};
 		}
 
@@ -221,7 +222,7 @@ namespace ILK_Protokoll.Controllers
 				var session = GetSession();
 				if (session != null && session.SessionTypeID == input.SessionTypeID)
 				{
-					session.LockedTopics.Add(new TopicLock()
+					session.LockedTopics.Add(new TopicLock
 					{
 						Topic = t,
 						Session = session
@@ -504,7 +505,7 @@ namespace ILK_Protokoll.Controllers
 
 			history.Add(TopicHistory.FromTopic(topic, 0));
 
-			var vm = new TopicHistoryViewModel()
+			var vm = new TopicHistoryViewModel
 			{
 				Usernames = db.Users.Where(u => u.IsActive).ToDictionary(u => u.ID, u => u.ShortName),
 				SessionTypes = db.SessionTypes.ToDictionary(s => s.ID, s => s.Name),
@@ -512,7 +513,7 @@ namespace ILK_Protokoll.Controllers
 				Initial = history[0]
 			};
 
-			var diff = new diff_match_patch()
+			var diff = new diff_match_patch
 			{
 				Diff_Timeout = 0.4f,
 			};
@@ -527,10 +528,10 @@ namespace ILK_Protokoll.Controllers
 
 			foreach (var p in history.Pairwise())
 			{
-				vm.Differences.Add(new TopicHistoryDiff()
+				vm.Differences.Add(new TopicHistoryDiff
 				{
 					// Ein Eintrag entspricht später einer Box auf der Seite. Wenn keine Änderung existiert, sollte hier null gespeichert werden. Bei einer Änderung wird der NEUE Wert (der in Item2 enthalten ist) genommen.
-					// SimpleDiff ist eine kleine helferfunktion, da die Zeilen sonst arg lang werden würden. Hier wird kein Text vergleichen - antweder hat sich alles geändert, oder gar nichts. (Daher "simple")
+					// SimpleDiff ist eine kleine Helferfunktion, da die Zeilen sonst arg lang werden würden. Hier wird kein Text vergleichen - entweder hat sich alles geändert, oder gar nichts. (Daher "simple")
 					// textDiff ist komplexer, hier wird der Text analysiert und auf ähnliche Abschnitte hin untersucht.
 					Modified = p.Item1.ValidUntil,
 					Editor = vm.Usernames[p.Item1.EditorID],
@@ -556,7 +557,7 @@ namespace ILK_Protokoll.Controllers
 		/// <param name="idB">Zweite ID</param>
 		/// <param name="dict">Lookup für den Rückgabewert</param>
 		/// <returns>null, wenn idA == idB, dict[idB] sonst.</returns>
-		private string SimpleDiff(int idA, int idB, IDictionary<int, string> dict)
+		private static string SimpleDiff(int idA, int idB, IDictionary<int, string> dict)
 		{
 			return idA == idB ? null : dict[idB];
 		}
@@ -570,7 +571,7 @@ namespace ILK_Protokoll.Controllers
 		/// <param name="dict">Lookup für den Rückgabewert</param>
 		/// <param name="defaultText">Standardtext für den Rückgabewert, wenn idB null ist</param>
 		/// <returns>null, wenn idA == idB, dict[idB] wenn idB != null, defaultText sonst.</returns>
-		private string SimpleDiff(int? idA, int? idB, IDictionary<int, string> dict, string defaultText)
+		private static string SimpleDiff(int? idA, int? idB, IDictionary<int, string> dict, string defaultText)
 		{
 			return idA == idB ? null : (idB.HasValue ? dict[idB.Value] : defaultText);
 		}

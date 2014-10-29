@@ -187,6 +187,7 @@
     <Compile Include="Controllers\DecisionsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PushController.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="ViewModels\SearchResultList.cs" />
     <Compile Include="Controllers\StatisticsController.cs" />
     <Compile Include="Controllers\ViewListsController.cs" />
