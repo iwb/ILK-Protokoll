@@ -3,41 +3,46 @@
 
 <table class="table table-striped file-table table-sortable">
 	<thead>
-		<tr>
-			<th class="col-xs-1"></th>
-			<th>@Html.DisplayNameFor(model => model.DisplayName)</th>
-			<th class="col-xs-1">@Html.DisplayNameFor(model => model.LatestRevision.FileSize)</th>
-			<th class="col-xs-1">@Html.DisplayNameFor(model => model.LatestRevision.Uploader)</th>
-			<th class="col-xs-2">@Html.DisplayNameFor(model => model.Created)</th>
-		</tr>
+	<tr>
+		<th class="col-xs-1"></th>
+		<th>@Html.DisplayNameFor(model => model.DisplayName)</th>
+		<th class="col-xs-1">@Html.DisplayNameFor(model => model.LatestRevision.FileSize)</th>
+		<th class="col-xs-1">@Html.DisplayNameFor(model => model.LatestRevision.Uploader)</th>
+		<th class="col-xs-2">@Html.DisplayNameFor(model => model.Created)</th>
+		<th class="col-xs-1">Details</th>
+	</tr>
 	</thead>
 	<tbody>
-		@foreach (var document in Model)
+	@foreach (var document in Model)
+	{
+		string iconname = document.LatestRevision.Extension ?? "default";
+		if (!AttachmentsController.KnownExtensions.Contains(iconname))
 		{
-			string iconname = document.LatestRevision.Extension ?? "default";
-			if (!AttachmentsController.KnownExtensions.Contains(iconname))
-			{
-				iconname = "default";
-			}
-
-			string fileurl = Url.Action("Download", "Attachments", new {id = document.LatestRevision.GUID});
-
-			<tr id="attachment_@document.ID">
-				<td>
-					<a href="@fileurl">
-						<img src="~/img/fileicons/@(iconname).png" height="32" />
-					</a>
-				</td>
-				<td>
-					<a href="@fileurl">
-						@document.DisplayName
-					</a>
-				</td>
-				<td>@Html.DisplayFor(model => document.LatestRevision.FileSize)</td>
-				<td>@document.LatestRevision.Uploader.ShortName</td>
-				<td>@Html.DisplayFor(model => document.Created)</td>
-			</tr>
+			iconname = "default";
 		}
-	</tbody>
 
+		string fileurl = Url.Action("Download", "Attachments", new {id = document.LatestRevision.GUID});
+
+		<tr id="attachment_@document.ID">
+			<td>
+				<a href="@fileurl">
+					<img src="~/img/fileicons/@(iconname).png" height="32"/>
+				</a>
+			</td>
+			<td>
+				<a href="@fileurl">
+					@document.DisplayName
+				</a>
+			</td>
+			<td>@Html.DisplayFor(model => document.LatestRevision.FileSize)</td>
+			<td>@document.LatestRevision.Uploader.ShortName</td>
+			<td>@Html.DisplayFor(model => document.Created)</td>
+			<td class="actions">
+				<a href="@Url.Action("Details", "Attachments", new {Area = "", id = document.ID})">
+					<span class="glyphicon glyphicon-new-window" title="Detailseite aufrufen"></span>
+				</a>
+			</td>
+		</tr>
+	}
+	</tbody>
 </table>
