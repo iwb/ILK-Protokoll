@@ -40,12 +40,17 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 
 		private void PrepareTopics(FilteredTopics filter, ActiveSession session)
 		{
+			// Zwecks Performance wäre hier eigentlich eine Query-Projektion angebracht
 			IQueryable<Topic> query = db.Topics
 				.Include(t => t.SessionType)
 				.Include(t => t.TargetSessionType)
 				.Include(t => t.Owner)
 				.Include(t => t.Comments)
 				.Include(t => t.Lock)
+				.Include(t => t.Tags)
+				.Include(t => t.Votes)
+				.Include(t => t.UnreadBy)
+				.Include(t => t.Assignments)
 				.Where(t => t.Decision == null && !t.IsReadOnly)
 				.Where(t =>
 					t.Lock.Session.ID == session.ID ||
