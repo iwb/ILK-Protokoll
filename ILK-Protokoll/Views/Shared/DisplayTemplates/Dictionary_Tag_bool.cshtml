@@ -1,4 +1,5 @@
-﻿@model Dictionary<ILK_Protokoll.Models.Tag, bool>
+﻿@using ILK_Protokoll.util
+@model Dictionary<ILK_Protokoll.Models.Tag, bool>
 @foreach (var kvp in Model)
 {
 	<a href="@Url.Action("Results", "Search", new {Area = "", searchterm = "hasTag:\"" + kvp.Key.Name + "\""})" class="label" style="background-color: @kvp.Key.BackgroundColor.ToHex(); color: @kvp.Key.FontColor.ToHex(); @(kvp.Value ? "" : "display: none;")" data-tagid="@kvp.Key.ID">@kvp.Key.Name</a>
