@@ -70,7 +70,8 @@ namespace ILK_Protokoll.Controllers
 			filter.TagList = db.Tags.Select(tag => new SelectListItem
 			{
 				Text = tag.Name,
-				Value = tag.ID.ToString(CultureInfo.InvariantCulture)
+// ReSharper disable once SpecifyACultureInStringConversionExplicitly
+				Value = tag.ID.ToString()
 			}).ToList();
 
 			filter.Topics = query.OrderByDescending(t => t.Priority).ThenBy(t => t.Title).ToList();
