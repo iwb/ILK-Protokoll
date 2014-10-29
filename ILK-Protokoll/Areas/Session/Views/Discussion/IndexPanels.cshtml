@@ -1,5 +1,4 @@
 ﻿@using ILK_Protokoll.Areas.Session.Models
-@using ILK_Protokoll.Models
 @using ILK_Protokoll.util
 @model ILK_Protokoll.ViewModels.FilteredTopics
 
@@ -9,15 +8,15 @@
 }
 
 <ul class="nav nav-pills" style="margin-top: 15px;">
-	<li class="active">@Html.ActionLink("Paneele", "Index", "Discussion", new { Area = "Session", viewPref = "Panels" }, null)</li>
-	<li>@Html.ActionLink("Tabelle", "Index", "Discussion", new { Area = "Session", viewPref = "Table" }, null)</li>
+	<li class="active">@Html.ActionLink("Paneele", "Index", "Discussion", new {Area = "Session", viewPref = "Panels"}, null)</li>
+	<li>@Html.ActionLink("Tabelle", "Index", "Discussion", new {Area = "Session", viewPref = "Table"}, null)</li>
 </ul>
 
 <div class="index-action">
-	<a class="btn btn-default" onclick="collapseTopicsOut();"> Alle Themen ausklappen</a>
-	<a class="btn btn-default" onclick="collapseTopicsIn();"> Alle Themen einklappen</a>
-	@Html.ActionLink("Zurück", "Index", "Lists", new { Area = "Session" }, new { @class = "btn btn-default" })
-	@Html.ActionLink("Weiter", "Index", "Finalize", new { Area = "Session" }, new { @class = "btn btn-primary" })
+	<a class="btn btn-default" onclick=" collapseTopicsOut(); "> Alle Themen ausklappen</a>
+	<a class="btn btn-default" onclick=" collapseTopicsIn(); "> Alle Themen einklappen</a>
+	@Html.ActionLink("Zurück", "Index", "Lists", new {Area = "Session"}, new {@class = "btn btn-default"})
+	@Html.ActionLink("Weiter", "Index", "Finalize", new {Area = "Session"}, new {@class = "btn btn-primary"})
 </div>
 
 <h2>@ViewBag.Title</h2>
@@ -27,17 +26,17 @@
 		<h4 class="panel-title">Filter</h4>
 	</div>
 	<div class="panel-body">
-		@using (Html.BeginForm("Index", "Discussion", new { Area = "Session" }, FormMethod.Get, new { @class = "form-inline" }))
+		@using (Html.BeginForm("Index", "Discussion", new {Area = "Session"}, FormMethod.Get, new {@class = "form-inline"}))
 		{
 			<div class="col-sm-4">
 				<div class="row">
 					<div class="form-group">
-						@Html.DropDownListFor(model => model.ShowPriority, Model.PriorityList, new { @class = "form-control", style = "min-width:200px;" })
+						@Html.DropDownListFor(model => model.ShowPriority, Model.PriorityList, new {@class = "form-control", style = "min-width:200px;"})
 					</div>
 				</div>
 				<div class="row">
 					<div class="form-group">
-						@Html.DropDownListFor(model => model.Timespan, Model.TimespanList, "(Zeitraum beliebig)", new { @class = "form-control", style = "min-width:200px;" })
+						@Html.DropDownListFor(model => model.Timespan, Model.TimespanList, "(Zeitraum beliebig)", new {@class = "form-control", style = "min-width:200px;"})
 					</div>
 				</div>
 			</div>
@@ -45,7 +44,7 @@
 			<div class="col-sm-4">
 				<div class="row">
 					<div class="form-group">
-						@Html.DropDownListFor(m => m.OwnerID, Model.UserList, "(Alle Besitzer)", new { @class = "form-control", style = "min-width:180px;" })
+						@Html.DropDownListFor(m => m.OwnerID, Model.UserList, "(Alle Besitzer)", new {@class = "form-control", style = "min-width:180px;"})
 					</div>
 				</div>
 				<div class="row">
@@ -104,7 +103,7 @@
 		}
 
 		function collapseTopicsIn() {
-			$('.topic-panel').each(function () {
+			$('.topic-panel').each(function() {
 				var link = $(this).find('.panel-heading .panel-collapse-heading a');
 				var content = $(this).find('.topic-content');
 				collapseTopicIn(link, content);

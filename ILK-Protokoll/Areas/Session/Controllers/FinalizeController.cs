@@ -9,7 +9,6 @@ using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using ILK_Protokoll.Areas.Session.Models;
-using ILK_Protokoll.Controllers;
 using ILK_Protokoll.Mailers;
 using ILK_Protokoll.Models;
 using ILK_Protokoll.util;

@@ -43,9 +43,9 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 
 			var cutoff = DateTime.Now - EditDuration;
 			// Locks entfernen, die zu alt sind
-			_dbSet.Where(e => e.LockTime < cutoff).Update(e => new TModel() {LockSessionID = null});
+			_dbSet.Where(e => e.LockTime < cutoff).Update(e => new TModel {LockSessionID = null});
 			// Und die eigenen Locks entfernen
-			_dbSet.Where(e => e.LockSessionID == thisSession.ID).Update(e => new TModel() {LockSessionID = null});
+			_dbSet.Where(e => e.LockSessionID == thisSession.ID).Update(e => new TModel {LockSessionID = null});
 		}
 
 		public virtual PartialViewResult _CreateForm()
@@ -201,7 +201,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 			evt.Location = location;
 			evt.IsAllDay = allDayEvent;
 			evt.UID = eventId;
-			evt.Organizer = new Organizer { CommonName = "ILK-Protokoll", Value = new Uri("mailto:no-reply@iwb.tum.de") };
+			evt.Organizer = new Organizer {CommonName = "ILK-Protokoll", Value = new Uri("mailto:no-reply@iwb.tum.de")};
 			evt.Alarms.Add(new Alarm
 			{
 				Duration = new TimeSpan(0, 15, 0),

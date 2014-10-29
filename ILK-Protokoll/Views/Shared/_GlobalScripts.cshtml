@@ -40,7 +40,7 @@
 			if (!selector)
 				selector = 'input[type=date]:not(.hasDatepicker)';
 
-			$(selector).each(function () {
+			$(selector).each(function() {
 
 				var clone = $(this).clone();
 				clone.insertAfter(this);
@@ -90,7 +90,7 @@
 		}
 	}
 
-	$(function () {
+	$(function() {
 		enableDatePicker();
 		if (jQuery.validator) {
 			jQuery.validator.methods.date = function(value, element) {

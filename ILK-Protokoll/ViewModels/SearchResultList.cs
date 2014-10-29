@@ -18,6 +18,16 @@ namespace ILK_Protokoll.ViewModels
 			get { return _topics[topicID]; }
 		}
 
+		public IEnumerator<SearchResult> GetEnumerator()
+		{
+			return _results.GetEnumerator();
+		}
+
+		IEnumerator IEnumerable.GetEnumerator()
+		{
+			return _results.GetEnumerator();
+		}
+
 		public void Add(SearchResult item)
 		{
 			_results.Add(item);
@@ -34,6 +44,7 @@ namespace ILK_Protokoll.ViewModels
 			_topics[topicID].Score += score;
 			_topics[topicID].Hits.Add(item);
 		}
+
 		public void Amend(int topicID, float score, IEnumerable<Hit> items)
 		{
 			_topics[topicID].Score += score;
@@ -60,16 +71,6 @@ namespace ILK_Protokoll.ViewModels
 		public void Sort()
 		{
 			_results.Sort((a, b) => b.Score.CompareTo(a.Score));
-		}
-
-		public IEnumerator<SearchResult> GetEnumerator()
-		{
-			return _results.GetEnumerator();
-		}
-
-		IEnumerator IEnumerable.GetEnumerator()
-		{
-			return _results.GetEnumerator();
 		}
 	}
 }

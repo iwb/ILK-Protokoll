@@ -1,11 +1,11 @@
 ﻿@using ILK_Protokoll.Areas.Administration.Models
-@model IEnumerable<SessionType>
+@model IEnumerable<ILK_Protokoll.Areas.Administration.Models.SessionType>
 
 @{
 	ViewBag.Title = "Sitzungstypen";
 }
 
-@Html.ActionLink("Neuer Sitzungstyp", "Create", null, new { @class = "index-action btn btn-primary" })
+@Html.ActionLink("Neuer Sitzungstyp", "Create", null, new {@class = "index-action btn btn-primary"})
 
 <h2>@ViewBag.Title</h2>
 
@@ -59,9 +59,9 @@
 					@Html.DisplayFor(modelItem => item.Active)
 				</td>
 				<td>
-					@Html.ActionLink("Bearbeiten", "Edit", new { id = item.ID }) |
-					@Html.ActionLink("Details", "Details", new { id = item.ID }) |
-					@Html.ActionLink("Löschen", "Delete", new { id = item.ID }, new { @class = "text-danger" })
+					@Html.ActionLink("Bearbeiten", "Edit", new {id = item.ID}) |
+					@Html.ActionLink("Details", "Details", new {id = item.ID}) |
+					@Html.ActionLink("Löschen", "Delete", new {id = item.ID}, new {@class = "text-danger"})
 				</td>
 			</tr>
 		}

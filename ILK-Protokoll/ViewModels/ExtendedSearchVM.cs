@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Web;
 using ILK_Protokoll.Models;
 
 namespace ILK_Protokoll.ViewModels

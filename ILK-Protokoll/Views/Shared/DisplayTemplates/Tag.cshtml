@@ -1,3 +1,2 @@
-﻿@using ILK_Protokoll.util
-@model ILK_Protokoll.Models.Tag
-<a href="@Url.Action("Results", "Search", new { Area = "", searchterm = "hasTag:\"" + Model.Name + "\"" })" class="label" style="color: @Model.FontColor.ToHex(); background-color: @Model.BackgroundColor.ToHex();" data-tagid="@Model.ID">@Model.Name</a>
+﻿@model ILK_Protokoll.Models.Tag
+<a href="@Url.Action("Results", "Search", new {Area = "", searchterm = "hasTag:\"" + Model.Name + "\""})" class="label" style="background-color: @Model.BackgroundColor.ToHex(); color: @Model.FontColor.ToHex();" data-tagid="@Model.ID">@Model.Name</a>

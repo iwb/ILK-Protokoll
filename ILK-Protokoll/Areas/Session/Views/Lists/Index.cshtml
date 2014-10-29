@@ -1,11 +1,10 @@
-﻿@using ILK_Protokoll.util
-@{
+﻿@{
 	ViewBag.Title = "Listen";
 }
 
 <div class="index-action">
-	<a class="btn btn-default" onclick="collapseListsOut();"> Alle Listen ausklappen</a>
-	<a class="btn btn-default" onclick="collapseListsIn();"> Alle Listen einklappen</a>
+	<a class="btn btn-default" onclick=" collapseListsOut(); "> Alle Listen ausklappen</a>
+	<a class="btn btn-default" onclick=" collapseListsIn(); "> Alle Listen einklappen</a>
 	@Html.ActionLink("Zurück", "Edit", "Master", new {Area = "Session"}, new {@class = "btn btn-default"})
 	@Html.ActionLink("Weiter", "Index", "Discussion", new {Area = "Session"}, new {@class = "btn btn-primary"})
 </div>
@@ -41,12 +40,12 @@ else
 
 @Html.Action("_List", "LExtensions", new {Area = "Session"})
 
-@Html.Action("_List", "LEmployeePresentations", new { Area = "Session" })
+@Html.Action("_List", "LEmployeePresentations", new {Area = "Session"})
 
-@Html.Action("_List", "LIlkDays", new { Area = "Session" })
+@Html.Action("_List", "LIlkDays", new {Area = "Session"})
 
-@Html.Action("_List", "LIlkMeetings", new { Area = "Session" })
+@Html.Action("_List", "LIlkMeetings", new {Area = "Session"})
 
-@Html.Action("_List", "LOpenings", new { Area = "Session" })
+@Html.Action("_List", "LOpenings", new {Area = "Session"})
 
-@Html.Action("_List", "LHolidays", new { Area = "Session" })
+@Html.Action("_List", "LHolidays", new {Area = "Session"})

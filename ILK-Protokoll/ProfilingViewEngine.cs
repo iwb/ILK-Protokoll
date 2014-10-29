@@ -6,7 +6,7 @@ namespace ILK_Protokoll
 {
 	public class ProfilingViewEngine : IViewEngine
 	{
-		private IViewEngine wrapped;
+		private readonly IViewEngine wrapped;
 
 		public ProfilingViewEngine(IViewEngine wrapped)
 		{
@@ -37,9 +37,9 @@ namespace ILK_Protokoll
 
 		private class WrappedView : IView
 		{
-			private bool isPartial;
-			private string name;
-			private IView wrapped;
+			private readonly bool isPartial;
+			private readonly string name;
+			private readonly IView wrapped;
 
 			public WrappedView(IView wrapped, string name, bool isPartial)
 			{

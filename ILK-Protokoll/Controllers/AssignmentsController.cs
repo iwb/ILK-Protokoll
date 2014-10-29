@@ -180,7 +180,7 @@ namespace ILK_Protokoll.Controllers
 
 			ViewBag.UserList = CreateUserSelectList();
 
-			var vm = new AssignmentEdit()
+			var vm = new AssignmentEdit
 			{
 				Description = assignment.Description,
 				DueDate = assignment.DueDate,
@@ -222,7 +222,7 @@ namespace ILK_Protokoll.Controllers
 			db.Entry(assignment).State = EntityState.Modified;
 			db.SaveChanges();
 
-			return RedirectToAction("Details", "Topics", new { id = input.TopicID });
+			return RedirectToAction("Details", "Topics", new {id = input.TopicID});
 		}
 
 		// GET: Assignments/Delete/5
@@ -248,8 +248,7 @@ namespace ILK_Protokoll.Controllers
 			var tid = assignment.TopicID;
 			db.Assignments.Remove(assignment);
 			db.SaveChanges();
-			return RedirectToAction("Details", "Topics", new { id = tid });
+			return RedirectToAction("Details", "Topics", new {id = tid});
 		}
-
 	}
 }

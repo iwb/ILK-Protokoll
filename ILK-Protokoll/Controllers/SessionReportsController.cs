@@ -24,23 +24,17 @@ namespace ILK_Protokoll.Controllers
 		public ActionResult Details(int? id)
 		{
 			if (id == null)
-			{
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-			}
 			SessionReport SessionReport = db.SessionReports.Find(id);
 			if (SessionReport == null)
-			{
 				return HttpNotFound();
-			}
 			return File(SessionReport.Directory + SessionReport.FileName, "application/pdf");
 		}
-		
+
 		protected override void Dispose(bool disposing)
 		{
 			if (disposing)
-			{
 				db.Dispose();
-			}
 			base.Dispose(disposing);
 		}
 	}

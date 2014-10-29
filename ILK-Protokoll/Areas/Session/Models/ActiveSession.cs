@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using ILK_Protokoll.Areas.Administration.Models;
-using ILK_Protokoll.Areas.Session.Models.Lists;
 using ILK_Protokoll.Models;
 
 namespace ILK_Protokoll.Areas.Session.Models
@@ -58,7 +57,6 @@ namespace ILK_Protokoll.Areas.Session.Models
 		public DateTime Start { get; set; }
 
 		[DisplayName("Ende")]
-
 		[NotMapped]
 		public DateTime End { get; set; }
 

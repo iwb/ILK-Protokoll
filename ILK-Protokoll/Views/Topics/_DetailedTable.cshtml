@@ -66,9 +66,10 @@
 						}
 						else
 						{
-							<span class="hidden">5</span><span class="sr-only">Nicht Berechtigt</span>
+							<span class="hidden">5</span>
+							<span class="sr-only">Nicht Berechtigt</span>
 						}
-}
+					}
 				</td>
 				<td>
 					<a href="@Url.Action("Details", new {id = item.ID})">@item.Title.Shorten(60)</a>

@@ -6,7 +6,7 @@
 }
 
 <div class="index-action">
-	@Html.ActionLink("Bearbeiten", "Edit", new { id = Model.ID }, new { @class = "btn btn-primary" })
+	@Html.ActionLink("Bearbeiten", "Edit", new {id = Model.ID}, new {@class = "btn btn-primary"})
 </div>
 
 <h2>@ViewBag.Title</h2>
@@ -90,6 +90,6 @@
 	}
 	else
 	{
-		@Html.ActionLink("Aufgabe als erledigt markieren", "MarkAsDone", new { id = Model.ID })
+		@Html.ActionLink("Aufgabe als erledigt markieren", "MarkAsDone", new {id = Model.ID})
 	}
 </div>

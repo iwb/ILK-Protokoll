@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using ILK_Protokoll.Areas.Administration.Models;
 using ILK_Protokoll.Controllers;
-using ILK_Protokoll.Models;
 
 namespace ILK_Protokoll.Areas.Administration.Controllers
 {
@@ -31,14 +28,10 @@ namespace ILK_Protokoll.Areas.Administration.Controllers
 		public ActionResult Details(int? id)
 		{
 			if (id == null)
-			{
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-			}
 			SessionType sessionType = db.SessionTypes.Find(id);
 			if (sessionType == null)
-			{
 				return HttpNotFound();
-			}
 			return View(sessionType);
 		}
 
@@ -78,14 +71,10 @@ namespace ILK_Protokoll.Areas.Administration.Controllers
 		public ActionResult Edit(int? id)
 		{
 			if (id == null)
-			{
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-			}
 			SessionType sessionType = db.SessionTypes.Find(id);
 			if (sessionType == null)
-			{
 				return HttpNotFound();
-			}
 			ViewBag.UserDict = CreateUserDictionary(u => sessionType.Attendees.Contains(u));
 			return View(sessionType);
 		}
@@ -103,8 +92,10 @@ namespace ILK_Protokoll.Areas.Administration.Controllers
 				sessionType.Attendees.Clear();
 
 				if (Attendees != null)
+				{
 					foreach (var userid in Attendees)
 						sessionType.Attendees.Add(db.Users.Find(userid));
+				}
 
 				db.SaveChanges();
 				return RedirectToAction("Index");
@@ -118,20 +109,15 @@ namespace ILK_Protokoll.Areas.Administration.Controllers
 		public ActionResult Delete(int? id)
 		{
 			if (id == null)
-			{
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-			}
 			SessionType sessionType = db.SessionTypes.Find(id);
 			if (sessionType == null)
-			{
 				return HttpNotFound();
-			}
 
 			if (sessionType.Attendees.Count == 0)
 				return View(sessionType);
 			else
 				return View("DeleteHint", sessionType);
-
 		}
 
 		// POST: Administration/SessionTypes/Delete/5

@@ -1,4 +1,4 @@
-﻿@model System.Int32
+﻿@model Int32
 
 <h3>Papierkorb leeren?</h3>
 
@@ -9,7 +9,7 @@
 {
 	@Html.AntiForgeryToken()
 	<div class="form-group">
-		@Html.ActionLink("Abbrechen", "Index", null, new { @class = "btn btn-lg btn-default" })
+		@Html.ActionLink("Abbrechen", "Index", null, new {@class = "btn btn-lg btn-default"})
 
 		<input type="submit" value="Papierkorb leeren" class="btn btn-lg btn-danger" />
 	</div>

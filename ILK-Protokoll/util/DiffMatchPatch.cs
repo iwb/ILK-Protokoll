@@ -7,7 +7,7 @@ using System.Web;
 
 namespace ILK_Protokoll.util
 {
-  /*
+	/*
 	* Copyright 2008 Google Inc. All Rights Reserved.
 	* Author: fraser@google.com (Neil Fraser)
 	* Author: anteru@developer.shelter13.net (Matthaeus G. Chajdas)
@@ -213,44 +213,44 @@ namespace ILK_Protokoll.util
 		private readonly Regex BLANKLINESTART = new Regex("\\A\\r?\\n\\r?\\n");
 
 		/// <summary>
-		/// Cost of an empty edit operation in terms of edit characters.
+		///    Cost of an empty edit operation in terms of edit characters.
 		/// </summary>
 		public short Diff_EditCost = 4;
+
 		/// <summary>
-		/// Number of seconds to map a diff before giving up (0 for infinity).
+		///    Number of seconds to map a diff before giving up (0 for infinity).
 		/// </summary>
 		public float Diff_Timeout = 1.0f;
 
 		/// <summary>
-		/// How far to search for a match (0 = exact location, 1000+ = broad match).
-		/// A match this many characters away from the expected location will add
-		/// 1.0 to the score (0.0 is a perfect match).
+		///    How far to search for a match (0 = exact location, 1000+ = broad match).
+		///    A match this many characters away from the expected location will add
+		///    1.0 to the score (0.0 is a perfect match).
 		/// </summary>
 		public int Match_Distance = 1000;
 
 		/// <summary>
-		/// The number of bits in an int.
+		///    The number of bits in an int.
 		/// </summary>
 		private short Match_MaxBits = 32;
 
 		/// <summary>
-		/// At what point is no match declared (0.0 = perfection, 1.0 = very loose).
+		///    At what point is no match declared (0.0 = perfection, 1.0 = very loose).
 		/// </summary>
 		public float Match_Threshold = 0.5f;
-		
+
 		/// <summary>
-		/// When deleting a large block of text (over ~64 characters), how close
-		/// do the contents have to be to match the expected contents. (0.0 =
-		/// perfection, 1.0 = very loose).  Note that Match_Threshold controls
-		/// how closely the end points of a delete need to match. 
+		///    When deleting a large block of text (over ~64 characters), how close
+		///    do the contents have to be to match the expected contents. (0.0 =
+		///    perfection, 1.0 = very loose).  Note that Match_Threshold controls
+		///    how closely the end points of a delete need to match.
 		/// </summary>
 		public float Patch_DeleteThreshold = 0.5f;
-	
+
 		/// <summary>
-		/// Chunk size for context length.
+		///    Chunk size for context length.
 		/// </summary>
 		public short Patch_Margin = 4;
-
 
 
 		//  DIFF FUNCTIONS

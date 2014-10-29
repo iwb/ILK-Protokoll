@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using ILK_Protokoll.Areas.Session.Models;
 
@@ -25,13 +24,9 @@ namespace ILK_Protokoll.Models
 
 	public enum TopicAction
 	{
-		[Display(Name = "Wiedervorlage")]
-		None,
-		[Display(Name = "Beschluss")]
-		Decide,
-		[Display(Name = "Archiviert")]
-		Close,
-		[Display(Name = "Löschen")]
-		Delete
+		[Display(Name = "Wiedervorlage")] None,
+		[Display(Name = "Beschluss")] Decide,
+		[Display(Name = "Archiviert")] Close,
+		[Display(Name = "Löschen")] Delete
 	}
 }

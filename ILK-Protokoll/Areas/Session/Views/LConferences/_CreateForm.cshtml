@@ -28,7 +28,7 @@
 					@Html.TextEditorFor(model => model.Employee, "conf_create_emp")
 				</div>
 				<div class="col-sm-1">
-					@Html.TextEditorFor(model => model.Funding, "conf_create_fund" )
+					@Html.TextEditorFor(model => model.Funding, "conf_create_fund")
 				</div>
 				<div class="col-sm-1">
 					@Html.EnumDropDownListFor(model => model.Approval, new {@class = "form-control", id = "conf_create_app"})
@@ -47,7 +47,7 @@
 		$('#conf_create_start').change(function() {
 			$('#conf_create_end').val($('#conf_create_start').val());
 		});
-		$('#conf_create_start_display').change(function () {
+		$('#conf_create_start_display').change(function() {
 			$('#conf_create_end').val($('#conf_create_start').val());
 			$('#conf_create_end_display').val($('#conf_create_start_display').val());
 		});

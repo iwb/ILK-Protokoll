@@ -1,12 +1,12 @@
 @using ILK_Protokoll.Models
 @using ILK_Protokoll.util
-@model IEnumerable<Topic>
+@model IEnumerable<ILK_Protokoll.Models.Topic>
 @{
 	var report = (SessionReport)ViewBag.Report;
 }
 <p>Soeben wurde eine Sitzung des Typs &raquo;@report.SessionType.Name&laquo; beendet.</p>
 
-<a href="@ViewBag.Host@Url.Action("Details", "SessionReports", new { id = report.ID, Area = "" })">Sitzungsprotokoll zum Download</a><br />
+<a href="@ViewBag.Host@Url.Action("Details", "SessionReports", new {id = report.ID, Area = ""})">Sitzungsprotokoll zum Download</a><br />
 
 
 <h3>Folgende Themen wurden diskutiert:</h3>
@@ -45,7 +45,8 @@
 					@item.Lock.Action.DisplayName()
 					@if (item.Lock.Action == TopicAction.None && item.ResubmissionDate != null)
 					{
-						<text><br />ab dem</text> @item.ResubmissionDate.Value.ToString("d")
+						<text><br />ab dem</text>
+						@item.ResubmissionDate.Value.ToString("d")
 					}
 				</td>
 			</tr>

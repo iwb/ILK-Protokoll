@@ -69,7 +69,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 			ViewBag.ReturnURL = returnURL ?? Url.Action("Index", "ViewLists", new {Area = ""});
 
 			if (!ModelState.IsValid)
-			return View(input);
+				return View(input);
 
 			db.Entry(input).State = EntityState.Modified;
 			db.SaveChanges();

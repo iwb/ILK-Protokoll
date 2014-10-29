@@ -16,7 +16,7 @@
 		@Html.HiddenFor(model => model.ID)
 
 		<div class="form-group">
-			@Html.LabelFor(model => model.Name, htmlAttributes: new {@class = "control-label col-sm-2"})
+			@Html.LabelFor(model => model.Name, new {@class = "control-label col-sm-2"})
 			<div class="col-sm-3">
 				@Html.EditorFor(model => model.Name, new {htmlAttributes = new {@class = "form-control"}})
 				@Html.ValidationMessageFor(model => model.Name, "", new {@class = "text-danger"})
@@ -24,7 +24,7 @@
 		</div>
 
 		<div class="form-group">
-			@Html.LabelFor(model => model.BackgroundColor, htmlAttributes: new {@class = "control-label col-sm-2"})
+			@Html.LabelFor(model => model.BackgroundColor, new {@class = "control-label col-sm-2"})
 			<div class="col-sm-3">
 				@Html.EditorFor(model => model.BackgroundColor, new {htmlAttributes = new {@class = "form-control", id = "bg-color-picker"}})
 				@Html.ValidationMessageFor(model => model.BackgroundColor, "", new {@class = "text-danger"})
@@ -37,7 +37,7 @@
 		</div>
 
 		<div class="form-group">
-			@Html.LabelFor(model => model.FontColor, htmlAttributes: new {@class = "control-label col-sm-2"})
+			@Html.LabelFor(model => model.FontColor, new {@class = "control-label col-sm-2"})
 			<div class="col-sm-3">
 				@Html.EditorFor(model => model.FontColor, new {htmlAttributes = new {@class = "form-control", id = "font-color-picker"}})
 				@Html.ValidationMessageFor(model => model.FontColor, "", new {@class = "text-danger"})
@@ -128,11 +128,11 @@
 		function enableColorPicker(pickerdiv, formfield) {
 
 			$(pickerdiv).colpick({
-				flat: true,
-				submit: false,
+					flat: true,
+					submit: false,
 					colorScheme: 'dark',
 					color: $(formfield)[0].value,
-					onChange: function (hsb, hex, rgb, el, bySetColor) {
+					onChange: function(hsb, hex, rgb, el, bySetColor) {
 						if (!bySetColor) {
 							$(formfield)[0].value = '#' + hex;
 							$(formfield).change();

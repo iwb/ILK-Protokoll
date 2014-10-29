@@ -8,7 +8,7 @@
 
 <div>
 	@Html.ActionLink("Zurück zum Index", "Index")<br />
-	@Html.ActionLink("Zurück zu Details", "Details", new { id = Model.ID })
+	@Html.ActionLink("Zurück zu Details", "Details", new {id = Model.ID})
 </div>
 <hr />
 
@@ -22,50 +22,50 @@
 		@Html.HiddenFor(model => model.TopicID)
 
 		<div class="form-group">
-			@Html.LabelFor(model => model.Type, htmlAttributes: new { @class = "control-label col-md-2" })
+			@Html.LabelFor(model => model.Type, new {@class = "control-label col-md-2"})
 			<div class="col-md-2">
-				@Html.EnumDropDownListFor(model => model.Type, new { @class = "form-control" })
-				@Html.ValidationMessageFor(model => model.Type, "", new { @class = "text-danger" })
+				@Html.EnumDropDownListFor(model => model.Type, new {@class = "form-control"})
+				@Html.ValidationMessageFor(model => model.Type, "", new {@class = "text-danger"})
 			</div>
 		</div>
 
 		<div class="form-group">
-			@Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
+			@Html.LabelFor(model => model.Title, new {@class = "control-label col-md-2"})
 			<div class="col-md-5">
-				@Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
-				@Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+				@Html.EditorFor(model => model.Title, new {htmlAttributes = new {@class = "form-control"}})
+				@Html.ValidationMessageFor(model => model.Title, "", new {@class = "text-danger"})
 			</div>
 		</div>
 
 		<div class="form-group">
-			@Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+			@Html.LabelFor(model => model.Description, new {@class = "control-label col-md-2"})
 			<div class="col-md-5">
-				@Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
-				@Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+				@Html.EditorFor(model => model.Description, new {htmlAttributes = new {@class = "form-control"}})
+				@Html.ValidationMessageFor(model => model.Description, "", new {@class = "text-danger"})
 			</div>
 		</div>
 
 		<div class="form-group">
-			@Html.LabelFor(model => model.OwnerID, new { @class = "control-label col-md-2" })
+			@Html.LabelFor(model => model.OwnerID, new {@class = "control-label col-md-2"})
 			<div class="col-md-2">
-				@Html.DropDownListFor(m => m.OwnerID, (SelectList)ViewBag.UserList, "(bitte auswählen)", new { @class = "form-control" })
-				@Html.ValidationMessageFor(model => model.OwnerID, "", new { @class = "text-danger" })
+				@Html.DropDownListFor(m => m.OwnerID, (SelectList)ViewBag.UserList, "(bitte auswählen)", new {@class = "form-control"})
+				@Html.ValidationMessageFor(model => model.OwnerID, "", new {@class = "text-danger"})
 			</div>
 		</div>
 
 		<div class="form-group">
-			@Html.LabelFor(model => model.DueDate, htmlAttributes: new { @class = "control-label col-md-2" })
+			@Html.LabelFor(model => model.DueDate, new {@class = "control-label col-md-2"})
 			<div class="col-md-5">
-				@Html.EditorFor(model => model.DueDate, new { htmlAttributes = new { @class = "form-control" } })
-				@Html.ValidationMessageFor(model => model.DueDate, "", new { @class = "text-danger" })
+				@Html.EditorFor(model => model.DueDate, new {htmlAttributes = new {@class = "form-control"}})
+				@Html.ValidationMessageFor(model => model.DueDate, "", new {@class = "text-danger"})
 			</div>
 		</div>
 		@if (!Model.IsActive)
-		{ 
+		{
 			<div class="form-group">
-				@Html.LabelFor(model => model.IsActive, htmlAttributes: new { @class = "control-label col-md-2" })
+				@Html.LabelFor(model => model.IsActive, new {@class = "control-label col-md-2"})
 				<div class="col-md-5">
-					@Html.EditorFor(model => model.IsActive, new { htmlAttributes = new { @class = "form-control", data_toggle = "tooltip", data_placement = "right", title = "Das Aktiv-Flag bestimmt, ob der Besitzer E-Mails erhält. Es kann nur einmal gesetzt werden." } })
+					@Html.EditorFor(model => model.IsActive, new {htmlAttributes = new {@class = "form-control", data_toggle = "tooltip", data_placement = "right", title = "Das Aktiv-Flag bestimmt, ob der Besitzer E-Mails erhält. Es kann nur einmal gesetzt werden."}})
 				</div>
 			</div>
 		}

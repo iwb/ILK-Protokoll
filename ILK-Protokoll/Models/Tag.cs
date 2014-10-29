@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Drawing;
-using ILK_Protokoll.Models;
 
 namespace ILK_Protokoll.Models
 {
@@ -58,7 +57,7 @@ namespace ILK_Protokoll.Models
 
 		private Color GetContrastColor(Color c)
 		{
-			var brightness = (299 * c.R + 587 * c.G + 114 * c.B)/1000;
+			var brightness = (299 * c.R + 587 * c.G + 114 * c.B) / 1000;
 			return brightness >= 128 ? Color.Black : Color.White;
 		}
 	}

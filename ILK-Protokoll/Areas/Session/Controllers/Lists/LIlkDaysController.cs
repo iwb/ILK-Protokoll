@@ -30,7 +30,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 			ViewBag.SessionTypeList = new SelectList(db.GetActiveSessionTypes(), "ID", "Name");
 			return base._BeginEdit(id);
 		}
-		
+
 		public override ActionResult Download(int id)
 		{
 			Debug.Assert(Request.Url != null, "Request.Url != null");
@@ -43,7 +43,8 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 			}
 
 			var ical = CreateCalendarEvent("ILK-Tag: " + ilkDay.Topics.Shorten(50),
-				ilkDay.Topics + "\r\n\r\nTeilnehmer: " + ilkDay.Participants + "\r\n\r\nhttp://" + Request.Url.Authority + Url.Content("~/ViewLists#ilkDay_table"),
+				ilkDay.Topics + "\r\n\r\nTeilnehmer: " + ilkDay.Participants + "\r\n\r\nhttp://" + Request.Url.Authority +
+				Url.Content("~/ViewLists#ilkDay_table"),
 				ilkDay.Start, ilkDay.End,
 				ilkDay.Place, ilkDay.GUID.ToString(), false);
 

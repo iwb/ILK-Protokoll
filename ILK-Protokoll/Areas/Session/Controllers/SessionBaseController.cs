@@ -42,7 +42,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 			foreach (var topic in topics)
 			{
 				MarkAsUnread(topic, skipCurrentUser: false);
-				session.LockedTopics.Add(new TopicLock()
+				session.LockedTopics.Add(new TopicLock
 				{
 					Topic = topic,
 					Session = session,

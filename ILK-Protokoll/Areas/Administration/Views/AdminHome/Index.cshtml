@@ -1,5 +1,4 @@
 ﻿@using ILK_Protokoll.Areas.Administration.Controllers
-@using ILK_Protokoll.Models
 @using ILK_Protokoll.util
 @{
 	ViewBag.Title = "Verwaltung";
@@ -33,5 +32,5 @@
 </dl>
 <h3>Statistik</h3>
 <div class="col-sm-offset-1 col-sm-6 col-md-4">
-	@{ Html.RenderAction("_Table", "Statistics", new { Area = "" }); }
+	@{ Html.RenderAction("_Table", "Statistics", new {Area = ""}); }
 </div>

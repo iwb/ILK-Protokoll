@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Web.Mvc;
 using ILK_Protokoll.Models;
 using ILK_Protokoll.ViewModels;
@@ -22,9 +21,9 @@ namespace ILK_Protokoll.Controllers
 			using (profiler.Step("Push-Nachrichten"))
 			{
 				dash.Notifications =
-				db.PushNotifications.Include(pn => pn.Topic)
-					.Where(pn => pn.UserID == userID && pn.Topic.IsReadOnly && !pn.Confirmed)
-					.ToList();
+					db.PushNotifications.Include(pn => pn.Topic)
+						.Where(pn => pn.UserID == userID && pn.Topic.IsReadOnly && !pn.Confirmed)
+						.ToList();
 			}
 			using (profiler.Step("Aufgaben"))
 			{
@@ -33,7 +32,7 @@ namespace ILK_Protokoll.Controllers
 				dash.MyToDos = myAssignments[AssignmentType.ToDo];
 				dash.MyDuties = myAssignments[AssignmentType.Duty].Where(a => a.Topic.HasDecision(DecisionType.Resolution));
 			}
-			
+
 			dash.MyTopics = null; // Delayed AJAX loading
 			return View(dash);
 		}

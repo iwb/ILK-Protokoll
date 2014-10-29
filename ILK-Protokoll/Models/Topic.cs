@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -122,7 +121,7 @@ namespace ILK_Protokoll.Models
 		public bool IsLocked { get; set; }
 
 		public TopicLock Lock { get; set; }
-		
+
 		public virtual ICollection<UnreadState> UnreadBy { get; set; }
 
 		public bool IsUnreadBy(int userID)
@@ -134,6 +133,7 @@ namespace ILK_Protokoll.Models
 		{
 			return Decision != null;
 		}
+
 		public bool HasDecision(DecisionType d)
 		{
 			return Decision != null && Decision.Type == d;

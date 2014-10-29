@@ -1,6 +1,4 @@
-﻿@using ILK_Protokoll.Models
-@using ILK_Protokoll.util
-@model IDictionary<User, bool>
+﻿@model IDictionary<ILK_Protokoll.Models.User, bool>
 
 @using (Ajax.BeginForm("_RegisterPushTargets", null, new AjaxOptions
 {
@@ -8,7 +6,6 @@
 	UpdateTargetId = "PushListEditor",
 	InsertionMode = InsertionMode.ReplaceWith,
 	OnFailure = "DisplayErrorMessage('#PushListEditor', '<br />' + xhr.responseText);"
-		
 }, new {id = "PushListEditor"}))
 {
 	int topicID = ViewBag.TopicID;
@@ -17,7 +14,7 @@
 }
 
 <script type="text/javascript">
-	$('#PushListEditor input').change(function () {
+	$('#PushListEditor input').change(function() {
 		$('#PushListEditor').submit();
 	});
 </script>

@@ -7,8 +7,8 @@
 			<p>
 				@if (!Model.IsReadOnly && !Model.IsLocked && ViewBag.IsEditable)
 				{
-					<a data-ajax="true" data-ajax-mode="replace-with" data-ajax-update="#description-panel" href="@Url.Action("_EditDescription", new { id = Model.ID })"
-						title="Bearbeiten"><i class="glyphicon glyphicon-edit"></i></a>
+					<a data-ajax="true" data-ajax-mode="replace-with" data-ajax-update="#description-panel" href="@Url.Action("_EditDescription", new {id = Model.ID})"
+					   title="Bearbeiten"><i class="glyphicon glyphicon-edit"></i></a>
 				}
 			</p>
 		</div>

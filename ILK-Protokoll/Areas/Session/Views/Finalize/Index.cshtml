@@ -3,13 +3,13 @@
 }
 
 <div class="index-action">
-	@Html.ActionLink("Zurück", "Index", "Discussion", new { Area = "Session" }, new { @class = "btn btn-default" })
+	@Html.ActionLink("Zurück", "Index", "Discussion", new {Area = "Session"}, new {@class = "btn btn-default"})
 	<button class="btn btn-primary disabled">Weiter</button>
 </div>
 
 <h2>@ViewBag.Title</h2>
 
-@using (Ajax.BeginForm("GenerateReport", "Finalize", new AjaxOptions()
+@using (Ajax.BeginForm("GenerateReport", "Finalize", new AjaxOptions
 {
 	HttpMethod = "POST",
 	InsertionMode = InsertionMode.Replace,
@@ -22,14 +22,14 @@
 	@Html.AntiForgeryToken()
 
 	<div class="form-group">
-		@Html.ActionLink("Zurück", "Index", "Discussion", null, new { @class = "btn btn-lg btn-default", id="backButton" })
+		@Html.ActionLink("Zurück", "Index", "Discussion", null, new {@class = "btn btn-lg btn-default", id = "backButton"})
 
 		<input type="submit" value="Sitzung beenden" class="btn btn-lg btn-danger" id="submitButton" />
 	</div>
 }
 
 <div class="row">
-	<div class="col-sm-5" id="report_progress" style="display:none;">
+	<div class="col-sm-5" id="report_progress" style="display: none;">
 		<h3>Protokoll wird generiert ...</h3>
 		<div class="progress progress-striped active">
 			<div class="progress-bar" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" style="width: 30%"></div>

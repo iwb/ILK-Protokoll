@@ -28,7 +28,7 @@
 }
 <div style="margin-bottom: 20px;">
 	<b>Tags: </b>
-	@Html.ListBox("SelectedTags", selectList, new { @class = "multiselect" } )
+	@Html.ListBox("SelectedTags", selectList, new {@class = "multiselect"})
 	<span id="successIndicator" class="text-success glyphicon glyphicon-ok" style="display: none;"></span>
 	<script type="text/javascript">
 		$(document).ready(function() {
@@ -285,11 +285,11 @@ else
 			}
 			else
 			{
-				@Html.Action("_List", "Attachments", new { entityKind = DocumentContainer.Topic, id = Model.ID, showActions = !Model.IsReadOnly })
+				@Html.Action("_List", "Attachments", new {entityKind = DocumentContainer.Topic, id = Model.ID, showActions = !Model.IsReadOnly})
 			}
 			@if (!Model.IsReadOnly)
 			{
-				@Html.Action("_UploadForm", "Attachments", new { entityKind = DocumentContainer.Topic, id = Model.ID })
+				@Html.Action("_UploadForm", "Attachments", new {entityKind = DocumentContainer.Topic, id = Model.ID})
 			}
 		</div>
 	</div>

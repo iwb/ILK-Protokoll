@@ -12,12 +12,12 @@
 			<span style="margin-right: 30px;"></span>
 			@Html.AntiForgeryToken()
 			<div class="form-group">
-				@Html.LabelFor(model => model.Name, htmlAttributes: new {@class = "sr-only"})
+				@Html.LabelFor(model => model.Name, new {@class = "sr-only"})
 				@Html.EditorFor(model => model.Name, new {htmlAttributes = new {@class = "form-control", placeholder = Html.GetDisplayName(model => model.Name)}})
 			</div>
 			<span style="margin-right: 30px;"></span>
 			<div class="form-group">
-				@Html.LabelFor(model => model.BackgroundColor, htmlAttributes: new {@class = "sr-only"})
+				@Html.LabelFor(model => model.BackgroundColor, new {@class = "sr-only"})
 				@Html.EditorFor(model => model.BackgroundColor, new {htmlAttributes = new {@class = "form-control", style = "width: 100px;", id = "color-picker"}})
 			</div>
 			<span style="margin-right: 30px;"></span>

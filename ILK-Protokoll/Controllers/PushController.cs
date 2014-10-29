@@ -28,7 +28,7 @@ namespace ILK_Protokoll.Controllers
 			var actual = new HashSet<int>(db.PushNotifications.Where(pn => pn.TopicID == topicID).Select(pn => pn.UserID));
 
 			foreach (var userID in desired.Except(actual))
-				db.PushNotifications.Add(new PushNotification()
+				db.PushNotifications.Add(new PushNotification
 				{
 					TopicID = topicID,
 					UserID = userID

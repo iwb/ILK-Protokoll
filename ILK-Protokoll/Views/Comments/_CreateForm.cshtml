@@ -22,7 +22,7 @@
 }
 
 <script type="text/javascript">
-	$('#comment_form_@ViewBag.TopicID .inputexpander').click(function () { performCommentFormExpansion(this, @Model.TopicID); });
+	$('#comment_form_@ViewBag.TopicID .inputexpander').click(function() { performCommentFormExpansion(this, @Model.TopicID); });
 </script>
 
 @using (Html.Delayed(null, "CommentFormExpansion"))
@@ -46,7 +46,7 @@
 			PerformMasonryLayout();
 			$(button).css('height', '120px').removeClass('btn-default').addClass('btn-primary');
 			$(button).children(":first").removeClass('glyphicon-align-justify').addClass('glyphicon-check'); // Span element within
-			$(button).off("click").click(function () {
+			$(button).off("click").click(function() {
 				$("#comment_form_" + topicid).submit();
 			});
 		}

@@ -2,7 +2,6 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using ILK_Protokoll.util;
 
 namespace ILK_Protokoll.Areas.Session.Models.Lists
 {

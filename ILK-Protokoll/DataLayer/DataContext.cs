@@ -76,6 +76,7 @@ namespace ILK_Protokoll.DataLayer
 					.OrderBy(u => u.ShortName, StringComparer.CurrentCultureIgnoreCase);
 			}
 		}
+
 		public IQueryable<User> GetActiveUsers()
 		{
 			return Users.Where(u => u.IsActive);

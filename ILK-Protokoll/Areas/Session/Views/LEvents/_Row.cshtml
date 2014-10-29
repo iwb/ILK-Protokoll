@@ -61,13 +61,13 @@
 
 			$(element).html(excerpt);
 			$(element).append(content);
-			
-			$(element).click(function () {
+
+			$(element).click(function() {
 				$(this).children('.overflow').toggle();
 			});
 		}
 
-		$("#event_table td.shorten").each(function () {
+		$("#event_table td.shorten").each(function() {
 			if (this.innerText.length > 60) {
 				shortenText(this, 60);
 			}

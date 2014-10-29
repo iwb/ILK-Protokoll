@@ -30,12 +30,12 @@
 		</div>
 		@if (Model.IsUnreadBy(ViewBag.CurrentUser.ID))
 		{
-			<span style="display: inline-block; float: left; font-size: 180%; margin: 2px 16px 0 0; color: #D48625;">
+			<span style="color: #D48625; display: inline-block; float: left; font-size: 180%; margin: 2px 16px 0 0;">
 				<span class="glyphicon glyphicon-asterisk"></span>
 			</span>
 		}
 		<span class="panel-collapse-heading" style="display: inline-block; float: left; font-size: 180%; margin: 2px 16px 0 -12px;">
-			<a onclick="toggleSection(this, '#topicContent_@Model.ID');" style="color: inherit;"></a>
+			<a onclick=" toggleSection(this, '#topicContent_@Model.ID'); " style="color: inherit;"></a>
 		</span>
 		<h3 class="panel-title">
 			@{
@@ -62,7 +62,7 @@
 			</div>
 		</div>
 		<div class="panel-separator" id="auditorlist_@Model.ID">
-			@Html.Action("_List", "Votes", new { topic = Model, Area = "", linkLevel = ViewBag.CurrentSession != null ? VoteLinkLevel.Everyone : VoteLinkLevel.OnlyMine })
+			@Html.Action("_List", "Votes", new {topic = Model, Area = "", linkLevel = ViewBag.CurrentSession != null ? VoteLinkLevel.Everyone : VoteLinkLevel.OnlyMine})
 		</div>
 
 		@{
@@ -78,7 +78,7 @@
 		<div class="panel panel-primary comment-panel">
 			<div class="panel-heading panel-collapse-heading" style="position: relative;">
 				<h4 class="panel-title">
-					<a onclick="toggleSection(this, '#comments_@Model.ID');" class="@classA">
+					<a onclick=" toggleSection(this, '#comments_@Model.ID'); " class="@classA">
 						@if (@Model.Comments.Count == 0)
 						{
 							@:Keine Kommentare

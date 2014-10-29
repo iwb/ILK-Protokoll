@@ -146,7 +146,7 @@
 		using (Html.Delayed(null, "RevisionUpload"))
 		{
 			<script type="text/javascript">
-				$('#revisionUploadForm').submit(function (e) {
+				$('#revisionUploadForm').submit(function(e) {
 					var formdata = new FormData(); //FormData object
 					var fileInput = $('#file')[0];
 					var hidden = $(this).children().children('input');

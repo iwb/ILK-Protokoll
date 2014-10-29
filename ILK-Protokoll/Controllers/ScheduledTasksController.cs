@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Web.Mvc;
-using EntityFramework.Extensions;
-using ILK_Protokoll.Mailers;
 
 namespace ILK_Protokoll.Controllers
 {

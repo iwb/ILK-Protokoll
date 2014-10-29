@@ -24,7 +24,7 @@ namespace ILK_Protokoll.ViewModels
 
 		[DisplayName("Schreibgeschützte")]
 		public bool ShowReadonly { get; set; }
-		
+
 		public int ShowPriority { get; set; }
 
 		public IEnumerable<SelectListItem> PriorityList { get; set; }

@@ -8,7 +8,7 @@ namespace ILK_Protokoll
 		{
 			filters.Add(new HandleErrorAttribute());
 			//filters.Add(new RequireHttpsAttribute());
-			filters.Add(new AuthorizeAttribute { Roles = @"IWBMUC\ILK,IWBMUC\ILK-Proto" });
+			filters.Add(new AuthorizeAttribute {Roles = @"IWBMUC\ILK,IWBMUC\ILK-Proto"});
 		}
 	}
 }

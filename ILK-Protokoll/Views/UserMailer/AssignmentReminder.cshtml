@@ -7,9 +7,9 @@
 }
 <p>Eine ihrer Aufgaben wird in Kürze (<b>@assignment.DueDate.ToString("d")</b>) fällig.</p>
 
-<a href="@ViewBag.Host@Url.Action("Details", "Assignments", new { id = assignment.ID })">Detailseite</a><br />
+<a href="@ViewBag.Host@Url.Action("Details", "Assignments", new {id = assignment.ID})">Detailseite</a><br />
 <p>
-	<a href="@ViewBag.Host@Url.Action("MarkAsDone", "Assignments", new { id = assignment.ID })">Als erledigt kennzeichnen</a>
+	<a href="@ViewBag.Host@Url.Action("MarkAsDone", "Assignments", new {id = assignment.ID})">Als erledigt kennzeichnen</a>
 </p>
 
 <h3>@assignment.Title</h3>
@@ -33,7 +33,7 @@
 			Diskussion:
 		</dt>
 		<dd>
-			<a href="@ViewBag.Host@Url.Action("Details", "Topics", new { id = assignment.Topic.ID })">@assignment.Topic.Title</a>
+			<a href="@ViewBag.Host@Url.Action("Details", "Topics", new {id = assignment.Topic.ID})">@assignment.Topic.Title</a>
 		</dd>
 
 		<dt>

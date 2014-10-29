@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ILK_Protokoll.Areas.Session.Models.Lists
 {
@@ -18,19 +17,18 @@ namespace ILK_Protokoll.Areas.Session.Models.Lists
 		public DateTime Created { get; set; }
 
 		/// <summary>
-		/// Enthält den letzten Sperrzeitpunkt.
+		///    Enthält den letzten Sperrzeitpunkt.
 		/// </summary>
 		public DateTime LockTime { get; set; }
 
 		/// <summary>
-		/// Enthält die ActiveSessionID, die diesen Einträgt gesperrt hält. NULL, wen kein Lock besteht.
+		///    Enthält die ActiveSessionID, die diesen Einträgt gesperrt hält. NULL, wen kein Lock besteht.
 		/// </summary>
 		public int? LockSessionID { get; set; }
 
 		/// <summary>
-		/// Enthält eine GUID, falls eine vergeben ist.
+		///    Enthält eine GUID, falls eine vergeben ist.
 		/// </summary>
 		public Guid? GUID { get; set; }
 	}
-
 }

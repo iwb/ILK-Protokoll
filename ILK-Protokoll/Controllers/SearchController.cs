@@ -463,7 +463,7 @@ namespace ILK_Protokoll.Controllers
 				}
 				if (!float.IsNaN(score))
 				{
-					resultlist.Add(new SearchResult()
+					resultlist.Add(new SearchResult
 					{
 						ID = item.ID,
 						Score = score,
@@ -485,7 +485,7 @@ namespace ILK_Protokoll.Controllers
 			{
 				if (searchterms.All(pattern => pattern.IsMatch(item.Description)))
 				{
-					resultlist.Add(new SearchResult()
+					resultlist.Add(new SearchResult
 					{
 						ID = item.ID,
 						Score = 7,
@@ -507,7 +507,7 @@ namespace ILK_Protokoll.Controllers
 			{
 				if (searchterms.All(pattern => pattern.IsMatch(item.Comment)))
 				{
-					resultlist.Add(new SearchResult()
+					resultlist.Add(new SearchResult
 					{
 						ID = item.ID,
 						Score = 7,

@@ -14,7 +14,7 @@ Johann Burkard
 
 */
 
-jQuery.fn.highlight = function (regexpattern) {
+jQuery.fn.highlight = function(regexpattern) {
 	function innerHighlight(node, regex) {
 		var skip = 0;
 		if (node.nodeType == 3) {
@@ -44,13 +44,13 @@ jQuery.fn.highlight = function (regexpattern) {
 		return skip;
 	}
 
-	return this.length && regexpattern ? this.each(function () {
+	return this.length && regexpattern ? this.each(function() {
 		innerHighlight(this, regexpattern);
 	}) : this;
 };
 
-jQuery.fn.removeHighlight = function () {
-	return this.find("span.highlight").each(function () {
+jQuery.fn.removeHighlight = function() {
+	return this.find("span.highlight").each(function() {
 		this.parentNode.firstChild.nodeName;
 		with (this.parentNode) {
 			replaceChild(this.firstChild, this);

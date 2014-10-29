@@ -4,7 +4,6 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using ILK_Protokoll.Areas.Administration.Models;
 using ILK_Protokoll.Models;
-using ILK_Protokoll.util;
 
 namespace ILK_Protokoll.Areas.Session.Models.Lists
 {
@@ -27,7 +26,7 @@ namespace ILK_Protokoll.Areas.Session.Models.Lists
 		[Required]
 		[DisplayName("Ort")]
 		public string Place { get; set; }
-		
+
 		[DisplayName("Sitzungstyp")]
 		public virtual SessionType SessionType { get; set; }
 

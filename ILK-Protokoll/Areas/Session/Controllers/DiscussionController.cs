@@ -94,7 +94,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 		public ActionResult _ChangeState(int id, TopicAction state)
 		{
 			var appropriateView = (Session["DiscussionView"] as string) == "Table" ? "_StateDropdown" : "_StateButtons";
-			
+
 			ActiveSession session = GetSession();
 			if (session == null)
 				return HTTPStatus(HttpStatusCode.Forbidden, "Keine Sitzung gefunden.");

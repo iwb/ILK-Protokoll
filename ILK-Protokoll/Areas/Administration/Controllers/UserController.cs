@@ -20,7 +20,7 @@ namespace ILK_Protokoll.Areas.Administration.Controllers
 		private const string DomainName = "iwbmuc";
 
 		private readonly string[] _authorizeGroups = {"ILK", "ILK-Proto"};
-			// Benutzer dieser Gruppen werden automatisch hinzugefügt
+		// Benutzer dieser Gruppen werden automatisch hinzugefügt
 
 		protected override void OnActionExecuting(ActionExecutingContext filterContext)
 		{
@@ -117,7 +117,7 @@ namespace ILK_Protokoll.Areas.Administration.Controllers
 			string shortName = fullName.Split('\\').Last();
 
 			if (string.IsNullOrEmpty(fullName))
-				return new User() {ID = 0, ShortName = "xx", LongName = "Anonymous User"};
+				return new User {ID = 0, ShortName = "xx", LongName = "Anonymous User"};
 
 			using (var context = new PrincipalContext(ContextType.Domain, DomainName))
 			using (UserPrincipal aduser = UserPrincipal.FindByIdentity(context, IdentityType.SamAccountName, fullName))

@@ -3,8 +3,8 @@
 <div class="row">
 	<div class="col-sm-5" id="report_done">
 		<p>Die Protokollerstellung ist abgeschlossen, die Sitzung wurde beendet.</p>
-		@Html.ActionLink("Zum Dashboard", "Index", "Home", new { Area = "" }, new { @class = "btn btn-primary" })
+		@Html.ActionLink("Zum Dashboard", "Index", "Home", new {Area = ""}, new {@class = "btn btn-primary"})
 		&nbsp;&nbsp;
-		@Html.ActionLink("Protokoll öffnen", "Details", "SessionReports", new { Area = "", id = Model }, new { id = "", @class = "btn btn-primary", target = "_blank" })
+		@Html.ActionLink("Protokoll öffnen", "Details", "SessionReports", new {Area = "", id = Model}, new {id = "", @class = "btn btn-primary", target = "_blank"})
 	</div>
 </div>

@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Web.Mvc;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using ILK_Protokoll;
+﻿using System.Web.Mvc;
 using ILK_Protokoll.Controllers;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace ILK_Protokoll.Tests.Controllers
 {

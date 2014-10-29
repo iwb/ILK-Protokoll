@@ -10,24 +10,11 @@ namespace ILK_Protokoll.Models
 {
 	public class SessionReport
 	{
+		public const string Directory = @"C:\ILK-Protokoll_Reports\";
+
 		public SessionReport()
 		{
 			PresentUsers = new List<User>();
-		}
-
-		public static SessionReport FromActiveSession(ActiveSession a)
-		{
-			return new SessionReport()
-			{
-				Manager = a.Manager,
-				SessionType = a.SessionType,
-				PresentUsers = a.PresentUsers,
-				AdditionalAttendees = a.AdditionalAttendees,
-				Notes = a.Notes,
-				Start = a.Start,
-				End = a.End,
-				Decisions = new List<Decision>()
-			};
 		}
 
 		public int ID { get; set; }
@@ -70,6 +57,19 @@ namespace ILK_Protokoll.Models
 			get { return string.Format("Sessionreport_{0}_{1}.pdf", Start.Year, ID); }
 		}
 
-		public const string Directory = @"C:\ILK-Protokoll_Reports\";
+		public static SessionReport FromActiveSession(ActiveSession a)
+		{
+			return new SessionReport
+			{
+				Manager = a.Manager,
+				SessionType = a.SessionType,
+				PresentUsers = a.PresentUsers,
+				AdditionalAttendees = a.AdditionalAttendees,
+				Notes = a.Notes,
+				Start = a.Start,
+				End = a.End,
+				Decisions = new List<Decision>()
+			};
+		}
 	}
 }

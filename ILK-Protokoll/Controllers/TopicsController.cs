@@ -8,7 +8,6 @@ using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using EntityFramework.Extensions;
-using ILK_Protokoll.DataLayer;
 using ILK_Protokoll.Models;
 using ILK_Protokoll.util;
 using ILK_Protokoll.ViewModels;
@@ -62,7 +61,7 @@ namespace ILK_Protokoll.Controllers
 				var desired = filter.ShowTagsID.ToArray();
 				query = query.Where(topic => topic.Tags.Any(tt => desired.Contains(tt.TagID)));
 			}
-			
+
 			filter.UserList = CreateUserSelectList();
 			filter.PriorityList = PriorityChoices(filter.ShowPriority);
 			filter.SessionTypeList = new SelectList(db.GetActiveSessionTypes(), "ID", "Name");
@@ -162,8 +161,8 @@ namespace ILK_Protokoll.Controllers
 		[HttpPost]
 		public ActionResult AddTag(int id, int tagid)
 		{
-			var relation = new TagTopic { TopicID = id, TagID = tagid };
-			db.TagTopics.AddOrUpdate(t => new { t.TopicID, t.TagID }, relation);
+			var relation = new TagTopic {TopicID = id, TagID = tagid};
+			db.TagTopics.AddOrUpdate(t => new {t.TopicID, t.TagID}, relation);
 			try
 			{
 				db.SaveChanges();
@@ -328,7 +327,7 @@ namespace ILK_Protokoll.Controllers
 					return HTTPStatus(500, message);
 				}
 
-				return RedirectToAction("Details", new { Area = "", id = input.ID });
+				return RedirectToAction("Details", new {Area = "", id = input.ID});
 			}
 			input.SessionType = topic.SessionType;
 			input.SessionTypeList = new SelectList(db.GetActiveSessionTypes(), "ID", "Name", input.SessionTypeID);

@@ -4,13 +4,13 @@
 	ViewBag.Title = "Benutzerübersicht";
 }
 @Ajax.ActionLink("Benutzer abgleichen", "_Sync", null,
-			new AjaxOptions()
-			{
-				HttpMethod = "POST",
-				OnBegin = "$('#syncWaitDialog').modal();",
-				OnComplete = "$('#syncWaitDialog').modal('hide'); location.reload();"
-			},
-new { @class = "index-action btn btn-primary" })
+	new AjaxOptions
+	{
+		HttpMethod = "POST",
+		OnBegin = "$('#syncWaitDialog').modal();",
+		OnComplete = "$('#syncWaitDialog').modal('hide'); location.reload();"
+	},
+	new {@class = "index-action btn btn-primary"})
 
 <div class="modal fade" id="syncWaitDialog" data-backdrop="static" data-keyboard="false" role="dialog">
 	<div class="modal-dialog modal-sm">

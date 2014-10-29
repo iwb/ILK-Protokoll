@@ -1,11 +1,10 @@
-﻿@using ILK_Protokoll.Areas.Session.Models
-@model IEnumerable<ILK_Protokoll.Areas.Session.Models.ActiveSession>
+﻿@model IEnumerable<ILK_Protokoll.Areas.Session.Models.ActiveSession>
 
 @{
 	ViewBag.Title = "Laufende Sitzungen";
 }
 
-@Html.ActionLink("Dashboard", "Index", "Home", new { Area = "" }, new { @class = "index-action btn btn-primary" })
+@Html.ActionLink("Dashboard", "Index", "Home", new {Area = ""}, new {@class = "index-action btn btn-primary"})
 
 <h2>@ViewBag.Title</h2>
 
@@ -49,7 +48,7 @@ else
 					<td>
 						@Html.DisplayFor(modelItem => item.PresentUsers, "IEnumerable_User")
 					</td>
-					<td>@Html.ActionLink("Übernehmen", "Resume", "Master", new { Area = "Session", SessionID = item.ID }, null)</td>
+					<td>@Html.ActionLink("Übernehmen", "Resume", "Master", new {Area = "Session", SessionID = item.ID}, null)</td>
 				</tr>
 			}
 		</tbody>
@@ -57,17 +56,17 @@ else
 }
 <hr />
 <h3>Neue Sitzung</h3>
-@using (Html.BeginForm("Create", "Master", new { Area = "Session" }, FormMethod.Post))
+@using (Html.BeginForm("Create", "Master", new {Area = "Session"}, FormMethod.Post))
 {
 	@Html.AntiForgeryToken()
 
 	<div class="form-horizontal">
-		@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+		@Html.ValidationSummary(true, "", new {@class = "text-danger"})
 
 		<div class="form-group">
 			<p class="control-label col-md-2">Sitzungstyp</p>
 			<div class="col-md-5">
-				@Html.DropDownList("SessionTypeID", (SelectList)ViewBag.SessionTypes, new { @class = "form-control" })
+				@Html.DropDownList("SessionTypeID", (SelectList)ViewBag.SessionTypes, new {@class = "form-control"})
 			</div>
 		</div>
 		<div class="form-group">

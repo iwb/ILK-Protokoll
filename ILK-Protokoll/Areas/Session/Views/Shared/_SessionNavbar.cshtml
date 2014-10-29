@@ -15,10 +15,10 @@
 
 		<div class="navbar-collapse collapse" id="secondaryNavbarContent">
 			<ul class="nav navbar-nav">
-				<li class="@ViewBag.SMasterStyle">@Html.ActionLink("Stammdaten", "Edit", "Master", new { Area = "Session" }, null)</li>
-				<li class="@ViewBag.SListsStyle">@Html.ActionLink("Listen", "Index", "Lists", new { Area = "Session" }, null)</li>
-				<li class="@ViewBag.SDiscussionStyle">@Html.ActionLink("Diskussion", "Index", "Discussion", new { Area = "Session" }, null)</li>
-				<li class="@ViewBag.SFinalizeStyle">@Html.ActionLink("Beenden", "Index", "Finalize", new { Area = "Session" }, null)</li>
+				<li class="@ViewBag.SMasterStyle">@Html.ActionLink("Stammdaten", "Edit", "Master", new {Area = "Session"}, null)</li>
+				<li class="@ViewBag.SListsStyle">@Html.ActionLink("Listen", "Index", "Lists", new {Area = "Session"}, null)</li>
+				<li class="@ViewBag.SDiscussionStyle">@Html.ActionLink("Diskussion", "Index", "Discussion", new {Area = "Session"}, null)</li>
+				<li class="@ViewBag.SFinalizeStyle">@Html.ActionLink("Beenden", "Index", "Finalize", new {Area = "Session"}, null)</li>
 			</ul>
 
 			@if (session != null)
