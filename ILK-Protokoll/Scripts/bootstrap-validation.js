@@ -1,9 +1,8 @@
 ﻿// http://stackoverflow.com/a/20341881/1974021
 $(function() {
-	// any validation summary items should be encapsulated by a class alert and alert-danger
+	// any validation summary items should appear in red color
 	$('.validation-summary-errors').each(function() {
-		$(this).addClass('alert');
-		$(this).addClass('alert-danger');
+		$(this).addClass('text-danger');
 	});
 
 	// update validation fields on submission of form

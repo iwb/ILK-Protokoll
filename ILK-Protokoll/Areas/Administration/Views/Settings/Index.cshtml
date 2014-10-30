@@ -26,7 +26,6 @@
 			@Html.LabelFor(model => model.ReportOccasions, new {@class = "control-label col-md-2"})
 			<div class="col-md-2">
 				@Html.EnumDropDownListFor(model => model.ReportOccasions, new {@class = "form-control"})
-			
 				@Html.ValidationMessageFor(model => model.ReportOccasions, "", new {@class = "text-danger"})
 			</div>
 			<div class="col-md-3">
@@ -36,7 +35,7 @@
 
 		<div class="form-group">
 			<div class="col-md-offset-2 col-md-5">
-				<input type="submit" value="Speichern" class="btn btn-primary" />
+				<input type="submit" value="Speichern" class="btn btn-primary"/>
 			</div>
 		</div>
 
@@ -49,4 +48,8 @@
 	<script type="text/javascript">
 		$('[data-toggle=tooltip]').tooltip();
 	</script>
+}
+
+@section Scripts {
+	@Scripts.Render("~/bundles/jqueryval")
 }

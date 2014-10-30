@@ -12,8 +12,7 @@
 
 	<div class="form-horizontal">
 		<h3>Mitarbeiterpräsentation</h3>
-		<hr />
-		@Html.ValidationSummary(true, "", new {@class = "text-danger"})
+
 		@Html.HiddenFor(model => model.ID)
 		<input type="hidden" name="returnURL" value="@ViewBag.ReturnURL" />
 
@@ -74,7 +73,7 @@
 				<input type="submit" value="Speichern" class="btn btn-default" />
 			</div>
 			<div class="col-md-5">
-				@Html.ValidationSummary(false, "", new {@class = "text-danger"})
+				@Html.ValidationSummary(true, "", new {@class = "text-danger"})
 			</div>
 		</div>
 		@if (ViewBag.StatusMessage != null)
