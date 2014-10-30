@@ -14,7 +14,7 @@ namespace ILK_Protokoll.Areas.Session.Models.Lists
 		public int ID { get; set; }
 
 		[DisplayName("Erstellt")]
-		public DateTime Created { get; set; }
+		public DateTime Created { get; private set; }
 
 		/// <summary>
 		///    Enthält den letzten Sperrzeitpunkt.

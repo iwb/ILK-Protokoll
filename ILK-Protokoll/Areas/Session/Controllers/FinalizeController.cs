@@ -113,7 +113,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 			return PartialView("_ReportSuccess", report.ID);
 		}
 
-		protected ActionResult ProcessTopics(ActiveSession session, SessionReport report)
+		private ActionResult ProcessTopics(ActiveSession session, SessionReport report)
 		{
 			List<Topic> topics = db.Topics
 				.Include(t => t.SessionType)

@@ -139,7 +139,7 @@ namespace ILK_Protokoll.Models
 			return Decision != null && Decision.Type == d;
 		}
 
-		public AuthResult IsEditableBy(User u, ActiveSession s)
+		internal AuthResult IsEditableBy(User u, ActiveSession s)
 		{
 			if (IsReadOnly)
 				return new AuthResult("Dieser Diskussionspunkt ist nicht bearbeitbar.");
@@ -193,10 +193,10 @@ namespace ILK_Protokoll.Models
 		}
 	}
 
-	public struct AuthResult
+	internal struct AuthResult
 	{
-		public bool IsAuthorized;
-		public string Reason;
+		public readonly bool IsAuthorized;
+		public readonly string Reason;
 
 		public AuthResult(string reason)
 		{

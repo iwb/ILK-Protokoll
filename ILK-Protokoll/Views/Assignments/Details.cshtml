@@ -84,6 +84,7 @@
 </div>
 
 <div style="text-align: right;">
+	@* ReSharper disable once ConvertIfStatementToConditionalTernaryExpression *@
 	@if (Model.IsDone)
 	{
 		@Html.ActionLink("Aufgabe als offen markieren", "MarkAsOpen", new {id = Model.ID})

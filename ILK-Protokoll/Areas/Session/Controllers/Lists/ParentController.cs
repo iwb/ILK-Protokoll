@@ -16,7 +16,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 	public class ParentController<TModel> : SessionBaseController
 		where TModel : BaseItem, new()
 	{
-		protected readonly TimeSpan EditDuration = TimeSpan.FromMinutes(5);
+		private readonly TimeSpan _editDuration = TimeSpan.FromMinutes(5);
 		protected DbSet<TModel> _dbSet;
 		private IQueryable<TModel> _entities;
 
@@ -41,7 +41,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 			if (thisSession == null)
 				return;
 
-			var cutoff = DateTime.Now - EditDuration;
+			var cutoff = DateTime.Now - _editDuration;
 			// Locks entfernen, die zu alt sind
 			_dbSet.Where(e => e.LockTime < cutoff).Update(e => new TModel {LockSessionID = null});
 			// Und die eigenen Locks entfernen
@@ -96,14 +96,15 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 		public virtual ActionResult _BeginEdit(int id)
 		{
 			TModel ev = Entities.Single(m => m.ID == id);
+			var session = GetSession();
 			if (ev == null)
 				return HttpNotFound();
-			else if (ev.LockSessionID.HasValue && ev.LockSessionID != GetSession().ID)
+			else if (ev.LockSessionID.HasValue && (session == null || ev.LockSessionID != session.ID))
 				return HTTPStatus(HttpStatusCode.Conflict, "Der Listeneintrag ist gesperrt.");
 
-			if (GetSession() != null)
+			if (session != null)
 			{
-				ev.LockSessionID = GetSession().ID; // Lock erzeugen
+				ev.LockSessionID = session.ID; // Lock erzeugen
 				ev.LockTime = DateTime.Now;
 
 				try
@@ -123,14 +124,15 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 		[ValidateAntiForgeryToken]
 		public virtual ActionResult _Edit([Bind(Exclude = "Created")] TModel input)
 		{
+			var session = GetSession();
 			if (!ModelState.IsValid)
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
 			// Get the object from the database to enable lazy loading.
 			var row = Entities.Single(m => m.ID == input.ID);
 
-			if (row.LockSessionID != null && (GetSession() == null || row.LockSessionID != GetSession().ID))
-				return HTTPStatus(409, "Der Datensatz ist momentan gesperrt."); // HTTP 409 Conflict
+			if (row.LockSessionID != null && (session == null || row.LockSessionID != session.ID))
+				return HTTPStatus(HttpStatusCode.Conflict, "Der Datensatz ist momentan gesperrt."); // HTTP 409 Conflict
 
 			TryUpdateModel(row, "", null, new[] {"Created"});
 			row.LockSessionID = null;
@@ -142,7 +144,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 			catch (DbEntityValidationException e)
 			{
 				var message = ErrorMessageFromException(e);
-				return HTTPStatus(500, message);
+				return HTTPStatus(HttpStatusCode.InternalServerError, message);
 			}
 			return _FetchRow(input.ID);
 		}
