@@ -167,3 +167,4 @@ $RECYCLE.BIN/
 /cov-int
 ILK-Protokoll/doc/html/
 ILK-Protokoll/doc/ILK_Protokoll.xml
+ILK-Protokoll/Views/Home/About.cshtml
