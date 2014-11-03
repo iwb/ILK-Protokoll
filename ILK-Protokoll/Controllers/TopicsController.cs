@@ -23,6 +23,10 @@ namespace ILK_Protokoll.Controllers
 		}
 
 		// GET: Topics
+		/// <summary>
+		/// Liefert eine tabellarische Auflistung der Themen. Der Benutzer kann nun die Themen filtern, oder auf die Detailseite wechseln. Das ViewModel <see cref="FilteredTopics" /> wird verwndet, um die Filterkriteriem zu transportieren.
+		/// </summary>
+		/// <param name="filter"></param>
 		public ActionResult Index(FilteredTopics filter)
 		{
 			IQueryable<Topic> query = db.Topics
