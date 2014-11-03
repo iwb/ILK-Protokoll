@@ -18,15 +18,27 @@ namespace ILK_Protokoll.Controllers
 {
 	public class BaseController : Controller
 	{
+		private User _currentUser;
+
+		/// <summary>
+		///    Die Datenbankreferenz, die jeder Controller erbt.
+		/// </summary>
 		protected readonly DataContext db = new DataContext();
 
-		protected User _CurrentUser;
-
+		/// <summary>
+		///    Die Datenbank wird ggf. initialisiert.
+		/// </summary>
 		public BaseController()
 		{
 			db.Database.Initialize(false);
 		}
 
+		/// <summary>
+		///    Diese Methode läuft vor jeder Aktion jedes Controllers. Hier werden häufig benutzte Variablen in ViewBag gespeichert
+		///    und die Referent auf die Sitzung gesetzt. zudem wird ggf. der Profiler aktiviert, falls die URL mit ?profiler=true
+		///    aufgerufen wurde.
+		/// </summary>
+		/// <param name="filterContext"></param>
 		protected override void OnActionExecuting(ActionExecutingContext filterContext)
 		{
 			base.OnActionExecuting(filterContext);
@@ -43,33 +55,47 @@ namespace ILK_Protokoll.Controllers
 				Session["profiler"] = Request.QueryString["profiler"] == "true";
 		}
 
+		/// <summary>
+		///    Gibt den aktuell eingeloggten Benutzer zurück, oder ein Nullobjekt, falls keine Autorisierung erfolgt ist.
+		/// </summary>
+		/// <returns></returns>
 		[NotNull]
 		protected User GetCurrentUser()
 		{
-			if (_CurrentUser == null)
-			{
-				var user = Session["CurrentUser"] as User;
-				var userid = Session["UserID"] as int?;
-				if (user != null)
-					_CurrentUser = user;
-				else if (userid != null)
-					_CurrentUser = db.Users.AsNoTracking().Single(u => u.ID == userid);
+			if (_currentUser != null)
+				return _currentUser;
 
-				if (_CurrentUser == null) // User was not found in our database
-					_CurrentUser = UserController.GetUser(db, User) ?? new User(); // new User() ==> Anonymous User
+			var user = Session["CurrentUser"] as User;
+			var userid = Session["UserID"] as int?;
+			if (user != null)
+				_currentUser = user;
+			else if (userid != null)
+				_currentUser = db.Users.AsNoTracking().Single(u => u.ID == userid);
 
-				Session["UserID"] = _CurrentUser.ID;
-				Session["CurrentUser"] = _CurrentUser;
-			}
+			if (_currentUser == null) // User was not found in our database
+				_currentUser = UserController.GetUser(db, User) ?? new User(); // new User() ==> Anonymous User
 
-			return _CurrentUser;
+			Session["UserID"] = _currentUser.ID;
+			Session["CurrentUser"] = _currentUser;
+
+			return _currentUser;
 		}
 
+		/// <summary>
+		///    Gibt die ID des aktuellen Benutzers zurück. Falls keine Autorisierung erfolgt (anonymer Zugriff) wird 0
+		///    zurückgegeben.
+		/// </summary>
+		/// <returns>Die ID des Benutzers oder 0, falls kein Benutzer eingeloggt ist.</returns>
 		protected int GetCurrentUserID()
 		{
-			return (int?)Session["UserID"] ?? GetCurrentUserID();
+			return (int?)Session["UserID"] ?? GetCurrentUser().ID;
 		}
 
+		/// <summary>
+		///    Gibt die aktuell laufende Sitzung zurück, oder null falls keine Sitzung läuft. Es wird keinesfalls eine Sitzung
+		///    erzeugt oder wiederaufgenommen.
+		/// </summary>
+		/// <returns>Die aktuell laufende Sitzung zurück, oder null falls keine Sitzung läuft.</returns>
 		[CanBeNull]
 		protected ActiveSession GetSession()
 		{
@@ -89,27 +115,54 @@ namespace ILK_Protokoll.Controllers
 				return null;
 		}
 
+		/// <summary>
+		///    Gibt eine SelectList zurück, die die aktiven Benutzer enthält.
+		/// </summary>
+		/// <returns>Die Liste mit den aktiven Benutzern. Der aktuelle Benutzer ist immer ganz oben.</returns>
 		protected SelectList CreateUserSelectList()
 		{
 			return new SelectList(db.GetUserOrdered(GetCurrentUser()), "ID", "ShortName");
 		}
 
+		/// <summary>
+		///    Gibt eine SelectList zurück, die die aktiven Benutzer enthält. Ermöglicht eine Auswahl des selektierten Benutzers
+		///    per ID.
+		/// </summary>
+		/// <param name="selectedID">Die UserID, die vorselektiert sein soll.</param>
+		/// <returns>Die Liste mit den aktiven Benutzern. Der aktuelle Benutzer ist immer ganz oben.</returns>
 		protected SelectList CreateUserSelectList(int selectedID)
 		{
 			return new SelectList(db.GetUserOrdered(GetCurrentUser()), "ID", "ShortName", selectedID);
 		}
 
+		/// <summary>
+		///    Gibt ein Dictionary zurück, dass Benutzern einen definierten Wert zuweist. Hilfreich insbesondere als Dictionary&lt;
+		///    User, bool&gt; für eine Reihe von Checkboxen.
+		/// </summary>
+		/// <param name="valueSelector"></param>
+		/// <typeparam name="T"></typeparam>
+		/// <returns></returns>
 		protected Dictionary<User, T> CreateUserDictionary<T>(Func<User, T> valueSelector)
 		{
 			return db.GetUserOrdered(GetCurrentUser()).ToDictionary(u => u, valueSelector);
 		}
 
+		/// <summary>
+		///    Gibt ein Dictionary zurück, dass alle vorhandenen Tags als Schlüssel enthält.
+		/// </summary>
+		/// <param name="preselectedTags">Tags, für die das Ergebnisdictionary true enthalten soll.</param>
+		/// <returns>Ein Dictionary mit allen Tags.</returns>
 		protected IDictionary<Tag, bool> CreateTagDictionary(IEnumerable<TagTopic> preselectedTags)
 		{
 			var preselection = preselectedTags.Select(tt => tt.TagID).ToArray();
 			return db.Tags.ToDictionary(t => t, t => preselection.Contains(t.ID));
 		}
 
+		/// <summary>
+		///    Ermittelt, ob das Thema mit der TopicID gerade gesperrt ist. Hierzu wird jedesmal eine SQL-Abfrage gestellt.
+		/// </summary>
+		/// <param name="topicID">Die TopicID der Diskussion</param>
+		/// <returns>Status der Diskussion</returns>
 		public bool IsTopicLocked(int topicID)
 		{
 			return IsTopicLocked(db.Topics
@@ -118,6 +171,11 @@ namespace ILK_Protokoll.Controllers
 				.Single(t => t.ID == topicID));
 		}
 
+		/// <summary>
+		///    Ermittelt, ob das Thema gerade gesperrt ist. Hierzu wird jedesmal eine SQL-Abfrage gestellt.
+		/// </summary>
+		/// <param name="t">Die Diskussion, deren Status ermittelt werden soll.</param>
+		/// <returns>Status der Diskussion</returns>
 		protected bool IsTopicLocked(Topic t)
 		{
 			var tlock =
@@ -125,6 +183,14 @@ namespace ILK_Protokoll.Controllers
 			return tlock != null && tlock.ManagerID != GetCurrentUserID();
 		}
 
+		/// <summary>
+		///    Markiert ein Thema als ungelesen für alle Benutzer (steuerbar über den Parameter <see cref="skipCurrentUser" />)
+		/// </summary>
+		/// <param name="topic">Das Thema, dass als ungelesen markliert werden soll.</param>
+		/// <param name="skipCurrentUser">
+		///    Wenn true, wird der gelesen-Status des Themas für den aktuellen Benutzer nicht verändert.
+		///    (Standard)
+		/// </param>
 		protected void MarkAsUnread(Topic topic, bool skipCurrentUser = true)
 		{
 			var lazyusers = topic.UnreadBy.ToDictionary(u => u.UserID);
@@ -143,6 +209,10 @@ namespace ILK_Protokoll.Controllers
 			}
 		}
 
+		/// <summary>
+		/// Markiert eine Diskussion für den aktuell eingeloggten Benutzer als gelesen.
+		/// </summary>
+		/// <param name="topic">Die Diskussion</param>
 		protected void MarkAsRead(Topic topic)
 		{
 			var item = topic.UnreadBy.FirstOrDefault(u => u.UserID == GetCurrentUserID());
@@ -153,6 +223,12 @@ namespace ILK_Protokoll.Controllers
 			}
 		}
 
+		/// <summary>
+		/// Gibt eine HTTP Statusmeldung inklusive Inhalt zurück. Der Statuscode und der Inhalt können separat angegeben werden.
+		/// </summary>
+		/// <param name="statuscode">Der Statuscode (z.B. 500 für "Internal Server Error")</param>
+		/// <param name="message">Die Statusnachricht, die an den Client übermittelt werden soll.</param>
+		/// <returns></returns>
 		protected ContentResult HTTPStatus(int statuscode, string message)
 		{
 			Response.Clear();
@@ -168,6 +244,12 @@ namespace ILK_Protokoll.Controllers
 			return Content(message);
 		}
 
+		/// <summary>
+		/// Gibt eine HTTP Statusmeldung inklusive Inhalt zurück. Der Statuscode und der Inhalt können separat angegeben werden.
+		/// </summary>
+		/// <param name="statuscode">Der Statuscode (z.B. HttpStatusCode.InternalServerError)</param>
+		/// <param name="message">Die Statusnachricht, die an den Client übermittelt werden soll.</param>
+		/// <returns></returns>
 		protected ContentResult HTTPStatus(HttpStatusCode statuscode, string message)
 		{
 			return HTTPStatus((int)statuscode, message);

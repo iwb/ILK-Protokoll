@@ -12,6 +12,9 @@ using StackExchange.Profiling;
 
 namespace ILK_Protokoll.Areas.Session.Controllers
 {
+	/// <summary>
+	/// Ermöglicht eine Übersicht über alle laufenden und abgeschlossenen Diskussionen.
+	/// </summary>
 	public class DiscussionController : SessionBaseController
 	{
 		protected override void OnActionExecuting(ActionExecutingContext filterContext)
