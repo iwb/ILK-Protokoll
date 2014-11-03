@@ -340,26 +340,6 @@ namespace ILK_Protokoll.Controllers
 			return View(input);
 		}
 
-		// GET: Topics/Delete/5
-		public ActionResult Delete(int? id)
-		{
-			if (id == null)
-				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-			Topic topic = db.Topics.Find(id);
-			if (topic == null)
-				return HttpNotFound();
-			return View(topic);
-		}
-
-		// POST: Topics/Delete/5
-		[HttpPost, ActionName("Delete")]
-		[ValidateAntiForgeryToken]
-		public ActionResult DeleteConfirmed(int id)
-		{
-			db.DeleteTopic(id);
-			return RedirectToAction("Index");
-		}
-
 		[HttpGet, ActionName("_EditDescription")]
 		public ActionResult _BeginEditDescription(int id)
 		{
