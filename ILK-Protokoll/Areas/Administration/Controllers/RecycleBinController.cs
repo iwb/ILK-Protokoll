@@ -46,7 +46,7 @@ namespace ILK_Protokoll.Areas.Administration.Controllers
 			catch (DbEntityValidationException e)
 			{
 				var message = ErrorMessageFromException(e);
-				return HTTPStatus(500, message);
+				return HTTPStatus(HttpStatusCode.InternalServerError, message);
 			}
 
 			return new HttpStatusCodeResult(HttpStatusCode.NoContent);

@@ -184,7 +184,7 @@ namespace ILK_Protokoll.Controllers
 			}
 			catch (DbEntityValidationException e)
 			{
-				return HTTPStatus(500, ErrorMessageFromException(e));
+				return HTTPStatus(HttpStatusCode.InternalServerError, ErrorMessageFromException(e));
 			}
 			return new HttpStatusCodeResult(HttpStatusCode.NoContent);
 		}
@@ -265,7 +265,7 @@ namespace ILK_Protokoll.Controllers
 				catch (DbEntityValidationException e)
 				{
 					var message = ErrorMessageFromException(e);
-					return HTTPStatus(500, message);
+					return HTTPStatus(HttpStatusCode.InternalServerError, message);
 				}
 
 				return RedirectToAction("Index");
@@ -358,7 +358,7 @@ namespace ILK_Protokoll.Controllers
 				catch (DbEntityValidationException e)
 				{
 					var message = ErrorMessageFromException(e);
-					return HTTPStatus(500, message);
+					return HTTPStatus(HttpStatusCode.InternalServerError, message);
 				}
 
 				return RedirectToAction("Details", new {Area = "", id = input.ID});
@@ -428,7 +428,7 @@ namespace ILK_Protokoll.Controllers
 				catch (DbEntityValidationException e)
 				{
 					var message = ErrorMessageFromException(e);
-					return HTTPStatus(500, message);
+					return HTTPStatus(HttpStatusCode.InternalServerError, message);
 				}
 			}
 
@@ -516,7 +516,7 @@ namespace ILK_Protokoll.Controllers
 				catch (DbEntityValidationException e)
 				{
 					var message = ErrorMessageFromException(e);
-					return HTTPStatus(500, message);
+					return HTTPStatus(HttpStatusCode.InternalServerError, message);
 				}
 			}
 

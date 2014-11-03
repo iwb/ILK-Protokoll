@@ -88,7 +88,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 			catch (DbEntityValidationException e)
 			{
 				var message = ErrorMessageFromException(e);
-				return HTTPStatus(500, message);
+				return HTTPStatus(HttpStatusCode.InternalServerError, message);
 			}
 			return _FetchRow(row.ID);
 		}
@@ -114,7 +114,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 				catch (DbEntityValidationException e)
 				{
 					var message = ErrorMessageFromException(e);
-					return HTTPStatus(500, message);
+					return HTTPStatus(HttpStatusCode.InternalServerError, message);
 				}
 			}
 			return PartialView("_Edit", ev);
@@ -169,7 +169,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 			catch (DbEntityValidationException e)
 			{
 				var message = ErrorMessageFromException(e);
-				return HTTPStatus(500, message);
+				return HTTPStatus(HttpStatusCode.InternalServerError, message);
 			}
 
 			return new HttpStatusCodeResult(HttpStatusCode.NoContent);

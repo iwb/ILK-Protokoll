@@ -114,7 +114,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 			catch (DbEntityValidationException e)
 			{
 				var message = ErrorMessageFromException(e);
-				return HTTPStatus(500, message);
+				return HTTPStatus(HttpStatusCode.InternalServerError, message);
 			}
 			Session.Remove("SessionID");
 

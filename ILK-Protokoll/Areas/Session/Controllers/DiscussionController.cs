@@ -144,7 +144,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 			catch (DbEntityValidationException e)
 			{
 				string message = ErrorMessageFromException(e);
-				return HTTPStatus(500, message);
+				return HTTPStatus(HttpStatusCode.InternalServerError, message);
 			}
 
 			return PartialView(view, tlock);
@@ -163,7 +163,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 			catch (DbEntityValidationException e)
 			{
 				string message = ErrorMessageFromException(e);
-				return HTTPStatus(500, message);
+				return HTTPStatus(HttpStatusCode.InternalServerError, message);
 			}
 
 			return new HttpStatusCodeResult(HttpStatusCode.NoContent);

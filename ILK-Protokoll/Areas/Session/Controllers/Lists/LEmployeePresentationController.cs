@@ -125,7 +125,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 			catch (DbEntityValidationException e)
 			{
 				var msg = ErrorMessageFromException(e);
-				return HTTPStatus(500, msg);
+				return HTTPStatus(HttpStatusCode.InternalServerError, msg);
 			}
 
 			ep.Documents.Clear();
