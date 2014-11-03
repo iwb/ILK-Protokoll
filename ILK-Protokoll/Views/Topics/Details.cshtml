@@ -16,17 +16,16 @@
 		});
 }
 
-@if (!ViewBag.Reporting)
-{
-	<h2>
-		@ViewBag.Title
-		<span id="taglist">
-			@Html.DisplayFor(model => tagDict, "Dictionary_Tag_bool")
-		</span>
-	</h2>
-	@Html.ActionLink("Zurück zum Index", "Index")
-	<hr />
-}
+
+<h2>
+	@ViewBag.Title
+	<span id="taglist">
+		@Html.DisplayFor(model => tagDict, "Dictionary_Tag_bool")
+	</span>
+</h2>
+@Html.ActionLink("Zurück zum Index", "Index")
+<hr />
+
 <div style="margin-bottom: 20px;">
 	<b>Tags: </b>
 	@Html.ListBox("SelectedTags", selectList, new {@class = "multiselect"})
@@ -265,7 +264,7 @@ else
 			{
 				@:Da das Thema gesperrt ist, können Sie zur Zeit keine Aufgaben erstellen.
 			}
-			else if (!ViewBag.Reporting)
+			else
 			{
 				@Html.ActionLink("Neue Aufgabe erstellen", "Create", "Assignments", new {topicID = Model.ID}, null)
 			}
