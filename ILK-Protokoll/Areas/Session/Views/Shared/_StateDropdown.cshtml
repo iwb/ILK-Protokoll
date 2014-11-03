@@ -39,7 +39,7 @@
 			buttonClass: '@btnClass',
 			onChange: function(element, checked) {
 				var topicState = element.attr("value");
-				var targetUrl = "@Url.Action("_ChangeState", "Discussion", new {id = Model.TopicID})?state=" + topicState;
+				var targetUrl = "@Url.Action("_ChangeState", "Discussion", new { id = Model.TopicID, view = "Table" })&state=" + topicState;
 
 				$.ajax({
 					url: targetUrl,

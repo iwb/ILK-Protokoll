@@ -96,10 +96,15 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 		}
 
 		[HttpPost]
-		public ActionResult _ChangeState(int id, TopicAction state)
+		public ActionResult _ChangeState(int id, TopicAction state, string view)
 		{
-			var appropriateView = (Session["DiscussionView"] as string) == "Table" ? "_StateDropdown" : "_StateButtons";
+			var appropriateView = view == "Table" ? "_StateDropdown" : "_StateButtons";
 
+			return ChangeState(id, state, appropriateView);
+		}
+
+		private ActionResult ChangeState(int id, TopicAction state, string view)
+		{
 			ActiveSession session = GetSession();
 			if (session == null)
 				return HTTPStatus(HttpStatusCode.Forbidden, "Keine Sitzung gefunden.");
@@ -117,14 +122,14 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 			    tlock.Topic.Assignments.Any(a => a.Type == AssignmentType.ToDo && !a.IsDone && a.IsActive))
 			{
 				tlock.Message = "Es liegen noch offene ToDo-Aufgaben vor. Dieses Thema kann daher nicht beschlossen werden.";
-				return PartialView(appropriateView, tlock);
+				return PartialView(view, tlock);
 			}
 
 			// Den Beschluss verhindern, falls der Punkt verschoben wird
 			if (state != TopicAction.None && tlock.Topic.TargetSessionTypeID != null)
 			{
 				tlock.Message = "Der Punkt ist zum Verschieben vorgemerkt und darf daher nicht behandelt werden.";
-				return PartialView(appropriateView, tlock);
+				return PartialView(view, tlock);
 			}
 
 			tlock.Action = state;
@@ -139,7 +144,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 				return HTTPStatus(500, message);
 			}
 
-			return PartialView(appropriateView, tlock);
+			return PartialView(view, tlock);
 		}
 
 		[HttpPost]
