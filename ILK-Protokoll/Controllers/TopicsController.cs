@@ -24,9 +24,10 @@ namespace ILK_Protokoll.Controllers
 
 		// GET: Topics
 		/// <summary>
-		/// Liefert eine tabellarische Auflistung der Themen. Der Benutzer kann nun die Themen filtern, oder auf die Detailseite wechseln. Das ViewModel <see cref="FilteredTopics" /> wird verwndet, um die Filterkriteriem zu transportieren.
+		///    Liefert eine tabellarische Auflistung der Themen. Der Benutzer kann nun die Themen filtern, oder auf die Detailseite
+		///    wechseln. Das ViewModel <see cref="FilteredTopics" /> wird verwndet, um die Filterkriteriem zu transportieren.
 		/// </summary>
-		/// <param name="filter"></param>
+		/// <param name="filter">Das ViewModel, dass die Filterkriterien angibt.</param>
 		public ActionResult Index(FilteredTopics filter)
 		{
 			IQueryable<Topic> query = db.Topics
@@ -101,6 +102,11 @@ namespace ILK_Protokoll.Controllers
 			return placeholder.Concat(items);
 		}
 
+		/// <summary>
+		///    Liefert die möglichen Zeitspannen, die ausgewählt werden können.
+		/// </summary>
+		/// <param name="preselect">Der Index, der vorselektiert wird.</param>
+		/// <returns>Die Zeitspannen-Liste</returns>
 		internal static IEnumerable<SelectListItem> TimespanChoices(int preselect)
 		{
 			return new[]
@@ -127,7 +133,11 @@ namespace ILK_Protokoll.Controllers
 		}
 
 		// GET: Topics/Details/5
-		public ActionResult Details(int? id, bool reporting = false)
+		/// <summary>
+		///    Detailseite eines Themas
+		/// </summary>
+		/// <param name="id">Die TopicID, zu der die Details angezeigt werde soll.</param>
+		public ActionResult Details(int? id)
 		{
 			if (id == null)
 				return HTTPStatus(HttpStatusCode.BadRequest, "Für diesen Vorgang ist eine TopicID ist erforderlich.");
@@ -151,17 +161,18 @@ namespace ILK_Protokoll.Controllers
 			ViewBag.TopicID = id.Value;
 			ViewBag.TopicHistoryCount = db.TopicHistory.Count(t => t.TopicID == id.Value);
 			ViewBag.IsEditable = topic.IsEditableBy(GetCurrentUser(), GetSession()).IsAuthorized;
-			ViewBag.Reporting = reporting;
 			ViewBag.TagDict = CreateTagDictionary(topic.Tags);
 
 			topic.IsLocked = IsTopicLocked(id.Value);
-
-			if (reporting)
-				return PartialView(topic);
-			else
-				return View(topic);
+			return View(topic);
 		}
 
+		//AJAX: Topics/AddTag/5?tagid=3
+		/// <summary>
+		///    Fügt ein Tag zu einem Thema hinzu.
+		/// </summary>
+		/// <param name="id">Die TopicID</param>
+		/// <param name="tagid">Die TagID</param>
 		[HttpPost]
 		public ActionResult AddTag(int id, int tagid)
 		{
@@ -178,6 +189,12 @@ namespace ILK_Protokoll.Controllers
 			return new HttpStatusCodeResult(HttpStatusCode.NoContent);
 		}
 
+		//AJAX: Topics/RemoveTag/5?tagid=3
+		/// <summary>
+		///    Entfernt ein Tag von einem Thema.
+		/// </summary>
+		/// <param name="id">Die TopicID</param>
+		/// <param name="tagid">Die TagID</param>
 		[HttpPost]
 		public ActionResult RemoveTag(int id, int tagid)
 		{
@@ -186,6 +203,9 @@ namespace ILK_Protokoll.Controllers
 		}
 
 		// GET: Topics/Create
+		/// <summary>
+		///    Ruft das Formular zum Erstellen eines neuen Themas ab.
+		/// </summary>
 		public ActionResult Create()
 		{
 			var viewmodel = new TopicEdit
@@ -198,8 +218,10 @@ namespace ILK_Protokoll.Controllers
 		}
 
 		// POST: Topics/Create
-		// Aktivieren Sie zum Schutz vor übermäßigem Senden von Angriffen die spezifischen Eigenschaften, mit denen eine Bindung erfolgen soll. Weitere Informationen 
-		// finden Sie unter http://go.microsoft.com/fwlink/?LinkId=317598.
+		/// <summary>
+		///    Erstellt ein neues Thema auf Basis der angegebenen Werte. Das ViewModel <see cref="TopicEdit" /> wird verwendet.
+		/// </summary>
+		/// <param name="input">Der Inhalt des neuen Themas.</param>
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		public ActionResult Create([Bind(Exclude = "TargetSessionTypeID")] TopicEdit input)
@@ -256,6 +278,11 @@ namespace ILK_Protokoll.Controllers
 		}
 
 		// GET: Topics/Edit/5
+		/// <summary>
+		///    Ruft das Formular zum Bearbeiten eines Themas ab. Das ViewModel <see cref="TopicEdit" /> wird verwendet.
+		/// </summary>
+		/// <param name="id">Die TopicID</param>
+		/// <exception cref="TopicLockedException">Wird geworfen, falls das Thema gesperrt ist.</exception>
 		public ActionResult Edit(int? id)
 		{
 			if (id == null)
@@ -281,8 +308,11 @@ namespace ILK_Protokoll.Controllers
 		}
 
 		// POST: Topics/Edit/5
-		// Aktivieren Sie zum Schutz vor übermäßigem Senden von Angriffen die spezifischen Eigenschaften, mit denen eine Bindung erfolgen soll. Weitere Informationen 
-		// finden Sie unter http://go.microsoft.com/fwlink/?LinkId=317598.
+		/// <summary>
+		///    Verarbeitet die Bearbeitugn eines Themas. Die Ursprungsversion wird gesichert, bevor die vorgenommenen Änderungen
+		///    gespeichert werden. Das ViewModel <see cref="TopicEdit" /> wird verwendet.
+		/// </summary>
+		/// <param name="input">Die Änderungen</param>
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		public ActionResult Edit([Bind(Exclude = "SessionTypeID")] TopicEdit input)
@@ -340,6 +370,12 @@ namespace ILK_Protokoll.Controllers
 			return View(input);
 		}
 
+		// AJAX: Topics/_EditDescription/5
+		/// <summary>
+		///    Ermöglicht das "schnelle Bearbeiten" der Themenbeschreibung aus der Detailansicht. Das Formular wird abgerufen.
+		/// </summary>
+		/// <param name="id">Die TopicID</param>
+		/// <returns>Formular zum schnellen Bearbeiten</returns>
 		[HttpGet, ActionName("_EditDescription")]
 		public ActionResult _BeginEditDescription(int id)
 		{
@@ -355,6 +391,13 @@ namespace ILK_Protokoll.Controllers
 			return PartialView("_EditDescription", topic);
 		}
 
+		// AJAX: Topics/_EditDescription/5
+		/// <summary>
+		///    Ermöglicht das "schnelle Bearbeiten" der Themenbeschreibung aus der Detailansicht. Die Änderungen werden
+		///    gespeichert.
+		/// </summary>
+		/// <param name="id">Die TopicID</param>
+		/// <param name="description">Die neue Beschreibung</param>
 		[HttpPost, ActionName("_EditDescription"), ValidateAntiForgeryToken]
 		public ActionResult _SubmitEditDescription(int id, string description)
 		{
@@ -395,6 +438,12 @@ namespace ILK_Protokoll.Controllers
 			return PartialView("_Description", topic);
 		}
 
+		// AJAX: Topics/_FetchDescription/5
+		/// <summary>
+		///    Ermöglicht das "schnelle Bearbeiten" der Themenbeschreibung aus der Detailansicht. Die Methode liefert die aktuelle
+		///    Beschreibung zurück.
+		/// </summary>
+		/// <param name="id">Die TopicID</param>
 		public ActionResult _FetchDescription(int id)
 		{
 			var topic = db.Topics.Find(id);
@@ -409,6 +458,12 @@ namespace ILK_Protokoll.Controllers
 			return PartialView("_Description", topic);
 		}
 
+		// AJAX: Topics/_EditProposal/5
+		/// <summary>
+		///    Ermöglicht das "schnelle Bearbeiten" des Beschlussvorschlags aus der Detailansicht. Das Formular wird abgerufen.
+		/// </summary>
+		/// <param name="id">Die TopicID</param>
+		/// <returns>Formular zum schnellen Bearbeiten</returns>
 		[HttpGet, ActionName("_EditProposal")]
 		public ActionResult _BeginEditProposal(int id)
 		{
@@ -424,6 +479,13 @@ namespace ILK_Protokoll.Controllers
 			return PartialView("_EditProposal", topic);
 		}
 
+		// AJAX: Topics/_SubmitEditDescription/5
+		/// <summary>
+		///    Ermöglicht das "schnelle Bearbeiten" des Beschlussvorschlags aus der Detailansicht. Die Änderungen werden
+		///    gespeichert.
+		/// </summary>
+		/// <param name="id">Die TopicID</param>
+		/// <param name="proposal">Der neue Beschlussvorschlag</param>
 		[HttpPost, ActionName("_EditProposal"), ValidateAntiForgeryToken]
 		public ActionResult _SubmitEditProposal(int id, string proposal)
 		{
@@ -464,6 +526,12 @@ namespace ILK_Protokoll.Controllers
 			return PartialView("_Proposal", topic);
 		}
 
+		// AJAX: Topics/_FetchDescription/5
+		/// <summary>
+		///    Ermöglicht das "schnelle Bearbeiten" des Beschlussvorschlags aus der Detailansicht. Die Methode liefert dien
+		///    aktuellen Beschlussvorschlag zurück.
+		/// </summary>
+		/// <param name="id">Die TopicID</param>
 		public ActionResult _FetchProposal(int id)
 		{
 			var topic = db.Topics.Find(id);
@@ -479,6 +547,10 @@ namespace ILK_Protokoll.Controllers
 		}
 
 		// GET: Topics/ViewHistory/5
+		/// <summary>
+		/// Zeigt die Änderungen, die an dem Thema vorgenommen wurden.
+		/// </summary>
+		/// <param name="id">Die TopicID</param>
 		public ActionResult ViewHistory(int id)
 		{
 			Topic topic = db.Topics.Find(id);
@@ -499,7 +571,7 @@ namespace ILK_Protokoll.Controllers
 
 			var diff = new diff_match_patch
 			{
-				Diff_Timeout = 0.4f,
+				Diff_Timeout = 0.4f
 			};
 
 			// Anonyme Funktion, um die Biliothek diff_match_patch handlich zu verpacken.

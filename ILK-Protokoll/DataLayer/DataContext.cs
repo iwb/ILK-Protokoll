@@ -87,6 +87,10 @@ namespace ILK_Protokoll.DataLayer
 			return SessionTypes.Where(st => st.Active).OrderBy(st => st.Name);
 		}
 
+		/// <summary>
+		/// Löscht ein Thema permanent aus der Datenbank.
+		/// </summary>
+		/// <param name="topicID">Die ID des zu löschenden Themas.</param>
 		public void DeleteTopic(int topicID)
 		{
 			var topic = Topics.Find(topicID);
