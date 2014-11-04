@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using ILK_Protokoll.Models;
 using Mvc.Mailer;
@@ -79,7 +80,7 @@ namespace ILK_Protokoll.Mailers
 			{
 				x.Subject = string.Format("Eine Sitzung des Typs »{0}« wurde durchgeführt", report.SessionType.Name);
 				x.ViewName = "NewSessionReport";
-				foreach (var user in report.SessionType.Attendees)
+				foreach (var user in report.SessionType.Attendees.Where(u => u.IsActive))
 				{
 					if (user.Settings.ReportOccasions == SessionReportOccasions.Always
 					    || (user.Settings.ReportOccasions == SessionReportOccasions.WhenAbsent && !report.PresentUsers.Contains(user)))
