@@ -77,7 +77,7 @@ namespace ILK_Protokoll.Controllers
 				_currentUser = db.Users.AsNoTracking().Single(u => u.ID == userid);
 
 			if (_currentUser == null) // User was not found in our database
-				_currentUser = UserController.GetUser(db, User) ?? new User(); // new User() ==> Anonymous User
+				_currentUser = UserController.GetUser(db, User);
 
 			Session["UserID"] = _currentUser.ID;
 			Session["CurrentUser"] = _currentUser;

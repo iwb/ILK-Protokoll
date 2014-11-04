@@ -11,17 +11,24 @@ using ILK_Protokoll.Controllers;
 using ILK_Protokoll.DataLayer;
 using ILK_Protokoll.Mailers;
 using ILK_Protokoll.Models;
+using JetBrains.Annotations;
 
 namespace ILK_Protokoll.Areas.Administration.Controllers
 {
+	/// <summary>
+	///    Der UserController umfasst alle Funktionen der Benutzerverwaltung.
+	/// </summary>
 	[DisplayName("Benutzer")]
 	public class UserController : BaseController
 	{
 		private const string DomainName = "iwbmuc";
-
 		private readonly string[] _authorizeGroups = {"ILK", "ILK-Proto"};
 		// Benutzer dieser Gruppen werden automatisch hinzugefügt
 
+		/// <summary>
+		///    Wird aufgerufen, bevor die Aktionsmethode aufgerufen wird.
+		/// </summary>
+		/// <param name="filterContext">Informationen über die aktuelle Anforderung und Aktion.</param>
 		protected override void OnActionExecuting(ActionExecutingContext filterContext)
 		{
 			base.OnActionExecuting(filterContext);
@@ -30,6 +37,9 @@ namespace ILK_Protokoll.Areas.Administration.Controllers
 		}
 
 		// GET: Administration/User
+		/// <summary>
+		///    Die Benutzerübersicht, es können keine Bearbeitungen vorgenommen werden.
+		/// </summary>
 		public ActionResult Index()
 		{
 			List<User> users = db.Users.OrderByDescending(u => u.IsActive).ThenBy(u => u.ShortName).ToList();
@@ -38,9 +48,12 @@ namespace ILK_Protokoll.Areas.Administration.Controllers
 
 		// AJAX: Administration/User/Sync
 		/// <summary>
-		/// Hier werden die Bneutzer des ILK-Protokolls abgeglichen. Das heißt, Benutzer die Autorisiert sind, werden in die Datenbank aufgenommen und können demzufolge in den Auswahllisten ausgewählt werden. Es findet keine Autorisirung statt; diese erfolgt bereits früher in Form des globelen Filters mit dem AuthorizeAttribute in FilterConfig.cs. Falls Benutzer nicht mehr in den autorisierten Gruppen sind, werden Sie inaktiv geschaltet. Das bedeutet, dass sie nicht mehr in den listen auftauchen.
+		///    Hier werden die Benutzer des ILK-Protokolls abgeglichen. Das heißt, Benutzer die Autorisiert sind, werden in die
+		///    Datenbank aufgenommen und können demzufolge in den Auswahllisten ausgewählt werden. Es findet keine Autorisirung
+		///    statt; diese erfolgt bereits früher in Form des globelen Filters mit dem AuthorizeAttribute in FilterConfig.cs.
+		///    Falls Benutzer nicht mehr in den autorisierten Gruppen sind, werden Sie inaktiv geschaltet. Das bedeutet, dass sie
+		///    nicht mehr in den Listen auftauchen und auch keine E-Mails mehr bekommen.
 		/// </summary>
-		/// <returns></returns>
 		public ActionResult _Sync()
 		{
 			List<User> myusers = db.Users.ToList();
@@ -94,7 +107,7 @@ namespace ILK_Protokoll.Areas.Administration.Controllers
 							return HTTPStatus(HttpStatusCode.InternalServerError,
 								string.Format("Die Gruppe \"{0}\" wurde nicht gefunden.", group));
 						}
-						// Der Benutzer "TerminILK" ist hier nicht angebracht und wird über diese GUID entfernt.
+						// Der Benutzer "TerminILK" ist hier nicht angebracht und wird anhand seiner GUID entfernt.
 						var terminilkGuid = new Guid("{b5f9a1c7-ba25-4902-88a0-ffe59fae893a}");
 
 						foreach (var adIlk in groupPrincipal.GetMembers(true).Cast<UserPrincipal>().Where(p => p.Guid != terminilkGuid))
@@ -112,9 +125,18 @@ namespace ILK_Protokoll.Areas.Administration.Controllers
 			}
 			db.SaveChanges();
 
-			return new HttpStatusCodeResult(HttpStatusCode.OK);
+			return new HttpStatusCodeResult(HttpStatusCode.NoContent);
 		}
 
+		/// <summary>
+		///    Liefert anhand des angegebenen IPrincipal einen Benutzer zurück. Wenn der Benutzer in der Datenbank enthalten ist,
+		///    wird dieser zurückgeliefert. Ist er nicht in der Datenbank, wird er angelegt. Ist der Benutzername leer, wird ein
+		///    anonymer Benutzer namens "xx" zurückgegeben, der nicht in der Datenbank enthalten ist.
+		/// </summary>
+		/// <param name="db">Ein Datenkontext</param>
+		/// <param name="userPrincipal">Der gesuchte Benutzer</param>
+		/// <returns></returns>
+		[NotNull]
 		public static User GetUser(DataContext db, IPrincipal userPrincipal)
 		{
 			string fullName = userPrincipal.Identity.Name;
@@ -160,6 +182,11 @@ namespace ILK_Protokoll.Areas.Administration.Controllers
 			}
 		}
 
+		/// <summary>
+		///    Erzeugt einen neuen Benutzer in der Datenbank anhand eines Namenskürzels. Wird momentan nicht verwendet.
+		/// </summary>
+		/// <param name="samname">Das Namenskürzel, typischerweise 2 oder 3 Zeichen.</param>
+		/// <returns>Einen neuen Benutzer, dessen Daten anhand des Kürzels aus dem AD gezogen wurden.</returns>
 		public static User CreateUserFromShortName(string samname)
 		{
 			using (var context = new PrincipalContext(ContextType.Domain, DomainName))
@@ -179,6 +206,11 @@ namespace ILK_Protokoll.Areas.Administration.Controllers
 			}
 		}
 
+		/// <summary>
+		///    Erzeugt einen neuen Benutzer in der Datenbank anhand eines UserPrincipal. Alle Daten des Benutzers werden aus dem AD
+		///    gezogen, außerdem bekommt der neue Benutzer eine Willkommens-E-Mail
+		/// </summary>
+		/// <param name="aduser">Der UserPrincipal, aus dessen Daten der Benutzer erzeugt werden soll.</param>
 		private static User CreateUserFromADUser(UserPrincipal aduser)
 		{
 			var u = new User
