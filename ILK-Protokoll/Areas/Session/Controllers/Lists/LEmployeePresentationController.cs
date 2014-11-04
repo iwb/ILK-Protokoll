@@ -46,7 +46,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 			return base._BeginEdit(id);
 		}
 
-		public ActionResult Edit(int? id, string returnURL = null, string statusMessage = null)
+		public ActionResult Edit(int? id, Uri returnURL = null, string statusMessage = null)
 		{
 			if (id == null)
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -56,17 +56,17 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 				return HttpNotFound();
 
 			ViewBag.UserList = CreateUserSelectList();
-			ViewBag.ReturnURL = returnURL ?? Url.Action("Index", "ViewLists", new {Area = ""});
+			ViewBag.ReturnURL = returnURL ?? GetFallbackUri();
 			ViewBag.StatusMessage = statusMessage;
 			return View(presentation);
 		}
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public virtual ActionResult Edit([Bind(Exclude = "Created")] EmployeePresentation input, string returnURL = null)
+		public virtual ActionResult Edit([Bind(Exclude = "Created")] EmployeePresentation input, Uri returnURL = null)
 		{
 			ViewBag.UserList = CreateUserSelectList();
-			ViewBag.ReturnURL = returnURL ?? Url.Action("Index", "ViewLists", new {Area = ""});
+			ViewBag.ReturnURL = returnURL ?? GetFallbackUri();
 
 			if (!ModelState.IsValid)
 				return View(input);
@@ -80,6 +80,12 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 				returnURL,
 				statusMessage = "Daten erfolgreich gespeichert."
 			});
+		}
+
+		private Uri GetFallbackUri()
+		{
+			var actionuri = Url.Action("Index", "ViewLists", new {Area = ""});
+			return new Uri(actionuri ?? "/");
 		}
 
 		public override PartialViewResult _FetchRow(int id)
