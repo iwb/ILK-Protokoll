@@ -36,11 +36,15 @@ namespace ILK_Protokoll.Areas.Administration.Controllers
 			return View("Index", users);
 		}
 
-		// GET: Administration/User/Sync
+		// AJAX: Administration/User/Sync
+		/// <summary>
+		/// Hier werden die Bneutzer des ILK-Protokolls abgeglichen. Das heißt, Benutzer die Autorisiert sind, werden in die Datenbank aufgenommen und können demzufolge in den Auswahllisten ausgewählt werden. Es findet keine Autorisirung statt; diese erfolgt bereits früher in Form des globelen Filters mit dem AuthorizeAttribute in FilterConfig.cs. Falls Benutzer nicht mehr in den autorisierten Gruppen sind, werden Sie inaktiv geschaltet. Das bedeutet, dass sie nicht mehr in den listen auftauchen.
+		/// </summary>
+		/// <returns></returns>
 		public ActionResult _Sync()
 		{
 			List<User> myusers = db.Users.ToList();
-			// Zunächst alle Benutzer (außer dem aktuellen Benutzer) auf inakitv setzen.
+			// Zunächst alle Benutzer (außer dem aktuellen Benutzer) auf inaktiv setzen.
 			foreach (User user in myusers)
 				user.IsActive = user.Equals(GetCurrentUser());
 

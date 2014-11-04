@@ -188,7 +188,7 @@ namespace ILK_Protokoll.Controllers
 		}
 
 		/// <summary>
-		///    Markiert ein Thema als ungelesen für alle Benutzer (steuerbar über den Parameter <see cref="skipCurrentUser" />)
+		///    Markiert ein Thema als ungelesen für alle Benutzer (steuerbar über den Parameter <paramref name="skipCurrentUser"/>)
 		/// </summary>
 		/// <param name="topic">Das Thema, dass als ungelesen markliert werden soll.</param>
 		/// <param name="skipCurrentUser">
@@ -260,7 +260,7 @@ namespace ILK_Protokoll.Controllers
 		}
 
 		/// <summary>
-		///    Generiert eine lesbare Fehlermeldung aus der Exception <see cref="ex" />.
+		///    Generiert eine lesbare Fehlermeldung aus der Exception <paramref name="ex"/>.
 		/// </summary>
 		/// <param name="ex">Die aufgetretene Exception.</param>
 		/// <returns>Eine Fehlermeldung im HTML-Format.</returns>
@@ -306,6 +306,9 @@ namespace ILK_Protokoll.Controllers
 			base.Initialize(requestContext);
 		}
 
+		/// <summary>
+		/// Gibt alle von der aktuellen Instanz der <see cref="T:System.Web.Mvc.Controller"/>-Klasse verwendeten Ressourcen frei.
+		/// </summary>
 		protected override void Dispose(bool disposing)
 		{
 			if (disposing)

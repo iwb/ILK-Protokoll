@@ -8,6 +8,10 @@ using StackExchange.Profiling;
 
 namespace ILK_Protokoll
 {
+	/// <summary>
+	/// Diese Klasse sogt für das einfache Profiling von Controlleraktionen.
+	/// Quelle: http://samsaffron.com/archive/2011/07/25/Automatically+instrumenting+an+MVC3+app
+	/// </summary>
 	public class ProfilingActionFilter : ActionFilterAttribute
 	{
 		private const string StackKey = "ProfilingActionFilterStack";

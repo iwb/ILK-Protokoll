@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -28,6 +29,7 @@ namespace ILK_Protokoll.util
 	* http://code.google.com/p/google-diff-match-patch/
 	*/
 
+	[GeneratedCode("ExternalCode", "")]
 	internal static class CompatibilityExtensions
 	{
 		// JScript splice function
@@ -63,10 +65,10 @@ namespace ILK_Protokoll.util
 	}
 
 
-	/**
-   * Class representing one diff operation.
-   */
-
+	/// <summary>
+	/// Class representing one diff operation.
+	/// </summary>
+	[GeneratedCode("ExternalCode", "")]
 	public class Diff
 	{
 		public Operation operation;
@@ -136,10 +138,10 @@ namespace ILK_Protokoll.util
 	}
 
 
-	/**
-   * Class representing one patch operation.
-   */
-
+	/// <summary>
+	/// Class representing one patch operation.
+	/// </summary>
+	[GeneratedCode("ExternalCode", "")]
 	public class Patch
 	{
 		public List<Diff> diffs = new List<Diff>();

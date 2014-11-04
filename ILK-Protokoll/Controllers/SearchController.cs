@@ -14,6 +14,15 @@ using StackExchange.Profiling;
 
 namespace ILK_Protokoll.Controllers
 {
+	/// <summary>
+	///    Die Suche ermöglicht es, auch alte Diskussionen und Beschlüsse wieder zu finden. Suchbegriffe werden standardmäßig
+	///    mit UND verknüpft. Bei jeder Suche wird die Datenbank einmal vollständig durchsucht. Bei zunehmenden
+	///    Performanceproblemen könnten hier zwei Maßahmen eingesetzt werden: 1. Eine stored Proc, die es erspart alle Daten
+	///    aus der DB zum Server zu übertragen. Da momentan aber DB und Server auf derselben Maschine sitzen, nicht
+	///    vielversprechend. 2. Ein Suchindex. Eine Tabelle in der Datenbank, in der alle Wörter mit den zugehörigen
+	///    Suchtreffern vermekrt sind. Eventuell auch nur als Prefixliste oder komplett als Radix-tree in der Datenbank. Die
+	///    aktuelle Performance ist aber ausreichend.
+	/// </summary>
 	public class SearchController : BaseController
 	{
 		// GET: /Search
@@ -324,8 +333,15 @@ namespace ILK_Protokoll.Controllers
 			}
 		}
 
+		/// <summary>
+		/// Durchsucht die Kommentare einer Diskussion
+		/// </summary>
+		/// <param name="topic">Diskussion</param>
+		/// <param name="searchterms">Suchbegriffe</param>
+		/// <param name="resultlist">Ergebnisliste</param>
 		private void SearchComments(Topic topic, Regex[] searchterms, SearchResultList resultlist)
 		{
+			// Hier wird das NaN-Schema erstmal eingesetzt. Wird ein Suchbegriff nicht gefunden, dann wird der score auf NaN gesetzt. Nur wenn alle Suchbegriffe in einem Kommentar vorkamen, existiert ein gültiger score, der Kommentar wird dann zru ergebnisliste hinzugefügt.
 			foreach (Comment comment in topic.Comments)
 			{
 				float score = 0.0f;
@@ -440,6 +456,12 @@ namespace ILK_Protokoll.Controllers
 			}
 		}
 
+		/// <summary>
+		///    Durchsucht alle vorhandenen Listen. Jede Liste wird separat durchsucht, und die Treffer ggf. zur Trefferliste
+		///    hinzugefügt. Falsl kein Suchbegriff eingegbeen wurde, werden alle Listeneinträge gefunden.
+		/// </summary>
+		/// <param name="searchterms">Die Suchbegriffe, nach denen gesucht wird.</param>
+		/// <param name="resultlist">Die Ergebnisliste, zu der die Ergebnisse hinzugefügt werden.</param>
 		private void SearchLists(Regex[] searchterms, SearchResultList resultlist)
 		{
 			foreach (var item in db.LEvents)
@@ -481,6 +503,7 @@ namespace ILK_Protokoll.Controllers
 				}
 			}
 
+			// Da ohnehin nur ein feld durchsucht wird, kann die Schleife über die Suchbegriffe mit der .All() Methode verkürzt weren. Negativ: Mehrfache Vorkommen des Suchbegriffs resultieren nicht in einem höheren score.
 			foreach (var item in db.LConferences)
 			{
 				if (searchterms.All(pattern => pattern.IsMatch(item.Description)))
@@ -526,6 +549,7 @@ namespace ILK_Protokoll.Controllers
 			}
 
 			//-----------------------------------------------------------------------------------------------------
+			// Da es quasi unmöglich ist, dass alle Suchbegriffe auf ein Mitarbeiterkürzel zutreffen, werden die Kürzel mit .Any() durchsucht. Eine Suche nach "ab ba" findet also beide Mitarbeiter (statt keinem).
 			foreach (var item in db.LEmployeePresentations)
 			{
 				if (searchterms.Any(pattern => pattern.IsMatch(item.Employee)))
@@ -546,6 +570,7 @@ namespace ILK_Protokoll.Controllers
 					});
 				}
 			}
+			// Die Dokumente, die Diskussionen zugeordnet sind, wurden oben bereits durchsucht.
 			foreach (var doc in db.Documents.Where(doc => doc.EmployeePresentationID != null))
 			{
 				if (searchterms.All(pattern => pattern.IsMatch(doc.DisplayName)))
@@ -579,7 +604,7 @@ namespace ILK_Protokoll.Controllers
 						{
 							Hit.FromProperty<IlkDay>(x => x.Start, item.Start.ToShortDateString()),
 							Hit.FromProperty(item, x => x.Place),
-							Hit.FromProperty(item, x => x.Topics),
+							Hit.FromProperty(item, x => x.Topics)
 						}
 					});
 				}
@@ -601,7 +626,7 @@ namespace ILK_Protokoll.Controllers
 						{
 							Hit.FromProperty<IlkDay>(x => x.Start, item.Start.ToShortDateString()),
 							Hit.FromProperty(item, x => x.Place),
-							Hit.FromProperty(item, x => x.Comments),
+							Hit.FromProperty(item, x => x.Comments)
 						}
 					});
 				}
@@ -623,7 +648,7 @@ namespace ILK_Protokoll.Controllers
 						{
 							Hit.FromProperty(item, x => x.Project),
 							Hit.FromProperty<IlkDay>(x => x.Start, item.Start.ToShortDateString()),
-							Hit.FromProperty(item, x => x.Description),
+							Hit.FromProperty(item, x => x.Description)
 						}
 					});
 				}
