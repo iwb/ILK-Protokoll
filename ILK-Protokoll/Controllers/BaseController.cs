@@ -16,6 +16,10 @@ using JetBrains.Annotations;
 
 namespace ILK_Protokoll.Controllers
 {
+	/// <summary>
+	///    Der Basiscontroller, von dem alle anderen Controller abgeleitet sind. Er stellt die Datenbankverbindung her und
+	///    bietet einige kleine Methoden, die in mehrer Controllern benötigt werden.
+	/// </summary>
 	public class BaseController : Controller
 	{
 		private User _currentUser;
@@ -210,7 +214,7 @@ namespace ILK_Protokoll.Controllers
 		}
 
 		/// <summary>
-		/// Markiert eine Diskussion für den aktuell eingeloggten Benutzer als gelesen.
+		///    Markiert eine Diskussion für den aktuell eingeloggten Benutzer als gelesen.
 		/// </summary>
 		/// <param name="topic">Die Diskussion</param>
 		protected void MarkAsRead(Topic topic)
@@ -224,7 +228,7 @@ namespace ILK_Protokoll.Controllers
 		}
 
 		/// <summary>
-		/// Gibt eine HTTP Statusmeldung inklusive Inhalt zurück. Der Statuscode und der Inhalt können separat angegeben werden.
+		///    Gibt eine HTTP Statusmeldung inklusive Inhalt zurück. Der Statuscode und der Inhalt können separat angegeben werden.
 		/// </summary>
 		/// <param name="statuscode">Der Statuscode (z.B. 500 für "Internal Server Error")</param>
 		/// <param name="message">Die Statusnachricht, die an den Client übermittelt werden soll.</param>
@@ -245,7 +249,7 @@ namespace ILK_Protokoll.Controllers
 		}
 
 		/// <summary>
-		/// Gibt eine HTTP Statusmeldung inklusive Inhalt zurück. Der Statuscode und der Inhalt können separat angegeben werden.
+		///    Gibt eine HTTP Statusmeldung inklusive Inhalt zurück. Der Statuscode und der Inhalt können separat angegeben werden.
 		/// </summary>
 		/// <param name="statuscode">Der Statuscode (z.B. HttpStatusCode.InternalServerError)</param>
 		/// <param name="message">Die Statusnachricht, die an den Client übermittelt werden soll.</param>
@@ -255,6 +259,11 @@ namespace ILK_Protokoll.Controllers
 			return HTTPStatus((int)statuscode, message);
 		}
 
+		/// <summary>
+		///    Generiert eine lesbare Fehlermeldung aus der Exception <see cref="ex" />.
+		/// </summary>
+		/// <param name="ex">Die aufgetretene Exception.</param>
+		/// <returns>Eine Fehlermeldung im HTML-Format.</returns>
 		protected static string ErrorMessageFromException(DbEntityValidationException ex)
 		{
 			StringBuilder msg = new StringBuilder();
@@ -265,6 +274,10 @@ namespace ILK_Protokoll.Controllers
 			return msg.ToString();
 		}
 
+		/// <summary>
+		///    Generiert eine lesbare Fehlermeldung aus dem Modellstatus des Controllers.
+		/// </summary>
+		/// <returns>Eine Fehlermeldung im HTML-Format.</returns>
 		protected string ErrorMessageFromModelState()
 		{
 			StringBuilder msg = new StringBuilder();
@@ -275,6 +288,11 @@ namespace ILK_Protokoll.Controllers
 			return msg.ToString();
 		}
 
+		/// <summary>
+		///    Die Header werden gesetzt, sodass der Browsercache möglichst unterbunden wird. Da die Seite meistens im LAN
+		///    aufgerufen wird, sollte dies keine starken Auswirkungen auf die Geschwindigkeit haben. Umgekehrt sind die gecachten
+		///    Daten oft veraltet.
+		/// </summary>
 		protected override void Initialize(RequestContext requestContext)
 		{
 			HttpContextBase Context = requestContext.HttpContext;
