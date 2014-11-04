@@ -212,7 +212,7 @@ namespace ILK_Protokoll.Models
 	}
 
 	[Serializable]
-	public class TopicLockedException : Exception
+	public sealed class TopicLockedException : Exception
 	{
 		public TopicLockedException()
 			: base("Das Thema ist gesperrt und kann daher nur durch den Sitzungsleiter bearbeitet werden.")

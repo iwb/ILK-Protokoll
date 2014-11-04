@@ -13,6 +13,10 @@ using Event = DDay.iCal.Event;
 namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 {
 	// ReSharper disable Mvc.PartialViewNotResolved
+	/// <summary>
+	/// Dieser Controller ist die Basis für alle Controller der Listenelemente und übernimmt die Grundfunktionen. Besonders einfache listen können so allein durch eine Ableitung und Konkretisierung dieser Klasse erstellt werden. Im Konstruktor der Kindklasse MUSS das Feld <see cref="_dbSet" /> mit der passenden Referenz aus <see cref="db" /> befüllt werden.
+	/// </summary>
+	/// <typeparam name="TModel"></typeparam>
 	public class ParentController<TModel> : SessionBaseController
 		where TModel : BaseItem, new()
 	{
@@ -20,6 +24,9 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 		protected DbSet<TModel> _dbSet;
 		private IQueryable<TModel> _entities;
 
+		/// <summary>
+		/// Die Liste der Datensätze, die angezeigt werden sollen. In der Kindklasse können hier noch Einschränkungen oder Sortierungen vorgenommen werden.
+		/// </summary>
 		protected IQueryable<TModel> Entities
 		{
 			get { return _entities ?? _dbSet; }

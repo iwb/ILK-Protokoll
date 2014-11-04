@@ -38,6 +38,7 @@ namespace ILK_Protokoll.Controllers
 			"xltx"
 		};
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2211:NonConstantFieldsShouldNotBeVisible")]
 		public static HashSet<string> KnownExtensions = new HashSet<string>();
 
 		private string Serverpath

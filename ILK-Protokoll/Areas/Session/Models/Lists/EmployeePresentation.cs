@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
 using ILK_Protokoll.Models;
 
 namespace ILK_Protokoll.Areas.Session.Models.Lists
@@ -43,7 +44,7 @@ namespace ILK_Protokoll.Areas.Session.Models.Lists
 		[DisplayName("Vorgemerkt")]
 		public bool Selected { get; set; }
 
-		[NotMapped]
+		[NotMapped, SuppressMessage("Microsoft.Design", "CA1056:UriPropertiesShouldNotBeStrings")]
 		public string FileURL { get; set; }
 
 		[NotMapped]
