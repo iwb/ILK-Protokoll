@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
@@ -6,6 +7,7 @@ using System.Web.Mvc;
 using ILK_Protokoll.DataLayer;
 using ILK_Protokoll.Mailers;
 using ILK_Protokoll.Models;
+using ILK_Protokoll.util;
 using ILK_Protokoll.ViewModels;
 
 namespace ILK_Protokoll.Controllers
@@ -121,9 +123,12 @@ namespace ILK_Protokoll.Controllers
 			if (IsTopicLocked(topicID))
 				throw new TopicLockedException();
 
-			var a = new AssignmentEdit {TopicID = topicID};
+			var a = new AssignmentEdit
+			{
+				TopicID = topicID,
+				OwnerSelectList = CreateOwnerSelectListitems()
+			};
 
-			ViewBag.UserList = CreateUserSelectList();
 			return View(a);
 		}
 
@@ -136,32 +141,65 @@ namespace ILK_Protokoll.Controllers
 				throw new TopicLockedException();
 			else if (!ModelState.IsValid)
 			{
-				ViewBag.UserList = CreateUserSelectList();
+				input.OwnerSelectList = CreateOwnerSelectListitems();
 				return View(input);
 			}
 			else
 			{
-				var assignment = db.Assignments.Create();
-				TryUpdateModel(assignment, new[] {"Type", "Title", "Description", "TopicID", "OwnerID", "DueDate", "IsActive"});
+				var topic = db.Topics.Find(input.TopicID);
 
-				var a = db.Assignments.Add(assignment);
+				// Ungelesen-Markierung und Aktion aktualisieren
+				MarkAsUnread(topic);
+				if (input.Type == AssignmentType.ToDo && topic.Lock != null)
+					topic.Lock.Action = TopicAction.None; // Falls ein ToDo hinzugefügt wird, Wiedervorlage auswählen.
 
-				if (input.Type == AssignmentType.ToDo && a.Topic.Lock != null)
-					a.Topic.Lock.Action = TopicAction.None; // Falls eine ToDo hinzugefügt wird, Wiedervorlage auswählen.
+				var userlist = input.OwnerID >= 0
+					? input.OwnerID.ToEnumerable()
+					: db.SessionTypes.Find(-input.OwnerID).Attendees.Select(a => a.ID).ToList();
 
-				// Ungelesen-Markierung aktualisieren
-				MarkAsUnread(a.Topic);
+				foreach (var userid in userlist)
+				{
+					var assignment = Assignment.FromViewModel(input);
+					assignment.OwnerID = userid;
+					assignment = db.Assignments.Add(assignment);
+
+					if (assignment.Type == AssignmentType.ToDo && input.IsActive)
+					{
+						var mailer = new UserMailer();
+						mailer.SendNewAssignment(assignment);
+					}
+				}
 
 				db.SaveChanges();
 
-				if (assignment.Type == AssignmentType.ToDo && input.IsActive)
-				{
-					var mailer = new UserMailer();
-					mailer.SendNewAssignment(assignment);
-				}
-
 				return RedirectToAction("Details", "Topics", new {id = input.TopicID});
 			}
+		}
+
+		/// <summary>
+		///    Erzeugt die Auswahlliste für die Besitzer. Da in #83 auch Gruppen auswählbar sein sollen, werden diese kombiniert.
+		///    Einzelnbenutzer sind durch einen positiven Wert gekennzeichnet. Dies ist die UserID. Gruppen werden durch einen
+		///    negativen Wert beschrieben, der die negierte Sitzungstypus-ID ist. Werte von 0 sind für beide IDs ungültig und
+		///    sollten daher nie vorkommen. Die Unterscheidung innerhelb der GUI erfolgt über die Gruppen in dem Dropdown Menü.
+		/// </summary>
+		/// <returns>Eine Liste, in der Einzelbenutzer und Benutzergruppen enthalten sind.</returns>
+		private List<SelectListItem> CreateOwnerSelectListitems()
+		{
+			var usergroup = new SelectListGroup {Name = "Benutzer"};
+			var groupsgroup = new SelectListGroup {Name = "Gruppen"};
+
+			var listitems = db.GetUserOrdered(GetCurrentUser()).Select(u => new SelectListItem
+			{
+				Text = u.ShortName,
+				Value = u.ID.ToString(),
+				Group = usergroup
+			}).Concat(db.GetActiveSessionTypes().Select(x => new SelectListItem
+			{
+				Text = x.Name,
+				Value = (-x.ID).ToString(),
+				Group = groupsgroup
+			})).ToList();
+			return listitems;
 		}
 
 		// GET: Assignments/Edit/5

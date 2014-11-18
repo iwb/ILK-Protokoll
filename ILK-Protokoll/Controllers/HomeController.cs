@@ -9,6 +9,10 @@ using StackExchange.Profiling;
 
 namespace ILK_Protokoll.Controllers
 {
+	/// <summary>
+	///    Dies ist die Startseite, deren Index()-methode auch ohne Angabe des Controllers ausgelöst werden kann. ~/ verweist
+	///    also auf diese Index()-Methode.
+	/// </summary>
 	[Authorize]
 	public class HomeController : BaseController
 	{
@@ -47,7 +51,8 @@ namespace ILK_Protokoll.Controllers
 
 		// AJAX: Home/_FetchTopics/
 		/// <summary>
-		/// Die Auflistung aller Themen des Dashboard wird generiert. Ausgehend von dieser kann der Benutzer direkt abstimmen, Kommentare schreiben oder Anhänge aufrufen.
+		///    Die Auflistung aller Themen des Dashboard wird generiert. Ausgehend von dieser kann der Benutzer direkt abstimmen,
+		///    Kommentare schreiben oder Anhänge aufrufen.
 		/// </summary>
 		public ActionResult _FetchTopics()
 		{
@@ -77,7 +82,7 @@ namespace ILK_Protokoll.Controllers
 		}
 
 		/// <summary>
-		/// Diese Methode rendert eine einzige Diskussion und gibt diese zurück.
+		///    Diese Methode rendert eine einzige Diskussion und gibt diese zurück.
 		/// </summary>
 		/// <param name="id">TopicID</param>
 		public ActionResult _FetchSingleTopic(int id)
@@ -86,7 +91,7 @@ namespace ILK_Protokoll.Controllers
 		}
 
 		/// <summary>
-		/// Grundlegende Informationen über das ILK-Protokoll. Diese Seite ist nicht verlinkt.
+		///    Grundlegende Informationen über das ILK-Protokoll. Diese Seite ist nicht verlinkt.
 		/// </summary>
 		public ActionResult About()
 		{

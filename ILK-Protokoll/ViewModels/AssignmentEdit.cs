@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
 using ILK_Protokoll.Models;
 using ILK_Protokoll.util;
 
@@ -42,5 +44,7 @@ namespace ILK_Protokoll.ViewModels
 
 		[Display(Name = "Aktiv")]
 		public bool IsActive { get; set; }
+
+		public IEnumerable<SelectListItem> OwnerSelectList { get; set; }
 	}
 }
