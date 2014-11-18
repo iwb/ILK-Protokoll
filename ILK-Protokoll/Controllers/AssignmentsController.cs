@@ -207,6 +207,10 @@ namespace ILK_Protokoll.Controllers
 			}
 
 			var assignment = db.Assignments.Find(input.ID);
+			if (IsTopicLocked(assignment.TopicID))
+				throw new TopicLockedException();
+			if (assignment.IsActive && assignment.Type == AssignmentType.ToDo)
+				input.IsActive = true; // Verhindert, dass das Aktiv-Flag bei ToDos zurück auf false geändert wird.
 
 			if (assignment.Type == AssignmentType.ToDo && !assignment.IsActive && input.IsActive)
 				// Das Aktiv-Flag hat sich auf true geändert
@@ -215,10 +219,7 @@ namespace ILK_Protokoll.Controllers
 				mailer.SendNewAssignment(assignment);
 			}
 
-			if (IsTopicLocked(assignment.TopicID))
-				throw new TopicLockedException();
-
-			TryUpdateModel(assignment, new[] {"Type", "Title", "Description", "TopicID", "OwnerID", "DueDate", "IsActive"});
+			assignment.IncorporateUpdates(input);
 			db.Entry(assignment).State = EntityState.Modified;
 			db.SaveChanges();
 
