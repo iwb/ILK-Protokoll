@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 using ILK_Protokoll.DataLayer;
 using ILK_Protokoll.Mailers;
@@ -135,7 +136,7 @@ namespace ILK_Protokoll.Controllers
 		// POST: Administration/SessionTypes/Create
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public ActionResult Create([Bind] AssignmentEdit input)
+		public async Task<ActionResult> Create([Bind] AssignmentEdit input)
 		{
 			if (IsTopicLocked(input.TopicID))
 				throw new TopicLockedException();
@@ -157,6 +158,8 @@ namespace ILK_Protokoll.Controllers
 					? input.OwnerID.ToEnumerable()
 					: db.SessionTypes.Find(-input.OwnerID).Attendees.Select(a => a.ID).ToList();
 
+				var mailer = new UserMailer();
+				var tasks = new List<Task>();
 				foreach (var userid in userlist)
 				{
 					var assignment = Assignment.FromViewModel(input);
@@ -164,11 +167,9 @@ namespace ILK_Protokoll.Controllers
 					assignment = db.Assignments.Add(assignment);
 
 					if (assignment.Type == AssignmentType.ToDo && input.IsActive)
-					{
-						var mailer = new UserMailer();
-						mailer.SendNewAssignment(assignment);
-					}
+						tasks.Add(mailer.SendNewAssignment(assignment));
 				}
+				await Task.WhenAll(tasks);
 
 				db.SaveChanges();
 

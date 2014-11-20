@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
+using System.Web.Hosting;
 using ILK_Protokoll.Models;
 using Mvc.Mailer;
 
@@ -26,10 +28,10 @@ namespace ILK_Protokoll.Mailers
 				x.ViewName = "Welcome";
 				x.To.Add(u.EmailAddress);
 			});
-			mail.SendAsync();
+			HostingEnvironment.QueueBackgroundWorkItem(ct => mail.SendAsync());
 		}
 
-		public virtual void SendNewAssignment(Assignment assignment)
+		public virtual Task SendNewAssignment(Assignment assignment)
 		{
 			ViewBag.User = assignment.Owner;
 			ViewBag.Assignment = assignment;
@@ -40,7 +42,7 @@ namespace ILK_Protokoll.Mailers
 				x.ViewName = "NewAssignment";
 				x.To.Add(assignment.Owner.EmailAddress);
 			});
-			mail.SendAsync();
+			return mail.SendAsync();
 		}
 
 		public void SendAssignmentReminder(Assignment assignment)
