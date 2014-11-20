@@ -1,9 +1,7 @@
 @using ILK_Protokoll.Models
 @using ILK_Protokoll.util
 @{
-	var user = (User)ViewBag.User;
 	var assignment = (Assignment)ViewBag.Assignment;
-	var name = string.Join(" ", user.LongName.Split(',').Reverse()).Trim();
 }
 <p>Für Sie wurde eine neue Aufgabe im ILK-Protokoll hinterlegt, deren Erledigung bis zum <b>@assignment.DueDate.ToString("d")</b> erfolgen sollte.</p>
 
@@ -19,7 +17,7 @@
 			Besitzer:
 		</dt>
 		<dd>
-			@name
+			@ViewBag.UserName
 		</dd>
 
 		<dt>

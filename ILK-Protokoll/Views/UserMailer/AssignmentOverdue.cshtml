@@ -1,9 +1,7 @@
 @using ILK_Protokoll.Models
 @using ILK_Protokoll.util
 @{
-	var user = (User)ViewBag.User;
 	var assignment = (Assignment)ViewBag.Assignment;
-	var name = string.Join(" ", user.LongName.Split(',').Reverse()).Trim();
 }
 <p>Eine ihrer Aufgaben ist seit dem <b>@assignment.DueDate.ToString("d")</b> überfällig.</p>
 
@@ -19,7 +17,7 @@
 			Besitzer:
 		</dt>
 		<dd>
-			@name
+			@ViewBag.UserName
 		</dd>
 
 		<dt>

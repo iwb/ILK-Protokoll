@@ -1,10 +1,6 @@
 @using ILK_Protokoll.Models
-@{
-	var user = (User)ViewBag.User;
-	var name = string.Join(" ", user.LongName.Split(',').Reverse()).Trim();
-}
 
-<h2>Hallo @name,</h2>
+<h2>Hallo @ViewBag.UserName,</h2>
 
 <p>herzlich willkommen beim ILK-Protokoll. Sie sind hiermit registriert und können das Programm ab sofort benutzen.</p>
 
