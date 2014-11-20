@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 using ILK_Protokoll.Areas.Session.Models;
 using ILK_Protokoll.Mailers;
@@ -37,7 +38,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public ActionResult GenerateReport()
+		public async Task<ActionResult> GenerateReport()
 		{
 			ActiveSession session = GetSession();
 
@@ -89,7 +90,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 				return HTTPStatus(HttpStatusCode.InternalServerError, e.Message);
 			}
 
-			var result = ProcessTopics(session, report);
+			var result = await ProcessTopics(session, report);
 			if (result != null)
 				return result;
 
@@ -113,7 +114,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 			return PartialView("_ReportSuccess", report.ID);
 		}
 
-		private ActionResult ProcessTopics(ActiveSession session, SessionReport report)
+		private async Task<ActionResult> ProcessTopics(ActiveSession session, SessionReport report)
 		{
 			List<Topic> topics = db.Topics
 				.Include(t => t.SessionType)
@@ -148,10 +149,15 @@ namespace ILK_Protokoll.Areas.Session.Controllers
 							Text = t.Proposal,
 							Type = DecisionType.Resolution
 						};
-						db.Assignments.RemoveRange(db.Assignments.Where(a => a.TopicID == t.ID && !a.IsActive));
 						// Inaktive Aufgaben löschen
+						db.Assignments.RemoveRange(db.Assignments.Where(a => a.TopicID == t.ID && !a.IsActive));
+
+						// Für aktive Umsetzungaufgaben E-Mails verschicken
+						var tasks = new List<Task>();
 						foreach (var duty in t.Assignments.Where(a => a.Type == AssignmentType.Duty && a.IsActive))
-							mailer.SendNewAssignment(duty);
+							tasks.Add(mailer.SendNewAssignment(duty));
+						await Task.WhenAll(tasks);
+
 						break;
 					case TopicAction.Close:
 						t.Decision = new Decision
