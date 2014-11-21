@@ -165,6 +165,7 @@ namespace ILK_Protokoll.Controllers
 					var assignment = db.Assignments.Create();
 					assignment.IncorporateUpdates(input);
 					assignment.Owner = db.Users.Find(userid);
+					db.Assignments.Add(assignment);
 
 					if (assignment.Type == AssignmentType.ToDo && input.IsActive)
 						tasks.Add(mailer.SendNewAssignment(assignment));
