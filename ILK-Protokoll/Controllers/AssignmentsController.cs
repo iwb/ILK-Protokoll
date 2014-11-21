@@ -96,7 +96,9 @@ namespace ILK_Protokoll.Controllers
 			 * Tatsächlich fällig wird sie allerdings erst am Donnerstag um 24:00. Damit erklärt sich der eine Tag Unterschied in den cutoff-Daten. */
 			var mailer = new UserMailer();
 			var cutoff = DateTime.Now.AddDays(6);
-			var due = db.Assignments.Where(a => !a.IsDone && !a.ReminderSent && a.IsActive && a.DueDate < cutoff && a.Owner.IsActive).ToList();
+			var due =
+				db.Assignments.Where(a => !a.IsDone && !a.ReminderSent && a.IsActive && a.DueDate < cutoff && a.Owner.IsActive)
+					.ToList();
 			foreach (var a in due)
 			{
 				// Erinnerung für Umsetzungsaufgaben nur, wenn ein Beschluss gefallen ist 
@@ -159,21 +161,21 @@ namespace ILK_Protokoll.Controllers
 					: db.SessionTypes.Find(-input.OwnerID).Attendees.Select(a => a.ID).ToList();
 
 				var mailer = new UserMailer();
-				var tasks = new List<Task>();
+				var list = new List<Assignment>();
 				foreach (var userid in userlist)
 				{
-					var assignment = db.Assignments.Create();
-					assignment.IncorporateUpdates(input);
-					assignment.Owner = db.Users.Find(userid);
-					db.Assignments.Add(assignment);
-
-					if (assignment.Type == AssignmentType.ToDo && input.IsActive)
-						tasks.Add(mailer.SendNewAssignment(assignment));
+					var a = Assignment.FromViewModel(input);
+					a.Owner = db.Users.Find(userid);
+					list.Add(a);
 				}
-				await Task.WhenAll(tasks);
 
+				db.Assignments.AddRange(list);
 				db.SaveChanges();
-
+				
+				await Task.WhenAll(list
+					.Where(assignment => assignment.Type == AssignmentType.ToDo && input.IsActive)
+					.Select(a => mailer.SendNewAssignment(a)));
+				
 				return RedirectToAction("Details", "Topics", new {id = input.TopicID});
 			}
 		}
