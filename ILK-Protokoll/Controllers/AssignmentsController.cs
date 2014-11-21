@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using ILK_Protokoll.DataLayer;
@@ -90,10 +91,13 @@ namespace ILK_Protokoll.Controllers
 		/// </summary>
 		/// <param name="db">Ein Datenbankkontext</param>
 		/// <returns>Anzahl der Aufgaben, die betrachtet wurden.</returns>
-		public static int SendReminders(DataContext db)
+		public static string SendReminders(DataContext db)
 		{
 			/* Gespeichert wird in der Datenbank ja nur der Datumsanteil. Eine Aufgabe, die am Donnerstag fällig wird, enthält hier also Do, 0:00 als Zeitangabe.
 			 * Tatsächlich fällig wird sie allerdings erst am Donnerstag um 24:00. Damit erklärt sich der eine Tag Unterschied in den cutoff-Daten. */
+
+			var mailsSent = 0;
+			var statusMsg = new StringBuilder();
 			var mailer = new UserMailer();
 			var cutoff = DateTime.Now.AddDays(6);
 			var due =
@@ -106,17 +110,25 @@ namespace ILK_Protokoll.Controllers
 				{
 					mailer.SendAssignmentReminder(a);
 					a.ReminderSent = true;
+					mailsSent++;
 				}
 			}
 			db.SaveChanges();
 
+			statusMsg.AppendFormat("Zur Erinnerung: {0} Aufgaben, {1} Erinnerungsmails versendet.\n", due.Count, mailsSent);
+			mailsSent = 0;
+
 			cutoff = DateTime.Now.AddDays(-1);
 			var overdue = db.Assignments.Where(a => !a.IsDone && a.IsActive && a.DueDate < cutoff && a.Owner.IsActive).ToList();
-			foreach (var a in overdue)
-				if (a.Type == AssignmentType.ToDo || a.Topic.HasDecision(DecisionType.Resolution))
-					mailer.SendAssignmentOverdue(a);
+			foreach (var a in overdue.Where(a => a.Type == AssignmentType.ToDo || a.Topic.HasDecision(DecisionType.Resolution)))
+			{
+				mailer.SendAssignmentOverdue(a);
+				mailsSent++;
+			}
 
-			return due.Count + overdue.Count;
+			statusMsg.AppendFormat("Möglicherweise überfällig: {0}, {1} E-Mails versendet.\n", due.Count, mailsSent);
+
+			return statusMsg.ToString();
 		}
 
 		// GET: Assignments/Create
@@ -171,11 +183,11 @@ namespace ILK_Protokoll.Controllers
 
 				db.Assignments.AddRange(list);
 				db.SaveChanges();
-				
+
 				await Task.WhenAll(list
 					.Where(assignment => assignment.Type == AssignmentType.ToDo && input.IsActive)
 					.Select(a => mailer.SendNewAssignment(a)));
-				
+
 				return RedirectToAction("Details", "Topics", new {id = input.TopicID});
 			}
 		}

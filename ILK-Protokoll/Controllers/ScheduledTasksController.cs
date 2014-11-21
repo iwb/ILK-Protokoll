@@ -16,10 +16,8 @@ namespace ILK_Protokoll.Controllers
 			foreach (var topic in db.Topics.Where(t => t.ResubmissionDate < cutoff))
 				topic.ResubmissionDate = null;
 			db.SaveChanges();
-
-			int mailsSent = AssignmentsController.SendReminders(db);
-
-			return string.Format("Es wurden {0} E-Mails verschickt.", mailsSent);
+			
+			return AssignmentsController.SendReminders(db);
 		}
 	}
 }
