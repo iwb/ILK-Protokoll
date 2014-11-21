@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 using ILK_Protokoll.Areas.Administration.Models;
 
 namespace ILK_Protokoll.Models
@@ -42,6 +43,21 @@ namespace ILK_Protokoll.Models
 
 		[Display(Name = "Name")]
 		public string LongName { get; set; }
+
+		public string EmailName
+		{
+			get
+			{
+				var names = LongName.Split(',');
+				if (names.Length < 2)
+					return "";
+
+				if (names[0].EndsWith(".RMV"))
+					names[0] = names[0].Substring(0, names[0].Length - 4);
+
+				return string.Join(" ", names.Reverse()).Trim();
+			}
+		}
 
 		[Display(Name = "E-Mail Adresse")]
 		[DataType(DataType.EmailAddress)]

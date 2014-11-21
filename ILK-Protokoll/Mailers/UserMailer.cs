@@ -20,7 +20,7 @@ namespace ILK_Protokoll.Mailers
 
 		public virtual void SendWelcome(User u)
 		{
-			ViewBag.UserName = string.Join(" ", u.LongName.Split(',').Reverse()).Trim();
+			ViewData.Model = u.EmailName;
 			ViewBag.Host = FQDN;
 			var mail = Populate(x =>
 			{
@@ -33,8 +33,7 @@ namespace ILK_Protokoll.Mailers
 
 		public virtual Task SendNewAssignment(Assignment assignment)
 		{
-			ViewBag.UserName = string.Join(" ", assignment.Owner.LongName.Split(',').Reverse()).Trim();
-			ViewBag.Assignment = assignment;
+			ViewData.Model = assignment;
 			ViewBag.Host = FQDN;
 			var mail = Populate(x =>
 			{
@@ -47,8 +46,7 @@ namespace ILK_Protokoll.Mailers
 
 		public void SendAssignmentReminder(Assignment assignment)
 		{
-			ViewBag.UserName = string.Join(" ", assignment.Owner.LongName.Split(',').Reverse()).Trim();
-			ViewBag.Assignment = assignment;
+			ViewData.Model = assignment;
 			ViewBag.Host = FQDN;
 			var mail = Populate(x =>
 			{
@@ -61,8 +59,7 @@ namespace ILK_Protokoll.Mailers
 
 		public void SendAssignmentOverdue(Assignment assignment)
 		{
-			ViewBag.UserName = string.Join(" ", assignment.Owner.LongName.Split(',').Reverse()).Trim();
-			ViewBag.Assignment = assignment;
+			ViewData.Model = assignment;
 			ViewBag.Host = FQDN;
 			var mail = Populate(x =>
 			{

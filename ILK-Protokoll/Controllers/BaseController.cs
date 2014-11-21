@@ -35,6 +35,7 @@ namespace ILK_Protokoll.Controllers
 		public BaseController()
 		{
 			db.Database.Initialize(false);
+			db.Database.Log = Console.Write;
 		}
 
 		/// <summary>

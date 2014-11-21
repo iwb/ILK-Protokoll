@@ -1,51 +1,51 @@
-@using ILK_Protokoll.Models
 @using ILK_Protokoll.util
-@{
-	var assignment = (Assignment)ViewBag.Assignment;
-}
-<p>Eine ihrer Aufgaben wird in Kürze (<b>@assignment.DueDate.ToString("d")</b>) fällig.</p>
+@model ILK_Protokoll.Models.Assignment
 
-<a href="@ViewBag.Host@Url.Action("Details", "Assignments", new {id = assignment.ID})">Detailseite</a><br />
 <p>
-	<a href="@ViewBag.Host@Url.Action("MarkAsDone", "Assignments", new {id = assignment.ID})">Als erledigt kennzeichnen</a>
+	Eine ihrer Aufgaben wird in Kürze (<b>@Model.DueDate.ToString("d")</b>) fällig.
 </p>
 
-<h3>@assignment.Title</h3>
+<a href="@ViewBag.Host@Url.Action("Details", "Assignments", new {id = Model.ID})">Detailseite</a><br/>
+<p>
+	<a href="@ViewBag.Host@Url.Action("MarkAsDone", "Assignments", new {id = Model.ID})">Als erledigt kennzeichnen</a>
+</p>
+
+<h3>@Model.Title</h3>
 <div>
 	<dl class="dl-horizontal">
 		<dt>
 			Besitzer:
 		</dt>
 		<dd>
-			@ViewBag.UserName
+			@Model.Owner.EmailName
 		</dd>
-		
+
 		<dt>
 			Fällig am:
 		</dt>
 		<dd>
-			@assignment.DueDate.ToString("d")
+			@Model.DueDate.ToString("d")
 		</dd>
 
 		<dt>
 			Diskussion:
 		</dt>
 		<dd>
-			<a href="@ViewBag.Host@Url.Action("Details", "Topics", new {id = assignment.Topic.ID})">@assignment.Topic.Title</a>
+			<a href="@ViewBag.Host@Url.Action("Details", "Topics", new {id = Model.Topic.ID})">@Model.Topic.Title</a>
 		</dd>
 
 		<dt>
 			Typ:
 		</dt>
 		<dd>
-			@assignment.Type.DisplayName()
+			@Model.Type.DisplayName()
 		</dd>
 
 		<dt>
 			Beschreibung:
 		</dt>
 		<dd>
-			@assignment.Description
+			@Model.Description
 		</dd>
 	</dl>
 </div>
