@@ -162,9 +162,9 @@ namespace ILK_Protokoll.Controllers
 				var tasks = new List<Task>();
 				foreach (var userid in userlist)
 				{
-					var assignment = Assignment.FromViewModel(input);
-					assignment.OwnerID = userid;
-					assignment = db.Assignments.Add(assignment);
+					var assignment = db.Assignments.Create();
+					assignment.IncorporateUpdates(input);
+					assignment.Owner = db.Users.Find(userid);
 
 					if (assignment.Type == AssignmentType.ToDo && input.IsActive)
 						tasks.Add(mailer.SendNewAssignment(assignment));
