@@ -15,6 +15,12 @@ namespace ILK_Protokoll.Controllers
 			var cutoff = DateTime.Now;
 			foreach (var topic in db.Topics.Where(t => t.ResubmissionDate < cutoff))
 				topic.ResubmissionDate = null;
+
+			// Zu lange Sperren werden zurückgesetzt
+			cutoff = DateTime.Now.AddHours(-8);
+			foreach (var doc in db.Documents.Where(d => d.LockTime < cutoff))
+				AttachmentsController.ForceReleaseLock(doc);
+
 			db.SaveChanges();
 			
 			return AssignmentsController.SendReminders(db);

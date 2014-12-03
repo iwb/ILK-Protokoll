@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using ILK_Protokoll.Areas.Session.Models.Lists;
+using ILK_Protokoll.DataLayer;
 
 namespace ILK_Protokoll.Models
 {
@@ -54,6 +55,14 @@ namespace ILK_Protokoll.Models
 		///    Enthält das Lockdatum, falls das Dokument gesperrt ist, sonst null.
 		/// </summary>
 		public DateTime? LockTime { get; set; }
+
+		/// <summary>
+		/// Verweist auf den Benutzer, der das Dokument sperrt.
+		/// </summary>
+		public User LockUser { get; set; }
+
+		[ForeignKey("LockUser")]
+		public int? LockUserID { get; set; }
 
 		[Required]
 		[Display(Name = "Erstelldatum")]

@@ -47,6 +47,9 @@ namespace ILK_Protokoll.Models
 		[ScaffoldColumn(false)]
 		public string Extension { get; set; }
 
+		/// <summary>
+		/// Enthält den Namen der Datei im Dateisystem.
+		/// </summary>
 		public string FileName
 		{
 			get

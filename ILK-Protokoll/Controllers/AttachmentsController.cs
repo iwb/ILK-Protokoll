@@ -7,17 +7,21 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Mime;
+using System.Security.AccessControl;
+using System.Security.Principal;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
+using ILK_Protokoll.Areas.Administration.Controllers;
+using ILK_Protokoll.DataLayer;
 using ILK_Protokoll.Models;
+using JetBrains.Annotations;
 
 namespace ILK_Protokoll.Controllers
 {
 	public class AttachmentsController : BaseController
 	{
-		public const string VirtualPath = "~/Attachments/Download/";
 		private static readonly Regex InvalidChars = new Regex(@"[^a-zA-Z0-9_-]");
 
 		/// <summary>
@@ -48,6 +52,13 @@ namespace ILK_Protokoll.Controllers
 		{
 			get { return @"C:\ILK-Protokoll_Uploads\"; }
 		}
+
+#if DEBUG
+		private readonly string _hostname = Dns.GetHostName();
+#else
+		private readonly string _hostname = Dns.GetHostName() + ".iwb.mw.tu-muenchen.de";
+#endif
+
 
 		// GET: Attachments
 		public PartialViewResult _List(int id, DocumentContainer entityKind, bool makeList = false, bool showActions = true)
@@ -214,25 +225,13 @@ namespace ILK_Protokoll.Controllers
 
 			var file = Request.Files[0];
 
-			if (id <= 0)
-				return HTTPStatus(HttpStatusCode.BadRequest, "Die Dateien können keinem Ziel zugeordnet werden.");
-
-			var document = db.Documents.Find(id);
-
-			Topic topic = null;
-			if (document.TopicID != null)
-			{
-				topic = db.Topics.Find(document.TopicID.Value);
-
-				if (IsTopicLocked(document.TopicID.Value))
-					return HTTPStatus(HttpStatusCode.Forbidden, "Da das Thema gesperrt ist, können Sie keine Dateien hochladen.");
-
-				if (topic.IsReadOnly)
-				{
-					return HTTPStatus(HttpStatusCode.Forbidden,
-						"Da das Thema schreibgeschützt ist, können Sie keine Dateien bearbeiten.");
-				}
-			}
+			// Checks
+			Document document;
+			Topic topic;
+			var actionResult = CheckConstraints(id, out topic, out document);
+			if (actionResult != null) 
+				return actionResult;
+			//---------------------------------------------------------------
 
 			if (string.IsNullOrWhiteSpace(file.FileName))
 				return HTTPStatus(HttpStatusCode.BadRequest, "Die Datei hat einen ungültigen Dateinamen.");
@@ -265,7 +264,6 @@ namespace ILK_Protokoll.Controllers
 				db.SaveChanges(); // Damit die Revision seine ID bekommt. Diese wird anschließend im Dateinamen hinterlegt
 				string path = Path.Combine(Serverpath, revision.FileName);
 				file.SaveAs(path);
-				//db.SaveChanges();
 			}
 			catch (DbEntityValidationException ex)
 			{
@@ -281,6 +279,126 @@ namespace ILK_Protokoll.Controllers
 				MarkAsUnread(topic);
 
 			return HTTPStatus(HttpStatusCode.Created, Url.Action("Details", "Attachments", new {Area = "", id}));
+		}
+
+		/// <summary>
+		/// Prüft verschiedene Kriterien, nach denen das Dokument bearbeitbar ist. Bei Einem Fehler ist der Rückgabewert ungleich null.
+		/// </summary>
+		/// <param name="documentID">die ID des Dokuments</param>
+		/// <param name="topic">Das zugeordnete Thema, falls eines existiert.</param>
+		/// <param name="document">Das Doukument, das der ID zugeordnet ist.</param>
+		/// <returns></returns>
+		private ActionResult CheckConstraints(int documentID, [CanBeNull] out Topic topic, out Document document)
+		{
+			topic = null;
+			document = db.Documents.Find(documentID);
+
+			if (document == null)
+				return HTTPStatus(HttpStatusCode.NotFound, "Dokument-ID nicht gefunden.");
+
+			if (document.LockTime != null)
+				return HTTPStatus(HttpStatusCode.Forbidden, "Das Dokument ist derzeit gesperrt.");
+
+			if (document.TopicID == null)
+				return null; // Alle Checks bestanden
+
+			topic = db.Topics.Find(document.TopicID.Value);
+
+			if (IsTopicLocked(document.TopicID.Value))
+				return HTTPStatus(HttpStatusCode.Forbidden, "Da das Thema gesperrt ist, können Sie keine Dateien hochladen.");
+
+			if (topic.IsReadOnly)
+			{
+				return HTTPStatus(HttpStatusCode.Forbidden,
+					"Da das Thema schreibgeschützt ist, können Sie keine Dateien bearbeiten.");
+			}
+			return null;
+		}
+
+		/// <summary>
+		/// Beginnt die nahtlose Bearbeitung eines Dokuments. Hierzu wird die aktuelle Revision kopiert und dem Anwender werden Schreibrechte eingeräumt. Nach Abschluss seiner Bearbeitung muss der Anwender speichern, um die neue Revision zur aktuellen zu machen.
+		/// </summary>
+		/// <param name="id">Die ID des Dokuments, zu dem eine neue Revision erzeugt werden soll.</param>
+
+		public ActionResult BeginNewRevision(int id)
+		{
+			// Checks
+			Document document;
+			Topic topic;
+			var actionResult = CheckConstraints(id, out topic, out document);
+			if (actionResult != null)
+				return actionResult;
+
+			var userAgent = Request.UserAgent;
+			var isInternetExplorer = !string.IsNullOrEmpty(userAgent) && userAgent.Contains("Trident");
+			var isOfficeDocument = OfficeExtensions.Contains(document.LatestRevision.Extension);
+			if (!isInternetExplorer || !isOfficeDocument)
+				return HTTPStatus(HttpStatusCode.BadRequest, "Dieser Vorgang ist nur mit MSIE und Office-Dokumenten zulässig.");
+			//---------------------------------------------------------------
+
+			var now = DateTime.Now;
+
+			document.LockUserID = GetCurrentUserID();
+			document.LockTime = now;
+
+			var revision = new Revision
+			{
+				ParentDocument = document,
+				SafeName = document.LatestRevision.SafeName,
+				FileSize = 0,
+				UploaderID = GetCurrentUserID(),
+				Extension = document.LatestRevision.Extension,
+				GUID = Guid.NewGuid(),
+				Created = now.AddMilliseconds(100)
+			};
+			document.Revisions.Add(revision);
+
+			try
+			{
+				db.SaveChanges(); // Damit die Revision seine ID bekommt. Diese wird anschließend im Dateinamen hinterlegt
+				var sourcePath = Path.Combine(Serverpath, document.LatestRevision.FileName);
+				var destPath = Path.Combine(Serverpath, revision.FileName);
+				System.IO.File.Copy(sourcePath, destPath);
+				var filesec = System.IO.File.GetAccessControl(destPath);
+				filesec.AddAccessRule(new FileSystemAccessRule(
+					new NTAccount(UserController.DomainName, GetCurrentUser().ShortName),
+					FileSystemRights.Write,
+					AccessControlType.Allow));
+				System.IO.File.SetAccessControl(destPath, filesec);
+			}
+			catch (DbEntityValidationException ex)
+			{
+				return HTTPStatus(HttpStatusCode.InternalServerError, ErrorMessageFromException(ex));
+			}
+			catch (IOException ex)
+			{
+				return HTTPStatus(HttpStatusCode.InternalServerError, "Dateisystemfehler: " + ex.Message);
+			}
+			return Redirect("file://" + _hostname + "/Uploads/" + revision.FileName);
+		}
+
+		public string DeleteRevision(int id)
+		{
+			ForceReleaseLock(db.Documents.Find(id));
+			return "eins";
+			//--------------------------------------------------------------------------------------------------------------------
+		}
+
+		public static void ForceReleaseLock(Document doc)
+		{
+			var cutoff = doc.LatestRevision.Created;
+			var unused = doc.Revisions.Where(r => r.Created > cutoff).ToArray();
+
+			foreach (var revision in unused)
+				System.IO.File.Delete(revision.FileName);
+
+			using (var db = new DataContext())
+			{
+				db.Revisions.RemoveRange(unused);
+				doc.LockTime = null;
+				doc.LockUserID = null;
+				db.SaveChanges();
+			}
 		}
 
 		[HttpPost]
@@ -369,14 +487,7 @@ namespace ILK_Protokoll.Controllers
 
 			if (isAuthenticated && isOfficeDocument && isInternetExplorer)
 			{
-				var host = Dns.GetHostName() + ".iwb.mw.tu-muenchen.de";
-
-#if DEBUG
-				if (Environment.MachineName == "ILK-PROTO")
-					host = Dns.GetHostName(); // Workaround, da die Freigabe des Laptops nicht über die Domain erreichbar ist.
-#endif
-
-				return Redirect("file://" + host + "/Uploads/" + file.FileName);
+				return Redirect("file://" + _hostname + "/Uploads/" + file.FileName);
 			}
 			else
 			{

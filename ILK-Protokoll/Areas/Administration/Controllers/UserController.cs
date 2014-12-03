@@ -21,7 +21,7 @@ namespace ILK_Protokoll.Areas.Administration.Controllers
 	[DisplayName("Benutzer")]
 	public class UserController : BaseController
 	{
-		private const string DomainName = "iwbmuc";
+		public const string DomainName = "iwbmuc";
 		private readonly string[] _authorizeGroups = {"ILK", "ILK-Proto"};
 		// Benutzer dieser Gruppen werden automatisch hinzugefügt
 
