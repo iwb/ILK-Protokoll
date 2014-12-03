@@ -26,10 +26,8 @@ namespace ILK_Protokoll
 			MiniProfilerEF6.Initialize();
 			MiniProfiler.Settings.SqlFormatter = new SqlServerFormatter();
 
-			var copy = ViewEngines.Engines.ToList();
 			ViewEngines.Engines.Clear();
-			foreach (var item in copy)
-				ViewEngines.Engines.Add(new ProfilingViewEngine(item));
+			ViewEngines.Engines.Add(new ProfilingViewEngine(new RazorViewEngine()));
 			// Profiler Setup beendet
 
 			Database.SetInitializer(new MigrateDatabaseToLatestVersion<DataContext, Configuration>());

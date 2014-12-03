@@ -20,6 +20,9 @@ namespace ILK_Protokoll.Controllers
 		public const string VirtualPath = "~/Attachments/Download/";
 		private static readonly Regex InvalidChars = new Regex(@"[^a-zA-Z0-9_-]");
 
+		/// <summary>
+		/// Diese Erweiterungen sind charakteristisch für MS-Office Dateien. Wird die Seite im Internet-Explorer genutzt, werden diese Erweiterungen zum direkten Öffnen angeboten.
+		/// </summary>
 		private static readonly HashSet<string> OfficeExtensions = new HashSet<string>
 		{
 			"doc",
@@ -367,6 +370,12 @@ namespace ILK_Protokoll.Controllers
 			if (isAuthenticated && isOfficeDocument && isInternetExplorer)
 			{
 				var host = Dns.GetHostName() + ".iwb.mw.tu-muenchen.de";
+
+#if DEBUG
+				if (Environment.MachineName == "ILK-PROTO")
+					host = Dns.GetHostName(); // Workaround, da die Freigabe des Laptops nicht über die Domain erreichbar ist.
+#endif
+
 				return Redirect("file://" + host + "/Uploads/" + file.FileName);
 			}
 			else

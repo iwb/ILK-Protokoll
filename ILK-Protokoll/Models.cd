@@ -1,31 +1,66 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
-  <Class Name="ILK_Protokoll.Models.Topic" Collapsed="true">
-    <Position X="3.5" Y="1.75" Width="2.75" />
-    <AssociationLine Name="Attachments" Type="ILK_Protokoll.Models.Attachment" FixedFromPoint="true" FixedToPoint="true">
+  <Class Name="ILK_Protokoll.Models.Topic">
+    <Position X="1.25" Y="2.5" Width="2.75" />
+    <AssociationLine Name="Comments" Type="ILK_Protokoll.Models.Comment" FixedFromPoint="true" FixedToPoint="true">
       <Path>
-        <Point X="4.375" Y="2.312" />
-        <Point X="4.375" Y="7.046" />
-        <Point X="11.5" Y="7.046" />
+        <Point X="4" Y="5.265" />
+        <Point X="5.875" Y="5.265" />
+        <Point X="5.875" Y="5.5" />
       </Path>
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="-0.826" Y="0.326" Height="0.182" Width="2.653" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="Documents" Type="ILK_Protokoll.Models.Document" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="4" Y="7.478" />
+        <Point X="6.25" Y="7.478" />
+        <Point X="6.25" Y="8" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="-0.491" Y="0.613" Height="0.182" Width="2.668" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="Assignments" Type="ILK_Protokoll.Models.Assignment" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="4" Y="4" />
+        <Point X="5.812" Y="4" />
+        <Point X="5.812" Y="4.25" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="-0.743" Y="0.314" Height="0.182" Width="2.556" />
+      </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>ACIQCQCgAAAkiEEWgAAAAAAAAAAAAQQAECAwAgABoQg=</HashCode>
+      <HashCode>ACIQCQCgAAAkiEAWgAAAAAAAAAAABUQCECAwAgABoQw=</HashCode>
       <FileName>Models\Topic.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="Owner" />
+      <Property Name="TargetSessionType" />
     </ShowAsAssociation>
     <ShowAsCollectionAssociation>
       <Property Name="Comments" />
       <Property Name="Votes" />
-      <Property Name="Attachments" />
+      <Property Name="Documents" />
+      <Property Name="Assignments" />
     </ShowAsCollectionAssociation>
   </Class>
   <Class Name="ILK_Protokoll.Models.Vote" Collapsed="true">
-    <Position X="7.25" Y="3.25" Width="2" />
+    <Position X="3.5" Y="1.25" Width="2" />
+    <AssociationLine Name="Voter" Type="ILK_Protokoll.Models.User">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.098" Y="0.503" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="Topic" Type="ILK_Protokoll.Models.Topic">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-0.695" Y="0.11" />
+      </MemberNameLabel>
+    </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAABAgAAAAAAEAAAAAAAAAAAAAAAAACAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAABAgAAAAAAEAAAAAAAAAgAAAAAAACAAQAA=</HashCode>
       <FileName>Models\Vote.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -33,57 +68,81 @@
       <Property Name="Topic" />
     </ShowAsAssociation>
   </Class>
-  <Class Name="ILK_Protokoll.ViewModels.TopicEdit" Collapsed="true">
-    <Position X="0.5" Y="4" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAKAAQCgAAAkiEAEAAAAAAAAAAAAAAAAAAARAAARgQA=</HashCode>
-      <FileName>ViewModels\TopicEdit.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="ILK_Protokoll.Models.TopicHistory" Collapsed="true">
-    <Position X="0.5" Y="4.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAEQAAAAAgiEAEAAAAAAAAAAAAAgAAACABAAABgQA=</HashCode>
-      <FileName>Models\TopicHistory.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="ILK_Protokoll.Models.Attachment">
-    <Position X="11.5" Y="5" Width="1.75" />
-    <TypeIdentifier>
-      <HashCode>AAAAEAAAAAAAgABAAAAAEAAACAAAAwYAAAAAASBCAAA=</HashCode>
-      <FileName>Models\Attachment.cs</FileName>
-    </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="Uploader" />
-    </ShowAsAssociation>
-  </Class>
   <Class Name="ILK_Protokoll.Models.User" Collapsed="true">
-    <Position X="6.75" Y="5.25" Width="3" />
+    <Position X="5.75" Y="2.75" Width="3" />
     <Compartments>
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAAAAAAgAQEBgAAEkAAAAAAAAAAABIAAAAAAAgAAAAA=</HashCode>
+      <HashCode>AAAAAAAgAAEBgAAEkAgAAAAAAAAABIAAgAAAAgAAAAA=</HashCode>
       <FileName>Models\User.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="ILK_Protokoll.Models.Comment">
-    <Position X="10.75" Y="1.5" Width="1.75" />
+  <Class Name="ILK_Protokoll.Models.Comment" Collapsed="true">
+    <Position X="5.75" Y="5.5" Width="1.75" />
+    <AssociationLine Name="Author" Type="ILK_Protokoll.Models.User">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.122" Y="0.108" />
+      </MemberNameLabel>
+    </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAgAAgAAAgAAAAAAAAAAAAgQAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAQAgAAgAAAgAAAAAAAAAAAAgQAAAAAAAAAAAA=</HashCode>
       <FileName>Models\Comment.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="Author" />
     </ShowAsAssociation>
   </Class>
-  <Enum Name="ILK_Protokoll.Models.VoteKind" Collapsed="true">
-    <Position X="4" Y="0.5" Width="1.5" />
+  <Class Name="ILK_Protokoll.Models.Document" Collapsed="true">
+    <Position X="5.25" Y="8" Width="2" />
+    <AssociationLine Name="Revisions" Type="ILK_Protokoll.Models.Revision">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.254" Y="0.132" />
+      </MemberNameLabel>
+    </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAAAAAACAAQAAAAAEAAAAAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
-      <FileName>Models\Vote.cs</FileName>
+      <HashCode>CABAEAAAAACAgEAAEAAAEAAACEAAAgYAAAAAACAAAAA=</HashCode>
+      <FileName>Models\Document.cs</FileName>
     </TypeIdentifier>
-  </Enum>
+    <ShowAsCollectionAssociation>
+      <Property Name="Revisions" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="ILK_Protokoll.Models.Revision">
+    <Position X="9" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAABACAAgAgABAAAAAAAAAAAAAAQQAAAAAAQBCAAA=</HashCode>
+      <FileName>Models\Revision.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Uploader" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="ILK_Protokoll.Models.Assignment" Collapsed="true">
+    <Position X="5.75" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACCAAEAgiGAAkAAAAAAAAAEAAgAAAQAAACAAAAA=</HashCode>
+      <FileName>Models\Assignment.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Owner" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="ILK_Protokoll.Areas.Administration.Models.SessionType" Collapsed="true">
+    <Position X="7" Y="6.25" Width="1.5" />
+    <AssociationLine Name="Attendees" Type="ILK_Protokoll.Models.User">
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="-1.591" Y="0.587" Height="0.182" Width="2.039" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAAAABAQAAAAAAABgAAAAAAAAAAA=</HashCode>
+      <FileName>Areas\Administration\Models\SessionType.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Attendees" />
+    </ShowAsCollectionAssociation>
+  </Class>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>
