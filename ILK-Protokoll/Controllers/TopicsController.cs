@@ -7,6 +7,7 @@ using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using System.Web.Routing;
 using EntityFramework.Extensions;
 using ILK_Protokoll.Models;
 using ILK_Protokoll.util;
@@ -557,7 +558,7 @@ namespace ILK_Protokoll.Controllers
 			var history = db.TopicHistory.Where(th => th.TopicID == topic.ID).OrderBy(th => th.ValidFrom).ToList();
 
 			if (history.Count == 0)
-				return RedirectToAction("Details", id);
+				return RedirectToAction("Details", new {id});
 
 			history.Add(TopicHistory.FromTopic(topic, 0));
 

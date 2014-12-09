@@ -19,7 +19,7 @@ namespace ILK_Protokoll.Controllers
 			// Zu lange Sperren werden zurückgesetzt
 			cutoff = DateTime.Now.AddHours(-8);
 			foreach (var doc in db.Documents.Where(d => d.LockTime < cutoff))
-				AttachmentsController.ForceReleaseLock(doc);
+				AttachmentsController.ForceReleaseLock(doc.ID);
 
 			db.SaveChanges();
 			

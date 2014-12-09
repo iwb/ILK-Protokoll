@@ -7,13 +7,11 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Mime;
-using System.Security.AccessControl;
-using System.Security.Principal;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
-using ILK_Protokoll.Areas.Administration.Controllers;
+using EntityFramework.Extensions;
 using ILK_Protokoll.DataLayer;
 using ILK_Protokoll.Models;
 using JetBrains.Annotations;
@@ -25,7 +23,8 @@ namespace ILK_Protokoll.Controllers
 		private static readonly Regex InvalidChars = new Regex(@"[^a-zA-Z0-9_-]");
 
 		/// <summary>
-		/// Diese Erweiterungen sind charakteristisch für MS-Office Dateien. Wird die Seite im Internet-Explorer genutzt, werden diese Erweiterungen zum direkten Öffnen angeboten.
+		///    Diese Erweiterungen sind charakteristisch für MS-Office Dateien. Wird die Seite im Internet-Explorer genutzt, werden
+		///    diese Erweiterungen zum direkten Öffnen angeboten.
 		/// </summary>
 		private static readonly HashSet<string> OfficeExtensions = new HashSet<string>
 		{
@@ -45,12 +44,17 @@ namespace ILK_Protokoll.Controllers
 			"xltx"
 		};
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2211:NonConstantFieldsShouldNotBeVisible")]
-		public static HashSet<string> KnownExtensions = new HashSet<string>();
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2211:NonConstantFieldsShouldNotBeVisible")] public static HashSet<string>
+			KnownExtensions = new HashSet<string>();
 
-		private string Serverpath
+		private static string Serverpath
 		{
 			get { return @"C:\ILK-Protokoll_Uploads\"; }
+		}
+
+		private static string TemporaryServerpath
+		{
+			get { return @"C:\ILK-Protokoll_Temp\"; }
 		}
 
 #if DEBUG
@@ -229,7 +233,7 @@ namespace ILK_Protokoll.Controllers
 			Document document;
 			Topic topic;
 			var actionResult = CheckConstraints(id, out topic, out document);
-			if (actionResult != null) 
+			if (actionResult != null)
 				return actionResult;
 			//---------------------------------------------------------------
 
@@ -282,7 +286,8 @@ namespace ILK_Protokoll.Controllers
 		}
 
 		/// <summary>
-		/// Prüft verschiedene Kriterien, nach denen das Dokument bearbeitbar ist. Bei Einem Fehler ist der Rückgabewert ungleich null.
+		///    Prüft verschiedene Kriterien, nach denen das Dokument bearbeitbar ist. Bei Einem Fehler ist der Rückgabewert
+		///    ungleich null.
 		/// </summary>
 		/// <param name="documentID">die ID des Dokuments</param>
 		/// <param name="topic">Das zugeordnete Thema, falls eines existiert.</param>
@@ -316,10 +321,12 @@ namespace ILK_Protokoll.Controllers
 		}
 
 		/// <summary>
-		/// Beginnt die nahtlose Bearbeitung eines Dokuments. Hierzu wird die aktuelle Revision kopiert und dem Anwender werden Schreibrechte eingeräumt. Nach Abschluss seiner Bearbeitung muss der Anwender speichern, um die neue Revision zur aktuellen zu machen.
+		///    Beginnt die nahtlose Bearbeitung eines Dokuments. Hierzu wird die aktuelle Revision kopiert und dem Anwender werden
+		///    Schreibrechte eingeräumt. Nach Abschluss seiner Bearbeitung muss der Anwender speichern, um die neue Revision zur
+		///    aktuellen zu machen.
 		/// </summary>
 		/// <param name="id">Die ID des Dokuments, zu dem eine neue Revision erzeugt werden soll.</param>
-
+		//[HttpPost]
 		public ActionResult BeginNewRevision(int id)
 		{
 			// Checks
@@ -357,14 +364,14 @@ namespace ILK_Protokoll.Controllers
 			{
 				db.SaveChanges(); // Damit die Revision seine ID bekommt. Diese wird anschließend im Dateinamen hinterlegt
 				var sourcePath = Path.Combine(Serverpath, document.LatestRevision.FileName);
-				var destPath = Path.Combine(Serverpath, revision.FileName);
+				var destPath = Path.Combine(TemporaryServerpath, revision.FileName);
 				System.IO.File.Copy(sourcePath, destPath);
-				var filesec = System.IO.File.GetAccessControl(destPath);
-				filesec.AddAccessRule(new FileSystemAccessRule(
-					new NTAccount(UserController.DomainName, GetCurrentUser().ShortName),
-					FileSystemRights.Write,
-					AccessControlType.Allow));
-				System.IO.File.SetAccessControl(destPath, filesec);
+				//var filesec = System.IO.File.GetAccessControl(destPath);
+				//filesec.AddAccessRule(new FileSystemAccessRule(
+				//	new NTAccount(UserController.DomainName, GetCurrentUser().ShortName),
+				//	FileSystemRights.Write,
+				//	AccessControlType.Allow));
+				//System.IO.File.SetAccessControl(destPath, filesec);
 			}
 			catch (DbEntityValidationException ex)
 			{
@@ -374,31 +381,57 @@ namespace ILK_Protokoll.Controllers
 			{
 				return HTTPStatus(HttpStatusCode.InternalServerError, "Dateisystemfehler: " + ex.Message);
 			}
-			return Redirect("file://" + _hostname + "/Uploads/" + revision.FileName);
+			return Redirect("file://" + _hostname + "/Temp/" + revision.FileName);
 		}
 
-		public string DeleteRevision(int id)
+		//[HttpPost]
+		public ActionResult CancelNewRevision(int id)
 		{
-			ForceReleaseLock(db.Documents.Find(id));
-			return "eins";
-			//--------------------------------------------------------------------------------------------------------------------
+			ForceReleaseLock(id);
+			return RedirectToAction("Details", new {id});
 		}
 
-		public static void ForceReleaseLock(Document doc)
+		public static void ForceReleaseLock(int documentID)
 		{
-			var cutoff = doc.LatestRevision.Created;
-			var unused = doc.Revisions.Where(r => r.Created > cutoff).ToArray();
-
-			foreach (var revision in unused)
-				System.IO.File.Delete(revision.FileName);
-
 			using (var db = new DataContext())
 			{
-				db.Revisions.RemoveRange(unused);
+				var doc = db.Documents.Find(documentID); 
+				var cutoff = doc.LatestRevision.Created;
+				var unused = doc.Revisions.Where(r => r.Created > cutoff).ToArray();
+
+				if (unused.Length <= 0)
+					return;
+
+				foreach (var revision in unused)
+					System.IO.File.Delete(Path.Combine(TemporaryServerpath, revision.FileName));
+
+				var unusedids = unused.Select(r => r.ID).ToArray();
+				db.Revisions.Where(r => unusedids.Contains(r.ID)).Delete();
+				
 				doc.LockTime = null;
 				doc.LockUserID = null;
 				db.SaveChanges();
 			}
+		}
+
+		//[HttpPost]
+		public ActionResult FinishNewRevision(int id)
+		{
+			// Checks
+			Document document;
+			Topic topic;
+			var actionResult = CheckConstraints(id, out topic, out document);
+			if (actionResult != null)
+				return actionResult;
+
+			var userAgent = Request.UserAgent;
+			var isInternetExplorer = !string.IsNullOrEmpty(userAgent) && userAgent.Contains("Trident");
+			var isOfficeDocument = OfficeExtensions.Contains(document.LatestRevision.Extension);
+			if (!isInternetExplorer || !isOfficeDocument)
+				return HTTPStatus(HttpStatusCode.BadRequest, "Dieser Vorgang ist nur mit MSIE und Office-Dokumenten zulässig.");
+			//---------------------------------------------------------------
+
+			return RedirectToAction("Details", new {id});
 		}
 
 		[HttpPost]
@@ -486,15 +519,13 @@ namespace ILK_Protokoll.Controllers
 			var isOfficeDocument = OfficeExtensions.Contains(file.Extension);
 
 			if (isAuthenticated && isOfficeDocument && isInternetExplorer)
-			{
 				return Redirect("file://" + _hostname + "/Uploads/" + file.FileName);
-			}
 			else
 			{
 				var cd = new ContentDisposition
 				{
 					FileName = file.ParentDocument.DisplayName,
-					Inline = true,
+					Inline = true
 				};
 				Response.AppendHeader("Content-Disposition", cd.ToString());
 
@@ -516,18 +547,20 @@ namespace ILK_Protokoll.Controllers
 
 		public ActionResult Details(int id)
 		{
-			Document d = db.Documents.Find(id);
-			if (d == null)
+			var document = db.Documents.Include(d => d.LockUser).Single(doc => doc.ID == id);
+			if (document == null)
 				return HTTPStatus(HttpStatusCode.NotFound, "Datei nicht gefunden");
 
-			ViewBag.ShowUpload = true;
-			if (d.TopicID != null)
+			ViewBag.ShowUpload = document.LockTime == null;
+			if (ViewBag.ShowUpload && document.TopicID != null)
 			{
-				var topic = db.Topics.Find(d.TopicID.Value);
-				ViewBag.ShowUpload = !topic.IsReadOnly && !IsTopicLocked(d.TopicID.Value);
+				var topic = db.Topics.Find(document.TopicID.Value);
+				ViewBag.ShowUpload = !topic.IsReadOnly && !IsTopicLocked(document.TopicID.Value);
 			}
 
-			return View(d);
+			ViewBag.SeamlessEnabled = true;
+
+			return View(document);
 		}
 
 		public ActionResult _BeginEdit(int documentID)

@@ -54,11 +54,13 @@ namespace ILK_Protokoll.Models
 		/// <summary>
 		///    Enthält das Lockdatum, falls das Dokument gesperrt ist, sonst null.
 		/// </summary>
+		[Display(Name = "Gesperrt seit")]
 		public DateTime? LockTime { get; set; }
 
 		/// <summary>
 		/// Verweist auf den Benutzer, der das Dokument sperrt.
 		/// </summary>
+		[Display(Name = "Gesperrt von")]
 		public User LockUser { get; set; }
 
 		[ForeignKey("LockUser")]
