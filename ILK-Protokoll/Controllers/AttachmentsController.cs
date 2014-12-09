@@ -97,6 +97,26 @@ namespace ILK_Protokoll.Controllers
 			}
 		}
 
+		public ActionResult Details(int id)
+		{
+			var document = db.Documents.Include(d => d.LockUser).Single(doc => doc.ID == id);
+			if (document == null)
+				return HTTPStatus(HttpStatusCode.NotFound, "Datei nicht gefunden");
+
+			ViewBag.ShowUpload = document.LockTime == null;
+			if (ViewBag.ShowUpload && document.TopicID != null)
+			{
+				var topic = db.Topics.Find(document.TopicID.Value);
+				ViewBag.ShowUpload = !topic.IsReadOnly && !IsTopicLocked(document.TopicID.Value);
+			}
+
+			ViewBag.SeamlessEnabled = true;
+			if (document.LockUserID == GetCurrentUserID())
+				ViewBag.TempFileURL = "file://" + _hostname + "/Temp/" + document.Revisions.OrderByDescending(r => r.Created).First().FileName;
+
+			return View(document);
+		}
+
 		public ActionResult _UploadForm(int id, DocumentContainer entityKind)
 		{
 			if (entityKind == DocumentContainer.Topic && IsTopicLocked(id))
@@ -366,12 +386,6 @@ namespace ILK_Protokoll.Controllers
 				var sourcePath = Path.Combine(Serverpath, document.LatestRevision.FileName);
 				var destPath = Path.Combine(TemporaryServerpath, revision.FileName);
 				System.IO.File.Copy(sourcePath, destPath);
-				//var filesec = System.IO.File.GetAccessControl(destPath);
-				//filesec.AddAccessRule(new FileSystemAccessRule(
-				//	new NTAccount(UserController.DomainName, GetCurrentUser().ShortName),
-				//	FileSystemRights.Write,
-				//	AccessControlType.Allow));
-				//System.IO.File.SetAccessControl(destPath, filesec);
 			}
 			catch (DbEntityValidationException ex)
 			{
@@ -381,7 +395,7 @@ namespace ILK_Protokoll.Controllers
 			{
 				return HTTPStatus(HttpStatusCode.InternalServerError, "Dateisystemfehler: " + ex.Message);
 			}
-			return Redirect("file://" + _hostname + "/Temp/" + revision.FileName);
+			return HTTPStatus(HttpStatusCode.Created, "file://" + _hostname + "/Temp/" + revision.FileName);
 		}
 
 		//[HttpPost]
@@ -418,18 +432,48 @@ namespace ILK_Protokoll.Controllers
 		public ActionResult FinishNewRevision(int id)
 		{
 			// Checks
-			Document document;
-			Topic topic;
-			var actionResult = CheckConstraints(id, out topic, out document);
-			if (actionResult != null)
-				return actionResult;
+			var document = db.Documents.Find(id);
 
-			var userAgent = Request.UserAgent;
-			var isInternetExplorer = !string.IsNullOrEmpty(userAgent) && userAgent.Contains("Trident");
-			var isOfficeDocument = OfficeExtensions.Contains(document.LatestRevision.Extension);
-			if (!isInternetExplorer || !isOfficeDocument)
-				return HTTPStatus(HttpStatusCode.BadRequest, "Dieser Vorgang ist nur mit MSIE und Office-Dokumenten zulässig.");
+			if (document == null)
+				return HTTPStatus(HttpStatusCode.NotFound, "Dokument-ID nicht gefunden.");
+
+			if (document.LockTime == null)
+				return HTTPStatus(HttpStatusCode.Forbidden, "Das Dokument ist derzeit nicht in Bearbeitung.");
+
+			if (document.TopicID != null)
+			{
+				var topic = db.Topics.Find(document.TopicID.Value);
+
+				if (IsTopicLocked(document.TopicID.Value))
+					return HTTPStatus(HttpStatusCode.Forbidden, "Da das Thema gesperrt ist, können Sie keine Dateien hochladen.");
+
+				if (topic.IsReadOnly)
+				{
+					return HTTPStatus(HttpStatusCode.Forbidden,
+						"Da das Thema schreibgeschützt ist, können Sie keine Dateien bearbeiten.");
+				}
+			}
+
+			if (GetCurrentUserID() != document.LockUserID)
+				return HTTPStatus(HttpStatusCode.Forbidden, "Das Dokument ist auf einen anderen Nutzer gesperrt, Sie sind nicht autorisiert.");
 			//---------------------------------------------------------------
+
+			var newrevision = document.Revisions.OrderByDescending(r => r.Created).First();
+
+			var sourcePath = Path.Combine(TemporaryServerpath, newrevision.FileName);
+			var destPath = Path.Combine(Serverpath, newrevision.FileName);
+
+			if (newrevision.ID == document.LatestRevisionID || !System.IO.File.Exists(sourcePath))
+				return HTTPStatus(HttpStatusCode.InternalServerError, "Vorgang kann nicht abgeschlossen werden, da das Dokument zwar gesperrt, aber die Revison nicht in Bearbeitung ist.");
+
+			newrevision.FileSize = (int)new FileInfo(sourcePath).Length;
+			newrevision.Created = DateTime.Now;
+			System.IO.File.Move(sourcePath, destPath);
+
+			document.LatestRevisionID = newrevision.ID;
+			document.LockTime = null;
+			document.LockUserID = null;
+			db.SaveChanges();
 
 			return RedirectToAction("Details", new {id});
 		}
@@ -543,24 +587,6 @@ namespace ILK_Protokoll.Controllers
 		{
 			var document = db.Documents.Single(doc => doc.GUID == id);
 			return Download(document.LatestRevision.GUID);
-		}
-
-		public ActionResult Details(int id)
-		{
-			var document = db.Documents.Include(d => d.LockUser).Single(doc => doc.ID == id);
-			if (document == null)
-				return HTTPStatus(HttpStatusCode.NotFound, "Datei nicht gefunden");
-
-			ViewBag.ShowUpload = document.LockTime == null;
-			if (ViewBag.ShowUpload && document.TopicID != null)
-			{
-				var topic = db.Topics.Find(document.TopicID.Value);
-				ViewBag.ShowUpload = !topic.IsReadOnly && !IsTopicLocked(document.TopicID.Value);
-			}
-
-			ViewBag.SeamlessEnabled = true;
-
-			return View(document);
 		}
 
 		public ActionResult _BeginEdit(int documentID)
