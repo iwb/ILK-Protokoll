@@ -1,7 +1,7 @@
 ﻿@using System.Reflection
 <hr style="clear: both;" />
 <footer>
-	<p>&copy; @DateTime.Now.Year &#8211; <i>iwb</i>, Technische Universität München</p>
+	<p><a href="@Url.Action("About", "Home", new { Area="" })">&copy; 2014</a> &#8211; <i>iwb</i>, Technische Universität München</p>
 	@{
 		Assembly thisAssem = typeof(MvcApplication).Assembly;
 		Version ver = thisAssem.GetName().Version;
