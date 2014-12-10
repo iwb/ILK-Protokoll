@@ -62,9 +62,13 @@ else if (Model.LockUserID != null) // locked by someone else
 		@if (Model.LockUserID == ViewBag.CurrentUser.ID) // locked by "me"
 		{
 
-			<a href="@Url.Action("CancelNewRevision", "Attachments", new {id = Model.ID})" data-ajax-success="reloadRow(@Model.ID);" data-ajax-method="POST" data-ajax="true" data-ajax-confirm="Änderungen verwerfen und Revision löschen?">Verwerfen</a>
+			<a href="@Url.Action("CancelNewRevision", "Attachments", new {id = Model.ID})" data-ajax-success="reloadRow(@Model.ID);"
+			   data-ajax-method="POST" data-ajax="true" data-ajax-confirm="Änderungen verwerfen und Revision löschen?"
+				class="btn btn-xs btn-danger" style="color: #FFF; min-width: 7em; margin-bottom: 2px;">Verwerfen</a>
 
-			<a href="@Url.Action("FinishNewRevision", "Attachments", new {id = Model.ID})" data-ajax-success="reloadRow(@Model.ID);" data-ajax-method="POST" data-ajax="true">Abschließen</a>
+			<a href="@Url.Action("FinishNewRevision", "Attachments", new {id = Model.ID})" data-ajax-success="reloadRow(@Model.ID);"
+				data-ajax-method="POST" data-ajax="true"
+				class="btn btn-xs btn-primary" style="color: #FFF; min-width: 7em;">Abschließen</a>
 		}
 		else if (Model.LockUserID != null)
 		{
