@@ -1,4 +1,5 @@
-﻿@using ILK_Protokoll.util
+﻿@using System.Data.Entity.Core.Common.EntitySql
+@using ILK_Protokoll.util
 @model ILK_Protokoll.Models.Document
 
 @{
@@ -31,6 +32,27 @@ else if (Model.LockUserID != null) // locked by someone else
 	<td id="attachmentName_@Model.ID">
 		@{
 			Html.RenderPartial("_NameDisplay", Tuple.Create(fileurl, Model.DisplayName));
+		}
+		@if (ViewBag.SeamlessEnabled)
+		{
+			<script type="text/javascript">
+				$('#attachmentName_@Model.ID a').click(function () {
+					$.ajax({
+						type: 'GET',
+						url: "@Url.Action("FetchNewestRevURL", new {documentID = Model.ID})",
+						success: function(data, text, xhr) {
+							try {
+								var objShell = new ActiveXObject("shell.application");
+								objShell.ShellExecute(data);
+							} catch (e) {
+								// Not sufficient trust, has to open the file manually...
+								window.location.href = data;
+							}
+						}
+					});
+					return false;
+				});
+			</script>
 		}
 	</td>
 	<td>@Html.DisplayFor(model => model.LatestRevision.FileSize)</td>

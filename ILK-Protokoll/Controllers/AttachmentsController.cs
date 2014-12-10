@@ -612,6 +612,12 @@ namespace ILK_Protokoll.Controllers
 			return PartialView("_NameDisplay", Tuple.Create(new MvcHtmlString(url), document.DisplayName));
 		}
 
+		public string FetchNewestRevURL(int documentID)
+		{
+			var file = db.Documents.Find(documentID).LatestRevision;
+			return "file://" + _hostname + "/Uploads/" + file.FileName;
+		}
+
 		public PartialViewResult _FetchTableRow(int documentID)
 		{
 			var document = db.Documents.Find(documentID);
