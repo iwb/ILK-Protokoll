@@ -63,6 +63,14 @@ namespace ILK_Protokoll.Controllers
 		private readonly string _hostname = Dns.GetHostName() + ".iwb.mw.tu-muenchen.de";
 #endif
 
+		private bool isInternetExplorer
+		{
+			get
+			{
+				var userAgent = Request.UserAgent;
+				return !string.IsNullOrEmpty(userAgent) && userAgent.Contains("Trident");
+			}
+		}
 
 		// GET: Attachments
 		public PartialViewResult _List(int id, DocumentContainer entityKind, bool makeList = false, bool showActions = true)
@@ -86,6 +94,8 @@ namespace ILK_Protokoll.Controllers
 
 			ViewBag.EntityID = id;
 			ViewBag.KnownExtensions = KnownExtensions;
+			ViewBag.OfficeExtensions = OfficeExtensions;
+			ViewBag.SeamlessEnabled = isInternetExplorer;
 
 			if (makeList)
 				return PartialView("_AttachmentList", documents.ToList());
@@ -110,7 +120,7 @@ namespace ILK_Protokoll.Controllers
 				ViewBag.ShowUpload = !topic.IsReadOnly && !IsTopicLocked(document.TopicID.Value);
 			}
 
-			ViewBag.SeamlessEnabled = true;
+			ViewBag.SeamlessEnabled = isInternetExplorer && OfficeExtensions.Contains(document.LatestRevision.Extension);
 			if (document.LockUserID == GetCurrentUserID())
 				ViewBag.TempFileURL = "file://" + _hostname + "/Temp/" + document.Revisions.OrderByDescending(r => r.Created).First().FileName;
 
@@ -248,6 +258,8 @@ namespace ILK_Protokoll.Controllers
 				return HTTPStatus(HttpStatusCode.BadRequest, "Keine Datei empfangen");
 
 			var file = Request.Files[0];
+			if (file == null)
+				return HTTPStatus(HttpStatusCode.BadRequest, "Keine Datei empfangen");
 
 			// Checks
 			Document document;
@@ -355,11 +367,8 @@ namespace ILK_Protokoll.Controllers
 			var actionResult = CheckConstraints(id, out topic, out document);
 			if (actionResult != null)
 				return actionResult;
-
-			var userAgent = Request.UserAgent;
-			var isInternetExplorer = !string.IsNullOrEmpty(userAgent) && userAgent.Contains("Trident");
-			var isOfficeDocument = OfficeExtensions.Contains(document.LatestRevision.Extension);
-			if (!isInternetExplorer || !isOfficeDocument)
+			
+			if (!isInternetExplorer || !OfficeExtensions.Contains(document.LatestRevision.Extension))
 				return HTTPStatus(HttpStatusCode.BadRequest, "Dieser Vorgang ist nur mit MSIE und Office-Dokumenten zulässig.");
 			//---------------------------------------------------------------
 
@@ -557,12 +566,9 @@ namespace ILK_Protokoll.Controllers
 		{
 			var file = db.Revisions.Include(rev => rev.ParentDocument).Single(rev => rev.GUID == id);
 
-			var userAgent = Request.UserAgent;
-			var isInternetExplorer = !string.IsNullOrEmpty(userAgent) && userAgent.Contains("Trident");
-			var isAuthenticated = User.Identity != null; // TODO: Testen
-			var isOfficeDocument = OfficeExtensions.Contains(file.Extension);
+			var isAuthenticated = User.Identity != null;
 
-			if (isAuthenticated && isOfficeDocument && isInternetExplorer)
+			if (isAuthenticated && OfficeExtensions.Contains(file.Extension) && isInternetExplorer)
 				return Redirect("file://" + _hostname + "/Uploads/" + file.FileName);
 			else
 			{
@@ -604,6 +610,17 @@ namespace ILK_Protokoll.Controllers
 			var url = new UrlHelper(ControllerContext.RequestContext).Action("DownloadNewest", "Attachments",
 				new {id = document.GUID});
 			return PartialView("_NameDisplay", Tuple.Create(new MvcHtmlString(url), document.DisplayName));
+		}
+
+		public PartialViewResult _FetchTableRow(int documentID)
+		{
+			var document = db.Documents.Find(documentID);
+
+			ViewBag.KnownExtensions = KnownExtensions;
+			ViewBag.OfficeExtensions = OfficeExtensions;
+			ViewBag.SeamlessEnabled = isInternetExplorer;
+
+			return PartialView("_AttachmentRow", document);
 		}
 
 		[HttpPost]

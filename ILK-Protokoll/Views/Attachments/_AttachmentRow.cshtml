@@ -1,4 +1,5 @@
-﻿@model ILK_Protokoll.Models.Document
+﻿@using ILK_Protokoll.util
+@model ILK_Protokoll.Models.Document
 
 @{
 	string iconname = Model.LatestRevision.Extension ?? "default";
@@ -8,11 +9,23 @@
 	}
 
 	var fileurl = new MvcHtmlString(Url.Action("DownloadNewest", "Attachments", new {id = Model.GUID}));
+
+	ViewBag.SeamlessEnabled = ViewBag.SeamlessEnabled && ((HashSet<string>)ViewBag.OfficeExtensions).Contains(Model.LatestRevision.Extension);
+	string trclass = null;
 }
-<tr id="attachment_@Model.ID">
+@if (Model.LockUserID == ViewBag.CurrentUser.ID) // locked by "me"
+{
+	trclass = "success";
+}
+else if (Model.LockUserID != null) // locked by someone else
+{
+	trclass = "warning";
+}
+
+<tr id="attachment_@Model.ID" class="@trclass">
 	<td>
 		<a href="@fileurl">
-			<img src="~/img/fileicons/@(iconname).png" height="32" />
+			<img src="~/img/fileicons/@(iconname).png" height="32"/>
 		</a>
 	</td>
 	<td id="attachmentName_@Model.ID">
@@ -24,13 +37,108 @@
 	<td>@Model.LatestRevision.Uploader.LongName</td>
 	<td>@Html.DisplayFor(model => model.Created)</td>
 	<td class="actions">
-		<a data-ajax="true" data-ajax-method="POST" data-ajax-mode="replace" data-ajax-update="#attachmentName_@Model.ID" href="@Url.Action("_BeginEdit", new {documentID = Model.ID})"><span class="glyphicon glyphicon-edit" title="Name bearbeiten"></span></a>
-		&nbsp;
-		<a href="@Url.Action("Details", "Attachments", new {id = Model.ID})"><span class="glyphicon glyphicon-new-window" title="Detailseite aufrufen"></span></a>
-		&nbsp;
-		<a data-ajax="true" data-ajax-method="POST" data-ajax-success="removeAttachment('#attachment_@Model.ID');"
-		   href="@Url.Action("_Delete", new {documentID = Model.ID})">
-			<span class="glyphicon glyphicon-remove" title="Dokument löschen"></span>
-		</a>
+		@if (Model.LockUserID == ViewBag.CurrentUser.ID) // locked by "me"
+		{
+
+			<a href="@Url.Action("CancelNewRevision", "Attachments", new {id = Model.ID})" data-ajax-success="reloadRow(@Model.ID);" data-ajax-method="POST" data-ajax="true" data-ajax-confirm="Änderungen verwerfen und Revision löschen?">Verwerfen</a>
+
+			<a href="@Url.Action("FinishNewRevision", "Attachments", new {id = Model.ID})" data-ajax-success="reloadRow(@Model.ID);" data-ajax-method="POST" data-ajax="true">Abschließen</a>
+		}
+		else if (Model.LockUserID != null)
+		{
+			<a href="@Url.Action("Details", "Attachments", new {id = Model.ID})">
+				<span class="glyphicon glyphicon-new-window" title="Detailseite aufrufen"></span>
+			</a>
+		}
+		else
+		{
+			<a data-ajax="true" data-ajax-method="POST" data-ajax-mode="replace" data-ajax-update="#attachmentName_@Model.ID"
+			   href="@Url.Action("_BeginEdit", new {documentID = Model.ID})">
+				<span class="glyphicon glyphicon-edit" title="Name bearbeiten"></span></a>
+			<text>&nbsp;</text>
+			if (ViewBag.SeamlessEnabled && Model.LockTime == null)
+			{
+				<a href="@Url.Action("Details", "Attachments", new {id = Model.ID})" class="newRevisionLink" data-docid="@Model.ID">
+					<span class="glyphicon glyphicon-cloud-upload" title="Neue Revision erzeugen und bearbeiten"></span></a>
+				<text>&nbsp;</text>
+			}
+			<a href="@Url.Action("Details", "Attachments", new {id = Model.ID})">
+				<span class="glyphicon glyphicon-new-window" title="Detailseite aufrufen"></span></a>
+			<text>&nbsp;</text>
+			<a data-ajax="true" data-ajax-method="POST" data-ajax-success="removeAttachment('#attachment_@Model.ID');"
+			   href="@Url.Action("_Delete", new {documentID = Model.ID})">
+				<span class="glyphicon glyphicon-remove" title="Dokument löschen"></span>
+			</a>
+		}
 	</td>
 </tr>
+
+
+@using (Html.Delayed(null, "beginNewRevision"))
+{
+	<script type="text/javascript">
+		function OpenDocument(xhr, fileurl) {
+			if (xhr.status === 201) {
+				try {
+					var objShell = new ActiveXObject("shell.application");
+					objShell.ShellExecute(fileurl);
+				} catch (e) {
+					// Not sufficient trust, has to open the file manually...
+				}
+				location.reload();
+			} else {
+				alert(xhr.responseText);
+			}
+		}
+
+		function reloadRow(docid) {
+			var fetchUrl = "@Url.Action("_FetchTableRow", "Attachments")?documentID=" + docid;
+			$.ajax({
+				type: 'GET',
+				url: fetchUrl,
+				success: function(data) {
+					$('#attachment_' + docid).replaceWith(data);
+					hookLinks('#attachment_' + docid + " .newRevisionLink");
+				}
+			});
+		}
+
+		function hookLinks(selector) {
+			$(selector).click(function() {
+				var docid = $(this).data("docid");
+
+				var targetUrl = "@Url.Action("BeginNewRevision", "Attachments")?id=" + docid;
+				var fetchUrl = "@Url.Action("_FetchTableRow", "Attachments")?documentID=" + docid;
+				var detailUrl = this.href;
+
+				$.ajax({
+					url: targetUrl,
+					type: 'POST',
+					success: function(fileurl, text, xhr) {
+						if (xhr.status === 201) {
+							try {
+								var objShell = new ActiveXObject("shell.application");
+								objShell.ShellExecute(fileurl);
+
+								reloadRow(docid);
+
+							} catch (e) {
+								// Not sufficient trust, has to open the file manually...
+								window.location.href = detailUrl;
+							}
+						} else {
+							alert(xhr.responseText);
+						}
+					},
+					error: function(xhr, errorType) {
+						alert(xhr.responseText);
+					}
+				}); //end ajax
+
+				return false;
+			});
+		}
+
+		hookLinks(".newRevisionLink");
+	</script>
+}
