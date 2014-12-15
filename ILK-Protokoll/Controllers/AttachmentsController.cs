@@ -410,7 +410,15 @@ namespace ILK_Protokoll.Controllers
 		//[HttpPost]
 		public ActionResult CancelNewRevision(int id)
 		{
-			ForceReleaseLock(id);
+			try
+			{
+				ForceReleaseLock(id);
+			}
+			catch (IOException)
+			{
+				// The file is still in use
+				return HTTPStatus(HttpStatusCode.Conflict, "Dieser Vorgang kann nicht ausgeführt werden, da die Datei noch in Verwendung ist. Bitte schließen Sie die Datei und versuchen Sie es erneut.");
+			}
 			return RedirectToAction("Details", new {id});
 		}
 
@@ -477,7 +485,15 @@ namespace ILK_Protokoll.Controllers
 
 			newrevision.FileSize = (int)new FileInfo(sourcePath).Length;
 			newrevision.Created = DateTime.Now;
-			System.IO.File.Move(sourcePath, destPath);
+			try
+			{
+				System.IO.File.Move(sourcePath, destPath);
+			}
+			catch (IOException)
+			{
+				// The file is still in use
+				return HTTPStatus(HttpStatusCode.Conflict, "Dieser Vorgang kann nicht ausgeführt werden, da die Datei noch in Verwendung ist. Bitte schließen Sie die Datei und versuchen Sie es erneut.");
+			}
 
 			document.LatestRevisionID = newrevision.ID;
 			document.LockTime = null;
