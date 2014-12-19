@@ -2,7 +2,7 @@
 @model ILK_Protokoll.Models.Assignment
 
 <p>
-	Eine ihrer Aufgaben ist seit dem <b>@Model.DueDate.ToString("d")</b> überfällig.
+	Eine Ihrer Aufgaben ist seit dem <b>@Model.DueDate.ToString("d")</b> überfällig.
 </p>
 
 <a href="@ViewBag.Host@Url.Action("Details", "Assignments", new {id = Model.ID})">Detailseite</a><br/>

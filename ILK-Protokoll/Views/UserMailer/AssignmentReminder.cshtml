@@ -2,7 +2,7 @@
 @model ILK_Protokoll.Models.Assignment
 
 <p>
-	Eine ihrer Aufgaben wird in Kürze (<b>@Model.DueDate.ToString("d")</b>) fällig.
+	Eine Ihrer Aufgaben wird in Kürze (<b>@Model.DueDate.ToString("d")</b>) fällig.
 </p>
 
 <a href="@ViewBag.Host@Url.Action("Details", "Assignments", new {id = Model.ID})">Detailseite</a><br/>
