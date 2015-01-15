@@ -43,7 +43,7 @@ namespace ILK_Protokoll.Models
 		public string Title { get; set; }
 
 		[Display(Name = "Beschreibung")]
-		[Required]
+		[Required(AllowEmptyStrings = true)]
 		public string Description { get; set; }
 
 		[Display(Name = "Diskussion")]

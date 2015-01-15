@@ -26,7 +26,7 @@ namespace ILK_Protokoll.ViewModels
 
 		[Display(Name = "Beschreibung")]
 		[DataType(DataType.MultilineText)]
-		[Required]
+		[DisplayFormat(ConvertEmptyStringToNull = false)]
 		public string Description { get; set; }
 
 		[Display(Name = "Diskussion")]
