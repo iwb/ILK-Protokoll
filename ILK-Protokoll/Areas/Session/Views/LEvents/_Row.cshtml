@@ -24,24 +24,18 @@
 	@if (!ViewBag.Reporting)
 	{
 		<td class="actions">
-			<a href="@Url.Action("Download", "LEvents", new {Area = "Session", id = Model.ID})">
-				<span class="glyphicon glyphicon-download" title="Termin herunterladen"></span>
-			</a>
+			<a href="@Url.Action("Download", "LEvents", new {Area = "Session", id = Model.ID})"><span class="glyphicon glyphicon-download" title="Termin herunterladen"></span></a>
 
 			<a data-ajax="true"
 			   data-ajax-method="POST"
 			   data-ajax-success="ReplaceRow('event', @Model.ID, data);"
-			   href="@Url.Action("_BeginEdit", "LEvents", new {Area = "Session", id = Model.ID})">
-				<span class="glyphicon glyphicon-edit" title="Termin bearbeiten"></span>
-			</a>
+			   href="@Url.Action("_BeginEdit", "LEvents", new {Area = "Session", id = Model.ID})"><span class="glyphicon glyphicon-edit" title="Termin bearbeiten"></span></a>
 
 			<a data-ajax="true"
 			   data-ajax-method="POST"
 			   data-ajax-confirm="Termin wirklich löschen?"
 			   data-ajax-success="RemoveRow('event', @Model.ID);"
-			   href="@Url.Action("_Delete", "LEvents", new {Area = "Session", id = Model.ID})">
-				<span class="glyphicon glyphicon-remove" title="Termin löschen"></span>
-			</a>
+			   href="@Url.Action("_Delete", "LEvents", new {Area = "Session", id = Model.ID})"><span class="glyphicon glyphicon-remove" title="Termin löschen"></span></a>
 		</td>
 	}
 </tr>

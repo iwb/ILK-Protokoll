@@ -45,9 +45,8 @@
 			   data-ajax-method="POST"
 			   data-ajax-confirm="Eintrag wirklich löschen?"
 			   data-ajax-success="RemoveRow('employeePresentation', @Model.ID);"
-			   href="@Url.Action("_Delete", "LEmployeePresentations", new {Area = "Session", id = Model.ID})">
-				<span class="glyphicon glyphicon-remove" title="Eintrag löschen"></span>
-			</a>
+			   href="@Url.Action("_Delete", "LEmployeePresentations", new {Area = "Session", id = Model.ID})"><span class="glyphicon glyphicon-remove" title="Eintrag löschen"></span></a>
+
 			<script type="text/javascript">
 				$('#employeePresentation_@Model.ID .actions a').each(function() {
 					$(this).attr("href", $(this).attr("href") + "?returnURL=" + returnURL + "%23employeePresentation_table");

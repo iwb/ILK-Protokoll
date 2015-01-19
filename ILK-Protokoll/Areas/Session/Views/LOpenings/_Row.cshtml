@@ -31,9 +31,7 @@
 			   data-ajax-method="POST"
 			   data-ajax-confirm="Vakante Stelle wirklich löschen?"
 			   data-ajax-success="RemoveRow('opening', @Model.ID);"
-			   href="@Url.Action("_Delete", "LOpenings", new {Area = "Session", id = Model.ID})">
-				<span class="glyphicon glyphicon-remove" title="Vakante Stelle löschen"></span>
-			</a>
+			   href="@Url.Action("_Delete", "LOpenings", new {Area = "Session", id = Model.ID})"><span class="glyphicon glyphicon-remove" title="Vakante Stelle löschen"></span></a>
 		</td>
 	}
 </tr>

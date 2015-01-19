@@ -32,9 +32,7 @@
 			   data-ajax-method="POST"
 			   data-ajax-confirm="Urlaubseintrag wirklich löschen?"
 			   data-ajax-success="RemoveRow('Holiday', @Model.ID);"
-			   href="@Url.Action("_Delete", "LHolidays", new {Area = "Session", id = Model.ID})">
-				<span class="glyphicon glyphicon-remove" title="Urlaubseintrag löschen"></span>
-			</a>
+			   href="@Url.Action("_Delete", "LHolidays", new {Area = "Session", id = Model.ID})"><span class="glyphicon glyphicon-remove" title="Urlaubseintrag löschen"></span></a>
 		</td>
 	}
 </tr>
