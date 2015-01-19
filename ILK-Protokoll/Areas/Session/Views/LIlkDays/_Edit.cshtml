@@ -16,7 +16,7 @@
 							<input class="form-control text-box single-line" data-val="true" data-val-date="Das Feld &quot;Beginn&quot; muss eine Datumsangabe sein." data-val-required="Das Feld &quot;Beginn&quot; ist erforderlich." id="ilkDayEdit@(Model.ID)_Start_date" name="ilkDayEdit@(Model.ID)_Start_date" type="date" value="@Model.Start.ToString("yyyy-MM-dd")" style="width: 155px;">
 						</div>
 						<div class="form-group">
-							<input class="form-control text-box single-line" data-val="true" data-val-date="Das Feld &quot;Beginn&quot; muss eine Zeitangabe sein." data-val-required="Das Feld &quot;Beginn&quot; ist erforderlich." id="ilkDayEdit@(Model.ID)_Start_time" name="ilkDayEdit@(Model.ID)_Start_time" type="time" value="@Model.Start.ToString("HH:mm")" style="width: 100px;">
+							<input class="form-control text-box single-line" data-val="true" data-val-date="Das Feld &quot;Beginn&quot; muss eine Zeitangabe sein." data-val-required="Das Feld &quot;Beginn&quot; ist erforderlich." id="ilkDayEdit@(Model.ID)_Start_time" name="ilkDayEdit@(Model.ID)_Start_time" type="time" value="@Model.Start.ToString("HH:mm")" style="width: 120px;" list="time_datalist">
 						</div>
 					</div>
 					<div class="form-inline">
@@ -24,7 +24,7 @@
 							<input class="form-control text-box single-line" data-val="true" data-val-date="Das Feld &quot;Ende&quot; muss eine Datumsangabe sein." data-val-required="Das Feld &quot;Ende&quot; ist erforderlich." id="ilkDayEdit@(Model.ID)_End_date" name="ilkDayEdit@(Model.ID)_End_date" type="date" value="@Model.End.ToString("yyyy-MM-dd")" style="width: 155px;">
 						</div>
 						<div class="form-group">
-							<input class="form-control text-box single-line" data-val="true" data-val-date="Das Feld &quot;Ende&quot; muss eine Zeitangabe sein." data-val-required="Das Feld &quot;Ende&quot; ist erforderlich." id="ilkDayEdit@(Model.ID)_End_time" name="ilkDayEdit@(Model.ID)_End_time" type="time" value="@Model.End.ToString("HH:mm")" style="width: 100px;">
+							<input class="form-control text-box single-line" data-val="true" data-val-date="Das Feld &quot;Ende&quot; muss eine Zeitangabe sein." data-val-required="Das Feld &quot;Ende&quot; ist erforderlich." id="ilkDayEdit@(Model.ID)_End_time" name="ilkDayEdit@(Model.ID)_End_time" type="time" value="@Model.End.ToString("HH:mm")" style="width: 120px;" list="time_datalist">
 						</div>
 						<input type="hidden" id="ilkDayEdit@(Model.ID)_StartDateTime" name="Start" value="@Model.Start.ToString("s")" />
 						<input type="hidden" id="ilkDayEdit@(Model.ID)_EndDateTime" name="End" value="@Model.End.ToString("s")" />

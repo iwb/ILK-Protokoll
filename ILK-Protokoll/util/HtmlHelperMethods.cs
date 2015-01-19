@@ -68,7 +68,6 @@ namespace ILK_Protokoll.util
 			Expression<Func<TModel, TProperty>> expression,
 			string id)
 		{
-			// (model => model.EndDate, new {htmlAttributes = new {@class = "form-control", id = "conf_create_end"}})	
 			var name = htmlHelper.DisplayNameFor(expression);
 			return htmlHelper.EditorFor(expression, new {htmlAttributes = new {@class = "form-control", id, placeholder = name}});
 		}
