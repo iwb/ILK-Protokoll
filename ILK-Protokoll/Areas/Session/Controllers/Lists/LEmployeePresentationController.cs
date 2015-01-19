@@ -63,7 +63,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public virtual ActionResult Edit([Bind(Exclude = "Created")] EmployeePresentation input, Uri returnURL = null)
+		public virtual ActionResult Edit([Bind(Exclude = "LastChanged")] EmployeePresentation input, Uri returnURL = null)
 		{
 			ViewBag.UserList = CreateUserSelectList();
 			ViewBag.ReturnURL = returnURL ?? GetFallbackUri();

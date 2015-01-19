@@ -77,7 +77,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public virtual ActionResult _Create([Bind(Exclude = "ID, Created")] TModel ev)
+		public virtual ActionResult _Create([Bind(Exclude = "ID, LastChanged")] TModel ev)
 		{
 			if (!ModelState.IsValid)
 			{
@@ -86,7 +86,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 			}
 
 			var row = _dbSet.Create();
-			TryUpdateModel(row, "", null, new[] {"Created"});
+			TryUpdateModel(row, "", null, new[] {"LastChanged"});
 			_dbSet.Add(row);
 
 			try
@@ -130,7 +130,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public virtual ActionResult _Edit([Bind(Exclude = "Created")] TModel input)
+		public virtual ActionResult _Edit([Bind(Exclude = "LastChanged")] TModel input)
 		{
 			var session = GetSession();
 			if (!ModelState.IsValid)
@@ -142,8 +142,9 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 			if (row.LockSessionID != null && (session == null || row.LockSessionID != session.ID))
 				return HTTPStatus(HttpStatusCode.Conflict, "Der Datensatz ist momentan gesperrt."); // HTTP 409 Conflict
 
-			TryUpdateModel(row, "", null, new[] {"Created"});
+			TryUpdateModel(row, "", null, new[] {"LastChanged"});
 			row.LockSessionID = null;
+			row.LastChanged = DateTime.Now;
 
 			try
 			{

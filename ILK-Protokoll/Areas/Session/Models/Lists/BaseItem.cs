@@ -7,14 +7,16 @@ namespace ILK_Protokoll.Areas.Session.Models.Lists
 	{
 		protected BaseItem()
 		{
-			Created = DateTime.Now;
+			LastChanged = DateTime.Now;
 			LockTime = new DateTime(2000, 1, 1);
 		}
 
 		public int ID { get; set; }
 
-		[DisplayName("Erstellt")]
-		public DateTime Created { get; private set; }
+		/// <summary>
+		/// Gibt an, wann dieser Eintrag zuletzt geändert wurde. Dadurch kann der Eintrag merkiert werden, falls seit der letzten Sitzung eine Änderung vorgenommen wurde.
+		/// </summary>
+		public DateTime LastChanged { get; set; }
 
 		/// <summary>
 		///    Enthält den letzten Sperrzeitpunkt.

@@ -1,7 +1,7 @@
 ﻿@using ILK_Protokoll.util
 @model ILK_Protokoll.Areas.Session.Models.Lists.Event
 @{
-	string trclass = Model.Created > ViewBag.LastSession ? "newlistitem" : null;
+	string trclass = Model.LastChanged > ViewBag.LastSession ? "newlistitem" : null;
 }
 
 <tr class="@trclass" id="event_@Model.ID">

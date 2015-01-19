@@ -1,6 +1,6 @@
 ﻿@model ILK_Protokoll.Areas.Session.Models.Lists.%%CLASSNAME%%
 @{
-	string trclass = Model.Created > ViewBag.LastSession ? "newlistitem" : null;
+	string trclass = Model.LastChanged > ViewBag.LastSession ? "newlistitem" : null;
 }
 
 <tr class="@trclass" id="%%classname%%_@Model.ID">

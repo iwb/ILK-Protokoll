@@ -194,6 +194,10 @@
     <Compile Include="Migrations\201412031510536_added_Lock_User.Designer.cs">
       <DependentUpon>201412031510536_added_Lock_User.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201501190906274_lists_LastChanged.cs" />
+    <Compile Include="Migrations\201501190906274_lists_LastChanged.Designer.cs">
+      <DependentUpon>201501190906274_lists_LastChanged.cs</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\SearchResultList.cs" />
     <Compile Include="Controllers\StatisticsController.cs" />
     <Compile Include="Controllers\ViewListsController.cs" />
@@ -916,6 +920,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201412031510536_added_Lock_User.resx">
       <DependentUpon>201412031510536_added_Lock_User.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201501190906274_lists_LastChanged.resx">
+      <DependentUpon>201501190906274_lists_LastChanged.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -515,7 +515,7 @@ namespace ILK_Protokoll.Controllers
 						EntityType = "Listeneintrag",
 						Title = "Auslandskonferenz",
 						ActionURL = Url.Content("~/ViewLists#conference_table"),
-						Timestamp = item.Created,
+						Timestamp = item.LastChanged,
 						Hits = new List<Hit>
 						{
 							new Hit("Datum", item.StartDate.ToShortDateString()),
@@ -537,7 +537,7 @@ namespace ILK_Protokoll.Controllers
 						EntityType = "Listeneintrag",
 						Title = "Vertragsverlängerung",
 						ActionURL = Url.Content("~/ViewLists#conference_table"),
-						Timestamp = item.Created,
+						Timestamp = item.LastChanged,
 						Hits = new List<Hit>
 						{
 							Hit.FromProperty(item, x => x.Employee),
@@ -561,7 +561,7 @@ namespace ILK_Protokoll.Controllers
 						EntityType = "Listeneintrag",
 						Title = "Mitarbeiterpräsentation",
 						ActionURL = Url.Content("~/ViewLists#conference_table"),
-						Timestamp = item.Created,
+						Timestamp = item.LastChanged,
 						Hits = new List<Hit>
 						{
 							Hit.FromProperty(item, x => x.Employee),
@@ -599,7 +599,7 @@ namespace ILK_Protokoll.Controllers
 						EntityType = "Listeneintrag",
 						Title = "ILK-Tag",
 						ActionURL = Url.Content("~/ViewLists#ilkDay_table"),
-						Timestamp = item.Created,
+						Timestamp = item.LastChanged,
 						Hits = new List<Hit>
 						{
 							Hit.FromProperty<IlkDay>(x => x.Start, item.Start.ToShortDateString()),
@@ -621,7 +621,7 @@ namespace ILK_Protokoll.Controllers
 						EntityType = "Listeneintrag",
 						Title = "ILK-Regeltermin",
 						ActionURL = Url.Content("~/ViewLists#ilkMeeting_table"),
-						Timestamp = item.Created,
+						Timestamp = item.LastChanged,
 						Hits = new List<Hit>
 						{
 							Hit.FromProperty<IlkDay>(x => x.Start, item.Start.ToShortDateString()),
@@ -643,7 +643,7 @@ namespace ILK_Protokoll.Controllers
 						EntityType = "Listeneintrag",
 						Title = "Vakante Stelle",
 						ActionURL = Url.Content("~/ViewLists#opening_table"),
-						Timestamp = item.Created,
+						Timestamp = item.LastChanged,
 						Hits = new List<Hit>
 						{
 							Hit.FromProperty(item, x => x.Project),
