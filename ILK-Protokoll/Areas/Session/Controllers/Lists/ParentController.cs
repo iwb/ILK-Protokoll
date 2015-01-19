@@ -8,13 +8,14 @@ using DDay.iCal;
 using DDay.iCal.Serialization.iCalendar;
 using EntityFramework.Extensions;
 using ILK_Protokoll.Areas.Session.Models.Lists;
+using ILK_Protokoll.Controllers;
 using Event = DDay.iCal.Event;
 
 namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 {
 	// ReSharper disable Mvc.PartialViewNotResolved
 	/// <summary>
-	/// Dieser Controller ist die Basis für alle Controller der Listenelemente und übernimmt die Grundfunktionen. Besonders einfache listen können so allein durch eine Ableitung und Konkretisierung dieser Klasse erstellt werden. Im Konstruktor der Kindklasse MUSS das Feld <see cref="_dbSet" /> mit der passenden Referenz aus <see cref="db" /> befüllt werden.
+	/// Dieser Controller ist die Basis für alle Controller der Listenelemente und übernimmt die Grundfunktionen. Besonders einfache listen können so allein durch eine Ableitung und Konkretisierung dieser Klasse erstellt werden. Im Konstruktor der Kindklasse MUSS das Feld <see cref="_dbSet" /> mit der passenden Referenz aus <see cref="BaseController.db" /> befüllt werden.
 	/// </summary>
 	/// <typeparam name="TModel"></typeparam>
 	public class ParentController<TModel> : SessionBaseController
