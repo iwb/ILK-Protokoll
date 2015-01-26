@@ -1,4 +1,5 @@
-﻿@model ILK_Protokoll.Areas.Session.Models.Lists.Event
+﻿@using ILK_Protokoll.util
+@model ILK_Protokoll.Areas.Session.Models.Lists.Event
 
 <tr id="event_@Model.ID">
 	<td colspan="7">
@@ -18,17 +19,17 @@
 				<div class="col-sm-2">
 					@Html.EditorFor(model => model.EndDate, new {htmlAttributes = new {@class = "form-control", id = "evt_" + Model.ID + "end"}})
 				</div>
-				<div class="col-sm-1">
-					@Html.EditorFor(model => model.Time, new { htmlAttributes = new { @class = "form-control", id = "evt_" + Model.ID + "time", list = "time_datalist" } })
+				<div class="col-sm-1" style="width: 11%;">
+					@Html.EditorFor(model => model.Time, new { htmlAttributes = new { @class = "form-control", id = "evt_" + Model.ID + "time", type = "time", list = "time_datalist" } })
 				</div>
 				<div class="col-sm-1">
-					@Html.EditorFor(model => model.Place, new {htmlAttributes = new {@class = "form-control", id = "evt_" + Model.ID + "place"}})
+					@Html.TextEditorFor(model => model.Place, "evt_" + Model.ID + "place")
 				</div>
-				<div class="col-sm-4">
-					@Html.EditorFor(model => model.Description, new {htmlAttributes = new {@class = "form-control", id = "evt_" + Model.ID + "desc"}})
+				<div class="col-sm-4" style="width:30.66666666%">
+					@Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", id = "evt_" + Model.ID + "desc" } })
 				</div>
 				<div class="col-sm-1">
-					@Html.EditorFor(model => model.Organizer, new {htmlAttributes = new {@class = "form-control", id = "evt_" + Model.ID + "orga"}})
+					@Html.TextEditorFor(model => model.Organizer, "evt_" + Model.ID + "orga")
 				</div>
 				<div class="col-sm-1 actions">
 					@Html.HiddenFor(model => model.ID)

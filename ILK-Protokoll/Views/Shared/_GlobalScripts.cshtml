@@ -113,6 +113,14 @@
 		}
 	});
 
+	$(function () {
+		var isiOS = navigator.userAgent.match(/(iPad|iPhone|iPod)/g) ? true : false;
+		var isAndroid = navigator.userAgent.match(/Android/i) ? true : false;
+		if (!isiOS && !isAndroid) { // let mobile OS display custom DatePicker
+			$('[type="time"]').attr("list", "time_datalist");
+		}
+	});
+
 	function PerformMasonryLayout() {
 		if (typeof msnry != 'undefined') {
 			msnry.layout();
