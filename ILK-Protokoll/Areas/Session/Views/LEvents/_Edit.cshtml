@@ -19,14 +19,18 @@
 				<div class="col-sm-2">
 					@Html.EditorFor(model => model.EndDate, new {htmlAttributes = new {@class = "form-control", id = "evt_" + Model.ID + "end"}})
 				</div>
-				<div class="col-sm-1" style="width: 11%;">
-					@Html.EditorFor(model => model.Time, new { htmlAttributes = new { @class = "form-control", id = "evt_" + Model.ID + "time", type = "time", list = "time_datalist" } })
+				<div class="col-sm-2">
+					<div class="row">
+						<div class="col-lg-6" style="max-width: 150px;">
+							@Html.EditorFor(model => model.Time, new {htmlAttributes = new {@class = "form-control", id = "evt_" + Model.ID + "time", type = "time", list = "time_datalist"}})
+						</div>
+						<div class="col-lg-6">
+							@Html.TextEditorFor(model => model.Place, "evt_" + Model.ID + "place")
+						</div>
+					</div>
 				</div>
-				<div class="col-sm-1">
-					@Html.TextEditorFor(model => model.Place, "evt_" + Model.ID + "place")
-				</div>
-				<div class="col-sm-4" style="width:30.66666666%">
-					@Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", id = "evt_" + Model.ID + "desc" } })
+				<div class="col-sm-4">
+					@Html.EditorFor(model => model.Description, new {htmlAttributes = new {@class = "form-control", id = "evt_" + Model.ID + "desc"}})
 				</div>
 				<div class="col-sm-1">
 					@Html.TextEditorFor(model => model.Organizer, "evt_" + Model.ID + "orga")
@@ -35,9 +39,9 @@
 					@Html.HiddenFor(model => model.ID)
 					<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-check"></span></button>
 					<a data-ajax="true"
-						data-ajax-method="POST"
-						data-ajax-success="ReplaceRow('event', @Model.ID, data);"
-						href="@Url.Action("_FetchRow", "LEvents", new {Area = "Session", id = Model.ID})">
+					   data-ajax-method="POST"
+					   data-ajax-success="ReplaceRow('event', @Model.ID, data);"
+					   href="@Url.Action("_FetchRow", "LEvents", new {Area = "Session", id = Model.ID})">
 						<span class="glyphicon glyphicon-remove" title="Bearbeitung abbrechen"></span>
 					</a>
 				</div>

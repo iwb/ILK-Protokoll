@@ -18,13 +18,17 @@
 				<div class="col-sm-2">
 					@Html.EditorFor(model => model.EndDate, new {htmlAttributes = new {@class = "form-control", id = "evt_create_end"}})
 				</div>
-				<div class="col-sm-1" style="width: 11%;">
-					@Html.EditorFor(model => model.Time, new { htmlAttributes = new { @class = "form-control", id = "evt_create_time", placeholder = Html.GetDisplayName(model => model.Time), type = "time" } })
+				<div class="col-sm-2">
+					<div class="row">
+						<div class="col-lg-6" style="max-width: 150px;">
+							@Html.EditorFor(model => model.Time, new { htmlAttributes = new { @class = "form-control", id = "evt_create_time", placeholder = Html.GetDisplayName(model => model.Time), type = "time" } })
+						</div>
+						<div class="col-lg-6">
+							@Html.TextEditorFor(model => model.Place, "evt_create_place")
+						</div>
+					</div>
 				</div>
-				<div class="col-sm-1">
-					@Html.TextEditorFor(model => model.Place, "evt_create_place")
-				</div>
-				<div class="col-sm-4" style="width:30.66666666%">
+				<div class="col-sm-4">
 					@Html.EditorFor(model => model.Description, new
 					{
 						htmlAttributes = new
