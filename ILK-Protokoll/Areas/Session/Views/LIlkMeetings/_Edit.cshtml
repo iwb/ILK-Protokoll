@@ -16,7 +16,7 @@
 							<input class="form-control text-box single-line" data-val="true" data-val-date="Das Feld &quot;Beginn&quot; muss eine Datumsangabe sein." data-val-required="Das Feld &quot;Beginn&quot; ist erforderlich." id="ilkMeetingEdit@(Model.ID)_Start_date" name="ilkMeetingEdit@(Model.ID)_Start_date" type="date" value="@Model.Start.ToString("yyyy-MM-dd")" style="width: 155px;">
 						</div>
 						<div class="form-group">
-							<input class="form-control text-box single-line" data-val="true" data-val-date="Das Feld &quot;Beginn&quot; muss eine Zeitangabe sein." data-val-required="Das Feld &quot;Beginn&quot; ist erforderlich." id="ilkMeetingEdit@(Model.ID)_Start_time" name="ilkMeetingEdit@(Model.ID)_Start_time" type="time" value="@Model.Start.ToString("HH:mm")" style="width: 100px;">
+							<input class="form-control text-box single-line" data-val="true" data-val-date="Das Feld &quot;Beginn&quot; muss eine Zeitangabe sein." data-val-required="Das Feld &quot;Beginn&quot; ist erforderlich." id="ilkMeetingEdit@(Model.ID)_Start_time" name="ilkMeetingEdit@(Model.ID)_Start_time" type="time" value="@Model.Start.ToString("HH:mm")" style="width: 130px;" list="time_datalist">
 						</div>
 					</div>
 					<input type="hidden" id="ilkMeetingEdit@(Model.ID)_StartDateTime" name="Start" value="@Model.Start.ToString("s")" />
