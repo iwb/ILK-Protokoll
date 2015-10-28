@@ -159,12 +159,14 @@
     <Compile Include="Areas\Session\Controllers\ListsController.cs" />
     <Compile Include="Areas\Session\Controllers\Lists\LEmployeePresentationController.cs" />
     <Compile Include="Areas\Session\Controllers\Lists\LHolidaysController.cs" />
+    <Compile Include="Areas\Session\Controllers\Lists\LIndustryProjectController.cs" />
     <Compile Include="Areas\Session\Controllers\Lists\LOpeningsController.cs" />
     <Compile Include="Areas\Session\Controllers\Lists\LExtensionsController.cs" />
     <Compile Include="Areas\Session\Controllers\Lists\LConferencesController.cs" />
     <Compile Include="Areas\Session\Controllers\Lists\LEventsController.cs" />
     <Compile Include="Areas\Session\Controllers\Lists\LIlkMeetingsController.cs" />
     <Compile Include="Areas\Session\Controllers\Lists\LIlkDaysController.cs" />
+    <Compile Include="Areas\Session\Controllers\Lists\LResearchProposalsController.cs" />
     <Compile Include="Areas\Session\Controllers\Lists\ParentController.cs" />
     <Compile Include="Areas\Session\Controllers\MasterController.cs" />
     <Compile Include="Areas\Session\Controllers\DiscussionController.cs" />
@@ -177,9 +179,11 @@
     <Compile Include="Areas\Session\Models\Lists\Conference.cs" />
     <Compile Include="Areas\Session\Models\Lists\EmployeePresentation.cs" />
     <Compile Include="Areas\Session\Models\Lists\Holiday.cs" />
+    <Compile Include="Areas\Session\Models\Lists\IndustryProject.cs" />
     <Compile Include="Areas\Session\Models\Lists\Opening.cs" />
     <Compile Include="Areas\Session\Models\Lists\Extension.cs" />
     <Compile Include="Areas\Session\Models\Lists\Prof.cs" />
+    <Compile Include="Areas\Session\Models\Lists\ResearchProposal.cs" />
     <Compile Include="Areas\Session\SessionAreaRegistration.cs" />
     <Compile Include="Areas\Session\ViewModels\ReportViewModel.cs" />
     <Compile Include="Controllers\AssignmentsController.cs" />
@@ -597,6 +601,14 @@
     </Content>
     <Content Include="Areas\Session\Views\Discussion\IndexTable.cshtml" />
     <Content Include="Areas\Session\Views\Shared\_StateDropdown.cshtml" />
+    <Content Include="Areas\Session\Views\LIndustryProjects\_CreateForm.cshtml" />
+    <Content Include="Areas\Session\Views\LIndustryProjects\_Edit.cshtml" />
+    <Content Include="Areas\Session\Views\LIndustryProjects\_List.cshtml" />
+    <Content Include="Areas\Session\Views\LIndustryProjects\_Row.cshtml" />
+    <Content Include="Areas\Session\Views\LResearchProposals\_CreateForm.cshtml" />
+    <Content Include="Areas\Session\Views\LResearchProposals\_Edit.cshtml" />
+    <Content Include="Areas\Session\Views\LResearchProposals\_List.cshtml" />
+    <Content Include="Areas\Session\Views\LResearchProposals\_Row.cshtml" />
     <None Include="Content\bootstrap\bootstrap.less" />
     <Content Include="Content\iwbTheme.less" />
     <Content Include="Areas\Administration\Views\web.config" />
