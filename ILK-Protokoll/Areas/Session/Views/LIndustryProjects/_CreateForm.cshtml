@@ -1,0 +1,27 @@
+﻿@using ILK_Protokoll.util
+@model ILK_Protokoll.Areas.Session.Models.Lists.IndustryProject
+
+<tr id="industryProject_createform">
+	<td colspan="1">
+		@using (Ajax.BeginForm("_Create", "LIndustryProjects", new {Area = "Session"}, new AjaxOptions
+		{
+			HttpMethod = "POST",
+			OnSuccess = "AddRow('industryProject', data);",
+			OnFailure = "DisplayErrorMessage('#industryProject_form', '<br />' + xhr.responseText);"
+		}, new {id = "industryProject_form"}))
+		{
+			@Html.AntiForgeryToken()
+			<div class="row">
+				<div class="col-sm-2">
+					@Html.TextEditorFor(model => model.Project, "id_short")
+				</div>
+				<div class="col-sm-2">
+					@Html.EditorFor(model => model.Start, new {htmlAttributes = new {@class = "form-control", id = "ididid"}})
+				</div>
+				<div class="col-sm-2">
+					@Html.EnumDropDownListFor(model => model.Prof, new {@class = "form-control", id = "open_create_prof"})
+				</div>
+			</div>
+		}
+	</td>
+</tr>

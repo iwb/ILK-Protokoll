@@ -1,0 +1,36 @@
+﻿@using ILK_Protokoll.util
+@model ILK_Protokoll.Areas.Session.Models.Lists.ResearchProposal
+
+<tr id="researchProposal_createform">
+	<td colspan="1">
+		@using (Ajax.BeginForm("_Create", "LResearchProposals", new { Area = "Session" }, new AjaxOptions
+		{
+			HttpMethod = "POST",
+			OnSuccess = "AddRow('researchProposal', data);",
+			OnFailure = "DisplayErrorMessage('#researchProposal_form', '<br />' + xhr.responseText);"
+		}, new { id = "researchProposal_form" }))
+		{
+			@Html.AntiForgeryToken()
+			<div class="row">
+				<div class="col-sm-2">
+					@Html.TextEditorFor(model => model.Sponsor, "rsprop_create_sponsor")
+				</div>
+				<div class="col-sm-2">
+					@Html.TextEditorFor(model => model.Akronym, "rsprop_create_acronym")
+				</div>
+				<div class="col-sm-2">
+					@Html.EditorFor(model => model.DueDate, new { htmlAttributes = new { @class = "form-control", id = "rsprop_create_duedate" } })
+				</div>
+				<div class="col-sm-2">
+					@Html.DropDownListFor(m => m.IlkID, (SelectList)ViewBag.UserList, new { @class = "form-control", id = "rsprop_create_ilk" })
+				</div>
+				<div class="col-sm-2">
+					@Html.TextEditorFor(model => model.Employee, "rsprop_create_employee")
+				</div>
+				<div class="col-sm-2">
+					@Html.TextEditorFor(model => model.Description, "rsprop_create_descr")
+				</div>
+			</div>
+		}
+	</td>
+</tr>
