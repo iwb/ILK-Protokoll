@@ -5,22 +5,25 @@
 
 <tr class="@trclass" id="industryProject_@Model.ID">
 	<td>
+		@Html.DisplayFor(model => model.Partner)
+	</td>
+	<td>
+		@Html.DisplayFor(model => model.Name)
+	</td>
+	<td>
 		@Model.StartDate.ToString("d")
 	</td>
 	<td>
 		@Model.EndDate.ToString("d")
 	</td>
 	<td>
-		@Html.DisplayFor(model => model.Time)
+		@Model.Ilk.ShortName
 	</td>
 	<td>
-		@Html.DisplayFor(model => model.Place)
+		@string.Format("{0:C}", Model.Amount)
 	</td>
 	<td>
-		@Html.DisplayFor(model => model.Description)
-	</td>
-	<td>
-		@Html.DisplayFor(model => model.Organizer)
+		@Html.DisplayFor(model => model.Status)
 	</td>
 	@if(!ViewBag.Reporting)
 	{

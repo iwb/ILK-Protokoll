@@ -159,7 +159,7 @@
     <Compile Include="Areas\Session\Controllers\ListsController.cs" />
     <Compile Include="Areas\Session\Controllers\Lists\LEmployeePresentationController.cs" />
     <Compile Include="Areas\Session\Controllers\Lists\LHolidaysController.cs" />
-    <Compile Include="Areas\Session\Controllers\Lists\LIndustryProjectController.cs" />
+    <Compile Include="Areas\Session\Controllers\Lists\LIndustryProjectsController.cs" />
     <Compile Include="Areas\Session\Controllers\Lists\LOpeningsController.cs" />
     <Compile Include="Areas\Session\Controllers\Lists\LExtensionsController.cs" />
     <Compile Include="Areas\Session\Controllers\Lists\LConferencesController.cs" />

@@ -11,18 +11,31 @@
 			@Html.AntiForgeryToken()
 			<div class="row">
 				<div class="col-sm-2">
-					@Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" , id = "rsprop_" + Model.ID + "_start"} })
+					@Html.EditorFor(model => model.Sponsor, new { htmlAttributes = new { @class = "form-control", id = "rsprop_" + Model.ID + "_sponsor" } })
 				</div>
-				<div class="col-sm-1">
-					@Html.EditorFor(model => model.Organizer, new { htmlAttributes = new { @class = "form-control", id = "rsprop_" + Model.ID + "_start" } })
+				<div class="col-sm-2">
+					@Html.EditorFor(model => model.Akronym, new { htmlAttributes = new { @class = "form-control", id = "rsprop_" + Model.ID + "_akronym" } })
 				</div>
+				<div class="col-sm-2">
+					@Html.EditorFor(model => model.DueDate, new { htmlAttributes = new { @class = "form-control" , id = "rsprop_" + Model.ID + "_start"} })
+				</div>
+				<div class="col-sm-2">
+					@Html.DropDownListFor(m => m.IlkID, (SelectList)ViewBag.UserList, new { @class = "form-control", id = "rsprop_" + Model.ID + "_orga" })
+				</div>
+				<div class="col-sm-2">
+					@Html.EditorFor(model => model.Employee, new { htmlAttributes = new { @class = "form-control", id = "rsprop_" + Model.ID + "_employee" } })
+				</div>
+				<div class="col-sm-2">
+					@Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", id = "rsprop_" + Model.ID + "_descr" } })
+				</div>
+
 				<div class="col-sm-1 actions">
 					@Html.HiddenFor(model => model.ID)
 					<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-check"></span></button>
 					<a data-ajax="true"
-						data-ajax-method="POST"
-						data-ajax-success="ReplaceRow('researchProposal', @Model.ID, data);"
-						href="@Url.Action("_FetchRow", "LResearchProposals", new {Area = "Session", id = Model.ID})">
+					   data-ajax-method="POST"
+					   data-ajax-success="ReplaceRow('researchProposal', @Model.ID, data);"
+					   href="@Url.Action("_FetchRow", "LResearchProposals", new {Area = "Session", id = Model.ID})">
 						<span class="glyphicon glyphicon-remove" title="Bearbeitung abbrechen"></span>
 					</a>
 				</div>

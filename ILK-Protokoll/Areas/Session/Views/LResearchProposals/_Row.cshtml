@@ -5,22 +5,22 @@
 
 <tr class="@trclass" id="researchProposal_@Model.ID">
 	<td>
-		@Model.StartDate.ToString("d")
+		@Model.Sponsor
 	</td>
 	<td>
-		@Model.EndDate.ToString("d")
+		@Model.Akronym
 	</td>
 	<td>
-		@Html.DisplayFor(model => model.Time)
+		@Model.DueDate.ToString("d")
 	</td>
 	<td>
-		@Html.DisplayFor(model => model.Place)
+		@Html.DisplayFor(model => model.Ilk.ShortName)
+	</td>
+	<td>
+		@Model.Employee
 	</td>
 	<td>
 		@Html.DisplayFor(model => model.Description)
-	</td>
-	<td>
-		@Html.DisplayFor(model => model.Organizer)
 	</td>
 	@if(!ViewBag.Reporting)
 	{

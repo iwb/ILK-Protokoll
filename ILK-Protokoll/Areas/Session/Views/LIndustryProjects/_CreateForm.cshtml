@@ -13,13 +13,13 @@
 			@Html.AntiForgeryToken()
 			<div class="row">
 				<div class="col-sm-2">
-					@Html.TextEditorFor(model => model.Project, "id_short")
+					@Html.TextEditorFor(model => model.Partner, "id_short")
 				</div>
 				<div class="col-sm-2">
-					@Html.EditorFor(model => model.Start, new {htmlAttributes = new {@class = "form-control", id = "ididid"}})
+					@Html.EditorFor(model => model.Name, new {htmlAttributes = new {@class = "form-control", id = "ididid"}})
 				</div>
 				<div class="col-sm-2">
-					@Html.EnumDropDownListFor(model => model.Prof, new {@class = "form-control", id = "open_create_prof"})
+					@Html.EnumDropDownListFor(model => model.Amount, new {@class = "form-control", id = "open_create_prof"})
 				</div>
 			</div>
 		}
