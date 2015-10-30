@@ -1,45 +1,46 @@
 ﻿@model ILK_Protokoll.Areas.Session.Models.Lists.ResearchProposal
 
 <tr id="researchProposal_@Model.ID">
-	<td colspan="10">
-		@using (Ajax.BeginForm("_Edit", "LResearchProposals", new { Area = "Session" }, new AjaxOptions
-	{
-		OnSuccess = "ReplaceRow('researchProposal', " + Model.ID + ", data);",
-		HttpMethod = "POST",
-	}, new { @class = "tableform", id = "rsprop_" + Model.ID + "_editform" }))
-		{
-			@Html.AntiForgeryToken()
-			<div class="row">
-				<div class="col-sm-2">
-					@Html.EditorFor(model => model.Sponsor, new { htmlAttributes = new { @class = "form-control", id = "rsprop_" + Model.ID + "_sponsor" } })
-				</div>
-				<div class="col-sm-2">
-					@Html.EditorFor(model => model.Akronym, new { htmlAttributes = new { @class = "form-control", id = "rsprop_" + Model.ID + "_akronym" } })
-				</div>
-				<div class="col-sm-2">
-					@Html.EditorFor(model => model.DueDate, new { htmlAttributes = new { @class = "form-control" , id = "rsprop_" + Model.ID + "_start"} })
-				</div>
-				<div class="col-sm-1">
-					@Html.DropDownListFor(m => m.IlkID, (SelectList)ViewBag.UserList, new { @class = "form-control", id = "rsprop_" + Model.ID + "_orga" })
-				</div>
-				<div class="col-sm-1">
-					@Html.EditorFor(model => model.Employee, new { htmlAttributes = new { @class = "form-control", id = "rsprop_" + Model.ID + "_employee" } })
-				</div>
-				<div class="col-sm-3">
-					@Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", id = "rsprop_" + Model.ID + "_descr" } })
-				</div>
-
-				<div class="col-sm-1 actions">
-					@Html.HiddenFor(model => model.ID)
-					<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-check"></span></button>
-					<a data-ajax="true"
-					   data-ajax-method="POST"
-					   data-ajax-success="ReplaceRow('researchProposal', @Model.ID, data);"
-					   href="@Url.Action("_FetchRow", "LResearchProposals", new {Area = "Session", id = Model.ID})">
-						<span class="glyphicon glyphicon-remove" title="Bearbeitung abbrechen"></span>
-					</a>
-				</div>
-			</div>
-		}
-	</td>
+    <td colspan="10">
+        @using (Ajax.BeginForm("_Edit", "LResearchProposals", new { Area = "Session" }, new AjaxOptions
+        {
+            OnSuccess = "ReplaceRow('researchProposal', " + Model.ID + ", data);",
+            HttpMethod = "POST",
+        }, new { @class = "tableform", id = "rsprop_" + Model.ID + "_editform" }))
+        {
+            @Html.AntiForgeryToken()
+            <div class="row">
+                <div class="col-sm-2">
+                    @Html.EditorFor(model => model.Sponsor, new { htmlAttributes = new { @class = "form-control", id = "rsprop_" + Model.ID + "_sponsor" } })
+                </div>
+                <div class="col-sm-2">
+                    @Html.EditorFor(model => model.Akronym, new { htmlAttributes = new { @class = "form-control", id = "rsprop_" + Model.ID + "_akronym" } })
+                </div>
+                <div class="col-sm-2">
+                    @Html.EditorFor(model => model.DueDate, new { htmlAttributes = new { @class = "form-control", id = "rsprop_" + Model.ID + "_start" } })
+                </div>
+                <div class="col-sm-1">
+                    @Html.DropDownListFor(m => m.IlkID, (SelectList)ViewBag.UserList, new { @class = "form-control", id = "rsprop_" + Model.ID + "_orga" })
+                </div>
+                <div class="col-sm-1">
+                    @Html.EditorFor(model => model.Employee, new { htmlAttributes = new { @class = "form-control", id = "rsprop_" + Model.ID + "_employee" } })
+                </div>
+                <div class="col-sm-1">
+                    @Html.EnumDropDownListFor(model => model.Status, new { @class = "form-control", id = "rsprop_" + Model.ID + "_status" })
+                </div>
+                <div class="col-sm-2">
+                    @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", id = "rsprop_" + Model.ID + "_descr" } })
+                </div>
+                <div class="col-sm-1 actions">
+                    @Html.HiddenFor(model => model.ID)
+                    <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-check"></span></button>
+                    <a data-ajax="true"
+                       data-ajax-method="POST"
+                       data-ajax-success="ReplaceRow('researchProposal', @Model.ID, data);"
+                       href="@Url.Action("_FetchRow", "LResearchProposals", new {Area = "Session", id = Model.ID})">
+                        <span class="glyphicon glyphicon-remove" title="Bearbeitung abbrechen"></span>
+                    </a>
+                </div>
+            </div>}
+    </td>
 </tr>

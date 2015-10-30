@@ -2,7 +2,7 @@
 @model ILK_Protokoll.Areas.Session.Models.Lists.ResearchProposal
 
 <tr id="researchProposal_createform">
-	<td colspan="7">
+	<td colspan="8">
 		@using (Ajax.BeginForm("_Create", "LResearchProposals", new { Area = "Session" }, new AjaxOptions
         {
             HttpMethod = "POST",
@@ -27,7 +27,10 @@
 				<div class="col-sm-1">
 					@Html.TextEditorFor(model => model.Employee, "rsprop_create_employee")
 				</div>
-				<div class="col-sm-3">
+                <div class="col-sm-1">
+                    @Html.EnumDropDownListFor(model => model.Status, new { @class = "form-control", id = "rsprop_create_status" })
+                </div>
+				<div class="col-sm-2">
 					@Html.TextEditorFor(model => model.Description, "rsprop_create_descr")
 				</div>
                 <div class="col-sm-1">

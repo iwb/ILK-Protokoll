@@ -1,42 +1,46 @@
-﻿@model ILK_Protokoll.Areas.Session.Models.Lists.ResearchProposal
+﻿@using ILK_Protokoll.util
+@model ILK_Protokoll.Areas.Session.Models.Lists.ResearchProposal
 @{
-	string trclass = Model.LastChanged > ViewBag.LastSession ? "newlistitem" : null;
+    string trclass = Model.LastChanged > ViewBag.LastSession ? "newlistitem" : null;
 }
 
 <tr class="@trclass" id="researchProposal_@Model.ID">
-	<td>
-		@Model.Sponsor
-	</td>
-	<td>
-		@Model.Akronym
-	</td>
-	<td>
-		@Model.DueDate.ToString("d")
-	</td>
-	<td>
-		@Html.DisplayFor(model => model.Ilk.ShortName)
-	</td>
-	<td>
-		@Model.Employee
-	</td>
-	<td>
-		@Html.DisplayFor(model => model.Description)
-	</td>
-	@if(!ViewBag.Reporting)
-	{
-		<td class="actions">
-			<a data-ajax="true"
-				data-ajax-method="POST"
-				data-ajax-success="ReplaceRow('researchProposal', @Model.ID, data);"
-				href="@Url.Action("_BeginEdit", "LResearchProposals", new {Area = "Session", id = Model.ID})"><span class="glyphicon glyphicon-edit" title="Forschungsantrag bearbeiten"></span></a>
+    <td>
+        @Model.Sponsor
+    </td>
+    <td>
+        @Model.Akronym
+    </td>
+    <td>
+        @Model.DueDate.ToString("d")
+    </td>
+    <td>
+        @Html.DisplayFor(model => model.Ilk.ShortName)
+    </td>
+    <td>
+        @Model.Employee
+    </td>
+    <td>
+        @Model.Status.DisplayName()
+    </td>
+    <td>
+        @Html.DisplayFor(model => model.Description)
+    </td>
+    @if (!ViewBag.Reporting)
+    {
+        <td class="actions">
+            <a data-ajax="true"
+               data-ajax-method="POST"
+               data-ajax-success="ReplaceRow('researchProposal', @Model.ID, data);"
+               href="@Url.Action("_BeginEdit", "LResearchProposals", new {Area = "Session", id = Model.ID})"><span class="glyphicon glyphicon-edit" title="Forschungsantrag bearbeiten"></span></a>
 
-			<a data-ajax="true"
-				data-ajax-method="POST"
-				data-ajax-confirm="Diesen Forschungsantrag wirklich löschen?"
-				data-ajax-success="RemoveRow('researchProposal', @Model.ID);"
-				href="@Url.Action("_Delete", "LResearchProposals", new {Area = "Session", id = Model.ID})">
-				<span class="glyphicon glyphicon-remove" title="Forschungsantrag löschen"></span>
-			</a>
-		</td>
-	}
+            <a data-ajax="true"
+               data-ajax-method="POST"
+               data-ajax-confirm="Diesen Forschungsantrag wirklich löschen?"
+               data-ajax-success="RemoveRow('researchProposal', @Model.ID);"
+               href="@Url.Action("_Delete", "LResearchProposals", new {Area = "Session", id = Model.ID})">
+                <span class="glyphicon glyphicon-remove" title="Forschungsantrag löschen"></span>
+            </a>
+        </td>
+    }
 </tr>
