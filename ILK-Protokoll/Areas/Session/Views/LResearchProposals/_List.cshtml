@@ -1,5 +1,5 @@
 ﻿@using ILK_Protokoll.util
-@model IEnumerable<ilk_protokoll.areas.session.models.lists.researchProposal>	
+@model IEnumerable<ILK_Protokoll.Areas.Session.Models.Lists.ResearchProposal>	
 		
 @{
 	string tableclass = ViewBag.Reporting ? "table-responsive" : null;
@@ -9,7 +9,7 @@
 	<div class="panel-heading panel-collapse-heading" style="position: relative;">
 		<h3 class="panel-title">
 			<a data-toggle="collapse" data-target="#researchProposal_table_container">
-				ResearchProposal
+				Forschungsanträge
 				<span class="divlink"></span>
 			</a>
 		</h3>
@@ -24,16 +24,16 @@
 					<th class="col-sm-2">
 						@Html.DisplayNameFor(model => model.Akronym)
 					</th>
-					<th class="col-sm-1">
+					<th class="col-sm-2">
 						@Html.DisplayNameFor(model => model.DueDate)
 					</th>
 					<th class="col-sm-1">
 						@Html.DisplayNameFor(model => model.Ilk)
 					</th>
-					<th class="col-sm-4">
+					<th class="col-sm-1">
 						@Html.DisplayNameFor(model => model.Employee)
 					</th>
-					<th class="col-sm-1">
+					<th class="col-sm-3">
 						@Html.DisplayNameFor(model => model.Description)
 					</th>
 					@if(!ViewBag.Reporting)

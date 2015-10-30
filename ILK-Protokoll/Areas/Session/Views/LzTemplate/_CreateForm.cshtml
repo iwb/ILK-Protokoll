@@ -8,7 +8,7 @@
 			HttpMethod = "POST",
 			OnSuccess = "AddRow('%%classname%%', data);",
 			OnFailure = "DisplayErrorMessage('#%%classname%%_form', '<br />' + xhr.responseText);"
-		}, new {id = "%%classname%%_form"}))
+		}, new { @class = "tableform", id = "%%classname%%_form"}))
 		{
 			@Html.AntiForgeryToken()
 			<div class="row">

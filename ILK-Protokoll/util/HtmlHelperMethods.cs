@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text.RegularExpressions;
+using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
 using System.Web.Routing;
@@ -68,8 +69,8 @@ namespace ILK_Protokoll.util
 			Expression<Func<TModel, TProperty>> expression,
 			string id)
 		{
-			var name = htmlHelper.DisplayNameFor(expression);
-			return htmlHelper.EditorFor(expression, new {htmlAttributes = new {@class = "form-control", id, placeholder = name}});
+            var name = HttpUtility.HtmlDecode(htmlHelper.DisplayNameFor(expression).ToString());
+            return htmlHelper.EditorFor(expression, new {htmlAttributes = new {@class = "form-control", id, placeholder = name}});
 		}
 
 

@@ -14,7 +14,7 @@ namespace ILK_Protokoll.Areas.Session.Models.Lists
 		public int ID { get; set; }
 
 		/// <summary>
-		/// Gibt an, wann dieser Eintrag zuletzt geändert wurde. Dadurch kann der Eintrag merkiert werden, falls seit der letzten Sitzung eine Änderung vorgenommen wurde.
+		/// Gibt an, wann dieser Eintrag zuletzt geändert wurde. Dadurch kann der Eintrag markiert werden, falls seit der letzten Sitzung eine Änderung vorgenommen wurde.
 		/// </summary>
 		public DateTime LastChanged { get; set; }
 

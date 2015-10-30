@@ -2,13 +2,13 @@
 @model ILK_Protokoll.Areas.Session.Models.Lists.IndustryProject
 
 <tr id="industryProject_createform">
-	<td colspan="1">
+	<td colspan="8">
 		@using (Ajax.BeginForm("_Create", "LIndustryProjects", new {Area = "Session"}, new AjaxOptions
 		{
 			HttpMethod = "POST",
 			OnSuccess = "AddRow('industryProject', data);",
 			OnFailure = "DisplayErrorMessage('#industryProject_form', '<br />' + xhr.responseText);"
-		}, new {id = "industryProject_form"}))
+		}, new { @class = "tableform", id = "industryProject_form"}))
 		{
 			@Html.AntiForgeryToken()			
 			<div class="row">
@@ -31,7 +31,7 @@
 					@Html.EditorFor(model => model.Amount, new {htmlAttributes = new {@class = "form-control", id = "indproj_create_sum"}})
 				</div>
 				<div class="col-sm-2">
-					@Html.EditorFor(model => model.Status, new {htmlAttributes = new {@class = "form-control", id = "indproj_create_status"}})
+					@Html.EnumDropDownListFor(model => model.Status, new { @class = "form-control", id = "indproj_create_status" })
 				</div>
 				<div class="col-sm-1">
 					<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-check"></span></button>

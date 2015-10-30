@@ -2,14 +2,14 @@
 @model ILK_Protokoll.Areas.Session.Models.Lists.ResearchProposal
 
 <tr id="researchProposal_createform">
-	<td colspan="1">
+	<td colspan="7">
 		@using (Ajax.BeginForm("_Create", "LResearchProposals", new { Area = "Session" }, new AjaxOptions
-		{
-			HttpMethod = "POST",
-			OnSuccess = "AddRow('researchProposal', data);",
-			OnFailure = "DisplayErrorMessage('#researchProposal_form', '<br />' + xhr.responseText);"
-		}, new { id = "researchProposal_form" }))
-		{
+        {
+            HttpMethod = "POST",
+            OnSuccess = "AddRow('researchProposal', data);",
+            OnFailure = "DisplayErrorMessage('#researchProposal_form', '<br />' + xhr.responseText);"
+        }, new { @class = "tableform", id = "researchProposal_form" }))
+        {
 			@Html.AntiForgeryToken()
 			<div class="row">
 				<div class="col-sm-2">
@@ -21,15 +21,18 @@
 				<div class="col-sm-2">
 					@Html.EditorFor(model => model.DueDate, new { htmlAttributes = new { @class = "form-control", id = "rsprop_create_duedate" } })
 				</div>
-				<div class="col-sm-2">
+				<div class="col-sm-1">
 					@Html.DropDownListFor(m => m.IlkID, (SelectList)ViewBag.UserList, new { @class = "form-control", id = "rsprop_create_ilk" })
 				</div>
-				<div class="col-sm-2">
+				<div class="col-sm-1">
 					@Html.TextEditorFor(model => model.Employee, "rsprop_create_employee")
 				</div>
-				<div class="col-sm-2">
+				<div class="col-sm-3">
 					@Html.TextEditorFor(model => model.Description, "rsprop_create_descr")
 				</div>
+                <div class="col-sm-1">
+                    <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-check"></span></button>
+                </div>
 			</div>
 		}
 	</td>

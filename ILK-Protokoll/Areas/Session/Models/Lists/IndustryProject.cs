@@ -50,6 +50,14 @@ namespace ILK_Protokoll.Areas.Session.Models.Lists
 
 		[Required]
 		[DisplayName("Status")]
-		public string Status { get; set; }
+		public IndustryProjectState Status { get; set; }
 	}
+
+    public enum IndustryProjectState
+    {
+        [Display(Name = "Angefragt")] Inquired,
+        [Display(Name = "Angebotserstellung")] Offered,
+        [Display(Name = "In Bearbeitung")] InProgress,
+        [Display(Name = "Abgeschlossen")] Complete
+    }
 }

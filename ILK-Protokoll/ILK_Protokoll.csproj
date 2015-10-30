@@ -21,6 +21,7 @@
     <IISExpressWindowsAuthentication>enabled</IISExpressWindowsAuthentication>
     <IISExpressUseClassicPipelineMode />
     <TargetFrameworkProfile />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -201,6 +202,10 @@
     <Compile Include="Migrations\201501190906274_lists_LastChanged.cs" />
     <Compile Include="Migrations\201501190906274_lists_LastChanged.Designer.cs">
       <DependentUpon>201501190906274_lists_LastChanged.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201510301628243_lists_rp_ip_added.cs" />
+    <Compile Include="Migrations\201510301628243_lists_rp_ip_added.Designer.cs">
+      <DependentUpon>201510301628243_lists_rp_ip_added.cs</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\SearchResultList.cs" />
     <Compile Include="Controllers\StatisticsController.cs" />
@@ -935,6 +940,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201501190906274_lists_LastChanged.resx">
       <DependentUpon>201501190906274_lists_LastChanged.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201510301628243_lists_rp_ip_added.resx">
+      <DependentUpon>201510301628243_lists_rp_ip_added.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
