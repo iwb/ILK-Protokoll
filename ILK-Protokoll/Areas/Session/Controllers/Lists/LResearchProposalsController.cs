@@ -14,7 +14,7 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 		public LResearchProposalsController()
 		{
 			_dbSet = db.LResearchProposal;
-			Entities = _dbSet.OrderBy(e => e.DueDate).ThenBy(e => e.Akronym);
+			Entities = _dbSet.OrderBy(e => e.DueDate).ThenBy(e => e.Sponsor);
 		}
 
 		public override PartialViewResult _CreateForm()
