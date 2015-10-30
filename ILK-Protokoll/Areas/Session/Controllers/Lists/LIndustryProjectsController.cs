@@ -15,6 +15,18 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 		{
 			_dbSet = db.LIndustryProject;
 			Entities = _dbSet.OrderBy(e => e.StartDate).ThenBy(e => e.Name);
-		}
+        }
+
+        public override PartialViewResult _CreateForm()
+        {
+            ViewBag.UserList = CreateUserSelectList();
+            return base._CreateForm();
+        }
+
+        public override ActionResult _BeginEdit(int id)
+        {
+            ViewBag.UserList = CreateUserSelectList();
+            return base._BeginEdit(id);
+        }
 	}
 }

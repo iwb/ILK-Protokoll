@@ -11,7 +11,6 @@ namespace ILK_Protokoll.Areas.Session.Controllers.Lists
 {
 	public class LResearchProposalsController : ParentController<ResearchProposal>
 	{
-
 		public LResearchProposalsController()
 		{
 			_dbSet = db.LResearchProposal;
