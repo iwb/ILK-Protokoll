@@ -19,22 +19,25 @@
 			<thead>
 				<tr>
 					<th class="col-sm-2">
-						@Html.DisplayNameFor(model => model.StartDate)
+						@Html.DisplayNameFor(model => model.Partner)
 					</th>
 					<th class="col-sm-2">
+						@Html.DisplayNameFor(model => model.Name)
+					</th>
+					<th class="col-sm-1">
+						@Html.DisplayNameFor(model => model.StartDate)
+					</th>
+					<th class="col-sm-1">
 						@Html.DisplayNameFor(model => model.EndDate)
 					</th>
-					<th class="col-sm-1">
-						@Html.DisplayNameFor(model => model.Time)
+					<th class="col-sm-2">
+						@Html.DisplayNameFor(model => model.Ilk)
 					</th>
 					<th class="col-sm-1">
-						@Html.DisplayNameFor(model => model.Place)
+						@Html.DisplayNameFor(model => model.Amount)
 					</th>
-					<th class="col-sm-4">
-						@Html.DisplayNameFor(model => model.Description)
-					</th>
-					<th class="col-sm-1">
-						@Html.DisplayNameFor(model => model.Organizer)
+					<th class="col-sm-2">
+						@Html.DisplayNameFor(model => model.Status)
 					</th>
 					@if(!ViewBag.Reporting)
 					{

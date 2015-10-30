@@ -10,16 +10,31 @@
 			OnFailure = "DisplayErrorMessage('#industryProject_form', '<br />' + xhr.responseText);"
 		}, new {id = "industryProject_form"}))
 		{
-			@Html.AntiForgeryToken()
+			@Html.AntiForgeryToken()			
 			<div class="row">
-				<div class="col-sm-2">
-					@Html.TextEditorFor(model => model.Partner, "id_short")
+				<div class="col-sm-1">
+					@Html.TextEditorFor(model => model.Partner, "indproj_create_partner")
 				</div>
 				<div class="col-sm-2">
-					@Html.EditorFor(model => model.Name, new {htmlAttributes = new {@class = "form-control", id = "ididid"}})
+					@Html.TextEditorFor(model => model.Name, "indproj_create_name")
 				</div>
 				<div class="col-sm-2">
-					@Html.EnumDropDownListFor(model => model.Amount, new {@class = "form-control", id = "open_create_prof"})
+					@Html.EditorFor(model => model.StartDate, new {htmlAttributes = new {@class = "form-control", id = "indproj_create_start"}})
+				</div>
+				<div class="col-sm-2">
+					@Html.EditorFor(model => model.EndDate, new {htmlAttributes = new {@class = "form-control", id = "indproj_create_end"}})
+				</div>
+				<div class="col-sm-1">
+					@Html.DropDownListFor(m => m.IlkID, (SelectList)ViewBag.UserList, new {@class = "form-control", id = "conf_create_ilk"})
+				</div>
+				<div class="col-sm-1">
+					@Html.EditorFor(model => model.Amount, new {htmlAttributes = new {@class = "form-control", id = "indproj_create_sum"}})
+				</div>
+				<div class="col-sm-2">
+					@Html.EditorFor(model => model.Status, new {htmlAttributes = new {@class = "form-control", id = "indproj_create_status"}})
+				</div>
+				<div class="col-sm-1">
+					<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-check"></span></button>
 				</div>
 			</div>
 		}
