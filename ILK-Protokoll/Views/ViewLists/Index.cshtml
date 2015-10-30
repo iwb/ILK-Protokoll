@@ -23,7 +23,11 @@
 	var returnURL = "@(Request.Url != null ? Request.Url.AbsolutePath : "")";
 </script>
 	
-@Html.Action("_List", "LEvents", new {Area = "Session"})
+@Html.Action("_List", "LEvents", new { Area = "Session" })
+
+@Html.Action("_List", "LResearchProposals", new { Area = "Session" })
+
+@Html.Action("_List", "LIndustryProjects", new { Area = "Session" })
 
 @Html.Action("_List", "LConferences", new {Area = "Session"})
 
@@ -38,7 +42,3 @@
 @Html.Action("_List", "LOpenings", new {Area = "Session"})
 
 @Html.Action("_List", "LHolidays", new { Area = "Session" })
-
-@Html.Action("_List", "LResearchProposals", new { Area = "Session" })
-
-@Html.Action("_List", "LIndustryProjects", new { Area = "Session" })
