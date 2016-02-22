@@ -10,7 +10,7 @@ namespace ILK_Protokoll.Models
 		[ForeignKey("User")]
 		public int UserID { get; set; }
 
-		[Display(Name = "Zur Kentnisnahme pushen an")]
+		[Display(Name = "Zur Kenntnisnahme pushen an")]
 		public virtual User User { get; set; }
 
 		[ForeignKey("Topic")]
