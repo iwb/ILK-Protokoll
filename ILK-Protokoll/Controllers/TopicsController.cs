@@ -325,12 +325,19 @@ namespace ILK_Protokoll.Controllers
 				if (!auth.IsAuthorized)
 					return HTTPStatus(HttpStatusCode.Forbidden, auth.Reason);
 
+                if (input.Proposal != topic.Proposal)
+                {
+                    // Falls der Beschlussvorschlag geändert wurde, werden die Stimmen zurückgesetzt.
+                    foreach (var vote in topic.Votes)
+                        vote.Kind = VoteKind.None;
+                }
+
 				// Änderungsverfolgung
 				db.TopicHistory.Add(TopicHistory.FromTopic(topic, GetCurrentUserID()));
 				topic.IncorporateUpdates(input);
 
-				// Irrelevante Verschiebung auflösen
-				topic.TargetSessionTypeID = input.TargetSessionTypeID == topic.SessionTypeID ? null : input.TargetSessionTypeID;
+                // Irrelevante Verschiebung auflösen
+                topic.TargetSessionTypeID = input.TargetSessionTypeID == topic.SessionTypeID ? null : input.TargetSessionTypeID;
 
 				// Ggf. neue Stimmberechtigte hinzufügen
 				if (topic.TargetSessionTypeID > 0)
@@ -509,6 +516,10 @@ namespace ILK_Protokoll.Controllers
 
 				// Ungelesen-Markierung aktualisieren
 				MarkAsUnread(topic);
+                foreach (var vote in topic.Votes)
+                {
+                    vote.Kind = VoteKind.None;
+                }
 
 				try
 				{
